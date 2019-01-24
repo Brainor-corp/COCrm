@@ -19,8 +19,8 @@ class CreateEquipmentTable extends Migration
             $table->bigInteger('type_id');
             $table->string('slug');
             $table->string('code');
-            $table->text('description');
-            $table->string('thumb', 1024);
+            $table->text('description')->nullable();
+            $table->string('thumb', 1024)->nullable();
             $table->string('points', 32);
             $table->double('price');
             $table->double('price_trade');

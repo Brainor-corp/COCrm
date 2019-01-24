@@ -21,7 +21,7 @@ class CreateEquipmentOfferTable extends Migration
             $table->double('price_trade');
             $table->double('price_small_trade');
             $table->double('price_special');
-            $table->text('comment');
+            $table->text('comment')->nullable();
         });
     }
 

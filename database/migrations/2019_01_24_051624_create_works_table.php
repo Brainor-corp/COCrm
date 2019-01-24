@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateBRTermsTable extends Migration
+class CreateWorksTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,16 +13,14 @@ class CreateBRTermsTable extends Migration
      */
     public function up()
     {
-        Schema::create('b_r_terms', function (Blueprint $table) {
+        Schema::create('works', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('type');
-            $table->string('title');
+            $table->string('name');
             $table->string('slug');
             $table->text('description')->nullable();
-            $table->integer('parent_id')->nullable();
-            $table->integer('_lft')->nullable();
-            $table->integer('_rgt')->nullable();
-            $table->integer('depth')->nullable();
+            $table->string('thumb', 1024)->nullable();
+            $table->string('points', 32);
+            $table->double('price');
             $table->timestamps();
         });
     }
@@ -34,6 +32,6 @@ class CreateBRTermsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('b_r_terms');
+        Schema::dropIfExists('works');
     }
 }
