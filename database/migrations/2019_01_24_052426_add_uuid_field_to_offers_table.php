@@ -14,7 +14,7 @@ class AddUuidFieldToOffersTable extends Migration
     public function up()
     {
         Schema::table('offers', function (Blueprint $table) {
-            $table->string('uuid');
+            $table->string('uuid')->unique();
         });
     }
 
