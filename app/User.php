@@ -26,4 +26,16 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public function getFullNameAttribute(){
+        return $this->middle . ' ' . $this->name . ' ' . $this->last;
+    }
+
+    public function contacts(){
+        $this->hasMany(Contact::class, 'user_id', 'id');
+    }
+
+    public function roles(){
+        $this->belongsToMany(Role::class, 'role_user', 'user_id', 'id');
+    }
 }
