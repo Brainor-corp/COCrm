@@ -17,9 +17,9 @@ class CreateTypesTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->string('slug');
-            $table->string('description', 1024);
+            $table->string('description', 1024)->nullable();
             $table->string('class');
-            $table->string('optional');
+            $table->string('optional')->nullable();
             $table->timestamps();
         });
     }
