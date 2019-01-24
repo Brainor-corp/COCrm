@@ -2,9 +2,31 @@
 
 namespace App;
 
+use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Model;
 
 class Equipment extends Model
 {
-    //
+    use Sluggable;
+
+    public function sluggable()
+    {
+        return [
+            'slug' => [
+                'source' => 'name'
+            ]
+        ];
+    }
+
+    public function type(){
+        return $this->hasOne(Type::class, 'id', 'type_id');
+    }
+
+    public function sets(){
+        return $this->belongsToMany(Set::class, 'equipment_set', 'equipment_id', 'set_id');
+    }
+
+    public function offers(){
+        return $this->belongsToMany(Offer::class, 'equipment_offer', 'equipment_id', 'offer_id');
+    }
 }

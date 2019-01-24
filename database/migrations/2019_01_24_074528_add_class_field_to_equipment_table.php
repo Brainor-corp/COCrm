@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateOfferWorkTable extends Migration
+class AddClassFieldToEquipmentTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,8 @@ class CreateOfferWorkTable extends Migration
      */
     public function up()
     {
-        Schema::create('offer_work', function (Blueprint $table) {
-            $table->bigInteger('offer_id');
-            $table->bigInteger('work_id');
+        Schema::table('equipment', function (Blueprint $table) {
+            $table->string('class');
         });
     }
 
@@ -26,6 +25,8 @@ class CreateOfferWorkTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('offer_work');
+        Schema::table('equipment', function (Blueprint $table) {
+            $table->dropColumn('class');
+        });
     }
 }
