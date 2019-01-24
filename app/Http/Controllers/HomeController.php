@@ -2,11 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Offer;
-use App\OfferGroup;
 use App\Set;
-use App\User;
-use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {

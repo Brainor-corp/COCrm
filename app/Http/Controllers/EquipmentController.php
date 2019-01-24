@@ -9,7 +9,6 @@
 namespace App\Http\Controllers;
 
 use App\Equipment;
-use App\Type;
 use Illuminate\Http\Request;
 
 class EquipmentController extends Controller
