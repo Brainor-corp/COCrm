@@ -18,3 +18,8 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+
+Route::post('/getTypesByClass', 'TypeController@getTypesByClass')->name('getTypes');
+Route::post('/findEquipmentByCode', 'EquipmentController@findEquipmentByCode')->name('findEquipment');
+Route::post('/getTaxBySlug', 'SettingsController@getTaxBySlug')->name('getTax');
