@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateEquipmentSetTable extends Migration
+class AddGroupIdFieldToOffersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,8 @@ class CreateEquipmentSetTable extends Migration
      */
     public function up()
     {
-        Schema::create('equipment_set', function (Blueprint $table) {
-            $table->bigInteger('equipment_set');
-            $table->bigInteger('set_id');
-            $table->integer('quantity');
-            $table->text('comment')->nullable();
+        Schema::table('offers', function (Blueprint $table) {
+            $table->bigInteger('group_id');
         });
     }
 
@@ -28,6 +25,8 @@ class CreateEquipmentSetTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('equipment_set');
+        Schema::table('offers', function (Blueprint $table) {
+            $table->dropColumn('group_id');
+        });
     }
 }
