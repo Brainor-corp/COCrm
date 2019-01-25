@@ -5,7 +5,7 @@ namespace App;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Model;
 
-class Permission extends Model
+class Setting extends Model
 {
     use Sluggable;
 
@@ -16,9 +16,5 @@ class Permission extends Model
                 'source' => 'name'
             ]
         ];
-    }
-
-    public function roles(){
-        return $this->belongsToMany(Role::class, 'permission_role', 'permission_id', 'role_id');
     }
 }

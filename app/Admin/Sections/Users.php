@@ -25,16 +25,6 @@ class Users extends Section
 
     public static function onDisplay(Request $request){
 
-        $display = Display::table([
-            Column::text('name', 'Имя'),
-            Column::text('email', 'Email'),
-            Column::text('created_at', 'Дата добавления'),
-//            Column::text('contact.value', 'Контакт'),
-            Column::text('roles.name', 'Роли'),
-            Column::text('contact.value', 'Контакт'),
-        ])->setPagination(10);
-
-        return $display;
     }
 
     public static function onCreate()
@@ -44,30 +34,7 @@ class Users extends Section
 
     public static function onEdit()
     {
-        $form = Form::panel([
-            FormColumn::column([
-                FormField::input('name', 'Имя')->setRequired(true),
-                FormField::datepicker('test_time', 'tttt')
-                    ->setLanguage('ru')
-                    ->setTodayBtn(true)
-                    ->setMinuteStep(2)
-                    ->setClearBtn(true),
-                FormField::multiselect('roles', 'Роли')
-                    ->setModelForOptions(Role::class)
-                    ->setDisplay('name'),
-                FormField::hidden('password')->setValue('asdf'),
-            ]),
-            FormColumn::column([
-                FormField::input('email', 'Email')->setRequired(true)
-                    ->setPlaceholder('Email пользователя'),
-                FormField::select('contact', 'Контакт')
-                    ->setModelForOptions(Contact::class)
-                    ->setDisplay('value'),
-                FormField::custom('<b>Кастомное поле</b>')
-            ], 'col-4'),
-        ]);
 
-        return $form;
     }
 
     public function beforeSave(Request $request, $model = null)
@@ -78,8 +45,4 @@ class Users extends Section
         }
     }
 
-    public function isDeletable()
-    {
-        return true;
-    }
 }
