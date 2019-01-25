@@ -8,8 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Offer extends Model
 {
-    use Sluggable;
     use Uuids;
+    use Sluggable;
 
     public function sluggable()
     {
