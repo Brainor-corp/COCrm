@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Offer extends Model
 {
-    use Uuids;
     use Sluggable;
 
     public function sluggable()
@@ -24,11 +23,11 @@ class Offer extends Model
         'name', 'slug', 'uuid', 'tax', 'group_id'
     ];
 
-    public function equipment(){
-        return $this->belongsToMany(Offer::class, 'equipment_offer', 'offer_id', 'equipment_id');
+    public function equipments(){
+        return $this->belongsToMany(Equipment::class, 'equipment_offer', 'offer_id', 'equipment_id')->withPivot('quantity', 'price');
     }
 
-    public function offer_group(){
+    public function offer_groups(){
         return $this->belongsTo(OfferGroup::class, 'group_id', 'id');
     }
 }

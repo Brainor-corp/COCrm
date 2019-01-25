@@ -3,10 +3,12 @@
 namespace App;
 
 use Cviebrock\EloquentSluggable\Sluggable;
+use Emadadly\LaravelUuid\Uuids;
 use Illuminate\Database\Eloquent\Model;
 
 class OfferGroup extends Model
 {
+    use Uuids;
     use Sluggable;
 
     public function sluggable()
