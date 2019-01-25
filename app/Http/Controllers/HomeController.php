@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Set;
 
 class HomeController extends Controller
 {
@@ -13,7 +13,7 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+//        $this->middleware('auth');
     }
 
     /**
@@ -23,6 +23,13 @@ class HomeController extends Controller
      */
     public function index()
     {
+//        $offer = Offer::create([
+//            'name' => 'тестовый',
+//            'tax' => '6',
+//            'group_id' => 1,
+//        ]);
+        $test = Set::with('equipment')->get();
+        dd($test);
         return view('home');
     }
 }
