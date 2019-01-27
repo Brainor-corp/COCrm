@@ -47,6 +47,7 @@
         methods: {
             updateOfferGroup(newOfferGroup) {
                 this.offerGroup = newOfferGroup;
+                console.log(this.offerGroup);
             }
         }
     }
