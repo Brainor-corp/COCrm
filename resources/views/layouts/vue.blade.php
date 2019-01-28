@@ -8,6 +8,7 @@
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel=stylesheet>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">
     <link href="{{ asset('css/kp-app.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/pages/main.css') }}" rel="stylesheet">
     <title>КП генератор</title>
 </head>
 <body>

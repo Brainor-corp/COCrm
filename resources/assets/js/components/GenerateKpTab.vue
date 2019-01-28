@@ -46,11 +46,29 @@
                                     </thead>
                                     <tbody>
                                     <tr v-for="row in offerContentTab.rows">
-                                        <td><input type="text" :name="'offer_group['+offerTab.id+'][offers]['+offerContentTab.id+'][rows]['+row.id+'][code]'" v-model="row.code"/></td>
-                                        <td><input type="text" :name="'offer_group['+offerTab.id+'][offers]['+offerContentTab.id+'][rows]['+row.id+'][name]'" v-model="row.name"/></td>
-                                        <td><input type="text" :name="'offer_group['+offerTab.id+'][offers]['+offerContentTab.id+'][rows]['+row.id+'][points]'" v-model="row.points"/></td>
-                                        <td><input type="text" :name="'offer_group['+offerTab.id+'][offers]['+offerContentTab.id+'][rows]['+row.id+'][quantity]'" v-model="row.quantity"/></td>
-                                        <td><input type="text" :name="'offer_group['+offerTab.id+'][offers]['+offerContentTab.id+'][rows]['+row.id+'][price]'" v-model="row.price"/></td>
+                                        <td>
+                                            <input type="text" @keyup="searchEquipmentByCode(row.code, row.id)" :name="'offer_group['+offerTab.id+'][offers]['+offerContentTab.id+'][rows]['+row.id+'][code]'" v-model="row.code" />
+                                            <ul :id="'autocomplete-results-'+row.id" v-show="autocompletesDisplays[row.id]" class="autocomplete-results">
+                                                <li class="loading" v-if="isLoading">
+                                                    Поиск...
+                                                </li>
+                                                <li v-else v-for="(result, i) in results" :key="i" @click="setResult(result, row.id)" class="autocomplete-result">
+                                                    {{ result['code'] }}
+                                                </li>
+                                            </ul>
+                                        </td>
+                                        <td>
+                                            <input type="text" :name="'offer_group['+offerTab.id+'][offers]['+offerContentTab.id+'][rows]['+row.id+'][name]'" v-model="row.name"/>
+                                        </td>
+                                        <td>
+                                            <input type="text" :name="'offer_group['+offerTab.id+'][offers]['+offerContentTab.id+'][rows]['+row.id+'][points]'" v-model="row.points"/>
+                                        </td>
+                                        <td>
+                                            <input type="text" :name="'offer_group['+offerTab.id+'][offers]['+offerContentTab.id+'][rows]['+row.id+'][quantity]'" v-model="row.quantity"/>
+                                        </td>
+                                        <td>
+                                            <input type="text" :name="'offer_group['+offerTab.id+'][offers]['+offerContentTab.id+'][rows]['+row.id+'][price]'" v-model="row.price"/>
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td colspan="5" @click.prevent="addTableRow(offerTab.id,offerContentTab.id)">+</td>
@@ -69,6 +87,7 @@
 <script>
     import $ from 'jquery';
     import deparam from 'deparam';
+    import axios from 'axios';
 
     export default {
         data(){
@@ -77,7 +96,12 @@
                     { id: 0, name:'Новый тип КП' },
                 ],
                 offersContentTabs:[[{id: 0, name:'Новое оборудование', rows:[]}]],
-                offerGroup:[]
+                offerGroup:[],
+                autocompletesDisplays: [],
+                results: [],
+                search: "",
+                isLoading: false,
+                searchResult: [],
             };
         },
         computed: {
@@ -145,6 +169,53 @@
                     }
                 );
             },
-        }
+            searchEquipmentByCode(codePart, rowId){
+                let context = this;
+                axios.interceptors.request.use(function (config) {
+                    context.isLoading = true;
+                    return config;
+                });
+
+                axios
+                    .post(window.location.href + 'findEquipmentByCode', {
+                        code: codePart
+                    })
+                    .then(resp => {
+                        this.results = resp.data;
+                        this.isLoading = false;
+                    });
+                console.log(rowId);
+                this.autocompletesDisplays[rowId] = true;
+            },
+            setResult(result, rowId) {
+                console.log(this);
+                this.row.code = result;
+                this.autocompletesDisplays[rowId] = false;
+            },
+            handleClickOutside(evt) {
+                let context = this;
+                console.log(context);
+                if (!context.$el.contains(evt.target)) {
+                    context.autocompletesDisplays.forEach(function (element, key) {
+                        context.autocompletesDisplays[key] = false;
+                    });
+                }
+            }
+        },
+        mounted() {
+            document.addEventListener("click", this.handleClickOutside);
+        },
+        destroyed() {
+            document.removeEventListener("click", this.handleClickOutside);
+        },
+        watch: {
+            items: function(val, oldValue) {
+                // actually compare them
+                if (val.length !== oldValue.length) {
+                    this.results = val;
+                    this.isLoading = false;
+                }
+            }
+        },
     }
 </script>
