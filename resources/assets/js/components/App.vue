@@ -34,8 +34,7 @@
         components: { GenerateKpTab, KpTotalTab },
         data(){
             return {
-                offerGroup:[],
-                autocompletesDisplays: []
+                offerGroup:[]
             };
         },
         computed: {

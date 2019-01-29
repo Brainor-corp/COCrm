@@ -48,6 +48,12 @@
                                     <tr v-for="row in offerContentTab.rows">
                                         <td>
                                             <input type="text" @keyup="searchEquipmentByCode(row.code, row.id)" :name="'offer_group['+offerTab.id+'][offers]['+offerContentTab.id+'][rows]['+row.id+'][code]'" v-model="row.code" />
+                                            <!--<autocomplete-->
+                                                    <!--url="http://commercialoffer.local/findEquipmentByCode"-->
+                                                    <!--anchor="code"-->
+                                                    <!--:name="'autocomplete-' + row.id"-->
+                                                    <!--param="code">-->
+                                            <!--</autocomplete>-->
                                             <ul :id="'autocomplete-results-'+row.id" v-show="autocompletesDisplays[row.id]" class="autocomplete-results">
                                                 <li class="loading" v-if="isLoading">
                                                     Поиск...
@@ -88,6 +94,8 @@
     import $ from 'jquery';
     import deparam from 'deparam';
     import axios from 'axios';
+    import Autocomplete from 'vue2-autocomplete-js'
+    require("../../../../node_modules/vue2-autocomplete-js/dist/style/vue2-autocomplete.css");
 
     export default {
         data(){
@@ -97,13 +105,14 @@
                 ],
                 offersContentTabs:[[{id: 0, name:'Новое оборудование', rows:[]}]],
                 offerGroup:[],
-                autocompletesDisplays: [],
                 results: [],
+                autocompletesDisplays: [],
                 search: "",
                 isLoading: false,
                 searchResult: [],
             };
         },
+        components: {Autocomplete},
         computed: {
         },
         created: function (){
@@ -146,11 +155,14 @@
             },
             addTableRow(offerTabId,offerContentTabId){
                 let lastRow;
+
                 if(this.offersContentTabs[offerTabId][offerContentTabId]['rows'].length > 0){
                     lastRow =  this.offersContentTabs[offerTabId][offerContentTabId]['rows'][this.offersContentTabs[offerTabId][offerContentTabId]['rows'].length - 1].id+1;
                 }else{
                     lastRow = 0;
                 }
+
+                this.autocompletesDisplays.push({lastRow: false});
 
                 this.offersContentTabs[offerTabId][offerContentTabId]['rows'].push(
                     {
@@ -194,12 +206,12 @@
             },
             handleClickOutside(evt) {
                 let context = this;
-                console.log(context);
-                if (!context.$el.contains(evt.target)) {
+                // if (!context.$el.contains(evt.target)) {
                     context.autocompletesDisplays.forEach(function (element, key) {
                         context.autocompletesDisplays[key] = false;
                     });
-                }
+                    console.log(context.autocompletesDisplays);
+                // }
             }
         },
         mounted() {
@@ -207,15 +219,6 @@
         },
         destroyed() {
             document.removeEventListener("click", this.handleClickOutside);
-        },
-        watch: {
-            items: function(val, oldValue) {
-                // actually compare them
-                if (val.length !== oldValue.length) {
-                    this.results = val;
-                    this.isLoading = false;
-                }
-            }
         },
     }
 </script>
