@@ -7,7 +7,7 @@
                         <a class="nav-link active" data-toggle="tab" href="#generateKpTab">Редактирование КП</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" data-toggle="tab" href="#kpTotalTab">Итог</a>
+                        <a class="nav-link" data-toggle="tab" href="#kpTotalTab" @click="updateOfferGroup()">Итог</a>
                     </li>
                 </ul>
 
@@ -29,6 +29,8 @@
 <script>
     import GenerateKpTab from './GenerateKpTab';
     import KpTotalTab from './KpTotalTab';
+    import deparam from 'deparam';
+    import $ from 'jquery';
 
     export default {
         components: { GenerateKpTab, KpTotalTab },
@@ -46,8 +48,11 @@
         },
         methods: {
             updateOfferGroup(newOfferGroup) {
-                this.offerGroup = newOfferGroup;
-                console.log(this.offerGroup);
+                if (typeof newOfferGroup !== 'undefined') {
+                    this.offerGroup = newOfferGroup;
+                }else{
+                    this.offerGroup = deparam($('#kp-generate-form').serialize());
+                }
             }
         }
     }
