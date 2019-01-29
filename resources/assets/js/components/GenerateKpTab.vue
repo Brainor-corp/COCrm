@@ -2,8 +2,8 @@
     <div class="row">
         <div class="col-12 my-5">
             <form id="getOfferGroup" @submit.prevent="getOfferGroup">
-                <input type="text" placeholder="id предложения" v-model="groupId">
-                <button type="submit">Вставить предложения</button>
+                <input type="text" v-bind:disabled="redactMode" placeholder="id КП" v-model="groupId">
+                <button type="submit" v-bind:disabled="redactMode">Вставить КП</button>
             </form>
         </div>
         <div class="col-12 generate-kp-tab">
@@ -116,6 +116,7 @@
                 autocompletesDisplays: [],
                 search: "",
                 isLoading: false,
+                redactMode: false,
                 searchResult: [],
             };
         },
@@ -129,6 +130,7 @@
             updateOfferGroup() {
                 this.offerGroup = deparam($('#kp-generate-form').serialize());
                 this.$emit('updateOfferGroup',this.offerGroup);
+                this.redactMode = true;
             },
             addOfferTab(){
                 let lastOfferTab,lastOfferTabId;
@@ -221,13 +223,82 @@
                 // }
             },
             getOfferGroup() {
+                let lastOfferTabId = 0;
+                let lastOfferContentTabId = 0;
+                let lastRow = 0;
+                let buffKP = [];
+                let buffEq = [];
+                let buffRow = [];
                 axios
                     .post(window.location.href + 'getOfferGroup', {
                         id: this.groupId
                     })
                     .then(resp => {
                         console.log(resp.data.offers);
+                        resp.data.offers.forEach(function (offer) {
+
+                            buffKP.push(
+                                {
+                                    id: lastOfferTabId,
+                                    name: offer.name
+                                }
+                            );
+                            lastOfferTabId++;
+
+                            Object.keys(offer['equipments']).forEach(function (type) {
+                                offer['equipments'][type].forEach(function (equipment) {
+                                    if(!buffRow[lastOfferTabId]){
+                                        buffRow[lastOfferTabId] = [];
+                                    }
+                                    if(!buffRow[lastOfferTabId][lastOfferContentTabId]){
+                                        buffRow[lastOfferTabId][lastOfferContentTabId] = [];
+                                    }
+                                    if(!buffRow[lastOfferTabId][lastOfferContentTabId]['rows']){
+                                        buffRow[lastOfferTabId][lastOfferContentTabId]['rows'] = [];
+                                    }
+                                    buffRow[lastOfferTabId][lastOfferContentTabId]['rows'].push(
+                                        {
+                                            id: lastRow,
+                                            saveType: 'old',
+                                            code: equipment.code,
+                                            name: equipment.name,
+                                            description: equipment.description,
+                                            quantity: equipment.pivot.quantity,
+                                            points: equipment.points,
+                                            price: equipment.pivot.price,
+                                            price_trade: equipment.pivot.code,
+                                            price_small_trade: equipment.pivot.code,
+                                            price_special: equipment.pivot.code,
+                                            comment:'',
+                                        }
+                                    );
+                                });
+
+                                if(!buffEq[lastOfferTabId]){
+                                    buffEq[lastOfferTabId] = [];
+                                }
+                                if(!buffRow[lastOfferTabId][lastOfferContentTabId]){
+                                    buffRow[lastOfferTabId][lastOfferContentTabId] = [];
+                                }
+                                buffEq[lastOfferTabId].push(
+                                    {
+                                        id: lastOfferContentTabId,
+                                        name: type,
+                                        rows: buffRow[lastOfferTabId][lastOfferContentTabId]['rows']
+                                    }
+                                );
+                                lastOfferContentTabId++;
+                            });
+                        });
+                        this.offersTabs = buffKP;
+                        this.offersContentTabs = buffEq;
+
+                        console.log('kp');
+                        console.log( this.offersTabs);
+                        console.log('eq');
+                        console.log(this.offersContentTabs);
                     });
+
             }
         },
         mounted() {
