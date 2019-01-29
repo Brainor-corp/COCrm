@@ -18,7 +18,7 @@ class CreateEquipmentTable extends Migration
             $table->string('name');
             $table->bigInteger('type_id');
             $table->string('slug');
-            $table->string('code');
+            $table->string('code')->unique();
             $table->text('description')->nullable();
             $table->string('thumb', 1024)->nullable();
             $table->string('points', 32);
