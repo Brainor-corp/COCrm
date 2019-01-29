@@ -23,6 +23,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::post('/getTypesByClass', 'TypeController@getTypesByClass')->name('getTypes');
 Route::post('/findEquipmentByCode', 'EquipmentController@findEquipmentByCode')->name('findEquipment');
 Route::post('/getTaxBySlug', 'SettingsController@getTaxBySlug')->name('getTax');
+Route::post('/getOfferGroup', 'COController@getOfferGroup')->name('getOfferGroup');
 Route::get('/test', 'OfferController@testRequest');
 
 Route::get('/kp/{uuid}', 'COController@display')->where('uuid', '[a-zA-Z0-9/_-]+')->name('showCO');

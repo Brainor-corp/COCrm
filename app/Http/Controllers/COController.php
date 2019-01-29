@@ -22,6 +22,30 @@ class COController extends Controller
         return view('pages.kpPage')->with(compact('offers', 'offersGroup'));
     }
 
+    public function getOfferGroup(Request $request){
+        $id = $request->id;
+        if(!isset($id)){
+            abort(404);
+        }
+        $offersGroup = OfferGroup::where('id', $id)->with('offers.equipments.type')->first();
+
+        $groupedArr = $offersGroup->toArray();
+        foreach ($offersGroup->offers as $key => $offer){
+            $buffer = [];
+            foreach ($offer->equipments as $equipment){
+                if(isset($buffer[$equipment->type->name])){
+                    array_push($buffer[$equipment->type->name], $equipment);
+                }
+                else{
+                    $buffer[$equipment->type->name][] = $equipment;
+                }
+            }
+            $groupedArr['offers'][$key]['equipments'] = $buffer;
+        }
+
+        return $groupedArr;
+    }
+
     public  function downloadAsPdf($uuid){
         if(!isset($uuid)){
             abort(404);

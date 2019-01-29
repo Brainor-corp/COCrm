@@ -1,5 +1,11 @@
 <template>
     <div class="row">
+        <div class="col-12 my-5">
+            <form id="getOfferGroup" @submit.prevent="getOfferGroup">
+                <input type="text" v-bind:disabled="redactMode" placeholder="id КП" v-model="groupId">
+                <button type="submit" v-bind:disabled="redactMode">Вставить КП</button>
+            </form>
+        </div>
         <div class="col-12 generate-kp-tab">
             <h3>Редактирование КП</h3>
             <form id="kp-generate-form" @change.prevent="updateOfferGroup">
@@ -58,7 +64,7 @@
                                                 <li class="loading" v-if="isLoading">
                                                     Поиск...
                                                 </li>
-                                                <li v-else v-for="(result, i) in results" :key="i" @click="setResult(result, row.id)" class="autocomplete-result">
+                                                <li v-else v-for="(result, i) in results" :key="i" @click="setResult(result, offerTab.id, offerContentTab.id, row.id)" class="autocomplete-result">
                                                     {{ result['code'] }}
                                                 </li>
                                             </ul>
@@ -106,9 +112,11 @@
                 offersContentTabs:[[{id: 0, name:'Новое оборудование', rows:[]}]],
                 offerGroup:[],
                 results: [],
+                groupId: null,
                 autocompletesDisplays: [],
                 search: "",
                 isLoading: false,
+                redactMode: false,
                 searchResult: [],
             };
         },
@@ -118,10 +126,16 @@
         created: function (){
             this.updateOfferGroup;
         },
+        mounted() {
+            document.addEventListener("click", this.handleClickOutside);
+        },
+        destroyed() {
+            document.removeEventListener("click", this.handleClickOutside);
+        },
         methods: {
             updateOfferGroup() {
-                this.offerGroup = deparam($('#kp-generate-form').serialize());
-                this.$emit('updateOfferGroup',this.offerGroup);
+                this.$emit('updateOfferGroup');
+                this.redactMode = true;
             },
             addOfferTab(){
                 let lastOfferTab,lastOfferTabId;
@@ -138,7 +152,8 @@
                 this.offersContentTabs[lastOfferTabId].push(
                     {
                         id: 0,
-                        name:'Новое оборудование'
+                        name:'Новое оборудование',
+                        rows:[]
                     }
                 );
             },
@@ -198,27 +213,105 @@
                     });
                 console.log(rowId);
                 this.autocompletesDisplays[rowId] = true;
+                console.log(this.autocompletesDisplays);
             },
-            setResult(result, rowId) {
-                console.log(this);
-                this.row.code = result;
+            setResult(equipment, offerTabId, offerContentTabId, rowId) {
+                this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['id'] = rowId;
+                this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['saveType'] = 'old';
+                this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['code'] = equipment.code;
+                this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['name'] = equipment.name;
+                this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['description'] = equipment.description;
+                this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['quantity'] = equipment.naquantityme;
+                this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['points'] = equipment.points;
+                this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['price'] = equipment.price;
+                this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['price_trade'] = equipment.price_trade;
+                this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['price_small_trade'] = equipment.price_small_trade;
+                this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['price_special'] = equipment.price_special;
+                this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['comment'] = '';
+                // this.row.code = result;
                 this.autocompletesDisplays[rowId] = false;
             },
-            handleClickOutside(evt) {
-                let context = this;
-                // if (!context.$el.contains(evt.target)) {
-                    context.autocompletesDisplays.forEach(function (element, key) {
-                        context.autocompletesDisplays[key] = false;
+            handleClickOutside(event) {
+                if ('autocomplete-results' !== $(event.target).attr('class')) {
+                    let i, length = this.autocompletesDisplays.length;
+                    for (i = 0; i < length; i = i + 1) {
+                        Vue.set(this.autocompletesDisplays, i, false)
+                    }
+                }
+            },
+            getOfferGroup() {
+                let lastOfferTabId = 0;
+                let buffKP = [];
+                let buffEq = [];
+                let buffRow = [];
+                axios
+                    .post(window.location.href + 'getOfferGroup', {
+                        id: this.groupId
+                    })
+                    .then(resp => {
+                        resp.data.offers.forEach(function (offer) {
+                            let lastOfferContentTabId = 0;
+                            buffKP.push(
+                                {
+                                    id: lastOfferTabId,
+                                    name: offer.name
+                                }
+                            );
+
+                            Object.keys(offer['equipments']).forEach(function (type) {
+                                let lastRow = 0;
+                                offer['equipments'][type].forEach(function (equipment) {
+                                    if(!buffRow[lastOfferTabId]){
+                                        buffRow[lastOfferTabId] = [];
+                                    }
+                                    if(!buffRow[lastOfferTabId][lastOfferContentTabId]){
+                                        buffRow[lastOfferTabId][lastOfferContentTabId] = [];
+                                    }
+                                    if(!buffRow[lastOfferTabId][lastOfferContentTabId]['rows']){
+                                        buffRow[lastOfferTabId][lastOfferContentTabId]['rows'] = [];
+                                    }
+                                    buffRow[lastOfferTabId][lastOfferContentTabId]['rows'].push(
+                                        {
+                                            id: lastRow,
+                                            saveType: 'old',
+                                            code: equipment.code,
+                                            name: equipment.name,
+                                            description: equipment.description,
+                                            quantity: equipment.pivot.quantity,
+                                            points: equipment.points,
+                                            price: equipment.pivot.price,
+                                            price_trade: equipment.pivot.code,
+                                            price_small_trade: equipment.pivot.code,
+                                            price_special: equipment.pivot.code,
+                                            comment:'',
+                                        }
+                                    );
+                                    lastRow++;
+                                });
+
+                                if(!buffEq[lastOfferTabId]){
+                                    buffEq[lastOfferTabId] = [];
+                                }
+                                if(!buffRow[lastOfferTabId][lastOfferContentTabId]){
+                                    buffRow[lastOfferTabId][lastOfferContentTabId] = [];
+                                }
+                                buffEq[lastOfferTabId].push(
+                                    {
+                                        id: lastOfferContentTabId,
+                                        name: type,
+                                        rows: buffRow[lastOfferTabId][lastOfferContentTabId]['rows']
+                                    }
+                                );
+                                lastOfferContentTabId++;
+                            });
+
+                            lastOfferTabId++;
+                        });
+                        this.offersTabs = buffKP;
+                        this.offersContentTabs = buffEq;
                     });
-                    console.log(context.autocompletesDisplays);
-                // }
+
             }
-        },
-        mounted() {
-            document.addEventListener("click", this.handleClickOutside);
-        },
-        destroyed() {
-            document.removeEventListener("click", this.handleClickOutside);
-        },
+        }
     }
 </script>

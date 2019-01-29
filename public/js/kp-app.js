@@ -25120,7 +25120,7 @@ module.exports = Vue;
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(15);
-module.exports = __webpack_require__(56);
+module.exports = __webpack_require__(55);
 
 
 /***/ }),
@@ -49039,7 +49039,7 @@ var normalizeComponent = __webpack_require__(4)
 /* script */
 var __vue_script__ = __webpack_require__(46)
 /* template */
-var __vue_template__ = __webpack_require__(55)
+var __vue_template__ = __webpack_require__(54)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -49085,8 +49085,12 @@ module.exports = Component.exports
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__GenerateKpTab__ = __webpack_require__(47);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__GenerateKpTab___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__GenerateKpTab__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__KpTotalTab__ = __webpack_require__(52);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__KpTotalTab__ = __webpack_require__(51);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__KpTotalTab___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__KpTotalTab__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_deparam__ = __webpack_require__(49);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_deparam___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_deparam__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_jquery__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_jquery___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_jquery__);
 //
 //
 //
@@ -49115,6 +49119,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+
+
 
 
 
@@ -49135,8 +49141,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     created: function created() {},
     methods: {
         updateOfferGroup: function updateOfferGroup(newOfferGroup) {
-            this.offerGroup = newOfferGroup;
-            console.log(this.offerGroup);
+            if (typeof newOfferGroup !== 'undefined') {
+                this.offerGroup = newOfferGroup;
+            } else {
+                this.offerGroup = __WEBPACK_IMPORTED_MODULE_2_deparam___default()(__WEBPACK_IMPORTED_MODULE_3_jquery___default()('#kp-generate-form').serialize());
+            }
         }
     }
 });
@@ -49150,7 +49159,7 @@ var normalizeComponent = __webpack_require__(4)
 /* script */
 var __vue_script__ = __webpack_require__(48)
 /* template */
-var __vue_template__ = __webpack_require__(51)
+var __vue_template__ = __webpack_require__(50)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -49200,8 +49209,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_deparam___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_deparam__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_axios__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_axios__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue2_autocomplete_js__ = __webpack_require__(50);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue2_autocomplete_js__ = __webpack_require__(60);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue2_autocomplete_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_vue2_autocomplete_js__);
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -49308,9 +49323,11 @@ __webpack_require__(61);
             offersContentTabs: [[{ id: 0, name: 'Новое оборудование', rows: [] }]],
             offerGroup: [],
             results: [],
+            groupId: null,
             autocompletesDisplays: [],
             search: "",
             isLoading: false,
+            redactMode: false,
             searchResult: []
         };
     },
@@ -49320,10 +49337,17 @@ __webpack_require__(61);
     created: function created() {
         this.updateOfferGroup;
     },
+    mounted: function mounted() {
+        document.addEventListener("click", this.handleClickOutside);
+    },
+    destroyed: function destroyed() {
+        document.removeEventListener("click", this.handleClickOutside);
+    },
+
     methods: {
         updateOfferGroup: function updateOfferGroup() {
-            this.offerGroup = __WEBPACK_IMPORTED_MODULE_1_deparam___default()(__WEBPACK_IMPORTED_MODULE_0_jquery___default()('#kp-generate-form').serialize());
-            this.$emit('updateOfferGroup', this.offerGroup);
+            this.$emit('updateOfferGroup');
+            this.redactMode = true;
         },
         addOfferTab: function addOfferTab() {
             var lastOfferTab = void 0,
@@ -49338,7 +49362,8 @@ __webpack_require__(61);
             this.offersContentTabs.push([]);
             this.offersContentTabs[lastOfferTabId].push({
                 id: 0,
-                name: 'Новое оборудование'
+                name: 'Новое оборудование',
+                rows: []
             });
         },
         addOfferContentTab: function addOfferContentTab(offerTabId) {
@@ -49393,27 +49418,99 @@ __webpack_require__(61);
             });
             console.log(rowId);
             this.autocompletesDisplays[rowId] = true;
+            console.log(this.autocompletesDisplays);
         },
-        setResult: function setResult(result, rowId) {
-            console.log(this);
-            this.row.code = result;
+        setResult: function setResult(equipment, offerTabId, offerContentTabId, rowId) {
+            this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['id'] = rowId;
+            this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['saveType'] = 'old';
+            this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['code'] = equipment.code;
+            this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['name'] = equipment.name;
+            this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['description'] = equipment.description;
+            this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['quantity'] = equipment.naquantityme;
+            this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['points'] = equipment.points;
+            this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['price'] = equipment.price;
+            this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['price_trade'] = equipment.price_trade;
+            this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['price_small_trade'] = equipment.price_small_trade;
+            this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['price_special'] = equipment.price_special;
+            this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['comment'] = '';
+            // this.row.code = result;
             this.autocompletesDisplays[rowId] = false;
         },
-        handleClickOutside: function handleClickOutside(evt) {
-            var context = this;
-            // if (!context.$el.contains(evt.target)) {
-            context.autocompletesDisplays.forEach(function (element, key) {
-                context.autocompletesDisplays[key] = false;
+        handleClickOutside: function handleClickOutside(event) {
+            if ('autocomplete-results' !== __WEBPACK_IMPORTED_MODULE_0_jquery___default()(event.target).attr('class')) {
+                var i = void 0,
+                    length = this.autocompletesDisplays.length;
+                for (i = 0; i < length; i = i + 1) {
+                    Vue.set(this.autocompletesDisplays, i, false);
+                }
+            }
+        },
+        getOfferGroup: function getOfferGroup() {
+            var _this2 = this;
+
+            var lastOfferTabId = 0;
+            var buffKP = [];
+            var buffEq = [];
+            var buffRow = [];
+            __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post(window.location.href + 'getOfferGroup', {
+                id: this.groupId
+            }).then(function (resp) {
+                resp.data.offers.forEach(function (offer) {
+                    var lastOfferContentTabId = 0;
+                    buffKP.push({
+                        id: lastOfferTabId,
+                        name: offer.name
+                    });
+
+                    Object.keys(offer['equipments']).forEach(function (type) {
+                        var lastRow = 0;
+                        offer['equipments'][type].forEach(function (equipment) {
+                            if (!buffRow[lastOfferTabId]) {
+                                buffRow[lastOfferTabId] = [];
+                            }
+                            if (!buffRow[lastOfferTabId][lastOfferContentTabId]) {
+                                buffRow[lastOfferTabId][lastOfferContentTabId] = [];
+                            }
+                            if (!buffRow[lastOfferTabId][lastOfferContentTabId]['rows']) {
+                                buffRow[lastOfferTabId][lastOfferContentTabId]['rows'] = [];
+                            }
+                            buffRow[lastOfferTabId][lastOfferContentTabId]['rows'].push({
+                                id: lastRow,
+                                saveType: 'old',
+                                code: equipment.code,
+                                name: equipment.name,
+                                description: equipment.description,
+                                quantity: equipment.pivot.quantity,
+                                points: equipment.points,
+                                price: equipment.pivot.price,
+                                price_trade: equipment.pivot.code,
+                                price_small_trade: equipment.pivot.code,
+                                price_special: equipment.pivot.code,
+                                comment: ''
+                            });
+                            lastRow++;
+                        });
+
+                        if (!buffEq[lastOfferTabId]) {
+                            buffEq[lastOfferTabId] = [];
+                        }
+                        if (!buffRow[lastOfferTabId][lastOfferContentTabId]) {
+                            buffRow[lastOfferTabId][lastOfferContentTabId] = [];
+                        }
+                        buffEq[lastOfferTabId].push({
+                            id: lastOfferContentTabId,
+                            name: type,
+                            rows: buffRow[lastOfferTabId][lastOfferContentTabId]['rows']
+                        });
+                        lastOfferContentTabId++;
+                    });
+
+                    lastOfferTabId++;
+                });
+                _this2.offersTabs = buffKP;
+                _this2.offersContentTabs = buffEq;
             });
-            console.log(context.autocompletesDisplays);
-            // }
         }
-    },
-    mounted: function mounted() {
-        document.addEventListener("click", this.handleClickOutside);
-    },
-    destroyed: function destroyed() {
-        document.removeEventListener("click", this.handleClickOutside);
     }
 });
 
@@ -49524,6 +49621,1470 @@ module.exports=function (params, coerce) {
 
 /***/ }),
 /* 50 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "row" }, [
+    _c("div", { staticClass: "col-12 my-5" }, [
+      _c(
+        "form",
+        {
+          attrs: { id: "getOfferGroup" },
+          on: {
+            submit: function($event) {
+              $event.preventDefault()
+              return _vm.getOfferGroup($event)
+            }
+          }
+        },
+        [
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.groupId,
+                expression: "groupId"
+              }
+            ],
+            attrs: {
+              type: "text",
+              disabled: _vm.redactMode,
+              placeholder: "id КП"
+            },
+            domProps: { value: _vm.groupId },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.groupId = $event.target.value
+              }
+            }
+          }),
+          _vm._v(" "),
+          _c(
+            "button",
+            { attrs: { type: "submit", disabled: _vm.redactMode } },
+            [_vm._v("Вставить КП")]
+          )
+        ]
+      )
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "col-12 generate-kp-tab" }, [
+      _c("h3", [_vm._v("Редактирование КП")]),
+      _vm._v(" "),
+      _c(
+        "form",
+        {
+          attrs: { id: "kp-generate-form" },
+          on: {
+            change: function($event) {
+              $event.preventDefault()
+              return _vm.updateOfferGroup($event)
+            }
+          }
+        },
+        [
+          _c(
+            "ul",
+            { staticClass: "nav nav-tabs" },
+            [
+              _vm._l(_vm.offersTabs, function(offerTab) {
+                return _c("li", { staticClass: "nav-item" }, [
+                  _c(
+                    "a",
+                    {
+                      staticClass: "nav-link",
+                      attrs: {
+                        "data-toggle": "tab",
+                        href: "#kp-edit-tab-" + offerTab.id
+                      }
+                    },
+                    [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: offerTab.id,
+                            expression: "offerTab.id"
+                          }
+                        ],
+                        attrs: {
+                          type: "hidden",
+                          hidden: "hidden",
+                          name: "offer_group[" + offerTab.id + "][id]"
+                        },
+                        domProps: { value: offerTab.id },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(offerTab, "id", $event.target.value)
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: offerTab.name,
+                            expression: "offerTab.name"
+                          }
+                        ],
+                        attrs: {
+                          type: "text",
+                          name: "offer_group[" + offerTab.id + "][name]"
+                        },
+                        domProps: { value: offerTab.name },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(offerTab, "name", $event.target.value)
+                          }
+                        }
+                      })
+                    ]
+                  )
+                ])
+              }),
+              _vm._v(" "),
+              _c("li", { staticClass: "nav-item" }, [
+                _c(
+                  "a",
+                  {
+                    staticClass: "nav-link",
+                    on: {
+                      click: function($event) {
+                        $event.preventDefault()
+                        return _vm.addOfferTab($event)
+                      }
+                    }
+                  },
+                  [_vm._v("+")]
+                )
+              ])
+            ],
+            2
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "tab-content" },
+            _vm._l(_vm.offersTabs, function(offerTab) {
+              return _c(
+                "div",
+                {
+                  staticClass: "tab-pane fade",
+                  attrs: { id: "kp-edit-tab-" + offerTab.id }
+                },
+                [
+                  _c(
+                    "ul",
+                    { staticClass: "nav nav-tabs" },
+                    [
+                      _vm._l(_vm.offersContentTabs[offerTab.id], function(
+                        offerContentTab
+                      ) {
+                        return _c("li", { staticClass: "nav-item" }, [
+                          _c(
+                            "a",
+                            {
+                              staticClass: "nav-link",
+                              attrs: {
+                                "data-toggle": "tab",
+                                href:
+                                  "#kp-" +
+                                  offerTab.id +
+                                  "-content-edit-tab-" +
+                                  offerContentTab.id
+                              }
+                            },
+                            [
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: offerContentTab.id,
+                                    expression: "offerContentTab.id"
+                                  }
+                                ],
+                                attrs: {
+                                  type: "hidden",
+                                  hidden: "hidden",
+                                  name:
+                                    "offer_group[" +
+                                    offerTab.id +
+                                    "][offers][" +
+                                    offerContentTab.id +
+                                    "][id]"
+                                },
+                                domProps: { value: offerContentTab.id },
+                                on: {
+                                  input: function($event) {
+                                    if ($event.target.composing) {
+                                      return
+                                    }
+                                    _vm.$set(
+                                      offerContentTab,
+                                      "id",
+                                      $event.target.value
+                                    )
+                                  }
+                                }
+                              }),
+                              _vm._v(" "),
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: offerContentTab.name,
+                                    expression: "offerContentTab.name"
+                                  }
+                                ],
+                                attrs: {
+                                  type: "text",
+                                  name:
+                                    "offer_group[" +
+                                    offerTab.id +
+                                    "][offers][" +
+                                    offerContentTab.id +
+                                    "][name]"
+                                },
+                                domProps: { value: offerContentTab.name },
+                                on: {
+                                  input: function($event) {
+                                    if ($event.target.composing) {
+                                      return
+                                    }
+                                    _vm.$set(
+                                      offerContentTab,
+                                      "name",
+                                      $event.target.value
+                                    )
+                                  }
+                                }
+                              })
+                            ]
+                          )
+                        ])
+                      }),
+                      _vm._v(" "),
+                      _c("li", { staticClass: "nav-item" }, [
+                        _c(
+                          "a",
+                          {
+                            staticClass: "nav-link",
+                            on: {
+                              click: function($event) {
+                                $event.preventDefault()
+                                _vm.addOfferContentTab(offerTab.id)
+                              }
+                            }
+                          },
+                          [_vm._v("+")]
+                        )
+                      ])
+                    ],
+                    2
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "tab-content" },
+                    _vm._l(_vm.offersContentTabs[offerTab.id], function(
+                      offerContentTab
+                    ) {
+                      return _c(
+                        "div",
+                        {
+                          staticClass: "tab-pane fade",
+                          attrs: {
+                            id:
+                              "kp-" +
+                              offerTab.id +
+                              "-content-edit-tab-" +
+                              offerContentTab.id
+                          }
+                        },
+                        [
+                          _vm._v(
+                            "\n                            " +
+                              _vm._s(offerContentTab.name) +
+                              "\n                            "
+                          ),
+                          _c(
+                            "table",
+                            {
+                              staticClass:
+                                "table table-striped table-hover table-bordered"
+                            },
+                            [
+                              _vm._m(0, true),
+                              _vm._v(" "),
+                              _c(
+                                "tbody",
+                                [
+                                  _vm._l(offerContentTab.rows, function(row) {
+                                    return _c("tr", [
+                                      _c("td", [
+                                        _c("input", {
+                                          directives: [
+                                            {
+                                              name: "model",
+                                              rawName: "v-model",
+                                              value: row.code,
+                                              expression: "row.code"
+                                            }
+                                          ],
+                                          attrs: {
+                                            type: "text",
+                                            name:
+                                              "offer_group[" +
+                                              offerTab.id +
+                                              "][offers][" +
+                                              offerContentTab.id +
+                                              "][rows][" +
+                                              row.id +
+                                              "][code]"
+                                          },
+                                          domProps: { value: row.code },
+                                          on: {
+                                            keyup: function($event) {
+                                              _vm.searchEquipmentByCode(
+                                                row.code,
+                                                row.id
+                                              )
+                                            },
+                                            input: function($event) {
+                                              if ($event.target.composing) {
+                                                return
+                                              }
+                                              _vm.$set(
+                                                row,
+                                                "code",
+                                                $event.target.value
+                                              )
+                                            }
+                                          }
+                                        }),
+                                        _vm._v(" "),
+                                        _c(
+                                          "ul",
+                                          {
+                                            directives: [
+                                              {
+                                                name: "show",
+                                                rawName: "v-show",
+                                                value:
+                                                  _vm.autocompletesDisplays[
+                                                    row.id
+                                                  ],
+                                                expression:
+                                                  "autocompletesDisplays[row.id]"
+                                              }
+                                            ],
+                                            staticClass: "autocomplete-results",
+                                            attrs: {
+                                              id:
+                                                "autocomplete-results-" + row.id
+                                            }
+                                          },
+                                          [
+                                            _vm.isLoading
+                                              ? _c(
+                                                  "li",
+                                                  { staticClass: "loading" },
+                                                  [
+                                                    _vm._v(
+                                                      "\n                                                Поиск...\n                                            "
+                                                    )
+                                                  ]
+                                                )
+                                              : _vm._l(_vm.results, function(
+                                                  result,
+                                                  i
+                                                ) {
+                                                  return _c(
+                                                    "li",
+                                                    {
+                                                      key: i,
+                                                      staticClass:
+                                                        "autocomplete-result",
+                                                      on: {
+                                                        click: function(
+                                                          $event
+                                                        ) {
+                                                          _vm.setResult(
+                                                            result,
+                                                            offerTab.id,
+                                                            offerContentTab.id,
+                                                            row.id
+                                                          )
+                                                        }
+                                                      }
+                                                    },
+                                                    [
+                                                      _vm._v(
+                                                        "\n                                                " +
+                                                          _vm._s(
+                                                            result["code"]
+                                                          ) +
+                                                          "\n                                            "
+                                                      )
+                                                    ]
+                                                  )
+                                                })
+                                          ],
+                                          2
+                                        )
+                                      ]),
+                                      _vm._v(" "),
+                                      _c("td", [
+                                        _c("input", {
+                                          directives: [
+                                            {
+                                              name: "model",
+                                              rawName: "v-model",
+                                              value: row.name,
+                                              expression: "row.name"
+                                            }
+                                          ],
+                                          attrs: {
+                                            type: "text",
+                                            name:
+                                              "offer_group[" +
+                                              offerTab.id +
+                                              "][offers][" +
+                                              offerContentTab.id +
+                                              "][rows][" +
+                                              row.id +
+                                              "][name]"
+                                          },
+                                          domProps: { value: row.name },
+                                          on: {
+                                            input: function($event) {
+                                              if ($event.target.composing) {
+                                                return
+                                              }
+                                              _vm.$set(
+                                                row,
+                                                "name",
+                                                $event.target.value
+                                              )
+                                            }
+                                          }
+                                        })
+                                      ]),
+                                      _vm._v(" "),
+                                      _c("td", [
+                                        _c("input", {
+                                          directives: [
+                                            {
+                                              name: "model",
+                                              rawName: "v-model",
+                                              value: row.points,
+                                              expression: "row.points"
+                                            }
+                                          ],
+                                          attrs: {
+                                            type: "text",
+                                            name:
+                                              "offer_group[" +
+                                              offerTab.id +
+                                              "][offers][" +
+                                              offerContentTab.id +
+                                              "][rows][" +
+                                              row.id +
+                                              "][points]"
+                                          },
+                                          domProps: { value: row.points },
+                                          on: {
+                                            input: function($event) {
+                                              if ($event.target.composing) {
+                                                return
+                                              }
+                                              _vm.$set(
+                                                row,
+                                                "points",
+                                                $event.target.value
+                                              )
+                                            }
+                                          }
+                                        })
+                                      ]),
+                                      _vm._v(" "),
+                                      _c("td", [
+                                        _c("input", {
+                                          directives: [
+                                            {
+                                              name: "model",
+                                              rawName: "v-model",
+                                              value: row.quantity,
+                                              expression: "row.quantity"
+                                            }
+                                          ],
+                                          attrs: {
+                                            type: "text",
+                                            name:
+                                              "offer_group[" +
+                                              offerTab.id +
+                                              "][offers][" +
+                                              offerContentTab.id +
+                                              "][rows][" +
+                                              row.id +
+                                              "][quantity]"
+                                          },
+                                          domProps: { value: row.quantity },
+                                          on: {
+                                            input: function($event) {
+                                              if ($event.target.composing) {
+                                                return
+                                              }
+                                              _vm.$set(
+                                                row,
+                                                "quantity",
+                                                $event.target.value
+                                              )
+                                            }
+                                          }
+                                        })
+                                      ]),
+                                      _vm._v(" "),
+                                      _c("td", [
+                                        _c("input", {
+                                          directives: [
+                                            {
+                                              name: "model",
+                                              rawName: "v-model",
+                                              value: row.price,
+                                              expression: "row.price"
+                                            }
+                                          ],
+                                          attrs: {
+                                            type: "text",
+                                            name:
+                                              "offer_group[" +
+                                              offerTab.id +
+                                              "][offers][" +
+                                              offerContentTab.id +
+                                              "][rows][" +
+                                              row.id +
+                                              "][price]"
+                                          },
+                                          domProps: { value: row.price },
+                                          on: {
+                                            input: function($event) {
+                                              if ($event.target.composing) {
+                                                return
+                                              }
+                                              _vm.$set(
+                                                row,
+                                                "price",
+                                                $event.target.value
+                                              )
+                                            }
+                                          }
+                                        })
+                                      ])
+                                    ])
+                                  }),
+                                  _vm._v(" "),
+                                  _c("tr", [
+                                    _c(
+                                      "td",
+                                      {
+                                        attrs: { colspan: "5" },
+                                        on: {
+                                          click: function($event) {
+                                            $event.preventDefault()
+                                            _vm.addTableRow(
+                                              offerTab.id,
+                                              offerContentTab.id
+                                            )
+                                          }
+                                        }
+                                      },
+                                      [_vm._v("+")]
+                                    )
+                                  ])
+                                ],
+                                2
+                              )
+                            ]
+                          )
+                        ]
+                      )
+                    }),
+                    0
+                  )
+                ]
+              )
+            }),
+            0
+          )
+        ]
+      )
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Артикул")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Название")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Ед.измерения")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Количество")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Цена")])
+      ])
+    ])
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-6f13bd58", module.exports)
+  }
+}
+
+/***/ }),
+/* 51 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(4)
+/* script */
+var __vue_script__ = __webpack_require__(52)
+/* template */
+var __vue_template__ = __webpack_require__(53)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/KpTotalTab.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-6a79f4ad", Component.options)
+  } else {
+    hotAPI.reload("data-v-6a79f4ad", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 52 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    props: ['offerGroup'],
+    data: function data() {
+        return {};
+    },
+
+    computed: {},
+    created: function created() {},
+    methods: {}
+});
+
+/***/ }),
+/* 53 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "row" }, [
+    _c(
+      "div",
+      { staticClass: "col-12 kp-total-tab" },
+      _vm._l(_vm.offerGroup.offer_group, function(offerData) {
+        return _c(
+          "div",
+          { staticClass: "kp-total-offer" },
+          [
+            _c("h3", [_vm._v(_vm._s(offerData.name))]),
+            _vm._v(" "),
+            _vm._l(offerData.offers, function(offerContent) {
+              return _c("div", { staticClass: "kp-total-offer-content" }, [
+                _c("h4", [_vm._v(_vm._s(offerContent.name))]),
+                _vm._v(" "),
+                _c(
+                  "table",
+                  {
+                    staticClass:
+                      "table table-striped table-hover table-bordered"
+                  },
+                  [
+                    _vm._m(0, true),
+                    _vm._v(" "),
+                    _c(
+                      "tbody",
+                      _vm._l(offerContent.rows, function(row) {
+                        return _c("tr", [
+                          _c("td", [_vm._v(_vm._s(row.code))]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v(_vm._s(row.name))]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v(_vm._s(row.points))]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v(_vm._s(row.quantity))]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v(_vm._s(row.price))])
+                        ])
+                      }),
+                      0
+                    )
+                  ]
+                )
+              ])
+            })
+          ],
+          2
+        )
+      }),
+      0
+    )
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Артикул")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Название")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Ед.измерения")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Количество")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Цена")])
+      ])
+    ])
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-6a79f4ad", module.exports)
+  }
+}
+
+/***/ }),
+/* 54 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "container" }, [
+    _c("div", { staticClass: "row" }, [
+      _c("div", { staticClass: "col-12 first-line-tabs" }, [
+        _c("ul", { staticClass: "nav nav-tabs" }, [
+          _vm._m(0),
+          _vm._v(" "),
+          _c("li", { staticClass: "nav-item" }, [
+            _c(
+              "a",
+              {
+                staticClass: "nav-link",
+                attrs: { "data-toggle": "tab", href: "#kpTotalTab" },
+                on: {
+                  click: function($event) {
+                    _vm.updateOfferGroup()
+                  }
+                }
+              },
+              [_vm._v("Итог")]
+            )
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "tab-content" }, [
+          _c(
+            "div",
+            {
+              staticClass: "tab-pane fade active show",
+              attrs: { id: "generateKpTab" }
+            },
+            [
+              _c("generate-kp-tab", {
+                on: { updateOfferGroup: _vm.updateOfferGroup }
+              })
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "tab-pane fade", attrs: { id: "kpTotalTab" } },
+            [_c("kp-total-tab", { attrs: { offerGroup: _vm.offerGroup } })],
+            1
+          )
+        ])
+      ])
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("li", { staticClass: "nav-item" }, [
+      _c(
+        "a",
+        {
+          staticClass: "nav-link active",
+          attrs: { "data-toggle": "tab", href: "#generateKpTab" }
+        },
+        [_vm._v("Редактирование КП")]
+      )
+    ])
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-8142f38c", module.exports)
+  }
+}
+
+/***/ }),
+/* 55 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 56 */,
+/* 57 */
+/***/ (function(module, exports) {
+
+/*
+	MIT License http://www.opensource.org/licenses/mit-license.php
+	Author Tobias Koppers @sokra
+*/
+// css base code, injected by the css-loader
+module.exports = function(useSourceMap) {
+	var list = [];
+
+	// return the list of modules as css string
+	list.toString = function toString() {
+		return this.map(function (item) {
+			var content = cssWithMappingToString(item, useSourceMap);
+			if(item[2]) {
+				return "@media " + item[2] + "{" + content + "}";
+			} else {
+				return content;
+			}
+		}).join("");
+	};
+
+	// import a list of modules into the list
+	list.i = function(modules, mediaQuery) {
+		if(typeof modules === "string")
+			modules = [[null, modules, ""]];
+		var alreadyImportedModules = {};
+		for(var i = 0; i < this.length; i++) {
+			var id = this[i][0];
+			if(typeof id === "number")
+				alreadyImportedModules[id] = true;
+		}
+		for(i = 0; i < modules.length; i++) {
+			var item = modules[i];
+			// skip already imported module
+			// this implementation is not 100% perfect for weird media query combinations
+			//  when a module is imported multiple times with different media queries.
+			//  I hope this will never occur (Hey this way we have smaller bundles)
+			if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
+				if(mediaQuery && !item[2]) {
+					item[2] = mediaQuery;
+				} else if(mediaQuery) {
+					item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
+				}
+				list.push(item);
+			}
+		}
+	};
+	return list;
+};
+
+function cssWithMappingToString(item, useSourceMap) {
+	var content = item[1] || '';
+	var cssMapping = item[3];
+	if (!cssMapping) {
+		return content;
+	}
+
+	if (useSourceMap && typeof btoa === 'function') {
+		var sourceMapping = toComment(cssMapping);
+		var sourceURLs = cssMapping.sources.map(function (source) {
+			return '/*# sourceURL=' + cssMapping.sourceRoot + source + ' */'
+		});
+
+		return [content].concat(sourceURLs).concat([sourceMapping]).join('\n');
+	}
+
+	return [content].join('\n');
+}
+
+// Adapted from convert-source-map (MIT)
+function toComment(sourceMap) {
+	// eslint-disable-next-line no-undef
+	var base64 = btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap))));
+	var data = 'sourceMappingURL=data:application/json;charset=utf-8;base64,' + base64;
+
+	return '/*# ' + data + ' */';
+}
+
+
+/***/ }),
+/* 58 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/*
+	MIT License http://www.opensource.org/licenses/mit-license.php
+	Author Tobias Koppers @sokra
+*/
+
+var stylesInDom = {};
+
+var	memoize = function (fn) {
+	var memo;
+
+	return function () {
+		if (typeof memo === "undefined") memo = fn.apply(this, arguments);
+		return memo;
+	};
+};
+
+var isOldIE = memoize(function () {
+	// Test for IE <= 9 as proposed by Browserhacks
+	// @see http://browserhacks.com/#hack-e71d8692f65334173fee715c222cb805
+	// Tests for existence of standard globals is to allow style-loader
+	// to operate correctly into non-standard environments
+	// @see https://github.com/webpack-contrib/style-loader/issues/177
+	return window && document && document.all && !window.atob;
+});
+
+var getElement = (function (fn) {
+	var memo = {};
+
+	return function(selector) {
+		if (typeof memo[selector] === "undefined") {
+			memo[selector] = fn.call(this, selector);
+		}
+
+		return memo[selector]
+	};
+})(function (target) {
+	return document.querySelector(target)
+});
+
+var singleton = null;
+var	singletonCounter = 0;
+var	stylesInsertedAtTop = [];
+
+var	fixUrls = __webpack_require__(59);
+
+module.exports = function(list, options) {
+	if (typeof DEBUG !== "undefined" && DEBUG) {
+		if (typeof document !== "object") throw new Error("The style-loader cannot be used in a non-browser environment");
+	}
+
+	options = options || {};
+
+	options.attrs = typeof options.attrs === "object" ? options.attrs : {};
+
+	// Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
+	// tags it will allow on a page
+	if (!options.singleton) options.singleton = isOldIE();
+
+	// By default, add <style> tags to the <head> element
+	if (!options.insertInto) options.insertInto = "head";
+
+	// By default, add <style> tags to the bottom of the target
+	if (!options.insertAt) options.insertAt = "bottom";
+
+	var styles = listToStyles(list, options);
+
+	addStylesToDom(styles, options);
+
+	return function update (newList) {
+		var mayRemove = [];
+
+		for (var i = 0; i < styles.length; i++) {
+			var item = styles[i];
+			var domStyle = stylesInDom[item.id];
+
+			domStyle.refs--;
+			mayRemove.push(domStyle);
+		}
+
+		if(newList) {
+			var newStyles = listToStyles(newList, options);
+			addStylesToDom(newStyles, options);
+		}
+
+		for (var i = 0; i < mayRemove.length; i++) {
+			var domStyle = mayRemove[i];
+
+			if(domStyle.refs === 0) {
+				for (var j = 0; j < domStyle.parts.length; j++) domStyle.parts[j]();
+
+				delete stylesInDom[domStyle.id];
+			}
+		}
+	};
+};
+
+function addStylesToDom (styles, options) {
+	for (var i = 0; i < styles.length; i++) {
+		var item = styles[i];
+		var domStyle = stylesInDom[item.id];
+
+		if(domStyle) {
+			domStyle.refs++;
+
+			for(var j = 0; j < domStyle.parts.length; j++) {
+				domStyle.parts[j](item.parts[j]);
+			}
+
+			for(; j < item.parts.length; j++) {
+				domStyle.parts.push(addStyle(item.parts[j], options));
+			}
+		} else {
+			var parts = [];
+
+			for(var j = 0; j < item.parts.length; j++) {
+				parts.push(addStyle(item.parts[j], options));
+			}
+
+			stylesInDom[item.id] = {id: item.id, refs: 1, parts: parts};
+		}
+	}
+}
+
+function listToStyles (list, options) {
+	var styles = [];
+	var newStyles = {};
+
+	for (var i = 0; i < list.length; i++) {
+		var item = list[i];
+		var id = options.base ? item[0] + options.base : item[0];
+		var css = item[1];
+		var media = item[2];
+		var sourceMap = item[3];
+		var part = {css: css, media: media, sourceMap: sourceMap};
+
+		if(!newStyles[id]) styles.push(newStyles[id] = {id: id, parts: [part]});
+		else newStyles[id].parts.push(part);
+	}
+
+	return styles;
+}
+
+function insertStyleElement (options, style) {
+	var target = getElement(options.insertInto)
+
+	if (!target) {
+		throw new Error("Couldn't find a style target. This probably means that the value for the 'insertInto' parameter is invalid.");
+	}
+
+	var lastStyleElementInsertedAtTop = stylesInsertedAtTop[stylesInsertedAtTop.length - 1];
+
+	if (options.insertAt === "top") {
+		if (!lastStyleElementInsertedAtTop) {
+			target.insertBefore(style, target.firstChild);
+		} else if (lastStyleElementInsertedAtTop.nextSibling) {
+			target.insertBefore(style, lastStyleElementInsertedAtTop.nextSibling);
+		} else {
+			target.appendChild(style);
+		}
+		stylesInsertedAtTop.push(style);
+	} else if (options.insertAt === "bottom") {
+		target.appendChild(style);
+	} else {
+		throw new Error("Invalid value for parameter 'insertAt'. Must be 'top' or 'bottom'.");
+	}
+}
+
+function removeStyleElement (style) {
+	if (style.parentNode === null) return false;
+	style.parentNode.removeChild(style);
+
+	var idx = stylesInsertedAtTop.indexOf(style);
+	if(idx >= 0) {
+		stylesInsertedAtTop.splice(idx, 1);
+	}
+}
+
+function createStyleElement (options) {
+	var style = document.createElement("style");
+
+	options.attrs.type = "text/css";
+
+	addAttrs(style, options.attrs);
+	insertStyleElement(options, style);
+
+	return style;
+}
+
+function createLinkElement (options) {
+	var link = document.createElement("link");
+
+	options.attrs.type = "text/css";
+	options.attrs.rel = "stylesheet";
+
+	addAttrs(link, options.attrs);
+	insertStyleElement(options, link);
+
+	return link;
+}
+
+function addAttrs (el, attrs) {
+	Object.keys(attrs).forEach(function (key) {
+		el.setAttribute(key, attrs[key]);
+	});
+}
+
+function addStyle (obj, options) {
+	var style, update, remove, result;
+
+	// If a transform function was defined, run it on the css
+	if (options.transform && obj.css) {
+	    result = options.transform(obj.css);
+
+	    if (result) {
+	    	// If transform returns a value, use that instead of the original css.
+	    	// This allows running runtime transformations on the css.
+	    	obj.css = result;
+	    } else {
+	    	// If the transform function returns a falsy value, don't add this css.
+	    	// This allows conditional loading of css
+	    	return function() {
+	    		// noop
+	    	};
+	    }
+	}
+
+	if (options.singleton) {
+		var styleIndex = singletonCounter++;
+
+		style = singleton || (singleton = createStyleElement(options));
+
+		update = applyToSingletonTag.bind(null, style, styleIndex, false);
+		remove = applyToSingletonTag.bind(null, style, styleIndex, true);
+
+	} else if (
+		obj.sourceMap &&
+		typeof URL === "function" &&
+		typeof URL.createObjectURL === "function" &&
+		typeof URL.revokeObjectURL === "function" &&
+		typeof Blob === "function" &&
+		typeof btoa === "function"
+	) {
+		style = createLinkElement(options);
+		update = updateLink.bind(null, style, options);
+		remove = function () {
+			removeStyleElement(style);
+
+			if(style.href) URL.revokeObjectURL(style.href);
+		};
+	} else {
+		style = createStyleElement(options);
+		update = applyToTag.bind(null, style);
+		remove = function () {
+			removeStyleElement(style);
+		};
+	}
+
+	update(obj);
+
+	return function updateStyle (newObj) {
+		if (newObj) {
+			if (
+				newObj.css === obj.css &&
+				newObj.media === obj.media &&
+				newObj.sourceMap === obj.sourceMap
+			) {
+				return;
+			}
+
+			update(obj = newObj);
+		} else {
+			remove();
+		}
+	};
+}
+
+var replaceText = (function () {
+	var textStore = [];
+
+	return function (index, replacement) {
+		textStore[index] = replacement;
+
+		return textStore.filter(Boolean).join('\n');
+	};
+})();
+
+function applyToSingletonTag (style, index, remove, obj) {
+	var css = remove ? "" : obj.css;
+
+	if (style.styleSheet) {
+		style.styleSheet.cssText = replaceText(index, css);
+	} else {
+		var cssNode = document.createTextNode(css);
+		var childNodes = style.childNodes;
+
+		if (childNodes[index]) style.removeChild(childNodes[index]);
+
+		if (childNodes.length) {
+			style.insertBefore(cssNode, childNodes[index]);
+		} else {
+			style.appendChild(cssNode);
+		}
+	}
+}
+
+function applyToTag (style, obj) {
+	var css = obj.css;
+	var media = obj.media;
+
+	if(media) {
+		style.setAttribute("media", media)
+	}
+
+	if(style.styleSheet) {
+		style.styleSheet.cssText = css;
+	} else {
+		while(style.firstChild) {
+			style.removeChild(style.firstChild);
+		}
+
+		style.appendChild(document.createTextNode(css));
+	}
+}
+
+function updateLink (link, options, obj) {
+	var css = obj.css;
+	var sourceMap = obj.sourceMap;
+
+	/*
+		If convertToAbsoluteUrls isn't defined, but sourcemaps are enabled
+		and there is no publicPath defined then lets turn convertToAbsoluteUrls
+		on by default.  Otherwise default to the convertToAbsoluteUrls option
+		directly
+	*/
+	var autoFixUrls = options.convertToAbsoluteUrls === undefined && sourceMap;
+
+	if (options.convertToAbsoluteUrls || autoFixUrls) {
+		css = fixUrls(css);
+	}
+
+	if (sourceMap) {
+		// http://stackoverflow.com/a/26603875
+		css += "\n/*# sourceMappingURL=data:application/json;base64," + btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))) + " */";
+	}
+
+	var blob = new Blob([css], { type: "text/css" });
+
+	var oldSrc = link.href;
+
+	link.href = URL.createObjectURL(blob);
+
+	if(oldSrc) URL.revokeObjectURL(oldSrc);
+}
+
+
+/***/ }),
+/* 59 */
+/***/ (function(module, exports) {
+
+
+/**
+ * When source maps are enabled, `style-loader` uses a link element with a data-uri to
+ * embed the css on the page. This breaks all relative urls because now they are relative to a
+ * bundle instead of the current page.
+ *
+ * One solution is to only use full urls, but that may be impossible.
+ *
+ * Instead, this function "fixes" the relative urls to be absolute according to the current page location.
+ *
+ * A rudimentary test suite is located at `test/fixUrls.js` and can be run via the `npm test` command.
+ *
+ */
+
+module.exports = function (css) {
+  // get current location
+  var location = typeof window !== "undefined" && window.location;
+
+  if (!location) {
+    throw new Error("fixUrls requires window.location");
+  }
+
+	// blank or null?
+	if (!css || typeof css !== "string") {
+	  return css;
+  }
+
+  var baseUrl = location.protocol + "//" + location.host;
+  var currentDir = baseUrl + location.pathname.replace(/\/[^\/]*$/, "/");
+
+	// convert each url(...)
+	/*
+	This regular expression is just a way to recursively match brackets within
+	a string.
+
+	 /url\s*\(  = Match on the word "url" with any whitespace after it and then a parens
+	   (  = Start a capturing group
+	     (?:  = Start a non-capturing group
+	         [^)(]  = Match anything that isn't a parentheses
+	         |  = OR
+	         \(  = Match a start parentheses
+	             (?:  = Start another non-capturing groups
+	                 [^)(]+  = Match anything that isn't a parentheses
+	                 |  = OR
+	                 \(  = Match a start parentheses
+	                     [^)(]*  = Match anything that isn't a parentheses
+	                 \)  = Match a end parentheses
+	             )  = End Group
+              *\) = Match anything and then a close parens
+          )  = Close non-capturing group
+          *  = Match anything
+       )  = Close capturing group
+	 \)  = Match a close parens
+
+	 /gi  = Get all matches, not the first.  Be case insensitive.
+	 */
+	var fixedCss = css.replace(/url\s*\(((?:[^)(]|\((?:[^)(]+|\([^)(]*\))*\))*)\)/gi, function(fullMatch, origUrl) {
+		// strip quotes (if they exist)
+		var unquotedOrigUrl = origUrl
+			.trim()
+			.replace(/^"(.*)"$/, function(o, $1){ return $1; })
+			.replace(/^'(.*)'$/, function(o, $1){ return $1; });
+
+		// already a full url? no change
+		if (/^(#|data:|http:\/\/|https:\/\/|file:\/\/\/)/i.test(unquotedOrigUrl)) {
+		  return fullMatch;
+		}
+
+		// convert the url to a full url
+		var newUrl;
+
+		if (unquotedOrigUrl.indexOf("//") === 0) {
+		  	//TODO: should we add protocol?
+			newUrl = unquotedOrigUrl;
+		} else if (unquotedOrigUrl.indexOf("/") === 0) {
+			// path should be relative to the base url
+			newUrl = baseUrl + unquotedOrigUrl; // already starts with '/'
+		} else {
+			// path should be relative to current directory
+			newUrl = currentDir + unquotedOrigUrl.replace(/^\.\//, ""); // Strip leading './'
+		}
+
+		// send back the fixed url(...)
+		return "url(" + JSON.stringify(newUrl) + ")";
+	});
+
+	// send back the fixed css
+	return fixedCss;
+};
+
+
+/***/ }),
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*!
@@ -50270,1416 +51831,6 @@ if (false) {
 });
 
 /***/ }),
-/* 51 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "row" }, [
-    _c("div", { staticClass: "col-12 generate-kp-tab" }, [
-      _c("h3", [_vm._v("Редактирование КП")]),
-      _vm._v(" "),
-      _c(
-        "form",
-        {
-          attrs: { id: "kp-generate-form" },
-          on: {
-            change: function($event) {
-              $event.preventDefault()
-              return _vm.updateOfferGroup($event)
-            }
-          }
-        },
-        [
-          _c(
-            "ul",
-            { staticClass: "nav nav-tabs" },
-            [
-              _vm._l(_vm.offersTabs, function(offerTab) {
-                return _c("li", { staticClass: "nav-item" }, [
-                  _c(
-                    "a",
-                    {
-                      staticClass: "nav-link",
-                      attrs: {
-                        "data-toggle": "tab",
-                        href: "#kp-edit-tab-" + offerTab.id
-                      }
-                    },
-                    [
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: offerTab.id,
-                            expression: "offerTab.id"
-                          }
-                        ],
-                        attrs: {
-                          type: "hidden",
-                          hidden: "hidden",
-                          name: "offer_group[" + offerTab.id + "][id]"
-                        },
-                        domProps: { value: offerTab.id },
-                        on: {
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
-                            }
-                            _vm.$set(offerTab, "id", $event.target.value)
-                          }
-                        }
-                      }),
-                      _vm._v(" "),
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: offerTab.name,
-                            expression: "offerTab.name"
-                          }
-                        ],
-                        attrs: {
-                          type: "text",
-                          name: "offer_group[" + offerTab.id + "][name]"
-                        },
-                        domProps: { value: offerTab.name },
-                        on: {
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
-                            }
-                            _vm.$set(offerTab, "name", $event.target.value)
-                          }
-                        }
-                      })
-                    ]
-                  )
-                ])
-              }),
-              _vm._v(" "),
-              _c("li", { staticClass: "nav-item" }, [
-                _c(
-                  "a",
-                  {
-                    staticClass: "nav-link",
-                    on: {
-                      click: function($event) {
-                        $event.preventDefault()
-                        return _vm.addOfferTab($event)
-                      }
-                    }
-                  },
-                  [_vm._v("+")]
-                )
-              ])
-            ],
-            2
-          ),
-          _vm._v(" "),
-          _c(
-            "div",
-            { staticClass: "tab-content" },
-            _vm._l(_vm.offersTabs, function(offerTab) {
-              return _c(
-                "div",
-                {
-                  staticClass: "tab-pane fade",
-                  attrs: { id: "kp-edit-tab-" + offerTab.id }
-                },
-                [
-                  _c(
-                    "ul",
-                    { staticClass: "nav nav-tabs" },
-                    [
-                      _vm._l(_vm.offersContentTabs[offerTab.id], function(
-                        offerContentTab
-                      ) {
-                        return _c("li", { staticClass: "nav-item" }, [
-                          _c(
-                            "a",
-                            {
-                              staticClass: "nav-link",
-                              attrs: {
-                                "data-toggle": "tab",
-                                href:
-                                  "#kp-" +
-                                  offerTab.id +
-                                  "-content-edit-tab-" +
-                                  offerContentTab.id
-                              }
-                            },
-                            [
-                              _c("input", {
-                                directives: [
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value: offerContentTab.id,
-                                    expression: "offerContentTab.id"
-                                  }
-                                ],
-                                attrs: {
-                                  type: "hidden",
-                                  hidden: "hidden",
-                                  name:
-                                    "offer_group[" +
-                                    offerTab.id +
-                                    "][offers][" +
-                                    offerContentTab.id +
-                                    "][id]"
-                                },
-                                domProps: { value: offerContentTab.id },
-                                on: {
-                                  input: function($event) {
-                                    if ($event.target.composing) {
-                                      return
-                                    }
-                                    _vm.$set(
-                                      offerContentTab,
-                                      "id",
-                                      $event.target.value
-                                    )
-                                  }
-                                }
-                              }),
-                              _vm._v(" "),
-                              _c("input", {
-                                directives: [
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value: offerContentTab.name,
-                                    expression: "offerContentTab.name"
-                                  }
-                                ],
-                                attrs: {
-                                  type: "text",
-                                  name:
-                                    "offer_group[" +
-                                    offerTab.id +
-                                    "][offers][" +
-                                    offerContentTab.id +
-                                    "][name]"
-                                },
-                                domProps: { value: offerContentTab.name },
-                                on: {
-                                  input: function($event) {
-                                    if ($event.target.composing) {
-                                      return
-                                    }
-                                    _vm.$set(
-                                      offerContentTab,
-                                      "name",
-                                      $event.target.value
-                                    )
-                                  }
-                                }
-                              })
-                            ]
-                          )
-                        ])
-                      }),
-                      _vm._v(" "),
-                      _c("li", { staticClass: "nav-item" }, [
-                        _c(
-                          "a",
-                          {
-                            staticClass: "nav-link",
-                            on: {
-                              click: function($event) {
-                                $event.preventDefault()
-                                _vm.addOfferContentTab(offerTab.id)
-                              }
-                            }
-                          },
-                          [_vm._v("+")]
-                        )
-                      ])
-                    ],
-                    2
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "div",
-                    { staticClass: "tab-content" },
-                    _vm._l(_vm.offersContentTabs[offerTab.id], function(
-                      offerContentTab
-                    ) {
-                      return _c(
-                        "div",
-                        {
-                          staticClass: "tab-pane fade",
-                          attrs: {
-                            id:
-                              "kp-" +
-                              offerTab.id +
-                              "-content-edit-tab-" +
-                              offerContentTab.id
-                          }
-                        },
-                        [
-                          _vm._v(
-                            "\n                            " +
-                              _vm._s(offerContentTab.name) +
-                              "\n                            "
-                          ),
-                          _c(
-                            "table",
-                            {
-                              staticClass:
-                                "table table-striped table-hover table-bordered"
-                            },
-                            [
-                              _vm._m(0, true),
-                              _vm._v(" "),
-                              _c(
-                                "tbody",
-                                [
-                                  _vm._l(offerContentTab.rows, function(row) {
-                                    return _c("tr", [
-                                      _c("td", [
-                                        _c("input", {
-                                          directives: [
-                                            {
-                                              name: "model",
-                                              rawName: "v-model",
-                                              value: row.code,
-                                              expression: "row.code"
-                                            }
-                                          ],
-                                          attrs: {
-                                            type: "text",
-                                            name:
-                                              "offer_group[" +
-                                              offerTab.id +
-                                              "][offers][" +
-                                              offerContentTab.id +
-                                              "][rows][" +
-                                              row.id +
-                                              "][code]"
-                                          },
-                                          domProps: { value: row.code },
-                                          on: {
-                                            keyup: function($event) {
-                                              _vm.searchEquipmentByCode(
-                                                row.code,
-                                                row.id
-                                              )
-                                            },
-                                            input: function($event) {
-                                              if ($event.target.composing) {
-                                                return
-                                              }
-                                              _vm.$set(
-                                                row,
-                                                "code",
-                                                $event.target.value
-                                              )
-                                            }
-                                          }
-                                        }),
-                                        _vm._v(" "),
-                                        _c(
-                                          "ul",
-                                          {
-                                            directives: [
-                                              {
-                                                name: "show",
-                                                rawName: "v-show",
-                                                value:
-                                                  _vm.autocompletesDisplays[
-                                                    row.id
-                                                  ],
-                                                expression:
-                                                  "autocompletesDisplays[row.id]"
-                                              }
-                                            ],
-                                            staticClass: "autocomplete-results",
-                                            attrs: {
-                                              id:
-                                                "autocomplete-results-" + row.id
-                                            }
-                                          },
-                                          [
-                                            _vm.isLoading
-                                              ? _c(
-                                                  "li",
-                                                  { staticClass: "loading" },
-                                                  [
-                                                    _vm._v(
-                                                      "\n                                                Поиск...\n                                            "
-                                                    )
-                                                  ]
-                                                )
-                                              : _vm._l(_vm.results, function(
-                                                  result,
-                                                  i
-                                                ) {
-                                                  return _c(
-                                                    "li",
-                                                    {
-                                                      key: i,
-                                                      staticClass:
-                                                        "autocomplete-result",
-                                                      on: {
-                                                        click: function(
-                                                          $event
-                                                        ) {
-                                                          _vm.setResult(
-                                                            result,
-                                                            row.id
-                                                          )
-                                                        }
-                                                      }
-                                                    },
-                                                    [
-                                                      _vm._v(
-                                                        "\n                                                " +
-                                                          _vm._s(
-                                                            result["code"]
-                                                          ) +
-                                                          "\n                                            "
-                                                      )
-                                                    ]
-                                                  )
-                                                })
-                                          ],
-                                          2
-                                        )
-                                      ]),
-                                      _vm._v(" "),
-                                      _c("td", [
-                                        _c("input", {
-                                          directives: [
-                                            {
-                                              name: "model",
-                                              rawName: "v-model",
-                                              value: row.name,
-                                              expression: "row.name"
-                                            }
-                                          ],
-                                          attrs: {
-                                            type: "text",
-                                            name:
-                                              "offer_group[" +
-                                              offerTab.id +
-                                              "][offers][" +
-                                              offerContentTab.id +
-                                              "][rows][" +
-                                              row.id +
-                                              "][name]"
-                                          },
-                                          domProps: { value: row.name },
-                                          on: {
-                                            input: function($event) {
-                                              if ($event.target.composing) {
-                                                return
-                                              }
-                                              _vm.$set(
-                                                row,
-                                                "name",
-                                                $event.target.value
-                                              )
-                                            }
-                                          }
-                                        })
-                                      ]),
-                                      _vm._v(" "),
-                                      _c("td", [
-                                        _c("input", {
-                                          directives: [
-                                            {
-                                              name: "model",
-                                              rawName: "v-model",
-                                              value: row.points,
-                                              expression: "row.points"
-                                            }
-                                          ],
-                                          attrs: {
-                                            type: "text",
-                                            name:
-                                              "offer_group[" +
-                                              offerTab.id +
-                                              "][offers][" +
-                                              offerContentTab.id +
-                                              "][rows][" +
-                                              row.id +
-                                              "][points]"
-                                          },
-                                          domProps: { value: row.points },
-                                          on: {
-                                            input: function($event) {
-                                              if ($event.target.composing) {
-                                                return
-                                              }
-                                              _vm.$set(
-                                                row,
-                                                "points",
-                                                $event.target.value
-                                              )
-                                            }
-                                          }
-                                        })
-                                      ]),
-                                      _vm._v(" "),
-                                      _c("td", [
-                                        _c("input", {
-                                          directives: [
-                                            {
-                                              name: "model",
-                                              rawName: "v-model",
-                                              value: row.quantity,
-                                              expression: "row.quantity"
-                                            }
-                                          ],
-                                          attrs: {
-                                            type: "text",
-                                            name:
-                                              "offer_group[" +
-                                              offerTab.id +
-                                              "][offers][" +
-                                              offerContentTab.id +
-                                              "][rows][" +
-                                              row.id +
-                                              "][quantity]"
-                                          },
-                                          domProps: { value: row.quantity },
-                                          on: {
-                                            input: function($event) {
-                                              if ($event.target.composing) {
-                                                return
-                                              }
-                                              _vm.$set(
-                                                row,
-                                                "quantity",
-                                                $event.target.value
-                                              )
-                                            }
-                                          }
-                                        })
-                                      ]),
-                                      _vm._v(" "),
-                                      _c("td", [
-                                        _c("input", {
-                                          directives: [
-                                            {
-                                              name: "model",
-                                              rawName: "v-model",
-                                              value: row.price,
-                                              expression: "row.price"
-                                            }
-                                          ],
-                                          attrs: {
-                                            type: "text",
-                                            name:
-                                              "offer_group[" +
-                                              offerTab.id +
-                                              "][offers][" +
-                                              offerContentTab.id +
-                                              "][rows][" +
-                                              row.id +
-                                              "][price]"
-                                          },
-                                          domProps: { value: row.price },
-                                          on: {
-                                            input: function($event) {
-                                              if ($event.target.composing) {
-                                                return
-                                              }
-                                              _vm.$set(
-                                                row,
-                                                "price",
-                                                $event.target.value
-                                              )
-                                            }
-                                          }
-                                        })
-                                      ])
-                                    ])
-                                  }),
-                                  _vm._v(" "),
-                                  _c("tr", [
-                                    _c(
-                                      "td",
-                                      {
-                                        attrs: { colspan: "5" },
-                                        on: {
-                                          click: function($event) {
-                                            $event.preventDefault()
-                                            _vm.addTableRow(
-                                              offerTab.id,
-                                              offerContentTab.id
-                                            )
-                                          }
-                                        }
-                                      },
-                                      [_vm._v("+")]
-                                    )
-                                  ])
-                                ],
-                                2
-                              )
-                            ]
-                          )
-                        ]
-                      )
-                    }),
-                    0
-                  )
-                ]
-              )
-            }),
-            0
-          )
-        ]
-      )
-    ])
-  ])
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("thead", [
-      _c("tr", [
-        _c("th", { attrs: { scope: "col" } }, [_vm._v("Артикул")]),
-        _vm._v(" "),
-        _c("th", { attrs: { scope: "col" } }, [_vm._v("Название")]),
-        _vm._v(" "),
-        _c("th", { attrs: { scope: "col" } }, [_vm._v("Ед.измерения")]),
-        _vm._v(" "),
-        _c("th", { attrs: { scope: "col" } }, [_vm._v("Количество")]),
-        _vm._v(" "),
-        _c("th", { attrs: { scope: "col" } }, [_vm._v("Цена")])
-      ])
-    ])
-  }
-]
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-6f13bd58", module.exports)
-  }
-}
-
-/***/ }),
-/* 52 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var normalizeComponent = __webpack_require__(4)
-/* script */
-var __vue_script__ = __webpack_require__(53)
-/* template */
-var __vue_template__ = __webpack_require__(54)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/assets/js/components/KpTotalTab.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-6a79f4ad", Component.options)
-  } else {
-    hotAPI.reload("data-v-6a79f4ad", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 53 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['offerGroup'],
-    data: function data() {
-        return {};
-    },
-
-    computed: {},
-    created: function created() {},
-    methods: {}
-});
-
-/***/ }),
-/* 54 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "row" }, [
-    _c(
-      "div",
-      { staticClass: "col-12 kp-total-tab" },
-      _vm._l(_vm.offerGroup.offer_group, function(offerData) {
-        return _c(
-          "div",
-          { staticClass: "kp-total-offer" },
-          [
-            _c("h3", [_vm._v(_vm._s(offerData.name))]),
-            _vm._v(" "),
-            _vm._l(offerData.offers, function(offerContent) {
-              return _c("div", { staticClass: "kp-total-offer-content" }, [
-                _c("h4", [_vm._v(_vm._s(offerContent.name))]),
-                _vm._v(" "),
-                _c(
-                  "table",
-                  {
-                    staticClass:
-                      "table table-striped table-hover table-bordered"
-                  },
-                  [
-                    _vm._m(0, true),
-                    _vm._v(" "),
-                    _c(
-                      "tbody",
-                      _vm._l(offerContent.rows, function(row) {
-                        return _c("tr", [
-                          _c("td", [_vm._v(_vm._s(row.code))]),
-                          _vm._v(" "),
-                          _c("td", [_vm._v(_vm._s(row.name))]),
-                          _vm._v(" "),
-                          _c("td", [_vm._v(_vm._s(row.points))]),
-                          _vm._v(" "),
-                          _c("td", [_vm._v(_vm._s(row.quantity))]),
-                          _vm._v(" "),
-                          _c("td", [_vm._v(_vm._s(row.price))])
-                        ])
-                      }),
-                      0
-                    )
-                  ]
-                )
-              ])
-            })
-          ],
-          2
-        )
-      }),
-      0
-    )
-  ])
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("thead", [
-      _c("tr", [
-        _c("th", { attrs: { scope: "col" } }, [_vm._v("Артикул")]),
-        _vm._v(" "),
-        _c("th", { attrs: { scope: "col" } }, [_vm._v("Название")]),
-        _vm._v(" "),
-        _c("th", { attrs: { scope: "col" } }, [_vm._v("Ед.измерения")]),
-        _vm._v(" "),
-        _c("th", { attrs: { scope: "col" } }, [_vm._v("Количество")]),
-        _vm._v(" "),
-        _c("th", { attrs: { scope: "col" } }, [_vm._v("Цена")])
-      ])
-    ])
-  }
-]
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-6a79f4ad", module.exports)
-  }
-}
-
-/***/ }),
-/* 55 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "container" }, [
-    _c("div", { staticClass: "row" }, [
-      _c("div", { staticClass: "col-12 first-line-tabs" }, [
-        _vm._m(0),
-        _vm._v(" "),
-        _c("div", { staticClass: "tab-content" }, [
-          _c(
-            "div",
-            {
-              staticClass: "tab-pane fade active show",
-              attrs: { id: "generateKpTab" }
-            },
-            [
-              _c("generate-kp-tab", {
-                on: { updateOfferGroup: _vm.updateOfferGroup }
-              })
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "div",
-            { staticClass: "tab-pane fade", attrs: { id: "kpTotalTab" } },
-            [_c("kp-total-tab", { attrs: { offerGroup: _vm.offerGroup } })],
-            1
-          )
-        ])
-      ])
-    ])
-  ])
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("ul", { staticClass: "nav nav-tabs" }, [
-      _c("li", { staticClass: "nav-item" }, [
-        _c(
-          "a",
-          {
-            staticClass: "nav-link active",
-            attrs: { "data-toggle": "tab", href: "#generateKpTab" }
-          },
-          [_vm._v("Редактирование КП")]
-        )
-      ]),
-      _vm._v(" "),
-      _c("li", { staticClass: "nav-item" }, [
-        _c(
-          "a",
-          {
-            staticClass: "nav-link",
-            attrs: { "data-toggle": "tab", href: "#kpTotalTab" }
-          },
-          [_vm._v("Итог")]
-        )
-      ])
-    ])
-  }
-]
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-8142f38c", module.exports)
-  }
-}
-
-/***/ }),
-/* 56 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 57 */,
-/* 58 */
-/***/ (function(module, exports) {
-
-/*
-	MIT License http://www.opensource.org/licenses/mit-license.php
-	Author Tobias Koppers @sokra
-*/
-// css base code, injected by the css-loader
-module.exports = function(useSourceMap) {
-	var list = [];
-
-	// return the list of modules as css string
-	list.toString = function toString() {
-		return this.map(function (item) {
-			var content = cssWithMappingToString(item, useSourceMap);
-			if(item[2]) {
-				return "@media " + item[2] + "{" + content + "}";
-			} else {
-				return content;
-			}
-		}).join("");
-	};
-
-	// import a list of modules into the list
-	list.i = function(modules, mediaQuery) {
-		if(typeof modules === "string")
-			modules = [[null, modules, ""]];
-		var alreadyImportedModules = {};
-		for(var i = 0; i < this.length; i++) {
-			var id = this[i][0];
-			if(typeof id === "number")
-				alreadyImportedModules[id] = true;
-		}
-		for(i = 0; i < modules.length; i++) {
-			var item = modules[i];
-			// skip already imported module
-			// this implementation is not 100% perfect for weird media query combinations
-			//  when a module is imported multiple times with different media queries.
-			//  I hope this will never occur (Hey this way we have smaller bundles)
-			if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
-				if(mediaQuery && !item[2]) {
-					item[2] = mediaQuery;
-				} else if(mediaQuery) {
-					item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
-				}
-				list.push(item);
-			}
-		}
-	};
-	return list;
-};
-
-function cssWithMappingToString(item, useSourceMap) {
-	var content = item[1] || '';
-	var cssMapping = item[3];
-	if (!cssMapping) {
-		return content;
-	}
-
-	if (useSourceMap && typeof btoa === 'function') {
-		var sourceMapping = toComment(cssMapping);
-		var sourceURLs = cssMapping.sources.map(function (source) {
-			return '/*# sourceURL=' + cssMapping.sourceRoot + source + ' */'
-		});
-
-		return [content].concat(sourceURLs).concat([sourceMapping]).join('\n');
-	}
-
-	return [content].join('\n');
-}
-
-// Adapted from convert-source-map (MIT)
-function toComment(sourceMap) {
-	// eslint-disable-next-line no-undef
-	var base64 = btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap))));
-	var data = 'sourceMappingURL=data:application/json;charset=utf-8;base64,' + base64;
-
-	return '/*# ' + data + ' */';
-}
-
-
-/***/ }),
-/* 59 */
-/***/ (function(module, exports, __webpack_require__) {
-
-/*
-	MIT License http://www.opensource.org/licenses/mit-license.php
-	Author Tobias Koppers @sokra
-*/
-
-var stylesInDom = {};
-
-var	memoize = function (fn) {
-	var memo;
-
-	return function () {
-		if (typeof memo === "undefined") memo = fn.apply(this, arguments);
-		return memo;
-	};
-};
-
-var isOldIE = memoize(function () {
-	// Test for IE <= 9 as proposed by Browserhacks
-	// @see http://browserhacks.com/#hack-e71d8692f65334173fee715c222cb805
-	// Tests for existence of standard globals is to allow style-loader
-	// to operate correctly into non-standard environments
-	// @see https://github.com/webpack-contrib/style-loader/issues/177
-	return window && document && document.all && !window.atob;
-});
-
-var getElement = (function (fn) {
-	var memo = {};
-
-	return function(selector) {
-		if (typeof memo[selector] === "undefined") {
-			memo[selector] = fn.call(this, selector);
-		}
-
-		return memo[selector]
-	};
-})(function (target) {
-	return document.querySelector(target)
-});
-
-var singleton = null;
-var	singletonCounter = 0;
-var	stylesInsertedAtTop = [];
-
-var	fixUrls = __webpack_require__(60);
-
-module.exports = function(list, options) {
-	if (typeof DEBUG !== "undefined" && DEBUG) {
-		if (typeof document !== "object") throw new Error("The style-loader cannot be used in a non-browser environment");
-	}
-
-	options = options || {};
-
-	options.attrs = typeof options.attrs === "object" ? options.attrs : {};
-
-	// Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
-	// tags it will allow on a page
-	if (!options.singleton) options.singleton = isOldIE();
-
-	// By default, add <style> tags to the <head> element
-	if (!options.insertInto) options.insertInto = "head";
-
-	// By default, add <style> tags to the bottom of the target
-	if (!options.insertAt) options.insertAt = "bottom";
-
-	var styles = listToStyles(list, options);
-
-	addStylesToDom(styles, options);
-
-	return function update (newList) {
-		var mayRemove = [];
-
-		for (var i = 0; i < styles.length; i++) {
-			var item = styles[i];
-			var domStyle = stylesInDom[item.id];
-
-			domStyle.refs--;
-			mayRemove.push(domStyle);
-		}
-
-		if(newList) {
-			var newStyles = listToStyles(newList, options);
-			addStylesToDom(newStyles, options);
-		}
-
-		for (var i = 0; i < mayRemove.length; i++) {
-			var domStyle = mayRemove[i];
-
-			if(domStyle.refs === 0) {
-				for (var j = 0; j < domStyle.parts.length; j++) domStyle.parts[j]();
-
-				delete stylesInDom[domStyle.id];
-			}
-		}
-	};
-};
-
-function addStylesToDom (styles, options) {
-	for (var i = 0; i < styles.length; i++) {
-		var item = styles[i];
-		var domStyle = stylesInDom[item.id];
-
-		if(domStyle) {
-			domStyle.refs++;
-
-			for(var j = 0; j < domStyle.parts.length; j++) {
-				domStyle.parts[j](item.parts[j]);
-			}
-
-			for(; j < item.parts.length; j++) {
-				domStyle.parts.push(addStyle(item.parts[j], options));
-			}
-		} else {
-			var parts = [];
-
-			for(var j = 0; j < item.parts.length; j++) {
-				parts.push(addStyle(item.parts[j], options));
-			}
-
-			stylesInDom[item.id] = {id: item.id, refs: 1, parts: parts};
-		}
-	}
-}
-
-function listToStyles (list, options) {
-	var styles = [];
-	var newStyles = {};
-
-	for (var i = 0; i < list.length; i++) {
-		var item = list[i];
-		var id = options.base ? item[0] + options.base : item[0];
-		var css = item[1];
-		var media = item[2];
-		var sourceMap = item[3];
-		var part = {css: css, media: media, sourceMap: sourceMap};
-
-		if(!newStyles[id]) styles.push(newStyles[id] = {id: id, parts: [part]});
-		else newStyles[id].parts.push(part);
-	}
-
-	return styles;
-}
-
-function insertStyleElement (options, style) {
-	var target = getElement(options.insertInto)
-
-	if (!target) {
-		throw new Error("Couldn't find a style target. This probably means that the value for the 'insertInto' parameter is invalid.");
-	}
-
-	var lastStyleElementInsertedAtTop = stylesInsertedAtTop[stylesInsertedAtTop.length - 1];
-
-	if (options.insertAt === "top") {
-		if (!lastStyleElementInsertedAtTop) {
-			target.insertBefore(style, target.firstChild);
-		} else if (lastStyleElementInsertedAtTop.nextSibling) {
-			target.insertBefore(style, lastStyleElementInsertedAtTop.nextSibling);
-		} else {
-			target.appendChild(style);
-		}
-		stylesInsertedAtTop.push(style);
-	} else if (options.insertAt === "bottom") {
-		target.appendChild(style);
-	} else {
-		throw new Error("Invalid value for parameter 'insertAt'. Must be 'top' or 'bottom'.");
-	}
-}
-
-function removeStyleElement (style) {
-	if (style.parentNode === null) return false;
-	style.parentNode.removeChild(style);
-
-	var idx = stylesInsertedAtTop.indexOf(style);
-	if(idx >= 0) {
-		stylesInsertedAtTop.splice(idx, 1);
-	}
-}
-
-function createStyleElement (options) {
-	var style = document.createElement("style");
-
-	options.attrs.type = "text/css";
-
-	addAttrs(style, options.attrs);
-	insertStyleElement(options, style);
-
-	return style;
-}
-
-function createLinkElement (options) {
-	var link = document.createElement("link");
-
-	options.attrs.type = "text/css";
-	options.attrs.rel = "stylesheet";
-
-	addAttrs(link, options.attrs);
-	insertStyleElement(options, link);
-
-	return link;
-}
-
-function addAttrs (el, attrs) {
-	Object.keys(attrs).forEach(function (key) {
-		el.setAttribute(key, attrs[key]);
-	});
-}
-
-function addStyle (obj, options) {
-	var style, update, remove, result;
-
-	// If a transform function was defined, run it on the css
-	if (options.transform && obj.css) {
-	    result = options.transform(obj.css);
-
-	    if (result) {
-	    	// If transform returns a value, use that instead of the original css.
-	    	// This allows running runtime transformations on the css.
-	    	obj.css = result;
-	    } else {
-	    	// If the transform function returns a falsy value, don't add this css.
-	    	// This allows conditional loading of css
-	    	return function() {
-	    		// noop
-	    	};
-	    }
-	}
-
-	if (options.singleton) {
-		var styleIndex = singletonCounter++;
-
-		style = singleton || (singleton = createStyleElement(options));
-
-		update = applyToSingletonTag.bind(null, style, styleIndex, false);
-		remove = applyToSingletonTag.bind(null, style, styleIndex, true);
-
-	} else if (
-		obj.sourceMap &&
-		typeof URL === "function" &&
-		typeof URL.createObjectURL === "function" &&
-		typeof URL.revokeObjectURL === "function" &&
-		typeof Blob === "function" &&
-		typeof btoa === "function"
-	) {
-		style = createLinkElement(options);
-		update = updateLink.bind(null, style, options);
-		remove = function () {
-			removeStyleElement(style);
-
-			if(style.href) URL.revokeObjectURL(style.href);
-		};
-	} else {
-		style = createStyleElement(options);
-		update = applyToTag.bind(null, style);
-		remove = function () {
-			removeStyleElement(style);
-		};
-	}
-
-	update(obj);
-
-	return function updateStyle (newObj) {
-		if (newObj) {
-			if (
-				newObj.css === obj.css &&
-				newObj.media === obj.media &&
-				newObj.sourceMap === obj.sourceMap
-			) {
-				return;
-			}
-
-			update(obj = newObj);
-		} else {
-			remove();
-		}
-	};
-}
-
-var replaceText = (function () {
-	var textStore = [];
-
-	return function (index, replacement) {
-		textStore[index] = replacement;
-
-		return textStore.filter(Boolean).join('\n');
-	};
-})();
-
-function applyToSingletonTag (style, index, remove, obj) {
-	var css = remove ? "" : obj.css;
-
-	if (style.styleSheet) {
-		style.styleSheet.cssText = replaceText(index, css);
-	} else {
-		var cssNode = document.createTextNode(css);
-		var childNodes = style.childNodes;
-
-		if (childNodes[index]) style.removeChild(childNodes[index]);
-
-		if (childNodes.length) {
-			style.insertBefore(cssNode, childNodes[index]);
-		} else {
-			style.appendChild(cssNode);
-		}
-	}
-}
-
-function applyToTag (style, obj) {
-	var css = obj.css;
-	var media = obj.media;
-
-	if(media) {
-		style.setAttribute("media", media)
-	}
-
-	if(style.styleSheet) {
-		style.styleSheet.cssText = css;
-	} else {
-		while(style.firstChild) {
-			style.removeChild(style.firstChild);
-		}
-
-		style.appendChild(document.createTextNode(css));
-	}
-}
-
-function updateLink (link, options, obj) {
-	var css = obj.css;
-	var sourceMap = obj.sourceMap;
-
-	/*
-		If convertToAbsoluteUrls isn't defined, but sourcemaps are enabled
-		and there is no publicPath defined then lets turn convertToAbsoluteUrls
-		on by default.  Otherwise default to the convertToAbsoluteUrls option
-		directly
-	*/
-	var autoFixUrls = options.convertToAbsoluteUrls === undefined && sourceMap;
-
-	if (options.convertToAbsoluteUrls || autoFixUrls) {
-		css = fixUrls(css);
-	}
-
-	if (sourceMap) {
-		// http://stackoverflow.com/a/26603875
-		css += "\n/*# sourceMappingURL=data:application/json;base64," + btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))) + " */";
-	}
-
-	var blob = new Blob([css], { type: "text/css" });
-
-	var oldSrc = link.href;
-
-	link.href = URL.createObjectURL(blob);
-
-	if(oldSrc) URL.revokeObjectURL(oldSrc);
-}
-
-
-/***/ }),
-/* 60 */
-/***/ (function(module, exports) {
-
-
-/**
- * When source maps are enabled, `style-loader` uses a link element with a data-uri to
- * embed the css on the page. This breaks all relative urls because now they are relative to a
- * bundle instead of the current page.
- *
- * One solution is to only use full urls, but that may be impossible.
- *
- * Instead, this function "fixes" the relative urls to be absolute according to the current page location.
- *
- * A rudimentary test suite is located at `test/fixUrls.js` and can be run via the `npm test` command.
- *
- */
-
-module.exports = function (css) {
-  // get current location
-  var location = typeof window !== "undefined" && window.location;
-
-  if (!location) {
-    throw new Error("fixUrls requires window.location");
-  }
-
-	// blank or null?
-	if (!css || typeof css !== "string") {
-	  return css;
-  }
-
-  var baseUrl = location.protocol + "//" + location.host;
-  var currentDir = baseUrl + location.pathname.replace(/\/[^\/]*$/, "/");
-
-	// convert each url(...)
-	/*
-	This regular expression is just a way to recursively match brackets within
-	a string.
-
-	 /url\s*\(  = Match on the word "url" with any whitespace after it and then a parens
-	   (  = Start a capturing group
-	     (?:  = Start a non-capturing group
-	         [^)(]  = Match anything that isn't a parentheses
-	         |  = OR
-	         \(  = Match a start parentheses
-	             (?:  = Start another non-capturing groups
-	                 [^)(]+  = Match anything that isn't a parentheses
-	                 |  = OR
-	                 \(  = Match a start parentheses
-	                     [^)(]*  = Match anything that isn't a parentheses
-	                 \)  = Match a end parentheses
-	             )  = End Group
-              *\) = Match anything and then a close parens
-          )  = Close non-capturing group
-          *  = Match anything
-       )  = Close capturing group
-	 \)  = Match a close parens
-
-	 /gi  = Get all matches, not the first.  Be case insensitive.
-	 */
-	var fixedCss = css.replace(/url\s*\(((?:[^)(]|\((?:[^)(]+|\([^)(]*\))*\))*)\)/gi, function(fullMatch, origUrl) {
-		// strip quotes (if they exist)
-		var unquotedOrigUrl = origUrl
-			.trim()
-			.replace(/^"(.*)"$/, function(o, $1){ return $1; })
-			.replace(/^'(.*)'$/, function(o, $1){ return $1; });
-
-		// already a full url? no change
-		if (/^(#|data:|http:\/\/|https:\/\/|file:\/\/\/)/i.test(unquotedOrigUrl)) {
-		  return fullMatch;
-		}
-
-		// convert the url to a full url
-		var newUrl;
-
-		if (unquotedOrigUrl.indexOf("//") === 0) {
-		  	//TODO: should we add protocol?
-			newUrl = unquotedOrigUrl;
-		} else if (unquotedOrigUrl.indexOf("/") === 0) {
-			// path should be relative to the base url
-			newUrl = baseUrl + unquotedOrigUrl; // already starts with '/'
-		} else {
-			// path should be relative to current directory
-			newUrl = currentDir + unquotedOrigUrl.replace(/^\.\//, ""); // Strip leading './'
-		}
-
-		// send back the fixed url(...)
-		return "url(" + JSON.stringify(newUrl) + ")";
-	});
-
-	// send back the fixed css
-	return fixedCss;
-};
-
-
-/***/ }),
 /* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -51694,7 +51845,7 @@ var transform;
 var options = {}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(59)(content, options);
+var update = __webpack_require__(58)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -51714,7 +51865,7 @@ if(false) {
 /* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(58)(false);
+exports = module.exports = __webpack_require__(57)(false);
 // imports
 
 
