@@ -1,5 +1,11 @@
 <template>
     <div class="row">
+        <div class="col-12 my-5">
+            <form id="getOfferGroup" @submit.prevent="getOfferGroup">
+                <input type="text" placeholder="id предложения" v-model="groupId">
+                <button type="submit">Вставить предложения</button>
+            </form>
+        </div>
         <div class="col-12 generate-kp-tab">
             <h3>Редактирование КП</h3>
             <form id="kp-generate-form" @change.prevent="updateOfferGroup">
@@ -106,6 +112,7 @@
                 offersContentTabs:[[{id: 0, name:'Новое оборудование', rows:[]}]],
                 offerGroup:[],
                 results: [],
+                groupId: null,
                 autocompletesDisplays: [],
                 search: "",
                 isLoading: false,
@@ -212,6 +219,15 @@
                     });
                     console.log(context.autocompletesDisplays);
                 // }
+            },
+            getOfferGroup() {
+                axios
+                    .post(window.location.href + 'getOfferGroup', {
+                        id: this.groupId
+                    })
+                    .then(resp => {
+                        console.log(resp.data.offers);
+                    });
             }
         },
         mounted() {

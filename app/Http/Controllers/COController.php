@@ -22,6 +22,15 @@ class COController extends Controller
         return view('pages.kpPage')->with(compact('offers', 'offersGroup'));
     }
 
+    public function getOfferGroup(Request $request){
+        $id = $request->id;
+        if(!isset($id)){
+            abort(404);
+        }
+        $offersGroup = OfferGroup::where('id', $id)->with('offers.equipments')->first();
+        return $offersGroup;
+    }
+
     public  function downloadAsPdf($uuid){
         if(!isset($uuid)){
             abort(404);
