@@ -64,7 +64,7 @@
                                                 <li class="loading" v-if="isLoading">
                                                     Поиск...
                                                 </li>
-                                                <li v-else v-for="(result, i) in results" :key="i" @click="setResult(result, row.id)" class="autocomplete-result">
+                                                <li v-else v-for="(result, i) in results" :key="i" @click="setResult(result, offerTab.id, offerContentTab.id, row.id)" class="autocomplete-result">
                                                     {{ result['code'] }}
                                                 </li>
                                             </ul>
@@ -126,10 +126,15 @@
         created: function (){
             this.updateOfferGroup;
         },
+        mounted() {
+            document.addEventListener("click", this.handleClickOutside);
+        },
+        destroyed() {
+            document.removeEventListener("click", this.handleClickOutside);
+        },
         methods: {
             updateOfferGroup() {
-                this.offerGroup = deparam($('#kp-generate-form').serialize());
-                this.$emit('updateOfferGroup',this.offerGroup);
+                this.$emit('updateOfferGroup');
                 this.redactMode = true;
             },
             addOfferTab(){
@@ -147,7 +152,8 @@
                 this.offersContentTabs[lastOfferTabId].push(
                     {
                         id: 0,
-                        name:'Новое оборудование'
+                        name:'Новое оборудование',
+                        rows:[]
                     }
                 );
             },
@@ -207,25 +213,34 @@
                     });
                 console.log(rowId);
                 this.autocompletesDisplays[rowId] = true;
+                console.log(this.autocompletesDisplays);
             },
-            setResult(result, rowId) {
-                console.log(this);
-                this.row.code = result;
+            setResult(equipment, offerTabId, offerContentTabId, rowId) {
+                this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['id'] = rowId;
+                this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['saveType'] = 'old';
+                this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['code'] = equipment.code;
+                this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['name'] = equipment.name;
+                this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['description'] = equipment.description;
+                this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['quantity'] = equipment.naquantityme;
+                this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['points'] = equipment.points;
+                this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['price'] = equipment.price;
+                this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['price_trade'] = equipment.price_trade;
+                this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['price_small_trade'] = equipment.price_small_trade;
+                this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['price_special'] = equipment.price_special;
+                this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['comment'] = '';
+                // this.row.code = result;
                 this.autocompletesDisplays[rowId] = false;
             },
-            handleClickOutside(evt) {
-                let context = this;
-                // if (!context.$el.contains(evt.target)) {
-                    context.autocompletesDisplays.forEach(function (element, key) {
-                        context.autocompletesDisplays[key] = false;
-                    });
-                    console.log(context.autocompletesDisplays);
-                // }
+            handleClickOutside(event) {
+                if ('autocomplete-results' !== $(event.target).attr('class')) {
+                    let i, length = this.autocompletesDisplays.length;
+                    for (i = 0; i < length; i = i + 1) {
+                        Vue.set(this.autocompletesDisplays, i, false)
+                    }
+                }
             },
             getOfferGroup() {
                 let lastOfferTabId = 0;
-                let lastOfferContentTabId = 0;
-                let lastRow = 0;
                 let buffKP = [];
                 let buffEq = [];
                 let buffRow = [];
@@ -234,18 +249,17 @@
                         id: this.groupId
                     })
                     .then(resp => {
-                        console.log(resp.data.offers);
                         resp.data.offers.forEach(function (offer) {
-
+                            let lastOfferContentTabId = 0;
                             buffKP.push(
                                 {
                                     id: lastOfferTabId,
                                     name: offer.name
                                 }
                             );
-                            lastOfferTabId++;
 
                             Object.keys(offer['equipments']).forEach(function (type) {
+                                let lastRow = 0;
                                 offer['equipments'][type].forEach(function (equipment) {
                                     if(!buffRow[lastOfferTabId]){
                                         buffRow[lastOfferTabId] = [];
@@ -272,6 +286,7 @@
                                             comment:'',
                                         }
                                     );
+                                    lastRow++;
                                 });
 
                                 if(!buffEq[lastOfferTabId]){
@@ -289,23 +304,14 @@
                                 );
                                 lastOfferContentTabId++;
                             });
+
+                            lastOfferTabId++;
                         });
                         this.offersTabs = buffKP;
                         this.offersContentTabs = buffEq;
-
-                        console.log('kp');
-                        console.log( this.offersTabs);
-                        console.log('eq');
-                        console.log(this.offersContentTabs);
                     });
 
             }
-        },
-        mounted() {
-            document.addEventListener("click", this.handleClickOutside);
-        },
-        destroyed() {
-            document.removeEventListener("click", this.handleClickOutside);
-        },
+        }
     }
 </script>
