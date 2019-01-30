@@ -1,9 +1,11 @@
 <template>
     <div class="row">
         <div class="col-12 kp-total-tab">
-            <div class="kp-total-offer" v-for="offerData in offerGroup.offer_group">
+            <h2>{{ offerGroup.offer_group.name}}</h2>
+            {{offerGroup}}
+            <div class="kp-total-offer" v-for="offerData in offerGroup.offer_group.offers">
                 <h3>{{ offerData.name }}</h3>
-                <div class="kp-total-offer-content" v-for="offerContent in offerData.offers">
+                <div class="kp-total-offer-content" v-for="offerContent in offerData.equipments">
                     <h4>{{ offerContent.name }}</h4>
                     <table class="table table-striped table-hover table-bordered">
                         <thead>

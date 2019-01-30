@@ -21,6 +21,8 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 
 Route::post('/getTypesByClass', 'TypeController@getTypesByClass')->name('getTypes');
+Route::post('/getAllEquipmentTypes', 'TypeController@getAllEquipmentTypes')->name('getAllEquipmentTypes');
+
 Route::post('/findEquipmentByCode', 'EquipmentController@findEquipmentByCode')->name('findEquipment');
 Route::post('/getTaxBySlug', 'SettingsController@getTaxBySlug')->name('getTax');
 Route::post('/getOfferGroup', 'COController@getOfferGroup')->name('getOfferGroup');

@@ -26,7 +26,7 @@
             </div>
         </div>
 
-        @foreach($offers as $offer)
+        @foreach($offersGroup->offers as $offer)
             <div class="page-break"></div>
 
             <div class="offer my-5">

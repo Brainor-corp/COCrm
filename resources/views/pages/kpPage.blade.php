@@ -18,7 +18,7 @@
             </div>
         </div>
 
-        @foreach($offers as $offer)
+        @foreach($offersGroup->offers as $offer)
 
             <div class="offer my-5">
                 <div class="offer-name mt-3">

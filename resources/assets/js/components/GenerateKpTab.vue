@@ -9,11 +9,12 @@
         <div class="col-12 generate-kp-tab">
             <h3>Редактирование КП</h3>
             <form id="kp-generate-form" @change.prevent="updateOfferGroup">
+                <input type="text" :name="'offer_group[name]'" v-model="offerGroup.name"/>
                 <ul class="nav nav-tabs">
                     <li v-for="offerTab in offersTabs" class="nav-item">
                         <a class="nav-link" data-toggle="tab" :href="'#kp-edit-tab-'+offerTab.id">
-                            <input type="hidden" hidden="hidden" :name="'offer_group['+offerTab.id+'][id]'" v-model="offerTab.id"/>
-                            <input type="text" :name="'offer_group['+offerTab.id+'][name]'" v-model="offerTab.name"/>
+                            <input type="hidden" hidden="hidden" :name="'offer_group[offers]['+offerTab.id+'][id]'" v-model="offerTab.id"/>
+                            <input type="text" :name="'offer_group[offers]['+offerTab.id+'][name]'" v-model="offerTab.name"/>
                         </a>
                     </li>
 
@@ -27,8 +28,11 @@
                         <ul class="nav nav-tabs">
                             <li v-for="offerContentTab in offersContentTabs[offerTab.id]" class="nav-item">
                                 <a class="nav-link" data-toggle="tab" :href="'#kp-'+offerTab.id+'-content-edit-tab-'+offerContentTab.id">
-                                    <input type="hidden" hidden="hidden" :name="'offer_group['+offerTab.id+'][offers]['+offerContentTab.id+'][id]'" v-model="offerContentTab.id"/>
-                                    <input type="text" :name="'offer_group['+offerTab.id+'][offers]['+offerContentTab.id+'][name]'" v-model="offerContentTab.name"/>
+                                    <input type="hidden" hidden="hidden" :name="'offer_group[offers]['+offerTab.id+'][equipments]['+offerContentTab.id+'][id]'" v-model="offerContentTab.id"/>
+                                    <input type="text" v-model="offerContentTab.name"/>
+                                    <select :name="'[offers]['+offerTab.id+'][equipments]['+offerContentTab.id+'][]'">
+                                        <option v-for="type in types" :value="type.id">{{ type.name }}</option>
+                                    </select>
                                 </a>
                             </li>
 
@@ -51,9 +55,15 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr v-for="row in offerContentTab.rows">
+                                    <tr @change="changedRow" v-for="row in offerContentTab.rows">
+                                        <input type="hidden" hidden="hidden" :name="'offer_group[offers]['+offerTab.id+'][equipments]['+offerContentTab.id+']['+row.type+']['+row.id+'][id]'" v-model="row.id"/>
+                                        <input type="hidden" hidden="hidden" :name="'offer_group[offers]['+offerTab.id+'][equipments]['+offerContentTab.id+']['+row.type+']['+row.id+'][description]'" v-model="row.description"/>
+                                        <input type="hidden" hidden="hidden" :name="'offer_group[offers]['+offerTab.id+'][equipments]['+offerContentTab.id+']['+row.type+']['+row.id+'][price_trade]'" v-model="row.price_trade"/>
+                                        <input type="hidden" hidden="hidden" :name="'offer_group[offers]['+offerTab.id+'][equipments]['+offerContentTab.id+']['+row.type+']['+row.id+'][price_small_trade]'" v-model="row.price_small_trade"/>
+                                        <input type="hidden" hidden="hidden" :name="'offer_group[offers]['+offerTab.id+'][equipments]['+offerContentTab.id+']['+row.type+']['+row.id+'][price_special]'" v-model="row.price_special"/>
+                                        <input type="hidden" hidden="hidden" :name="'offer_group[offers]['+offerTab.id+'][equipments]['+offerContentTab.id+']['+row.type+']['+row.id+'][comment]'" v-model="row.comment"/>
                                         <td>
-                                            <input type="text" @keyup="searchEquipmentByCode(row.code, row.id)" :name="'offer_group['+offerTab.id+'][offers]['+offerContentTab.id+'][rows]['+row.id+'][code]'" v-model="row.code" />
+                                            <input type="text" @keyup="searchEquipmentByCode(row.code, row.id)" :name="'offer_group[offers]['+offerTab.id+'][equipments]['+offerContentTab.id+']['+row.type+']['+row.id+'][code]'" v-model="row.code" />
                                             <!--<autocomplete-->
                                                     <!--url="http://commercialoffer.local/findEquipmentByCode"-->
                                                     <!--anchor="code"-->
@@ -70,16 +80,16 @@
                                             </ul>
                                         </td>
                                         <td>
-                                            <input type="text" :name="'offer_group['+offerTab.id+'][offers]['+offerContentTab.id+'][rows]['+row.id+'][name]'" v-model="row.name"/>
+                                            <input type="text" :name="'offer_group[offers]['+offerTab.id+'][equipments]['+offerContentTab.id+']['+row.type+']['+row.id+'][name]'" v-model="row.name"/>
                                         </td>
                                         <td>
-                                            <input type="text" :name="'offer_group['+offerTab.id+'][offers]['+offerContentTab.id+'][rows]['+row.id+'][points]'" v-model="row.points"/>
+                                            <input type="text" :name="'offer_group[offers]['+offerTab.id+'][equipments]['+offerContentTab.id+']['+row.type+']['+row.id+'][points]'" v-model="row.points"/>
                                         </td>
                                         <td>
-                                            <input type="text" :name="'offer_group['+offerTab.id+'][offers]['+offerContentTab.id+'][rows]['+row.id+'][quantity]'" v-model="row.quantity"/>
+                                            <input type="text" :name="'offer_group[offers]['+offerTab.id+'][equipments]['+offerContentTab.id+']['+row.type+']['+row.id+'][quantity]'" v-model="row.quantity"/>
                                         </td>
                                         <td>
-                                            <input type="text" :name="'offer_group['+offerTab.id+'][offers]['+offerContentTab.id+'][rows]['+row.id+'][price]'" v-model="row.price"/>
+                                            <input type="text" :name="'offer_group[offers]['+offerTab.id+'][equipments]['+offerContentTab.id+']['+row.type+']['+row.id+'][price]'" v-model="row.price"/>
                                         </td>
                                     </tr>
                                     <tr>
@@ -110,10 +120,11 @@
                     { id: 0, name:'Новый тип КП' },
                 ],
                 offersContentTabs:[[{id: 0, name:'Новое оборудование', rows:[]}]],
-                offerGroup:[],
+                offerGroup:{name:'Шаблон КП'},
                 results: [],
                 groupId: null,
                 autocompletesDisplays: [],
+                types: [],
                 search: "",
                 isLoading: false,
                 redactMode: false,
@@ -122,6 +133,11 @@
         },
         components: {Autocomplete},
         computed: {
+        },
+        beforeCreate: function(){
+            axios
+                .post(window.location.href + 'getAllEquipmentTypes')
+                .then(response => { this.types = response.data; });
         },
         created: function (){
             this.updateOfferGroup;
@@ -216,18 +232,20 @@
                 console.log(this.autocompletesDisplays);
             },
             setResult(equipment, offerTabId, offerContentTabId, rowId) {
+                console.log(equipment);
                 this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['id'] = rowId;
                 this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['saveType'] = 'old';
                 this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['code'] = equipment.code;
                 this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['name'] = equipment.name;
                 this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['description'] = equipment.description;
-                this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['quantity'] = equipment.naquantityme;
+                this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['quantity'] = equipment.quantity;
                 this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['points'] = equipment.points;
                 this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['price'] = equipment.price;
                 this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['price_trade'] = equipment.price_trade;
                 this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['price_small_trade'] = equipment.price_small_trade;
                 this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['price_special'] = equipment.price_special;
-                this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['comment'] = '';
+                this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['comment'] = equipment.comment;
+                this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['type_id'] = equipment.type.id;
                 // this.row.code = result;
                 this.autocompletesDisplays[rowId] = false;
             },
@@ -244,11 +262,13 @@
                 let buffKP = [];
                 let buffEq = [];
                 let buffRow = [];
+                let buffGroupName = '';
                 axios
                     .post(window.location.href + 'getOfferGroup', {
                         id: this.groupId
                     })
                     .then(resp => {
+                        buffGroupName = resp.data.name;
                         resp.data.offers.forEach(function (offer) {
                             let lastOfferContentTabId = 0;
                             buffKP.push(
@@ -273,17 +293,18 @@
                                     buffRow[lastOfferTabId][lastOfferContentTabId]['rows'].push(
                                         {
                                             id: lastRow,
-                                            saveType: 'old',
+                                            saveType: 'new',
                                             code: equipment.code,
                                             name: equipment.name,
                                             description: equipment.description,
                                             quantity: equipment.pivot.quantity,
                                             points: equipment.points,
                                             price: equipment.pivot.price,
-                                            price_trade: equipment.pivot.code,
-                                            price_small_trade: equipment.pivot.code,
-                                            price_special: equipment.pivot.code,
-                                            comment:'',
+                                            price_trade: equipment.pivot.price_trade,
+                                            price_small_trade: equipment.pivot.price_small_trade,
+                                            price_special: equipment.pivot.price_special,
+                                            comment: equipment.pivot.comment,
+                                            type: equipment.type.id,
                                         }
                                     );
                                     lastRow++;
@@ -307,9 +328,13 @@
 
                             lastOfferTabId++;
                         });
+                        this.offerGroup.name = buffGroupName;
                         this.offersTabs = buffKP;
                         this.offersContentTabs = buffEq;
                     });
+
+            },
+            changedRow(){
 
             }
         }
