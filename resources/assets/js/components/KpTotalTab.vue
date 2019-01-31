@@ -1,32 +1,33 @@
 <template>
     <div class="row">
         <div class="col-12 kp-total-tab">
-            <h2>{{ offerGroup.offer_group.name}}</h2>
             {{offerGroup}}
+            <h2>{{ offerGroup.offer_group.name}}</h2>
             <div class="kp-total-offer" v-for="offerData in offerGroup.offer_group.offers">
                 <h3>{{ offerData.name }}</h3>
                 <div class="kp-total-offer-content" v-for="offerContent in offerData.equipments">
                     <h4>{{ offerContent.name }}</h4>
-                    <table class="table table-striped table-hover table-bordered">
-                        <thead>
-                        <tr>
-                            <th scope="col">Артикул</th>
-                            <th scope="col">Название</th>
-                            <th scope="col">Ед.измерения</th>
-                            <th scope="col">Количество</th>
-                            <th scope="col">Цена</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr v-for="row in offerContent.rows">
-                            <td>{{ row.code }}</td>
-                            <td>{{ row.name }}</td>
-                            <td>{{ row.points }}</td>
-                            <td>{{ row.quantity }}</td>
-                            <td>{{ row.price }}</td>
-                        </tr>
-                        </tbody>
-                    </table>
+                        <h4 class="text-capitalize">{{offerContent.type_name}}</h4>
+                        <table class="table table-striped table-hover table-bordered">
+                            <thead>
+                            <tr>
+                                <th scope="col">Артикул</th>
+                                <th scope="col">Название</th>
+                                <th scope="col">Ед.измерения</th>
+                                <th scope="col">Количество</th>
+                                <th scope="col">Цена</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr v-if="row.code" v-for="row in offerContent">
+                                <td>{{ row.code }}</td>
+                                <td>{{ row.name }}</td>
+                                <td>{{ row.points }}</td>
+                                <td>{{ row.quantity }}</td>
+                                <td>{{ row.price }}</td>
+                            </tr>
+                            </tbody>
+                        </table>
                 </div>
             </div>
         </div>

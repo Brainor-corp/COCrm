@@ -13,8 +13,12 @@
                 <ul class="nav nav-tabs">
                     <li v-for="offerTab in offersTabs" class="nav-item">
                         <a class="nav-link" data-toggle="tab" :href="'#kp-edit-tab-'+offerTab.id">
-                            <input type="hidden" hidden="hidden" :name="'offer_group[offers]['+offerTab.id+'][id]'" v-model="offerTab.id"/>
-                            <input type="text" :name="'offer_group[offers]['+offerTab.id+'][name]'" v-model="offerTab.name"/>
+                            <!--<input type="hidden" hidden="hidden" :name="'offer_group[offers]['+offerTab.id+'][id]'" v-model="offerTab.id"/>-->
+                            <input type="text" :name="'offer_group[offers]['+offerTab.id+'][name]'" v-model="offerTab.name"/><br>
+                            <label :for="'tax-select-'+offerTab.id">Налог</label>
+                            <select :id="'tax-select-'+offerTab.id" :name="'offer_group[offers]['+offerTab.id+'][tax]'" v-model="offerTab.tax">
+                                <option v-for="tax in taxes" :value="tax.value">{{ tax.value }}</option>
+                            </select>
                         </a>
                     </li>
 
@@ -28,10 +32,11 @@
                         <ul class="nav nav-tabs">
                             <li v-for="offerContentTab in offersContentTabs[offerTab.id]" class="nav-item">
                                 <a class="nav-link" data-toggle="tab" :href="'#kp-'+offerTab.id+'-content-edit-tab-'+offerContentTab.id">
-                                    <input type="hidden" hidden="hidden" :name="'offer_group[offers]['+offerTab.id+'][equipments]['+offerContentTab.id+'][id]'" v-model="offerContentTab.id"/>
-                                    <input type="text" v-model="offerContentTab.name"/>
-                                    <select :name="'[offers]['+offerTab.id+'][equipments]['+offerContentTab.id+'][]'">
-                                        <option v-for="type in types" :value="type.id">{{ type.name }}</option>
+                                    <!--<input type="hidden" hidden="hidden" :name="'offer_group[offers]['+offerTab.id+'][equipments]['+offerContentTab.id+'][id]'" v-model="offerContentTab.id"/>-->
+                                    <input type="hidden" hidden="hidden" v-if="types[selected[offerTab.id][offerContentTab.id]]" :name="'offer_group[offers]['+offerTab.id+'][equipments][`'+types[selected[offerTab.id][offerContentTab.id]][0].id+'`][type_name]'" v-model="types[selected[offerTab.id][offerContentTab.id]][0].name"/>
+                                    <select v-model="selected[offerTab.id][offerContentTab.id]">
+                                        <option disabled value="new">Выберите</option>
+                                        <option v-for="type in types" :value="type[0].id">{{ type[0].name }}</option>
                                     </select>
                                 </a>
                             </li>
@@ -43,7 +48,7 @@
 
                         <div class="tab-content">
                             <div v-for="offerContentTab in offersContentTabs[offerTab.id]" :id="'kp-'+offerTab.id+'-content-edit-tab-'+offerContentTab.id" class="tab-pane fade">
-                                {{ offerContentTab.name}}
+                                {{ offerContentTab.name }}
                                 <table class="table table-striped table-hover table-bordered">
                                     <thead>
                                     <tr>
@@ -56,14 +61,14 @@
                                     </thead>
                                     <tbody>
                                     <tr @change="changedRow" v-for="row in offerContentTab.rows">
-                                        <input type="hidden" hidden="hidden" :name="'offer_group[offers]['+offerTab.id+'][equipments]['+offerContentTab.id+']['+row.type+']['+row.id+'][id]'" v-model="row.id"/>
-                                        <input type="hidden" hidden="hidden" :name="'offer_group[offers]['+offerTab.id+'][equipments]['+offerContentTab.id+']['+row.type+']['+row.id+'][description]'" v-model="row.description"/>
-                                        <input type="hidden" hidden="hidden" :name="'offer_group[offers]['+offerTab.id+'][equipments]['+offerContentTab.id+']['+row.type+']['+row.id+'][price_trade]'" v-model="row.price_trade"/>
-                                        <input type="hidden" hidden="hidden" :name="'offer_group[offers]['+offerTab.id+'][equipments]['+offerContentTab.id+']['+row.type+']['+row.id+'][price_small_trade]'" v-model="row.price_small_trade"/>
-                                        <input type="hidden" hidden="hidden" :name="'offer_group[offers]['+offerTab.id+'][equipments]['+offerContentTab.id+']['+row.type+']['+row.id+'][price_special]'" v-model="row.price_special"/>
-                                        <input type="hidden" hidden="hidden" :name="'offer_group[offers]['+offerTab.id+'][equipments]['+offerContentTab.id+']['+row.type+']['+row.id+'][comment]'" v-model="row.comment"/>
+                                        <input type="hidden" hidden="hidden" :name="'offer_group[offers]['+offerTab.id+'][equipments][`'+types[selected[offerTab.id][offerContentTab.id]][0].id+'`]['+row.id+'][id]'" v-model="row.id"/>
+                                        <input type="hidden" hidden="hidden" :name="'offer_group[offers]['+offerTab.id+'][equipments][`'+types[selected[offerTab.id][offerContentTab.id]][0].id+'`]['+row.id+'][description]'" v-model="row.description"/>
+                                        <input type="hidden" hidden="hidden" :name="'offer_group[offers]['+offerTab.id+'][equipments][`'+types[selected[offerTab.id][offerContentTab.id]][0].id+'`]['+row.id+'][price_trade]'" v-model="row.price_trade"/>
+                                        <input type="hidden" hidden="hidden" :name="'offer_group[offers]['+offerTab.id+'][equipments][`'+types[selected[offerTab.id][offerContentTab.id]][0].id+'`]['+row.id+'][price_small_trade]'" v-model="row.price_small_trade"/>
+                                        <input type="hidden" hidden="hidden" :name="'offer_group[offers]['+offerTab.id+'][equipments][`'+types[selected[offerTab.id][offerContentTab.id]][0].id+'`]['+row.id+'][price_special]'" v-model="row.price_special"/>
+                                        <input type="hidden" hidden="hidden" :name="'offer_group[offers]['+offerTab.id+'][equipments][`'+types[selected[offerTab.id][offerContentTab.id]][0].id+'`]['+row.id+'][comment]'" v-model="row.comment"/>
                                         <td>
-                                            <input type="text" @keyup="searchEquipmentByCode(row.code, row.id)" :name="'offer_group[offers]['+offerTab.id+'][equipments]['+offerContentTab.id+']['+row.type+']['+row.id+'][code]'" v-model="row.code" />
+                                            <input type="text" @keyup="searchEquipmentByCode(row.code, row.id)" :name="'offer_group[offers]['+offerTab.id+'][equipments][`'+types[selected[offerTab.id][offerContentTab.id]][0].id+'`]['+row.id+'][code]'" v-model="row.code" />
                                             <!--<autocomplete-->
                                                     <!--url="http://commercialoffer.local/findEquipmentByCode"-->
                                                     <!--anchor="code"-->
@@ -80,16 +85,16 @@
                                             </ul>
                                         </td>
                                         <td>
-                                            <input type="text" :name="'offer_group[offers]['+offerTab.id+'][equipments]['+offerContentTab.id+']['+row.type+']['+row.id+'][name]'" v-model="row.name"/>
+                                            <input type="text" :name="'offer_group[offers]['+offerTab.id+'][equipments][`'+types[selected[offerTab.id][offerContentTab.id]][0].id+'`]['+row.id+'][name]'" v-model="row.name"/>
                                         </td>
                                         <td>
-                                            <input type="text" :name="'offer_group[offers]['+offerTab.id+'][equipments]['+offerContentTab.id+']['+row.type+']['+row.id+'][points]'" v-model="row.points"/>
+                                            <input type="text" :name="'offer_group[offers]['+offerTab.id+'][equipments][`'+types[selected[offerTab.id][offerContentTab.id]][0].id+'`]['+row.id+'][points]'" v-model="row.points"/>
                                         </td>
                                         <td>
-                                            <input type="text" :name="'offer_group[offers]['+offerTab.id+'][equipments]['+offerContentTab.id+']['+row.type+']['+row.id+'][quantity]'" v-model="row.quantity"/>
+                                            <input type="text" :name="'offer_group[offers]['+offerTab.id+'][equipments][`'+types[selected[offerTab.id][offerContentTab.id]][0].id+'`]['+row.id+'][quantity]'" v-model="row.quantity"/>
                                         </td>
                                         <td>
-                                            <input type="text" :name="'offer_group[offers]['+offerTab.id+'][equipments]['+offerContentTab.id+']['+row.type+']['+row.id+'][price]'" v-model="row.price"/>
+                                            <input type="text" :name="'offer_group[offers]['+offerTab.id+'][equipments][`'+types[selected[offerTab.id][offerContentTab.id]][0].id+'`]['+row.id+'][price]'" v-model="row.price"/>
                                         </td>
                                     </tr>
                                     <tr>
@@ -124,7 +129,13 @@
                 results: [],
                 groupId: null,
                 autocompletesDisplays: [],
-                types: [],
+                types: {'new' : 'new'},
+                taxes: [],
+                selected: {
+                    0:{
+                        0: 'new'
+                    }
+                },
                 search: "",
                 isLoading: false,
                 redactMode: false,
@@ -135,9 +146,17 @@
         computed: {
         },
         beforeCreate: function(){
-            axios
-                .post(window.location.href + 'getAllEquipmentTypes')
-                .then(response => { this.types = response.data; });
+
+            axios.post(window.location.href + 'getTaxBySlug')
+                .then((res) => {
+                    this.taxes = res.data;
+
+                    return axios.post(window.location.href + 'getAllEquipmentTypes');
+                })
+                .then((res) => {
+                    this.types = res.data;
+                });
+
         },
         created: function (){
             this.updateOfferGroup;
@@ -172,6 +191,9 @@
                         rows:[]
                     }
                 );
+                this.selected[lastOfferTabId] = {
+                    0: 'new'
+                };
             },
             addOfferContentTab(offerTabId){
                 let lastOfferContentTab;
@@ -183,6 +205,7 @@
                         rows:[]
                     }
                 );
+                this.selected[offerTabId][lastOfferContentTab.id+1] = 'new';
             },
             addTableRow(offerTabId,offerContentTabId){
                 let lastRow;
@@ -246,6 +269,7 @@
                 this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['price_special'] = equipment.price_special;
                 this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['comment'] = equipment.comment;
                 this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['type_id'] = equipment.type.id;
+                this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['type'] = equipment.type.name;
                 // this.row.code = result;
                 this.autocompletesDisplays[rowId] = false;
             },
@@ -263,6 +287,7 @@
                 let buffEq = [];
                 let buffRow = [];
                 let buffGroupName = '';
+                let buffSelected = [];
                 axios
                     .post(window.location.href + 'getOfferGroup', {
                         id: this.groupId
@@ -274,7 +299,8 @@
                             buffKP.push(
                                 {
                                     id: lastOfferTabId,
-                                    name: offer.name
+                                    name: offer.name,
+                                    tax: offer.tax
                                 }
                             );
 
@@ -304,7 +330,8 @@
                                             price_small_trade: equipment.pivot.price_small_trade,
                                             price_special: equipment.pivot.price_special,
                                             comment: equipment.pivot.comment,
-                                            type: equipment.type.id,
+                                            type_id: equipment.type.id,
+                                            type: equipment.type.name,
                                         }
                                     );
                                     lastRow++;
@@ -316,6 +343,9 @@
                                 if(!buffRow[lastOfferTabId][lastOfferContentTabId]){
                                     buffRow[lastOfferTabId][lastOfferContentTabId] = [];
                                 }
+                                if(!buffSelected[lastOfferTabId]){
+                                    buffSelected[lastOfferTabId] = [];
+                                }
                                 buffEq[lastOfferTabId].push(
                                     {
                                         id: lastOfferContentTabId,
@@ -323,6 +353,7 @@
                                         rows: buffRow[lastOfferTabId][lastOfferContentTabId]['rows']
                                     }
                                 );
+                                buffSelected[lastOfferTabId][lastOfferContentTabId] = buffRow[lastOfferTabId][lastOfferContentTabId]['rows'][0]['type_id'];
                                 lastOfferContentTabId++;
                             });
 
@@ -331,6 +362,7 @@
                         this.offerGroup.name = buffGroupName;
                         this.offersTabs = buffKP;
                         this.offersContentTabs = buffEq;
+                        this.selected = buffSelected;
                     });
 
             },

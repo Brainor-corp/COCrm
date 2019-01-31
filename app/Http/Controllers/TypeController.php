@@ -20,6 +20,6 @@ class TypeController extends Controller
     }
 
     public function getAllEquipmentTypes() {
-        return Type::whereIn('class', ['equipment', 'work'])->get();
+        return Type::whereIn('class', ['equipment', 'work'])->get()->groupBy('id');
     }
 }

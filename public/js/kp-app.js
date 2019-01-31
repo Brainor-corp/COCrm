@@ -49424,6 +49424,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
 
 
 
@@ -49440,7 +49445,13 @@ __webpack_require__(51);
             results: [],
             groupId: null,
             autocompletesDisplays: [],
-            types: [],
+            types: { 'new': 'new' },
+            taxes: [],
+            selected: {
+                0: {
+                    0: 'new'
+                }
+            },
             search: "",
             isLoading: false,
             redactMode: false,
@@ -49453,8 +49464,12 @@ __webpack_require__(51);
     beforeCreate: function beforeCreate() {
         var _this = this;
 
-        __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post(window.location.href + 'getAllEquipmentTypes').then(function (response) {
-            _this.types = response.data;
+        __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post(window.location.href + 'getTaxBySlug').then(function (res) {
+            _this.taxes = res.data;
+
+            return __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post(window.location.href + 'getAllEquipmentTypes');
+        }).then(function (res) {
+            _this.types = res.data;
         });
     },
     created: function created() {
@@ -49488,6 +49503,9 @@ __webpack_require__(51);
                 name: 'Новое оборудование',
                 rows: []
             });
+            this.selected[lastOfferTabId] = {
+                0: 'new'
+            };
         },
         addOfferContentTab: function addOfferContentTab(offerTabId) {
             var lastOfferContentTab = void 0;
@@ -49497,6 +49515,7 @@ __webpack_require__(51);
                 name: 'Новое оборудование',
                 rows: []
             });
+            this.selected[offerTabId][lastOfferContentTab.id + 1] = 'new';
         },
         addTableRow: function addTableRow(offerTabId, offerContentTabId) {
             var lastRow = void 0;
@@ -49558,6 +49577,7 @@ __webpack_require__(51);
             this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['price_special'] = equipment.price_special;
             this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['comment'] = equipment.comment;
             this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['type_id'] = equipment.type.id;
+            this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['type'] = equipment.type.name;
             // this.row.code = result;
             this.autocompletesDisplays[rowId] = false;
         },
@@ -49578,6 +49598,7 @@ __webpack_require__(51);
             var buffEq = [];
             var buffRow = [];
             var buffGroupName = '';
+            var buffSelected = [];
             __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post(window.location.href + 'getOfferGroup', {
                 id: this.groupId
             }).then(function (resp) {
@@ -49586,7 +49607,8 @@ __webpack_require__(51);
                     var lastOfferContentTabId = 0;
                     buffKP.push({
                         id: lastOfferTabId,
-                        name: offer.name
+                        name: offer.name,
+                        tax: offer.tax
                     });
 
                     Object.keys(offer['equipments']).forEach(function (type) {
@@ -49614,7 +49636,8 @@ __webpack_require__(51);
                                 price_small_trade: equipment.pivot.price_small_trade,
                                 price_special: equipment.pivot.price_special,
                                 comment: equipment.pivot.comment,
-                                type: equipment.type.id
+                                type_id: equipment.type.id,
+                                type: equipment.type.name
                             });
                             lastRow++;
                         });
@@ -49625,11 +49648,15 @@ __webpack_require__(51);
                         if (!buffRow[lastOfferTabId][lastOfferContentTabId]) {
                             buffRow[lastOfferTabId][lastOfferContentTabId] = [];
                         }
+                        if (!buffSelected[lastOfferTabId]) {
+                            buffSelected[lastOfferTabId] = [];
+                        }
                         buffEq[lastOfferTabId].push({
                             id: lastOfferContentTabId,
                             name: type,
                             rows: buffRow[lastOfferTabId][lastOfferContentTabId]['rows']
                         });
+                        buffSelected[lastOfferTabId][lastOfferContentTabId] = buffRow[lastOfferTabId][lastOfferContentTabId]['rows'][0]['type_id'];
                         lastOfferContentTabId++;
                     });
 
@@ -49638,6 +49665,7 @@ __webpack_require__(51);
                 _this3.offerGroup.name = buffGroupName;
                 _this3.offersTabs = buffKP;
                 _this3.offersContentTabs = buffEq;
+                _this3.selected = buffSelected;
             });
         },
         changedRow: function changedRow() {}
@@ -51085,31 +51113,6 @@ var render = function() {
                           {
                             name: "model",
                             rawName: "v-model",
-                            value: offerTab.id,
-                            expression: "offerTab.id"
-                          }
-                        ],
-                        attrs: {
-                          type: "hidden",
-                          hidden: "hidden",
-                          name: "offer_group[offers][" + offerTab.id + "][id]"
-                        },
-                        domProps: { value: offerTab.id },
-                        on: {
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
-                            }
-                            _vm.$set(offerTab, "id", $event.target.value)
-                          }
-                        }
-                      }),
-                      _vm._v(" "),
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
                             value: offerTab.name,
                             expression: "offerTab.name"
                           }
@@ -51127,7 +51130,60 @@ var render = function() {
                             _vm.$set(offerTab, "name", $event.target.value)
                           }
                         }
-                      })
+                      }),
+                      _c("br"),
+                      _vm._v(" "),
+                      _c(
+                        "label",
+                        { attrs: { for: "tax-select-" + offerTab.id } },
+                        [_vm._v("Налог")]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "select",
+                        {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: offerTab.tax,
+                              expression: "offerTab.tax"
+                            }
+                          ],
+                          attrs: {
+                            id: "tax-select-" + offerTab.id,
+                            name:
+                              "offer_group[offers][" + offerTab.id + "][tax]"
+                          },
+                          on: {
+                            change: function($event) {
+                              var $$selectedVal = Array.prototype.filter
+                                .call($event.target.options, function(o) {
+                                  return o.selected
+                                })
+                                .map(function(o) {
+                                  var val = "_value" in o ? o._value : o.value
+                                  return val
+                                })
+                              _vm.$set(
+                                offerTab,
+                                "tax",
+                                $event.target.multiple
+                                  ? $$selectedVal
+                                  : $$selectedVal[0]
+                              )
+                            }
+                          }
+                        },
+                        _vm._l(_vm.taxes, function(tax) {
+                          return _c(
+                            "option",
+                            { domProps: { value: tax.value } },
+                            [_vm._v(_vm._s(tax.value))]
+                          )
+                        }),
+                        0
+                      )
                     ]
                   )
                 ])
@@ -51185,85 +51241,119 @@ var render = function() {
                               }
                             },
                             [
-                              _c("input", {
-                                directives: [
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value: offerContentTab.id,
-                                    expression: "offerContentTab.id"
-                                  }
-                                ],
-                                attrs: {
-                                  type: "hidden",
-                                  hidden: "hidden",
-                                  name:
-                                    "offer_group[offers][" +
-                                    offerTab.id +
-                                    "][equipments][" +
-                                    offerContentTab.id +
-                                    "][id]"
-                                },
-                                domProps: { value: offerContentTab.id },
-                                on: {
-                                  input: function($event) {
-                                    if ($event.target.composing) {
-                                      return
+                              _vm.types[
+                                _vm.selected[offerTab.id][offerContentTab.id]
+                              ]
+                                ? _c("input", {
+                                    directives: [
+                                      {
+                                        name: "model",
+                                        rawName: "v-model",
+                                        value:
+                                          _vm.types[
+                                            _vm.selected[offerTab.id][
+                                              offerContentTab.id
+                                            ]
+                                          ][0].name,
+                                        expression:
+                                          "types[selected[offerTab.id][offerContentTab.id]][0].name"
+                                      }
+                                    ],
+                                    attrs: {
+                                      type: "hidden",
+                                      hidden: "hidden",
+                                      name:
+                                        "offer_group[offers][" +
+                                        offerTab.id +
+                                        "][equipments][`" +
+                                        _vm.types[
+                                          _vm.selected[offerTab.id][
+                                            offerContentTab.id
+                                          ]
+                                        ][0].id +
+                                        "`][type_name]"
+                                    },
+                                    domProps: {
+                                      value:
+                                        _vm.types[
+                                          _vm.selected[offerTab.id][
+                                            offerContentTab.id
+                                          ]
+                                        ][0].name
+                                    },
+                                    on: {
+                                      input: function($event) {
+                                        if ($event.target.composing) {
+                                          return
+                                        }
+                                        _vm.$set(
+                                          _vm.types[
+                                            _vm.selected[offerTab.id][
+                                              offerContentTab.id
+                                            ]
+                                          ][0],
+                                          "name",
+                                          $event.target.value
+                                        )
+                                      }
                                     }
-                                    _vm.$set(
-                                      offerContentTab,
-                                      "id",
-                                      $event.target.value
-                                    )
-                                  }
-                                }
-                              }),
-                              _vm._v(" "),
-                              _c("input", {
-                                directives: [
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value: offerContentTab.name,
-                                    expression: "offerContentTab.name"
-                                  }
-                                ],
-                                attrs: { type: "text" },
-                                domProps: { value: offerContentTab.name },
-                                on: {
-                                  input: function($event) {
-                                    if ($event.target.composing) {
-                                      return
-                                    }
-                                    _vm.$set(
-                                      offerContentTab,
-                                      "name",
-                                      $event.target.value
-                                    )
-                                  }
-                                }
-                              }),
+                                  })
+                                : _vm._e(),
                               _vm._v(" "),
                               _c(
                                 "select",
                                 {
-                                  attrs: {
-                                    name:
-                                      "[offers][" +
-                                      offerTab.id +
-                                      "][equipments][" +
-                                      offerContentTab.id +
-                                      "][]"
+                                  directives: [
+                                    {
+                                      name: "model",
+                                      rawName: "v-model",
+                                      value:
+                                        _vm.selected[offerTab.id][
+                                          offerContentTab.id
+                                        ],
+                                      expression:
+                                        "selected[offerTab.id][offerContentTab.id]"
+                                    }
+                                  ],
+                                  on: {
+                                    change: function($event) {
+                                      var $$selectedVal = Array.prototype.filter
+                                        .call($event.target.options, function(
+                                          o
+                                        ) {
+                                          return o.selected
+                                        })
+                                        .map(function(o) {
+                                          var val =
+                                            "_value" in o ? o._value : o.value
+                                          return val
+                                        })
+                                      _vm.$set(
+                                        _vm.selected[offerTab.id],
+                                        offerContentTab.id,
+                                        $event.target.multiple
+                                          ? $$selectedVal
+                                          : $$selectedVal[0]
+                                      )
+                                    }
                                   }
                                 },
-                                _vm._l(_vm.types, function(type) {
-                                  return _c(
+                                [
+                                  _c(
                                     "option",
-                                    { domProps: { value: type.id } },
-                                    [_vm._v(_vm._s(type.name))]
-                                  )
-                                }),
-                                0
+                                    { attrs: { disabled: "", value: "new" } },
+                                    [_vm._v("Выберите")]
+                                  ),
+                                  _vm._v(" "),
+                                  _vm._l(_vm.types, function(type) {
+                                    return _c(
+                                      "option",
+                                      { domProps: { value: type[0].id } },
+                                      [_vm._v(_vm._s(type[0].name))]
+                                    )
+                                  })
+                                ],
+                                2
                               )
                             ]
                           )
@@ -51345,11 +51435,13 @@ var render = function() {
                                             name:
                                               "offer_group[offers][" +
                                               offerTab.id +
-                                              "][equipments][" +
-                                              offerContentTab.id +
-                                              "][" +
-                                              row.type +
-                                              "][" +
+                                              "][equipments][`" +
+                                              _vm.types[
+                                                _vm.selected[offerTab.id][
+                                                  offerContentTab.id
+                                                ]
+                                              ][0].id +
+                                              "`][" +
                                               row.id +
                                               "][id]"
                                           },
@@ -51383,11 +51475,13 @@ var render = function() {
                                             name:
                                               "offer_group[offers][" +
                                               offerTab.id +
-                                              "][equipments][" +
-                                              offerContentTab.id +
-                                              "][" +
-                                              row.type +
-                                              "][" +
+                                              "][equipments][`" +
+                                              _vm.types[
+                                                _vm.selected[offerTab.id][
+                                                  offerContentTab.id
+                                                ]
+                                              ][0].id +
+                                              "`][" +
                                               row.id +
                                               "][description]"
                                           },
@@ -51421,11 +51515,13 @@ var render = function() {
                                             name:
                                               "offer_group[offers][" +
                                               offerTab.id +
-                                              "][equipments][" +
-                                              offerContentTab.id +
-                                              "][" +
-                                              row.type +
-                                              "][" +
+                                              "][equipments][`" +
+                                              _vm.types[
+                                                _vm.selected[offerTab.id][
+                                                  offerContentTab.id
+                                                ]
+                                              ][0].id +
+                                              "`][" +
                                               row.id +
                                               "][price_trade]"
                                           },
@@ -51460,11 +51556,13 @@ var render = function() {
                                             name:
                                               "offer_group[offers][" +
                                               offerTab.id +
-                                              "][equipments][" +
-                                              offerContentTab.id +
-                                              "][" +
-                                              row.type +
-                                              "][" +
+                                              "][equipments][`" +
+                                              _vm.types[
+                                                _vm.selected[offerTab.id][
+                                                  offerContentTab.id
+                                                ]
+                                              ][0].id +
+                                              "`][" +
                                               row.id +
                                               "][price_small_trade]"
                                           },
@@ -51500,11 +51598,13 @@ var render = function() {
                                             name:
                                               "offer_group[offers][" +
                                               offerTab.id +
-                                              "][equipments][" +
-                                              offerContentTab.id +
-                                              "][" +
-                                              row.type +
-                                              "][" +
+                                              "][equipments][`" +
+                                              _vm.types[
+                                                _vm.selected[offerTab.id][
+                                                  offerContentTab.id
+                                                ]
+                                              ][0].id +
+                                              "`][" +
                                               row.id +
                                               "][price_special]"
                                           },
@@ -51540,11 +51640,13 @@ var render = function() {
                                             name:
                                               "offer_group[offers][" +
                                               offerTab.id +
-                                              "][equipments][" +
-                                              offerContentTab.id +
-                                              "][" +
-                                              row.type +
-                                              "][" +
+                                              "][equipments][`" +
+                                              _vm.types[
+                                                _vm.selected[offerTab.id][
+                                                  offerContentTab.id
+                                                ]
+                                              ][0].id +
+                                              "`][" +
                                               row.id +
                                               "][comment]"
                                           },
@@ -51578,11 +51680,13 @@ var render = function() {
                                               name:
                                                 "offer_group[offers][" +
                                                 offerTab.id +
-                                                "][equipments][" +
-                                                offerContentTab.id +
-                                                "][" +
-                                                row.type +
-                                                "][" +
+                                                "][equipments][`" +
+                                                _vm.types[
+                                                  _vm.selected[offerTab.id][
+                                                    offerContentTab.id
+                                                  ]
+                                                ][0].id +
+                                                "`][" +
                                                 row.id +
                                                 "][code]"
                                             },
@@ -51695,11 +51799,13 @@ var render = function() {
                                               name:
                                                 "offer_group[offers][" +
                                                 offerTab.id +
-                                                "][equipments][" +
-                                                offerContentTab.id +
-                                                "][" +
-                                                row.type +
-                                                "][" +
+                                                "][equipments][`" +
+                                                _vm.types[
+                                                  _vm.selected[offerTab.id][
+                                                    offerContentTab.id
+                                                  ]
+                                                ][0].id +
+                                                "`][" +
                                                 row.id +
                                                 "][name]"
                                             },
@@ -51734,11 +51840,13 @@ var render = function() {
                                               name:
                                                 "offer_group[offers][" +
                                                 offerTab.id +
-                                                "][equipments][" +
-                                                offerContentTab.id +
-                                                "][" +
-                                                row.type +
-                                                "][" +
+                                                "][equipments][`" +
+                                                _vm.types[
+                                                  _vm.selected[offerTab.id][
+                                                    offerContentTab.id
+                                                  ]
+                                                ][0].id +
+                                                "`][" +
                                                 row.id +
                                                 "][points]"
                                             },
@@ -51773,11 +51881,13 @@ var render = function() {
                                               name:
                                                 "offer_group[offers][" +
                                                 offerTab.id +
-                                                "][equipments][" +
-                                                offerContentTab.id +
-                                                "][" +
-                                                row.type +
-                                                "][" +
+                                                "][equipments][`" +
+                                                _vm.types[
+                                                  _vm.selected[offerTab.id][
+                                                    offerContentTab.id
+                                                  ]
+                                                ][0].id +
+                                                "`][" +
                                                 row.id +
                                                 "][quantity]"
                                             },
@@ -51812,11 +51922,13 @@ var render = function() {
                                               name:
                                                 "offer_group[offers][" +
                                                 offerTab.id +
-                                                "][equipments][" +
-                                                offerContentTab.id +
-                                                "][" +
-                                                row.type +
-                                                "][" +
+                                                "][equipments][`" +
+                                                _vm.types[
+                                                  _vm.selected[offerTab.id][
+                                                    offerContentTab.id
+                                                  ]
+                                                ][0].id +
+                                                "`][" +
                                                 row.id +
                                                 "][price]"
                                             },
@@ -51994,6 +52106,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: ['offerGroup'],
@@ -52019,8 +52132,9 @@ var render = function() {
       "div",
       { staticClass: "col-12 kp-total-tab" },
       [
-        _c("h2", [_vm._v(_vm._s(_vm.offerGroup.offer_group.name))]),
         _vm._v("\n        " + _vm._s(_vm.offerGroup) + "\n        "),
+        _c("h2", [_vm._v(_vm._s(_vm.offerGroup.offer_group.name))]),
+        _vm._v(" "),
         _vm._l(_vm.offerGroup.offer_group.offers, function(offerData) {
           return _c(
             "div",
@@ -52031,6 +52145,10 @@ var render = function() {
               _vm._l(offerData.equipments, function(offerContent) {
                 return _c("div", { staticClass: "kp-total-offer-content" }, [
                   _c("h4", [_vm._v(_vm._s(offerContent.name))]),
+                  _vm._v(" "),
+                  _c("h4", { staticClass: "text-capitalize" }, [
+                    _vm._v(_vm._s(offerContent.type_name))
+                  ]),
                   _vm._v(" "),
                   _c(
                     "table",
@@ -52043,18 +52161,20 @@ var render = function() {
                       _vm._v(" "),
                       _c(
                         "tbody",
-                        _vm._l(offerContent.rows, function(row) {
-                          return _c("tr", [
-                            _c("td", [_vm._v(_vm._s(row.code))]),
-                            _vm._v(" "),
-                            _c("td", [_vm._v(_vm._s(row.name))]),
-                            _vm._v(" "),
-                            _c("td", [_vm._v(_vm._s(row.points))]),
-                            _vm._v(" "),
-                            _c("td", [_vm._v(_vm._s(row.quantity))]),
-                            _vm._v(" "),
-                            _c("td", [_vm._v(_vm._s(row.price))])
-                          ])
+                        _vm._l(offerContent, function(row) {
+                          return row.code
+                            ? _c("tr", [
+                                _c("td", [_vm._v(_vm._s(row.code))]),
+                                _vm._v(" "),
+                                _c("td", [_vm._v(_vm._s(row.name))]),
+                                _vm._v(" "),
+                                _c("td", [_vm._v(_vm._s(row.points))]),
+                                _vm._v(" "),
+                                _c("td", [_vm._v(_vm._s(row.quantity))]),
+                                _vm._v(" "),
+                                _c("td", [_vm._v(_vm._s(row.price))])
+                              ])
+                            : _vm._e()
                         }),
                         0
                       )
