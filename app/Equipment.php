@@ -27,6 +27,10 @@ class Equipment extends Model
     }
 
     public function offers(){
-        return $this->belongsToMany(Offer::class, 'equipment_offer', 'equipment_id', 'offer_id');
+        return $this->belongsToMany(Offer::class, 'equipment_offer', 'equipment_id', 'offer_id')->withPivot('quantity');
+    }
+
+    public function types(){
+        return $this->belongsToMany(Type::class, 'equipment_type', 'equipment_id', 'type_id')->withPivot('quantity');
     }
 }

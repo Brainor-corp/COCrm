@@ -22,4 +22,8 @@ class TypeController extends Controller
     public function getAllEquipmentTypes() {
         return Type::whereIn('class', ['equipment', 'work'])->get()->groupBy('id');
     }
+
+    public function getDefaultTypesWithEquipment(){
+        return Type::where('optional', 'default')->with('equipment')->get();
+    }
 }

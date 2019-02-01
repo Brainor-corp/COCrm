@@ -49316,8 +49316,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_axios__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue2_autocomplete_js__ = __webpack_require__(50);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue2_autocomplete_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_vue2_autocomplete_js__);
-//
-//
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 //
 //
 //
@@ -49447,10 +49447,11 @@ __webpack_require__(51);
             autocompletesDisplays: [],
             types: { 'new': 'new' },
             taxes: [],
+            defaultTypes: [],
             selected: {
-                0: {
+                0: [{
                     0: 'new'
-                }
+                }]
             },
             search: "",
             isLoading: false,
@@ -49470,6 +49471,37 @@ __webpack_require__(51);
             return __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post(window.location.href + 'getAllEquipmentTypes');
         }).then(function (res) {
             _this.types = res.data;
+            console.log(res.data);
+
+            return __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post(window.location.href + 'getDefaultTypesWithEquipment');
+        }).then(function (res) {
+            _this.defaultTypes = res.data;
+            for (var i = 0; i < res.data.length; i++) {
+                _this.offersContentTabs[0].push({
+                    'id': i,
+                    'name': res.data[i]['name'],
+                    'rows': []
+                });
+                _this.selected[0].push(_defineProperty({}, i, res.data[i]['id']));
+                if (res.data[i]['equipment'].length > 0) {
+                    for (var j = 0; j < res.data[i]['equipment'].length; j++) {
+                        console.log(res.data);
+                        _this.offersContentTabs[0][i]['rows'].push({
+                            'id': j,
+                            'saveType': 'old',
+                            'name': res.data[i]['equipment'][j].name,
+                            'quantity': res.data[i]['equipment'][j].quantity,
+                            'code': res.data[i]['equipment'][j].code,
+                            'price': res.data[i]['equipment'][j].price,
+                            'price_trade': res.data[i]['equipment'][j].price_trade,
+                            'price_small_trade': res.data[i]['equipment'][j].price_small_trade,
+                            'price_special': res.data[i]['equipment'][j].price_special,
+                            'comment': res.data[i]['equipment'][j].comment,
+                            'description': res.data[i]['equipment'][j].description
+                        });
+                    }
+                }
+            }
         });
     },
     created: function created() {
@@ -49555,21 +49587,19 @@ __webpack_require__(51);
             __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post(window.location.href + 'findEquipmentByCode', {
                 code: codePart
             }).then(function (resp) {
+                console.log(resp.data);
                 _this2.results = resp.data;
                 _this2.isLoading = false;
             });
-            console.log(rowId);
             this.autocompletesDisplays[rowId] = true;
-            console.log(this.autocompletesDisplays);
         },
         setResult: function setResult(equipment, offerTabId, offerContentTabId, rowId) {
-            console.log(equipment);
             this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['id'] = rowId;
             this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['saveType'] = 'old';
             this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['code'] = equipment.code;
             this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['name'] = equipment.name;
             this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['description'] = equipment.description;
-            this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['quantity'] = equipment.quantity;
+            this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['quantity'] = 1;
             this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['points'] = equipment.points;
             this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['price'] = equipment.price;
             this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['price_trade'] = equipment.price_trade;
@@ -49668,7 +49698,9 @@ __webpack_require__(51);
                 _this3.selected = buffSelected;
             });
         },
-        changedRow: function changedRow() {}
+        deleteRow: function deleteRow(offerTabId, offerContentTabId, rowId) {
+            this.offersContentTabs[offerTabId][offerContentTabId]['rows'].splice(rowId, 1);
+        }
     }
 });
 
@@ -51241,65 +51273,6 @@ var render = function() {
                               }
                             },
                             [
-                              _vm.types[
-                                _vm.selected[offerTab.id][offerContentTab.id]
-                              ]
-                                ? _c("input", {
-                                    directives: [
-                                      {
-                                        name: "model",
-                                        rawName: "v-model",
-                                        value:
-                                          _vm.types[
-                                            _vm.selected[offerTab.id][
-                                              offerContentTab.id
-                                            ]
-                                          ][0].name,
-                                        expression:
-                                          "types[selected[offerTab.id][offerContentTab.id]][0].name"
-                                      }
-                                    ],
-                                    attrs: {
-                                      type: "hidden",
-                                      hidden: "hidden",
-                                      name:
-                                        "offer_group[offers][" +
-                                        offerTab.id +
-                                        "][equipments][`" +
-                                        _vm.types[
-                                          _vm.selected[offerTab.id][
-                                            offerContentTab.id
-                                          ]
-                                        ][0].id +
-                                        "`][type_name]"
-                                    },
-                                    domProps: {
-                                      value:
-                                        _vm.types[
-                                          _vm.selected[offerTab.id][
-                                            offerContentTab.id
-                                          ]
-                                        ][0].name
-                                    },
-                                    on: {
-                                      input: function($event) {
-                                        if ($event.target.composing) {
-                                          return
-                                        }
-                                        _vm.$set(
-                                          _vm.types[
-                                            _vm.selected[offerTab.id][
-                                              offerContentTab.id
-                                            ]
-                                          ][0],
-                                          "name",
-                                          $event.target.value
-                                        )
-                                      }
-                                    }
-                                  })
-                                : _vm._e(),
-                              _vm._v(" "),
                               _c(
                                 "select",
                                 {
@@ -51416,22 +51389,261 @@ var render = function() {
                                 "tbody",
                                 [
                                   _vm._l(offerContentTab.rows, function(row) {
-                                    return _c(
-                                      "tr",
-                                      { on: { change: _vm.changedRow } },
-                                      [
+                                    return _c("tr", [
+                                      _c("input", {
+                                        directives: [
+                                          {
+                                            name: "model",
+                                            rawName: "v-model",
+                                            value: row.id,
+                                            expression: "row.id"
+                                          }
+                                        ],
+                                        attrs: {
+                                          type: "hidden",
+                                          hidden: "hidden",
+                                          name:
+                                            "offer_group[offers][" +
+                                            offerTab.id +
+                                            "][equipments][`" +
+                                            _vm.types[
+                                              _vm.selected[offerTab.id][
+                                                offerContentTab.id
+                                              ]
+                                            ][0].id +
+                                            "`][" +
+                                            row.id +
+                                            "][id]"
+                                        },
+                                        domProps: { value: row.id },
+                                        on: {
+                                          input: function($event) {
+                                            if ($event.target.composing) {
+                                              return
+                                            }
+                                            _vm.$set(
+                                              row,
+                                              "id",
+                                              $event.target.value
+                                            )
+                                          }
+                                        }
+                                      }),
+                                      _vm._v(" "),
+                                      _c("input", {
+                                        directives: [
+                                          {
+                                            name: "model",
+                                            rawName: "v-model",
+                                            value: row.description,
+                                            expression: "row.description"
+                                          }
+                                        ],
+                                        attrs: {
+                                          type: "hidden",
+                                          hidden: "hidden",
+                                          name:
+                                            "offer_group[offers][" +
+                                            offerTab.id +
+                                            "][equipments][`" +
+                                            _vm.types[
+                                              _vm.selected[offerTab.id][
+                                                offerContentTab.id
+                                              ]
+                                            ][0].id +
+                                            "`][" +
+                                            row.id +
+                                            "][description]"
+                                        },
+                                        domProps: { value: row.description },
+                                        on: {
+                                          input: function($event) {
+                                            if ($event.target.composing) {
+                                              return
+                                            }
+                                            _vm.$set(
+                                              row,
+                                              "description",
+                                              $event.target.value
+                                            )
+                                          }
+                                        }
+                                      }),
+                                      _vm._v(" "),
+                                      _c("input", {
+                                        directives: [
+                                          {
+                                            name: "model",
+                                            rawName: "v-model",
+                                            value: row.price_trade,
+                                            expression: "row.price_trade"
+                                          }
+                                        ],
+                                        attrs: {
+                                          type: "hidden",
+                                          hidden: "hidden",
+                                          name:
+                                            "offer_group[offers][" +
+                                            offerTab.id +
+                                            "][equipments][`" +
+                                            _vm.types[
+                                              _vm.selected[offerTab.id][
+                                                offerContentTab.id
+                                              ]
+                                            ][0].id +
+                                            "`][" +
+                                            row.id +
+                                            "][price_trade]"
+                                        },
+                                        domProps: { value: row.price_trade },
+                                        on: {
+                                          input: function($event) {
+                                            if ($event.target.composing) {
+                                              return
+                                            }
+                                            _vm.$set(
+                                              row,
+                                              "price_trade",
+                                              $event.target.value
+                                            )
+                                          }
+                                        }
+                                      }),
+                                      _vm._v(" "),
+                                      _c("input", {
+                                        directives: [
+                                          {
+                                            name: "model",
+                                            rawName: "v-model",
+                                            value: row.price_small_trade,
+                                            expression: "row.price_small_trade"
+                                          }
+                                        ],
+                                        attrs: {
+                                          type: "hidden",
+                                          hidden: "hidden",
+                                          name:
+                                            "offer_group[offers][" +
+                                            offerTab.id +
+                                            "][equipments][`" +
+                                            _vm.types[
+                                              _vm.selected[offerTab.id][
+                                                offerContentTab.id
+                                              ]
+                                            ][0].id +
+                                            "`][" +
+                                            row.id +
+                                            "][price_small_trade]"
+                                        },
+                                        domProps: {
+                                          value: row.price_small_trade
+                                        },
+                                        on: {
+                                          input: function($event) {
+                                            if ($event.target.composing) {
+                                              return
+                                            }
+                                            _vm.$set(
+                                              row,
+                                              "price_small_trade",
+                                              $event.target.value
+                                            )
+                                          }
+                                        }
+                                      }),
+                                      _vm._v(" "),
+                                      _c("input", {
+                                        directives: [
+                                          {
+                                            name: "model",
+                                            rawName: "v-model",
+                                            value: row.price_special,
+                                            expression: "row.price_special"
+                                          }
+                                        ],
+                                        attrs: {
+                                          type: "hidden",
+                                          hidden: "hidden",
+                                          name:
+                                            "offer_group[offers][" +
+                                            offerTab.id +
+                                            "][equipments][`" +
+                                            _vm.types[
+                                              _vm.selected[offerTab.id][
+                                                offerContentTab.id
+                                              ]
+                                            ][0].id +
+                                            "`][" +
+                                            row.id +
+                                            "][price_special]"
+                                        },
+                                        domProps: { value: row.price_special },
+                                        on: {
+                                          input: function($event) {
+                                            if ($event.target.composing) {
+                                              return
+                                            }
+                                            _vm.$set(
+                                              row,
+                                              "price_special",
+                                              $event.target.value
+                                            )
+                                          }
+                                        }
+                                      }),
+                                      _vm._v(" "),
+                                      _c("input", {
+                                        directives: [
+                                          {
+                                            name: "model",
+                                            rawName: "v-model",
+                                            value: row.comment,
+                                            expression: "row.comment"
+                                          }
+                                        ],
+                                        attrs: {
+                                          type: "hidden",
+                                          hidden: "hidden",
+                                          name:
+                                            "offer_group[offers][" +
+                                            offerTab.id +
+                                            "][equipments][`" +
+                                            _vm.types[
+                                              _vm.selected[offerTab.id][
+                                                offerContentTab.id
+                                              ]
+                                            ][0].id +
+                                            "`][" +
+                                            row.id +
+                                            "][comment]"
+                                        },
+                                        domProps: { value: row.comment },
+                                        on: {
+                                          input: function($event) {
+                                            if ($event.target.composing) {
+                                              return
+                                            }
+                                            _vm.$set(
+                                              row,
+                                              "comment",
+                                              $event.target.value
+                                            )
+                                          }
+                                        }
+                                      }),
+                                      _vm._v(" "),
+                                      _c("td", [
                                         _c("input", {
                                           directives: [
                                             {
                                               name: "model",
                                               rawName: "v-model",
-                                              value: row.id,
-                                              expression: "row.id"
+                                              value: row.code,
+                                              expression: "row.code"
                                             }
                                           ],
                                           attrs: {
-                                            type: "hidden",
-                                            hidden: "hidden",
+                                            type: "text",
                                             name:
                                               "offer_group[offers][" +
                                               offerTab.id +
@@ -51443,519 +51655,289 @@ var render = function() {
                                               ][0].id +
                                               "`][" +
                                               row.id +
-                                              "][id]"
+                                              "][code]"
                                           },
-                                          domProps: { value: row.id },
+                                          domProps: { value: row.code },
                                           on: {
+                                            keyup: function($event) {
+                                              _vm.searchEquipmentByCode(
+                                                row.code,
+                                                row.id
+                                              )
+                                            },
                                             input: function($event) {
                                               if ($event.target.composing) {
                                                 return
                                               }
                                               _vm.$set(
                                                 row,
-                                                "id",
+                                                "code",
                                                 $event.target.value
                                               )
                                             }
                                           }
                                         }),
                                         _vm._v(" "),
-                                        _c("input", {
-                                          directives: [
-                                            {
-                                              name: "model",
-                                              rawName: "v-model",
-                                              value: row.description,
-                                              expression: "row.description"
-                                            }
-                                          ],
-                                          attrs: {
-                                            type: "hidden",
-                                            hidden: "hidden",
-                                            name:
-                                              "offer_group[offers][" +
-                                              offerTab.id +
-                                              "][equipments][`" +
-                                              _vm.types[
-                                                _vm.selected[offerTab.id][
-                                                  offerContentTab.id
-                                                ]
-                                              ][0].id +
-                                              "`][" +
-                                              row.id +
-                                              "][description]"
-                                          },
-                                          domProps: { value: row.description },
-                                          on: {
-                                            input: function($event) {
-                                              if ($event.target.composing) {
-                                                return
-                                              }
-                                              _vm.$set(
-                                                row,
-                                                "description",
-                                                $event.target.value
-                                              )
-                                            }
-                                          }
-                                        }),
-                                        _vm._v(" "),
-                                        _c("input", {
-                                          directives: [
-                                            {
-                                              name: "model",
-                                              rawName: "v-model",
-                                              value: row.price_trade,
-                                              expression: "row.price_trade"
-                                            }
-                                          ],
-                                          attrs: {
-                                            type: "hidden",
-                                            hidden: "hidden",
-                                            name:
-                                              "offer_group[offers][" +
-                                              offerTab.id +
-                                              "][equipments][`" +
-                                              _vm.types[
-                                                _vm.selected[offerTab.id][
-                                                  offerContentTab.id
-                                                ]
-                                              ][0].id +
-                                              "`][" +
-                                              row.id +
-                                              "][price_trade]"
-                                          },
-                                          domProps: { value: row.price_trade },
-                                          on: {
-                                            input: function($event) {
-                                              if ($event.target.composing) {
-                                                return
-                                              }
-                                              _vm.$set(
-                                                row,
-                                                "price_trade",
-                                                $event.target.value
-                                              )
-                                            }
-                                          }
-                                        }),
-                                        _vm._v(" "),
-                                        _c("input", {
-                                          directives: [
-                                            {
-                                              name: "model",
-                                              rawName: "v-model",
-                                              value: row.price_small_trade,
-                                              expression:
-                                                "row.price_small_trade"
-                                            }
-                                          ],
-                                          attrs: {
-                                            type: "hidden",
-                                            hidden: "hidden",
-                                            name:
-                                              "offer_group[offers][" +
-                                              offerTab.id +
-                                              "][equipments][`" +
-                                              _vm.types[
-                                                _vm.selected[offerTab.id][
-                                                  offerContentTab.id
-                                                ]
-                                              ][0].id +
-                                              "`][" +
-                                              row.id +
-                                              "][price_small_trade]"
-                                          },
-                                          domProps: {
-                                            value: row.price_small_trade
-                                          },
-                                          on: {
-                                            input: function($event) {
-                                              if ($event.target.composing) {
-                                                return
-                                              }
-                                              _vm.$set(
-                                                row,
-                                                "price_small_trade",
-                                                $event.target.value
-                                              )
-                                            }
-                                          }
-                                        }),
-                                        _vm._v(" "),
-                                        _c("input", {
-                                          directives: [
-                                            {
-                                              name: "model",
-                                              rawName: "v-model",
-                                              value: row.price_special,
-                                              expression: "row.price_special"
-                                            }
-                                          ],
-                                          attrs: {
-                                            type: "hidden",
-                                            hidden: "hidden",
-                                            name:
-                                              "offer_group[offers][" +
-                                              offerTab.id +
-                                              "][equipments][`" +
-                                              _vm.types[
-                                                _vm.selected[offerTab.id][
-                                                  offerContentTab.id
-                                                ]
-                                              ][0].id +
-                                              "`][" +
-                                              row.id +
-                                              "][price_special]"
-                                          },
-                                          domProps: {
-                                            value: row.price_special
-                                          },
-                                          on: {
-                                            input: function($event) {
-                                              if ($event.target.composing) {
-                                                return
-                                              }
-                                              _vm.$set(
-                                                row,
-                                                "price_special",
-                                                $event.target.value
-                                              )
-                                            }
-                                          }
-                                        }),
-                                        _vm._v(" "),
-                                        _c("input", {
-                                          directives: [
-                                            {
-                                              name: "model",
-                                              rawName: "v-model",
-                                              value: row.comment,
-                                              expression: "row.comment"
-                                            }
-                                          ],
-                                          attrs: {
-                                            type: "hidden",
-                                            hidden: "hidden",
-                                            name:
-                                              "offer_group[offers][" +
-                                              offerTab.id +
-                                              "][equipments][`" +
-                                              _vm.types[
-                                                _vm.selected[offerTab.id][
-                                                  offerContentTab.id
-                                                ]
-                                              ][0].id +
-                                              "`][" +
-                                              row.id +
-                                              "][comment]"
-                                          },
-                                          domProps: { value: row.comment },
-                                          on: {
-                                            input: function($event) {
-                                              if ($event.target.composing) {
-                                                return
-                                              }
-                                              _vm.$set(
-                                                row,
-                                                "comment",
-                                                $event.target.value
-                                              )
-                                            }
-                                          }
-                                        }),
-                                        _vm._v(" "),
-                                        _c("td", [
-                                          _c("input", {
+                                        _c(
+                                          "ul",
+                                          {
                                             directives: [
                                               {
-                                                name: "model",
-                                                rawName: "v-model",
-                                                value: row.code,
-                                                expression: "row.code"
+                                                name: "show",
+                                                rawName: "v-show",
+                                                value:
+                                                  _vm.autocompletesDisplays[
+                                                    row.id
+                                                  ],
+                                                expression:
+                                                  "autocompletesDisplays[row.id]"
                                               }
                                             ],
+                                            staticClass: "autocomplete-results",
                                             attrs: {
-                                              type: "text",
-                                              name:
-                                                "offer_group[offers][" +
-                                                offerTab.id +
-                                                "][equipments][`" +
-                                                _vm.types[
-                                                  _vm.selected[offerTab.id][
-                                                    offerContentTab.id
-                                                  ]
-                                                ][0].id +
-                                                "`][" +
-                                                row.id +
-                                                "][code]"
-                                            },
-                                            domProps: { value: row.code },
-                                            on: {
-                                              keyup: function($event) {
-                                                _vm.searchEquipmentByCode(
-                                                  row.code,
-                                                  row.id
-                                                )
-                                              },
-                                              input: function($event) {
-                                                if ($event.target.composing) {
-                                                  return
-                                                }
-                                                _vm.$set(
-                                                  row,
-                                                  "code",
-                                                  $event.target.value
-                                                )
-                                              }
+                                              id:
+                                                "autocomplete-results-" + row.id
                                             }
-                                          }),
-                                          _vm._v(" "),
-                                          _c(
-                                            "ul",
-                                            {
-                                              directives: [
-                                                {
-                                                  name: "show",
-                                                  rawName: "v-show",
-                                                  value:
-                                                    _vm.autocompletesDisplays[
-                                                      row.id
-                                                    ],
-                                                  expression:
-                                                    "autocompletesDisplays[row.id]"
-                                                }
-                                              ],
-                                              staticClass:
-                                                "autocomplete-results",
-                                              attrs: {
-                                                id:
-                                                  "autocomplete-results-" +
-                                                  row.id
-                                              }
-                                            },
-                                            [
-                                              _vm.isLoading
-                                                ? _c(
+                                          },
+                                          [
+                                            _vm.isLoading
+                                              ? _c(
+                                                  "li",
+                                                  { staticClass: "loading" },
+                                                  [
+                                                    _vm._v(
+                                                      "\n                                                Поиск...\n                                            "
+                                                    )
+                                                  ]
+                                                )
+                                              : _vm._l(_vm.results, function(
+                                                  result,
+                                                  i
+                                                ) {
+                                                  return _c(
                                                     "li",
-                                                    { staticClass: "loading" },
+                                                    {
+                                                      key: i,
+                                                      staticClass:
+                                                        "autocomplete-result",
+                                                      on: {
+                                                        click: function(
+                                                          $event
+                                                        ) {
+                                                          _vm.setResult(
+                                                            result,
+                                                            offerTab.id,
+                                                            offerContentTab.id,
+                                                            row.id
+                                                          )
+                                                        }
+                                                      }
+                                                    },
                                                     [
                                                       _vm._v(
-                                                        "\n                                                Поиск...\n                                            "
+                                                        "\n                                                " +
+                                                          _vm._s(
+                                                            result["code"]
+                                                          ) +
+                                                          "\n                                            "
                                                       )
                                                     ]
                                                   )
-                                                : _vm._l(_vm.results, function(
-                                                    result,
-                                                    i
-                                                  ) {
-                                                    return _c(
-                                                      "li",
-                                                      {
-                                                        key: i,
-                                                        staticClass:
-                                                          "autocomplete-result",
-                                                        on: {
-                                                          click: function(
-                                                            $event
-                                                          ) {
-                                                            _vm.setResult(
-                                                              result,
-                                                              offerTab.id,
-                                                              offerContentTab.id,
-                                                              row.id
-                                                            )
-                                                          }
-                                                        }
-                                                      },
-                                                      [
-                                                        _vm._v(
-                                                          "\n                                                " +
-                                                            _vm._s(
-                                                              result["code"]
-                                                            ) +
-                                                            "\n                                            "
-                                                        )
-                                                      ]
-                                                    )
-                                                  })
-                                            ],
-                                            2
-                                          )
-                                        ]),
-                                        _vm._v(" "),
-                                        _c("td", [
-                                          _c("input", {
-                                            directives: [
-                                              {
-                                                name: "model",
-                                                rawName: "v-model",
-                                                value: row.name,
-                                                expression: "row.name"
+                                                })
+                                          ],
+                                          2
+                                        )
+                                      ]),
+                                      _vm._v(" "),
+                                      _c("td", [
+                                        _c("input", {
+                                          directives: [
+                                            {
+                                              name: "model",
+                                              rawName: "v-model",
+                                              value: row.name,
+                                              expression: "row.name"
+                                            }
+                                          ],
+                                          attrs: {
+                                            type: "text",
+                                            name:
+                                              "offer_group[offers][" +
+                                              offerTab.id +
+                                              "][equipments][`" +
+                                              _vm.types[
+                                                _vm.selected[offerTab.id][
+                                                  offerContentTab.id
+                                                ]
+                                              ][0].id +
+                                              "`][" +
+                                              row.id +
+                                              "][name]"
+                                          },
+                                          domProps: { value: row.name },
+                                          on: {
+                                            input: function($event) {
+                                              if ($event.target.composing) {
+                                                return
                                               }
-                                            ],
-                                            attrs: {
-                                              type: "text",
-                                              name:
-                                                "offer_group[offers][" +
-                                                offerTab.id +
-                                                "][equipments][`" +
-                                                _vm.types[
-                                                  _vm.selected[offerTab.id][
-                                                    offerContentTab.id
-                                                  ]
-                                                ][0].id +
-                                                "`][" +
-                                                row.id +
-                                                "][name]"
-                                            },
-                                            domProps: { value: row.name },
+                                              _vm.$set(
+                                                row,
+                                                "name",
+                                                $event.target.value
+                                              )
+                                            }
+                                          }
+                                        })
+                                      ]),
+                                      _vm._v(" "),
+                                      _c("td", [
+                                        _c("input", {
+                                          directives: [
+                                            {
+                                              name: "model",
+                                              rawName: "v-model",
+                                              value: row.points,
+                                              expression: "row.points"
+                                            }
+                                          ],
+                                          attrs: {
+                                            type: "text",
+                                            name:
+                                              "offer_group[offers][" +
+                                              offerTab.id +
+                                              "][equipments][`" +
+                                              _vm.types[
+                                                _vm.selected[offerTab.id][
+                                                  offerContentTab.id
+                                                ]
+                                              ][0].id +
+                                              "`][" +
+                                              row.id +
+                                              "][points]"
+                                          },
+                                          domProps: { value: row.points },
+                                          on: {
+                                            input: function($event) {
+                                              if ($event.target.composing) {
+                                                return
+                                              }
+                                              _vm.$set(
+                                                row,
+                                                "points",
+                                                $event.target.value
+                                              )
+                                            }
+                                          }
+                                        })
+                                      ]),
+                                      _vm._v(" "),
+                                      _c("td", [
+                                        _c("input", {
+                                          directives: [
+                                            {
+                                              name: "model",
+                                              rawName: "v-model",
+                                              value: row.quantity,
+                                              expression: "row.quantity"
+                                            }
+                                          ],
+                                          attrs: {
+                                            type: "number",
+                                            name:
+                                              "offer_group[offers][" +
+                                              offerTab.id +
+                                              "][equipments][`" +
+                                              _vm.types[
+                                                _vm.selected[offerTab.id][
+                                                  offerContentTab.id
+                                                ]
+                                              ][0].id +
+                                              "`][" +
+                                              row.id +
+                                              "][quantity]"
+                                          },
+                                          domProps: { value: row.quantity },
+                                          on: {
+                                            input: function($event) {
+                                              if ($event.target.composing) {
+                                                return
+                                              }
+                                              _vm.$set(
+                                                row,
+                                                "quantity",
+                                                $event.target.value
+                                              )
+                                            }
+                                          }
+                                        })
+                                      ]),
+                                      _vm._v(" "),
+                                      _c("td", [
+                                        _c("input", {
+                                          directives: [
+                                            {
+                                              name: "model",
+                                              rawName: "v-model",
+                                              value: row.price,
+                                              expression: "row.price"
+                                            }
+                                          ],
+                                          attrs: {
+                                            type: "text",
+                                            name:
+                                              "offer_group[offers][" +
+                                              offerTab.id +
+                                              "][equipments][`" +
+                                              _vm.types[
+                                                _vm.selected[offerTab.id][
+                                                  offerContentTab.id
+                                                ]
+                                              ][0].id +
+                                              "`][" +
+                                              row.id +
+                                              "][price]"
+                                          },
+                                          domProps: { value: row.price },
+                                          on: {
+                                            input: function($event) {
+                                              if ($event.target.composing) {
+                                                return
+                                              }
+                                              _vm.$set(
+                                                row,
+                                                "price",
+                                                $event.target.value
+                                              )
+                                            }
+                                          }
+                                        })
+                                      ]),
+                                      _vm._v(" "),
+                                      _c("td", [
+                                        _c(
+                                          "span",
+                                          {
                                             on: {
-                                              input: function($event) {
-                                                if ($event.target.composing) {
-                                                  return
-                                                }
-                                                _vm.$set(
-                                                  row,
-                                                  "name",
-                                                  $event.target.value
+                                              click: function($event) {
+                                                _vm.deleteRow(
+                                                  offerTab.id,
+                                                  offerContentTab.id,
+                                                  row.id
                                                 )
                                               }
                                             }
-                                          })
-                                        ]),
-                                        _vm._v(" "),
-                                        _c("td", [
-                                          _c("input", {
-                                            directives: [
-                                              {
-                                                name: "model",
-                                                rawName: "v-model",
-                                                value: row.points,
-                                                expression: "row.points"
-                                              }
-                                            ],
-                                            attrs: {
-                                              type: "text",
-                                              name:
-                                                "offer_group[offers][" +
-                                                offerTab.id +
-                                                "][equipments][`" +
-                                                _vm.types[
-                                                  _vm.selected[offerTab.id][
-                                                    offerContentTab.id
-                                                  ]
-                                                ][0].id +
-                                                "`][" +
-                                                row.id +
-                                                "][points]"
-                                            },
-                                            domProps: { value: row.points },
-                                            on: {
-                                              input: function($event) {
-                                                if ($event.target.composing) {
-                                                  return
-                                                }
-                                                _vm.$set(
-                                                  row,
-                                                  "points",
-                                                  $event.target.value
-                                                )
-                                              }
-                                            }
-                                          })
-                                        ]),
-                                        _vm._v(" "),
-                                        _c("td", [
-                                          _c("input", {
-                                            directives: [
-                                              {
-                                                name: "model",
-                                                rawName: "v-model",
-                                                value: row.quantity,
-                                                expression: "row.quantity"
-                                              }
-                                            ],
-                                            attrs: {
-                                              type: "text",
-                                              name:
-                                                "offer_group[offers][" +
-                                                offerTab.id +
-                                                "][equipments][`" +
-                                                _vm.types[
-                                                  _vm.selected[offerTab.id][
-                                                    offerContentTab.id
-                                                  ]
-                                                ][0].id +
-                                                "`][" +
-                                                row.id +
-                                                "][quantity]"
-                                            },
-                                            domProps: { value: row.quantity },
-                                            on: {
-                                              input: function($event) {
-                                                if ($event.target.composing) {
-                                                  return
-                                                }
-                                                _vm.$set(
-                                                  row,
-                                                  "quantity",
-                                                  $event.target.value
-                                                )
-                                              }
-                                            }
-                                          })
-                                        ]),
-                                        _vm._v(" "),
-                                        _c("td", [
-                                          _c("input", {
-                                            directives: [
-                                              {
-                                                name: "model",
-                                                rawName: "v-model",
-                                                value: row.price,
-                                                expression: "row.price"
-                                              }
-                                            ],
-                                            attrs: {
-                                              type: "text",
-                                              name:
-                                                "offer_group[offers][" +
-                                                offerTab.id +
-                                                "][equipments][`" +
-                                                _vm.types[
-                                                  _vm.selected[offerTab.id][
-                                                    offerContentTab.id
-                                                  ]
-                                                ][0].id +
-                                                "`][" +
-                                                row.id +
-                                                "][price]"
-                                            },
-                                            domProps: { value: row.price },
-                                            on: {
-                                              input: function($event) {
-                                                if ($event.target.composing) {
-                                                  return
-                                                }
-                                                _vm.$set(
-                                                  row,
-                                                  "price",
-                                                  $event.target.value
-                                                )
-                                              }
-                                            }
-                                          })
-                                        ])
-                                      ]
-                                    )
+                                          },
+                                          [_vm._v("X")]
+                                        )
+                                      ])
+                                    ])
                                   }),
                                   _vm._v(" "),
                                   _c("tr", [
                                     _c(
                                       "td",
                                       {
-                                        attrs: { colspan: "5" },
+                                        attrs: { colspan: "6" },
                                         on: {
                                           click: function($event) {
                                             $event.preventDefault()
@@ -52004,7 +51986,9 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", { attrs: { scope: "col" } }, [_vm._v("Количество")]),
         _vm._v(" "),
-        _c("th", { attrs: { scope: "col" } }, [_vm._v("Цена")])
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Цена")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } })
       ])
     ])
   }
@@ -52107,6 +52091,24 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: ['offerGroup'],
@@ -52136,55 +52138,69 @@ var render = function() {
         _c("h2", [_vm._v(_vm._s(_vm.offerGroup.offer_group.name))]),
         _vm._v(" "),
         _vm._l(_vm.offerGroup.offer_group.offers, function(offerData) {
-          return _c(
-            "div",
-            { staticClass: "kp-total-offer" },
-            [
-              _c("h3", [_vm._v(_vm._s(offerData.name))]),
-              _vm._v(" "),
-              _vm._l(offerData.equipments, function(offerContent) {
-                return _c("div", { staticClass: "kp-total-offer-content" }, [
-                  _c("h4", [_vm._v(_vm._s(offerContent.name))]),
-                  _vm._v(" "),
-                  _c("h4", { staticClass: "text-capitalize" }, [
-                    _vm._v(_vm._s(offerContent.type_name))
-                  ]),
-                  _vm._v(" "),
-                  _c(
-                    "table",
-                    {
-                      staticClass:
-                        "table table-striped table-hover table-bordered"
-                    },
-                    [
-                      _vm._m(0, true),
-                      _vm._v(" "),
-                      _c(
-                        "tbody",
-                        _vm._l(offerContent, function(row) {
-                          return row.code
-                            ? _c("tr", [
-                                _c("td", [_vm._v(_vm._s(row.code))]),
-                                _vm._v(" "),
-                                _c("td", [_vm._v(_vm._s(row.name))]),
-                                _vm._v(" "),
-                                _c("td", [_vm._v(_vm._s(row.points))]),
-                                _vm._v(" "),
-                                _c("td", [_vm._v(_vm._s(row.quantity))]),
-                                _vm._v(" "),
-                                _c("td", [_vm._v(_vm._s(row.price))])
-                              ])
-                            : _vm._e()
-                        }),
-                        0
-                      )
-                    ]
-                  )
-                ])
-              })
-            ],
-            2
-          )
+          return _c("div", { staticClass: "kp-total-offer" }, [
+            _c("h3", [_vm._v(_vm._s(offerData.name))]),
+            _vm._v(" "),
+            offerData.equipments.type_name === "работа"
+              ? _c(
+                  "table",
+                  {
+                    staticClass:
+                      "table table-striped table-hover table-bordered"
+                  },
+                  [
+                    _vm._m(0, true),
+                    _vm._v(" "),
+                    _c(
+                      "tbody",
+                      _vm._l(offerData.equipments, function(row) {
+                        return row.quantity && row.quantity != "0"
+                          ? _c("tr", [
+                              _c("td", [_vm._v(_vm._s(row.code))]),
+                              _vm._v(" "),
+                              _c("td", [_vm._v(_vm._s(row.name))]),
+                              _vm._v(" "),
+                              _c("td", [_vm._v(_vm._s(row.points))]),
+                              _vm._v(" "),
+                              _c("td", [_vm._v(_vm._s(row.quantity))])
+                            ])
+                          : _vm._e()
+                      }),
+                      0
+                    )
+                  ]
+                )
+              : _c(
+                  "table",
+                  {
+                    staticClass:
+                      "table table-striped table-hover table-bordered"
+                  },
+                  [
+                    _vm._m(1, true),
+                    _vm._v(" "),
+                    _c(
+                      "tbody",
+                      _vm._l(offerData.equipments, function(row) {
+                        return row.quantity && row.quantity != "0"
+                          ? _c("tr", [
+                              _c("td", [_vm._v(_vm._s(row.code))]),
+                              _vm._v(" "),
+                              _c("td", [_vm._v(_vm._s(row.name))]),
+                              _vm._v(" "),
+                              _c("td", [_vm._v(_vm._s(row.description))]),
+                              _vm._v(" "),
+                              _c("td", [_vm._v(_vm._s(row.quantity))]),
+                              _vm._v(" "),
+                              _c("td", [_vm._v(_vm._s(row.price))])
+                            ])
+                          : _vm._e()
+                      }),
+                      0
+                    )
+                  ]
+                )
+          ])
         })
       ],
       2
@@ -52203,6 +52219,22 @@ var staticRenderFns = [
         _c("th", { attrs: { scope: "col" } }, [_vm._v("Название")]),
         _vm._v(" "),
         _c("th", { attrs: { scope: "col" } }, [_vm._v("Ед.измерения")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Количество")])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Артикул")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Название")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Описание")]),
         _vm._v(" "),
         _c("th", { attrs: { scope: "col" } }, [_vm._v("Количество")]),
         _vm._v(" "),

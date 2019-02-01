@@ -22,6 +22,10 @@ class Type extends Model
         return $this->belongsTo(Equipment::class);
     }
 
+    public function equipment(){
+        return $this->belongsToMany(Equipment::class, 'equipment_type', 'type_id', 'equipment_id');
+    }
+
     public function contacts(){
         return $this->belongsTo(Contact::class);
     }
