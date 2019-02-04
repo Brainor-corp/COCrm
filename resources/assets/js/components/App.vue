@@ -52,6 +52,27 @@
                     this.offerGroup = newOfferGroup;
                 }else{
                     this.offerGroup = deparam($('#kp-generate-form').serialize());
+                    console.log(this.offerGroup['offer_group']);
+                    while(true) {
+                        var stop = true;
+                        for (let offer = 0; offer < this.offerGroup['offer_group']['offers'].length; offer++) {
+                            for (let equipment_tab = 0; equipment_tab < this.offerGroup['offer_group']['offers'][offer]['equipments']['equipment'].length; equipment_tab++) {
+                                for (let equipment = 0; equipment < this.offerGroup['offer_group']['offers'][offer]['equipments']['equipment'][equipment_tab].length; equipment++) {
+                                    if (this.offerGroup['offer_group']['offers'][offer]['equipments']['equipment'][equipment_tab][equipment].quantity === "" || this.offerGroup['offer_group']['offers'][offer]['equipments']['equipment'][equipment_tab][equipment].quantity < 1) {
+                                        this.offerGroup['offer_group']['offers'][offer]['equipments']['equipment'][equipment_tab].splice(equipment, 1);
+                                        stop = false;
+                                        console.log('work');//todo остановился здесь
+                                        break;
+                                    }
+                                }
+                            }
+                            for (let work = 0; work < this.offerGroup['offer_group']['offers'][offer]['equipments'].work.length; work++) {
+
+                            }
+                        }
+                        if(stop)
+                            break;
+                    }
                 }
             }
         }
