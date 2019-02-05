@@ -16,7 +16,7 @@ class SettingsController extends Controller
 {
     public function getTaxBySlug(Request $request){
         if(isset($request->taxSlug)){
-            return Setting::where('slug', $request->taxSlug)->get();
+            return Setting::where('slug', $request->taxSlug)->first();
         }
         else{
             return Setting::all();

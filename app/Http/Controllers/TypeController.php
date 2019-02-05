@@ -8,13 +8,22 @@
 
 namespace App\Http\Controllers;
 
+use App\Equipment;
 use App\Type;
 use Illuminate\Http\Request;
 
 class TypeController extends Controller
 
 {
-    public function getTypesByClass(Request $request){
+    public function getTypesByClass(Request $request) {
         return Type::where('class', $request->class)->get();
+    }
+
+    public function getAllEquipmentTypes() {
+        return Type::whereIn('class', ['equipment', 'work'])->get()->groupBy('id');
+    }
+
+    public function getDefaultTypesWithEquipment(){
+        return Type::where('optional', 'default')->with('equipment')->get();
     }
 }

@@ -15,9 +15,9 @@ use App\Type;
 use Illuminate\Http\Request;
 
 class OfferController extends Controller
-
 {
-    public function saveOfferGroup(Request $request){
+    public function saveOfferGroup1(Request $request){
+        return $request->offer_group;
         $group = $request->offer_group;
         if(!isset($group)){
             return "no";
@@ -78,140 +78,246 @@ class OfferController extends Controller
         return 'ok';
     }
 
+    public function saveOfferGroup(Request $request){
+        $group = $request->offer_group;
+        if(!isset($group)){
+            return "no";
+        }
+        $createGroup = new OfferGroup();
+        $createGroup->name = $group['name'];
+        $createGroup->save();
+        foreach ($group->offers as $offer){
+            $createOffer = new Offer();
+            $createOffer->tax = $offer['tax'];
+            $createOffer->name = $offer['name'];
+            foreach ($offer->equipments->equipment as $equipment_tab){
+                foreach($equipment_tab as $equipment){
+                    if($equipment['base_id'] === -1){
+
+                    }
+                }
+            }
+            foreach ($offer->equipments->work as $work_tab){
+                foreach($work_tab as $work){
+
+                }
+            }
+        }
+        return "ok";
+    }
+
     public function testRequest(){
-        $offer_group = [
-            'name'=>'offergrouptest',
-            'offers'=>[
-                '0'=>[
-                    'equipments'=>[//!!ВАЖНО, смотреть на названия полей! class!= comment (в новые эелементы нужен class и слаг type`a, в старых не обязателен)
-                        '0'=>[
-                            'id'=>'new',
-                            'code'=>'11111',
-                            'name'=>'eq1',
-                            'description'=>'11111',//nullable
-                            'quantity'=>'11111',
-                            'points'=>'11111',
-                            'price'=>'11111',
-                            'price_trade'=>'11111',
-                            'price_small_trade'=>'11111',
-                            'price_special'=>'11111',
-                            'class'=>'equipment',
-                            'type'=>'telephon',
-                            'comment'=>'11111',//nullable
-                        ],
-                        '1'=>[
-                            'id'=>'1',
-                            'code'=>'11111',
-                            'name'=>'11111',
-                            'description'=>'11111',//nullable
-                            'quantity'=>'11111',
-                            'points'=>'11111',
-                            'price'=>'11111',
-                            'price_trade'=>'11111',
-                            'price_small_trade'=>'11111',
-                            'price_special'=>'11111',
-                            'comment'=>'11111',//nullable
-                        ],
-                    ],
-                    'works'=>[
-                        '0'=>[
-                            'id'=>'new',
-                            'code'=>'11111',
-                            'name'=>'w1',
-                            'description'=>'11111',
-                            'quantity'=>'11111',
-                            'points'=>'11111',
-                            'price'=>'11111',
-                            'price_trade'=>'11111',
-                            'price_small_trade'=>'11111',
-                            'price_special'=>'11111',
-                            'class'=>'work',
-                            'type'=>'telephon',
-                            'comment'=>'11111',//nullable
-                        ],
-                        '1'=>[
-                            'id'=>'1',
-                            'code'=>'11111',
-                            'name'=>'11111',
-                            'description'=>'11111',
-                            'quantity'=>'11111',
-                            'points'=>'11111',
-                            'price'=>'11111',
-                            'price_trade'=>'11111',
-                            'price_small_trade'=>'11111',
-                            'price_special'=>'11111',
-                            'comment'=>'11111',
-                        ],
-                    ],
-                    'tax'=>6,
-                    'name'=>'offer1',
-                ],
-                '1'=>[
-                    'equipments'=>[
-                        '0'=>[
-                            'id'=>'new',
-                            'code'=>'11111',
-                            'name'=>'eq2',
-                            'description'=>'11111',
-                            'quantity'=>'11111',
-                            'points'=>'11111',
-                            'price'=>'11111',
-                            'price_trade'=>'11111',
-                            'price_small_trade'=>'11111',
-                            'price_special'=>'11111',
-                            'comment'=>'11111',//nullable
-                            'class'=>'equipment',
-                            'type'=>'telephon',
-                        ],
-                        '1'=>[
-                            'id'=>'2',
-                            'code'=>'11111',
-                            'name'=>'11111',
-                            'description'=>'11111',
-                            'quantity'=>'11111',
-                            'points'=>'11111',
-                            'price'=>'11111',
-                            'price_trade'=>'11111',
-                            'price_small_trade'=>'11111',
-                            'price_special'=>'11111',
-                            'comment'=>'11111',
-                        ],
-                    ],
-                    'works'=>[
-                        '0'=>[
-                            'id'=>'2',
-                            'code'=>'11111',
-                            'name'=>'11111',
-                            'description'=>'11111',
-                            'quantity'=>'11111',
-                            'points'=>'11111',
-                            'price'=>'11111',
-                            'price_trade'=>'11111',
-                            'price_small_trade'=>'11111',
-                            'price_special'=>'11111',
-                            'comment'=>'11111',
-                        ],
-                        '1'=>[
-                            'id'=>'new',
-                            'code'=>'11111',
-                            'name'=>'w2',
-                            'description'=>'11111',
-                            'quantity'=>'11111',
-                            'points'=>'11111',
-                            'price'=>'11111',
-                            'price_trade'=>'11111',
-                            'price_small_trade'=>'11111',
-                            'price_special'=>'11111',
-                            'comment'=>'11111',//nullable
-                            'class'=>'work',
-                            'type'=>'telephon',
-                        ],
-                    ],
-                    'tax'=>6,
-                    'name'=>'offer2',
-                ],
-            ]
-        ];
+        $offer_group =
+            array (
+                'offer_group' =>
+                    array (
+                        'name' => 'offergrouptest',
+                        'offers' =>
+                            array (
+                                0 =>
+                                    array (
+                                        'name' => 'Вариант 1 (качество изображения: HD / 1 Мп / 1280x720)',
+                                        'tax' => '6',
+                                        'equipments' =>
+                                            array (
+                                                'equipment' =>
+                                                    array (
+                                                        0 =>
+                                                            array (
+                                                                0 =>
+                                                                    array (
+                                                                        'base_id' => '40',
+                                                                        'description' => '1 Мп, цветная купольная уличная антивандальная с ИК подсветкой до 15м. –40°...+50°C.',
+                                                                        'price_trade' => '11111',
+                                                                        'price_small_trade' => '11111',
+                                                                        'price_special' => '11111',
+                                                                        'comment' => '11111',
+                                                                        'type_id' => '4',
+                                                                        'code' => '11111',
+                                                                        'name' => 'Камера видеонаблюдения RVi-HDC311VB-C (3.6 мм). ',
+                                                                        'points' => '11111',
+                                                                        'quantity' => '11111',
+                                                                        'price' => '11111',
+                                                                    ),
+                                                                1 =>
+                                                                    array (
+                                                                        'base_id' => '-1',
+                                                                        'description' => '',
+                                                                        'price_trade' => '',
+                                                                        'price_small_trade' => '',
+                                                                        'price_special' => '',
+                                                                        'comment' => '',
+                                                                        'type_id' => '',
+                                                                        'code' => '123',
+                                                                        'name' => '123',
+                                                                        'points' => '',
+                                                                        'quantity' => '',
+                                                                        'price' => '',
+                                                                    ),
+                                                                2 =>
+                                                                    array (
+                                                                        'base_id' => '-1',
+                                                                        'description' => '',
+                                                                        'price_trade' => '23',
+                                                                        'price_small_trade' => '1331',
+                                                                        'price_special' => '123',
+                                                                        'comment' => '',
+                                                                        'type_id' => '5',
+                                                                        'code' => '12331',
+                                                                        'name' => 'otvertka',
+                                                                        'points' => 'R',
+                                                                        'quantity' => '1',
+                                                                        'price' => '12',
+                                                                    ),
+                                                            ),
+                                                        1 =>
+                                                            array (
+                                                                0 =>
+                                                                    array (
+                                                                        'base_id' => '1',
+                                                                        'description' => '',
+                                                                        'price_trade' => '11111',
+                                                                        'price_small_trade' => '11111',
+                                                                        'price_special' => '11111',
+                                                                        'comment' => '11111',
+                                                                        'type_id' => '5',
+                                                                        'code' => '123',
+                                                                        'name' => 'drel',
+                                                                        'points' => 'R',
+                                                                        'quantity' => '11111',
+                                                                        'price' => '11111',
+                                                                    ),
+                                                                1 =>
+                                                                    array (
+                                                                        'base_id' => '1',
+                                                                        'description' => '',
+                                                                        'price_trade' => '11111',
+                                                                        'price_small_trade' => '11111',
+                                                                        'price_special' => '11111',
+                                                                        'comment' => '11111',
+                                                                        'type_id' => '5',
+                                                                        'code' => '123',
+                                                                        'name' => 'drel',
+                                                                        'points' => 'R',
+                                                                        'quantity' => '11111',
+                                                                        'price' => '11111',
+                                                                    ),
+                                                            ),
+                                                    ),
+                                                'work' =>
+                                                    array (
+                                                        0 => NULL,
+                                                        1 => NULL,
+                                                        2 =>
+                                                            array (
+                                                                0 =>
+                                                                    array (
+                                                                        'base_id' => '41',
+                                                                        'description' => '11111',
+                                                                        'price_trade' => '11111',
+                                                                        'price_small_trade' => '11111',
+                                                                        'price_special' => '11111',
+                                                                        'comment' => '11111',
+                                                                        'type_id' => '2',
+                                                                        'code' => '111',
+                                                                        'name' => 'w1',
+                                                                        'points' => '11111',
+                                                                        'quantity' => '11111',
+                                                                        'price' => '11111',
+                                                                    ),
+                                                            ),
+                                                    ),
+                                            ),
+                                    ),
+                                1 =>
+                                    array (
+                                        'name' => 'Вариант 2 (качество изображения: Full HD / 2 Мп / 1920x1080)',
+                                        'tax' => '40',
+                                        'equipments' =>
+                                            array (
+                                                'equipment' =>
+                                                    array (
+                                                        0 =>
+                                                            array (
+                                                                0 =>
+                                                                    array (
+                                                                        'base_id' => '42',
+                                                                        'description' => '11111',
+                                                                        'price_trade' => '11111',
+                                                                        'price_small_trade' => '11111',
+                                                                        'price_special' => '11111',
+                                                                        'comment' => '11111',
+                                                                        'type_id' => '3',
+                                                                        'code' => '11',
+                                                                        'name' => 'eq2',
+                                                                        'points' => '11111',
+                                                                        'quantity' => '11111',
+                                                                        'price' => '11111',
+                                                                    ),
+                                                            ),
+                                                        1 =>
+                                                            array (
+                                                                0 =>
+                                                                    array (
+                                                                        'base_id' => '2',
+                                                                        'description' => '',
+                                                                        'price_trade' => '11111',
+                                                                        'price_small_trade' => '11111',
+                                                                        'price_special' => '11111',
+                                                                        'comment' => '11111',
+                                                                        'type_id' => '5',
+                                                                        'code' => '12331',
+                                                                        'name' => 'otvertka',
+                                                                        'points' => 'R',
+                                                                        'quantity' => '11111',
+                                                                        'price' => '11111',
+                                                                    ),
+                                                                1 =>
+                                                                    array (
+                                                                        'base_id' => '2',
+                                                                        'description' => '',
+                                                                        'price_trade' => '11111',
+                                                                        'price_small_trade' => '11111',
+                                                                        'price_special' => '11111',
+                                                                        'comment' => '11111',
+                                                                        'type_id' => '5',
+                                                                        'code' => '12331',
+                                                                        'name' => 'otvertka',
+                                                                        'points' => 'R',
+                                                                        'quantity' => '11111',
+                                                                        'price' => '11111',
+                                                                    ),
+                                                            ),
+                                                    ),
+                                                'work' =>
+                                                    array (
+                                                        0 => NULL,
+                                                        1 => NULL,
+                                                        2 =>
+                                                            array (
+                                                                0 =>
+                                                                    array (
+                                                                        'base_id' => '43',
+                                                                        'description' => '11111',
+                                                                        'price_trade' => '11111',
+                                                                        'price_small_trade' => '11111',
+                                                                        'price_special' => '11111',
+                                                                        'comment' => '11111',
+                                                                        'type_id' => '2',
+                                                                        'code' => '1111',
+                                                                        'name' => 'w2',
+                                                                        'points' => '11111',
+                                                                        'quantity' => '11111',
+                                                                        'price' => '11111',
+                                                                    ),
+                                                            ),
+                                                    ),
+                                            ),
+                                    ),
+                            ),
+                    ),
+            );
+        dd($offer_group);
         $request = new Request();
         $request->offer_group = $offer_group;
         dd( self::saveOfferGroup($request));
