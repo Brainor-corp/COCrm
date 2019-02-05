@@ -15,9 +15,9 @@ use App\Type;
 use Illuminate\Http\Request;
 
 class OfferController extends Controller
-
 {
-    public function saveOfferGroup(Request $request){
+    public function saveOfferGroup1(Request $request){
+        return $request->offer_group;
         $group = $request->offer_group;
         if(!isset($group)){
             return "no";
@@ -76,6 +76,34 @@ class OfferController extends Controller
             }
         }
         return 'ok';
+    }
+
+    public function saveOfferGroup(Request $request){
+        $group = $request->offer_group;
+        if(!isset($group)){
+            return "no";
+        }
+        $createGroup = new OfferGroup();
+        $createGroup->name = $group['name'];
+        $createGroup->save();
+        foreach ($group->offers as $offer){
+            $createOffer = new Offer();
+            $createOffer->tax = $offer['tax'];
+            $createOffer->name = $offer['name'];
+            foreach ($offer->equipments->equipment as $equipment_tab){
+                foreach($equipment_tab as $equipment){
+                    if($equipment['base_id'] === -1){
+
+                    }
+                }
+            }
+            foreach ($offer->equipments->work as $work_tab){
+                foreach($work_tab as $work){
+
+                }
+            }
+        }
+        return "ok";
     }
 
     public function testRequest(){

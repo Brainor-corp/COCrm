@@ -19,6 +19,7 @@
                             <select :id="'tax-select-'+offerTab.id" :name="'offer_group[offers]['+offerTab.id+'][tax]'" v-model="offerTab.tax">
                                 <option v-for="tax in taxes" :value="tax.value">{{ tax.value }}</option>
                             </select>
+                            <span @click="deleteOffer(offerTab.id)">X</span>
                         </a>
                     </li>
 
@@ -62,7 +63,6 @@
                                     </thead>
                                     <tbody>
                                     <tr v-for="row in offerContentTab.rows">
-                                        <!--<input type="hidden" hidden="hidden" :name="'offer_group[offers]['+offerTab.id+'][equipments]['+row.class+']['+offerContentTab.id+']['+row.id+'][id]'" v-model="row.id"/>-->
                                         <input type="hidden" hidden="hidden" :name="'offer_group[offers]['+offerTab.id+'][equipments]['+row.class+']['+offerContentTab.id+']['+row.id+'][base_id]'" v-model="row.base_id"/>
                                         <input type="hidden" hidden="hidden" :name="'offer_group[offers]['+offerTab.id+'][equipments]['+row.class+']['+offerContentTab.id+']['+row.id+'][description]'" v-model="row.description"/>
                                         <input type="hidden" hidden="hidden" :name="'offer_group[offers]['+offerTab.id+'][equipments]['+row.class+']['+offerContentTab.id+']['+row.id+'][price_trade]'" v-model="row.price_trade"/>
@@ -70,6 +70,7 @@
                                         <input type="hidden" hidden="hidden" :name="'offer_group[offers]['+offerTab.id+'][equipments]['+row.class+']['+offerContentTab.id+']['+row.id+'][price_special]'" v-model="row.price_special"/>
                                         <input type="hidden" hidden="hidden" :name="'offer_group[offers]['+offerTab.id+'][equipments]['+row.class+']['+offerContentTab.id+']['+row.id+'][comment]'" v-model="row.comment"/>
                                         <input type="hidden" hidden="hidden" :name="'offer_group[offers]['+offerTab.id+'][equipments]['+row.class+']['+offerContentTab.id+']['+row.id+'][type_id]'" v-model="row.type_id"/>
+                                        <input type="hidden" hidden="hidden" :name="'offer_group[offers]['+offerTab.id+'][equipments]['+row.class+']['+offerContentTab.id+']['+row.id+'][type]'" v-model="row.type"/>
                                         <td>
                                             <input type="text" @keyup="searchEquipmentByCode(row.code, row.id)" :name="'offer_group[offers]['+offerTab.id+'][equipments]['+row.class+']['+offerContentTab.id+']['+row.id+'][code]'" v-model="row.code" />
                                             <ul :id="'autocomplete-results-'+row.id" v-show="autocompletesDisplays[row.id]" class="autocomplete-results">
@@ -157,7 +158,6 @@
                 .then((res) => {
                     this.types = res.data;
                     this.types['new'] = [{'id': 1}];
-                    console.log(this.types);
 
                     return axios.post(window.location.href + 'getDefaultTypesWithEquipment');
                 })
@@ -176,19 +176,20 @@
                         });
                         this.selected[0].push( [res.data[i]['id']] );
                         if(res.data[i]['equipment'].length > 0){
-                            for (let j = 0; j < res.data[i]['equipment'].length ; j++) {
+                            for (let j = 0; j < res.data[i]['equipment'].length; j++) {
                                 this.offersContentTabs[0][i+1]['rows'].push({
                                     'id': j,
                                     'saveType': 'old',
                                     'base_id':  res.data[i]['equipment'][j].id,
                                     'name': res.data[i]['equipment'][j].name,
-                                    'quantity': res.data[i]['equipment'][j].quantity,
+                                    'quantity': res.data[i]['equipment'][j].pivot.quantity,
                                     'code': res.data[i]['equipment'][j].code,
-                                    'price': res.data[i]['equipment'][j].price,
-                                    'price_trade': res.data[i]['equipment'][j].price_trade,
-                                    'price_small_trade': res.data[i]['equipment'][j].price_small_trade,
-                                    'price_special': res.data[i]['equipment'][j].price_special,
-                                    'comment': res.data[i]['equipment'][j].comment,
+                                    'type': this.types[res.data[i]['equipment'][j].type_id][0].slug,
+                                    // 'price': res.data[i]['equipment'][j].pivot.price,
+                                    // 'price_trade': res.data[i]['equipment'][j].pivot.price_trade,
+                                    // 'price_small_trade': res.data[i]['equipment'][j].pivot.price_small_trade,
+                                    // 'price_special': res.data[i]['equipment'][j].pivot.price_special,
+                                    // 'comment': res.data[i]['equipment'][j].pivot.comment,
                                     'description': res.data[i]['equipment'][j].description,
                                     'class': res.data[i]['equipment'][j].class,
                                 });
@@ -215,7 +216,7 @@
             addOfferTab(){
                 let lastOfferTab,lastOfferTabId;
                 lastOfferTab = this.offersTabs[this.offersTabs.length - 1];
-                lastOfferTabId = lastOfferTab.id+1;
+                lastOfferTabId = lastOfferTab ? lastOfferTab.id+1 : 0;
                 this.offersTabs.push(
                     {
 
@@ -237,10 +238,12 @@
             },
             addOfferContentTab(offerTabId){
                 let lastOfferContentTab;
+                let lastOfferContentTabId;
                 lastOfferContentTab =  this.offersContentTabs[offerTabId][this.offersContentTabs[offerTabId].length - 1];
+                lastOfferContentTabId = lastOfferContentTab ? lastOfferContentTab.id+1 : 0;
                 this.offersContentTabs[offerTabId].push(
                     {
-                        id: lastOfferContentTab.id+1,
+                        id: lastOfferContentTabId,
                         name:'Новое оборудование',
                         rows:[]
                     }
@@ -274,6 +277,7 @@
                         price_special:'',
                         comment:'',
                         class: this.types[this.selected[offerTabId][offerContentTabId][0]][0].class,
+                        type: this.types[this.selected[offerTabId][offerContentTabId][0]][0].slug,
                     }
                 );
             },
@@ -289,7 +293,6 @@
                         code: codePart
                     })
                     .then(resp => {
-                        console.log(resp.data);
                         this.results = resp.data;
                         this.isLoading = false;
                     });
@@ -372,7 +375,7 @@
                                             price_special: equipment.pivot.price_special,
                                             comment: equipment.pivot.comment,
                                             type_id: equipment.type.id,
-                                            type: equipment.type.name,
+                                            type: equipment.type.slug,
                                             class: equipment.type.class,
                                         }
                                     );
@@ -426,6 +429,15 @@
                 for(let i = 0; i < this.offersContentTabs[offerTabId].length; i++){
                     if(this.offersContentTabs[offerTabId][i].id === offerContentTabId){
                         this.offersContentTabs[offerTabId].splice(i, 1);
+                        break;
+                    }
+                }
+            },
+            deleteOffer(offerTabId){
+                for(let i = 0; i < this.offersTabs.length; i++){
+                    if(this.offersTabs[i].id === offerTabId){
+                        this.offersTabs.splice(i, 1);
+                        this.offersContentTabs.splice(i, 1);
                         break;
                     }
                 }

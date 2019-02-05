@@ -40,18 +40,30 @@
                     </thead>
                     <tbody>
                         @php($totalEquipmentSum = 0)
+                        @php($consumableSum = 0)
                         @foreach($offer->equipments as $equipment)
                             @if($equipment->class == 'equipment')
-                                @php($totalEquipmentSum += $equipment->pivot->price * $equipment->pivot->quantity)
-                                <tr>
-                                    <td><img src="https://via.placeholder.com/100" alt=""></td>
-                                    <td class="align-middle" colspan="2"><b>{{ $equipment->name }}</b> {{ $equipment->description }}</td>
-                                    <td class="align-middle text-center">{{ $equipment->pivot->quantity }}</td>
-                                    <td class="align-middle text-center">{{ $equipment->pivot->price }}</td>
-                                    <td class="align-middle text-center">{{ $equipment->pivot->price * $equipment->pivot->quantity }}</td>
-                                </tr>
+                                @if($equipment->type->slug != 'rashodnye-materialy')
+                                    @php($totalEquipmentSum += $equipment->pivot->price * $equipment->pivot->quantity)
+                                    <tr>
+                                        <td><img src="https://via.placeholder.com/100" alt=""></td>
+                                        <td class="align-middle" colspan="2"><b>{{ $equipment->name }}</b> {{ $equipment->description }}</td>
+                                        <td class="align-middle text-center">{{ $equipment->pivot->quantity }}</td>
+                                        <td class="align-middle text-center">{{ $equipment->pivot->price }}</td>
+                                        <td class="align-middle text-center">{{ $equipment->pivot->price * $equipment->pivot->quantity }}</td>
+                                    </tr>
+                                @else
+                                    @php($consumableSum += $equipment->pivot->price * $equipment->pivot->quantity)
+                                @endif
                             @endif
                         @endforeach
+                        <tr>
+                            <td><img src="https://via.placeholder.com/100" alt=""></td>
+                            <td class="align-middle" colspan="2"><b>Расходные материалы.</b> Коробы, провода и т.д.</td>
+                            <td class="align-middle text-center">1</td>
+                            <td class="align-middle text-center">{{ $consumableSum }}</td>
+                            <td class="align-middle text-center">{{ $consumableSum }}</td>
+                        </tr>
                         <tr>
                             <td colspan="6" class="bg-light-blue text-right"><h4>Всего за оборудование {{ $totalEquipmentSum }}р.</h4></td>
                         </tr>

@@ -28,6 +28,7 @@ Route::post('/findEquipmentByCode', 'EquipmentController@findEquipmentByCode')->
 Route::post('/getTaxBySlug', 'SettingsController@getTaxBySlug')->name('getTax');
 Route::post('/getOfferGroup', 'COController@getOfferGroup')->name('getOfferGroup');
 Route::get('/test', 'OfferController@testRequest');
+Route::post('/saveOfferGroup', 'OfferController@saveOfferGroup');
 
 Route::get('/kp/{uuid}', 'COController@display')->where('uuid', '[a-zA-Z0-9/_-]+')->name('showCO');
 Route::get('/download/{uuid}', 'COController@downloadAsPdf')->where('uuid', '[a-zA-Z0-9/_-]+')->name('downloadAsPdf');
