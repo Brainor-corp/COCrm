@@ -16,7 +16,7 @@ class EquipmentController extends Controller
 {
     public function findEquipmentByCode(Request $request){
         if(isset($request->code)){
-            return Equipment::where('code', 'like', '%' . $request->code . '%')->get();
+            return Equipment::where('code', 'like', '%' . $request->code . '%')->with('type')->get();
         }
         return [];
     }
