@@ -10775,6 +10775,12 @@ return jQuery;
 /* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
+module.exports = __webpack_require__(21);
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
 "use strict";
 /* WEBPACK VAR INJECTION */(function(process) {
 
@@ -10872,7 +10878,7 @@ module.exports = defaults;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(8)))
 
 /***/ }),
-/* 4 */
+/* 5 */
 /***/ (function(module, exports) {
 
 /* globals __VUE_SSR_CONTEXT__ */
@@ -10981,7 +10987,7 @@ module.exports = function normalizeComponent (
 
 
 /***/ }),
-/* 5 */
+/* 6 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -13560,12 +13566,6 @@ Popper.Defaults = Defaults;
 //# sourceMappingURL=popper.js.map
 
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(1)))
-
-/***/ }),
-/* 6 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(21);
 
 /***/ }),
 /* 7 */
@@ -25266,7 +25266,7 @@ var app = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
 
 
 window._ = __webpack_require__(18);
-window.Popper = __webpack_require__(5).default;
+window.Popper = __webpack_require__(6).default;
 
 /**
  * We'll load jQuery and the Bootstrap jQuery plugin which provides support
@@ -25286,7 +25286,7 @@ try {
  * CSRF token as a header based on the value of the "XSRF" token cookie.
  */
 
-window.axios = __webpack_require__(6);
+window.axios = __webpack_require__(3);
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
@@ -42474,7 +42474,7 @@ module.exports = function(module) {
   * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
   */
 (function (global, factory) {
-   true ? factory(exports, __webpack_require__(5), __webpack_require__(2)) :
+   true ? factory(exports, __webpack_require__(6), __webpack_require__(2)) :
   typeof define === 'function' && define.amd ? define(['exports', 'popper.js', 'jquery'], factory) :
   (factory((global.bootstrap = {}),global.Popper,global.jQuery));
 }(this, (function (exports,Popper,$) { 'use strict';
@@ -46729,7 +46729,7 @@ module.exports = function(module) {
 var utils = __webpack_require__(0);
 var bind = __webpack_require__(7);
 var Axios = __webpack_require__(23);
-var defaults = __webpack_require__(3);
+var defaults = __webpack_require__(4);
 
 /**
  * Create an instance of Axios
@@ -46812,7 +46812,7 @@ function isSlowBuffer (obj) {
 "use strict";
 
 
-var defaults = __webpack_require__(3);
+var defaults = __webpack_require__(4);
 var utils = __webpack_require__(0);
 var InterceptorManager = __webpack_require__(32);
 var dispatchRequest = __webpack_require__(33);
@@ -47353,7 +47353,7 @@ module.exports = InterceptorManager;
 var utils = __webpack_require__(0);
 var transformData = __webpack_require__(34);
 var isCancel = __webpack_require__(11);
-var defaults = __webpack_require__(3);
+var defaults = __webpack_require__(4);
 var isAbsoluteURL = __webpack_require__(35);
 var combineURLs = __webpack_require__(36);
 
@@ -49140,7 +49140,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-var normalizeComponent = __webpack_require__(4)
+var normalizeComponent = __webpack_require__(5)
 /* script */
 var __vue_script__ = __webpack_require__(47)
 /* template */
@@ -49255,39 +49255,46 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 while (true) {
                     var stop = true;
                     for (var offer = 0; offer < this.offerGroup['offer_group']['offers'].length; offer++) {
-                        for (var equipment_tab = 0; equipment_tab < this.offerGroup['offer_group']['offers'][offer]['equipments']['equipment'].length; equipment_tab++) {
-                            if (this.offerGroup['offer_group']['offers'][offer]['equipments']['equipment'][equipment_tab] == null) {
-                                this.offerGroup['offer_group']['offers'][offer]['equipments']['equipment'].splice(equipment_tab, 1);
-                                stop = false;
-                                break;
-                            }
-                            for (var equipment = 0; equipment < this.offerGroup['offer_group']['offers'][offer]['equipments']['equipment'][equipment_tab].length; equipment++) {
-                                if (this.offerGroup['offer_group']['offers'][offer]['equipments']['equipment'][equipment_tab][equipment].quantity === "" || parseInt(this.offerGroup['offer_group']['offers'][offer]['equipments']['equipment'][equipment_tab][equipment].quantity) < 1) {
-                                    //проверка на ненулевое кол-во
-                                    this.offerGroup['offer_group']['offers'][offer]['equipments']['equipment'][equipment_tab].splice(equipment, 1);
-                                    stop = false;
-                                    break;
-                                }
-                                if (this.offerGroup['offer_group']['offers'][offer]['equipments']['equipment'][equipment_tab][equipment].type == 'rashodnye-materialy') {
-                                    this.consumablePrice += this.offerGroup['offer_group']['offers'][offer]['equipments']['equipment'][equipment_tab][equipment].quantity * this.offerGroup['offer_group']['offers'][offer]['equipments']['equipment'][equipment_tab][equipment].price;
-                                }
-                            }
-                            // this.findEqualEquipments(offer, 'equipment', equipment_tab);
-                        }
-                        for (var work_tab = 0; work_tab < this.offerGroup['offer_group']['offers'][offer]['equipments']['work'].length; work_tab++) {
-                            if (this.offerGroup['offer_group']['offers'][offer]['equipments']['work'][work_tab] == null) {
-                                this.offerGroup['offer_group']['offers'][offer]['equipments']['work'].splice(work_tab, 1);
-                                stop = false;
-                                break;
-                            }
-                            for (var work = 0; work < this.offerGroup['offer_group']['offers'][offer]['equipments']['work'][work_tab].length; work++) {
-                                if (this.offerGroup['offer_group']['offers'][offer]['equipments']['work'][work_tab][work].quantity === "" || parseInt(this.offerGroup['offer_group']['offers'][offer]['equipments']['work'][work_tab][work].quantity) < 1) {
-                                    this.offerGroup['offer_group']['offers'][offer]['equipments']['work'][work_tab].splice(work, 1);
-                                    stop = false;
-                                    break;
+                        if (this.offerGroup['offer_group']['offers'][offer]['equipments']) {
+                            if (this.offerGroup['offer_group']['offers'][offer]['equipments']['equipment']) {
+                                for (var equipment_tab = 0; equipment_tab < this.offerGroup['offer_group']['offers'][offer]['equipments']['equipment'].length; equipment_tab++) {
+                                    if (this.offerGroup['offer_group']['offers'][offer]['equipments']['equipment'][equipment_tab] == null) {
+                                        this.offerGroup['offer_group']['offers'][offer]['equipments']['equipment'].splice(equipment_tab, 1);
+                                        stop = false;
+                                        break;
+                                    }
+                                    for (var equipment = 0; equipment < this.offerGroup['offer_group']['offers'][offer]['equipments']['equipment'][equipment_tab].length; equipment++) {
+                                        if (this.offerGroup['offer_group']['offers'][offer]['equipments']['equipment'][equipment_tab][equipment].quantity === "" || parseInt(this.offerGroup['offer_group']['offers'][offer]['equipments']['equipment'][equipment_tab][equipment].quantity) < 1) {
+                                            //проверка на ненулевое кол-во
+                                            this.offerGroup['offer_group']['offers'][offer]['equipments']['equipment'][equipment_tab].splice(equipment, 1);
+                                            stop = false;
+                                            break;
+                                        }
+                                        console.log(this.offerGroup['offer_group']['offers'][offer]['equipments']['equipment'][equipment_tab][equipment].type);
+                                        if (this.offerGroup['offer_group']['offers'][offer]['equipments']['equipment'][equipment_tab][equipment].type == 'rashodnye-materialy') {
+                                            this.consumablePrice += this.offerGroup['offer_group']['offers'][offer]['equipments']['equipment'][equipment_tab][equipment].quantity * this.offerGroup['offer_group']['offers'][offer]['equipments']['equipment'][equipment_tab][equipment].price;
+                                        }
+                                    }
+                                    // this.findEqualEquipments(offer, 'equipment', equipment_tab);
                                 }
                             }
-                            // this.findEqualEquipments(offer, 'work', work_tab);
+                            if (this.offerGroup['offer_group']['offers'][offer]['equipments']['work']) {
+                                for (var work_tab = 0; work_tab < this.offerGroup['offer_group']['offers'][offer]['equipments']['work'].length; work_tab++) {
+                                    if (this.offerGroup['offer_group']['offers'][offer]['equipments']['work'][work_tab] == null) {
+                                        this.offerGroup['offer_group']['offers'][offer]['equipments']['work'].splice(work_tab, 1);
+                                        stop = false;
+                                        break;
+                                    }
+                                    for (var work = 0; work < this.offerGroup['offer_group']['offers'][offer]['equipments']['work'][work_tab].length; work++) {
+                                        if (this.offerGroup['offer_group']['offers'][offer]['equipments']['work'][work_tab][work].quantity === "" || parseInt(this.offerGroup['offer_group']['offers'][offer]['equipments']['work'][work_tab][work].quantity) < 1) {
+                                            this.offerGroup['offer_group']['offers'][offer]['equipments']['work'][work_tab].splice(work, 1);
+                                            stop = false;
+                                            break;
+                                        }
+                                    }
+                                    // this.findEqualEquipments(offer, 'work', work_tab);
+                                }
+                            }
                         }
                     }
                     if (stop) break;
@@ -49302,7 +49309,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-var normalizeComponent = __webpack_require__(4)
+var normalizeComponent = __webpack_require__(5)
 /* script */
 var __vue_script__ = __webpack_require__(49)
 /* template */
@@ -49354,7 +49361,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_jquery___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_jquery__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_deparam__ = __webpack_require__(14);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_deparam___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_deparam__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_axios__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_axios__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_axios__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue2_autocomplete_js__ = __webpack_require__(50);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue2_autocomplete_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_vue2_autocomplete_js__);
@@ -49514,7 +49521,7 @@ __webpack_require__(51);
             return __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post(window.location.href + 'getAllEquipmentTypes');
         }).then(function (res) {
             _this.types = res.data;
-            _this.types['new'] = [{ 'id': 1 }];
+            // this.types['new'] = [{'id': 1}];
 
             return __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post(window.location.href + 'getDefaultTypesWithEquipment');
         }).then(function (res) {
@@ -49586,7 +49593,7 @@ __webpack_require__(51);
                 rows: []
             });
             this.selected[lastOfferTabId] = {
-                0: 'new'
+                0: { 0: 'new' }
             };
         },
         addOfferContentTab: function addOfferContentTab(offerTabId) {
@@ -49599,7 +49606,7 @@ __webpack_require__(51);
                 name: 'Новое оборудование',
                 rows: []
             });
-            this.selected[offerTabId][lastOfferContentTab.id + 1] = 'new';
+            this.selected[offerTabId][lastOfferContentTabId] = { 0: 'new' };
         },
         addTableRow: function addTableRow(offerTabId, offerContentTabId) {
             var lastRow = void 0;
@@ -49611,7 +49618,6 @@ __webpack_require__(51);
             }
 
             this.autocompletesDisplays.push({ lastRow: false });
-
             this.offersContentTabs[offerTabId][offerContentTabId]['rows'].push({
                 id: lastRow,
                 saveType: 'new',
@@ -49626,8 +49632,8 @@ __webpack_require__(51);
                 price_small_trade: '',
                 price_special: '',
                 comment: '',
-                class: this.types[this.selected[offerTabId][offerContentTabId][0]][0].class,
-                type: this.types[this.selected[offerTabId][offerContentTabId][0]][0].slug
+                class: '',
+                type: ''
             });
         },
         searchEquipmentByCode: function searchEquipmentByCode(codePart, rowId) {
@@ -49763,6 +49769,10 @@ __webpack_require__(51);
                     for (var j = 0; j < this.offersContentTabs[offerTabId][i]['rows'].length; j++) {
                         if (this.offersContentTabs[offerTabId][i]['rows'][j].id === rowId) {
                             this.offersContentTabs[offerTabId][i]['rows'].splice(j, 1);
+                            // for(let k = j; k < this.offersContentTabs[offerTabId][i]['rows'].length; k++){
+                            //     this.offersContentTabs[offerTabId][i]['rows'][k].id--;
+                            // }
+                            //todo не считает расходники
                             break;
                         }
                     }
@@ -49773,6 +49783,10 @@ __webpack_require__(51);
             for (var i = 0; i < this.offersContentTabs[offerTabId].length; i++) {
                 if (this.offersContentTabs[offerTabId][i].id === offerContentTabId) {
                     this.offersContentTabs[offerTabId].splice(i, 1);
+                    this.selected[offerTabId].splice(i, 1);
+                    for (var j = i; j < this.offersContentTabs[offerTabId].length; j++) {
+                        this.offersContentTabs[offerTabId][j].id--;
+                    }
                     break;
                 }
             }
@@ -49781,6 +49795,9 @@ __webpack_require__(51);
             for (var i = 0; i < this.offersTabs.length; i++) {
                 if (this.offersTabs[i].id === offerTabId) {
                     this.offersTabs.splice(i, 1);
+                    for (var j = i; j < this.offersTabs.length; j++) {
+                        this.offersTabs[j].id--;
+                    }
                     this.offersContentTabs.splice(i, 1);
                     break;
                 }
@@ -51418,11 +51435,13 @@ var render = function() {
                                   ),
                                   _vm._v(" "),
                                   _vm._l(_vm.types, function(type) {
-                                    return _c(
-                                      "option",
-                                      { domProps: { value: type[0].id } },
-                                      [_vm._v(_vm._s(type[0].name))]
-                                    )
+                                    return type[0] != "new"
+                                      ? _c(
+                                          "option",
+                                          { domProps: { value: type[0].id } },
+                                          [_vm._v(_vm._s(type[0].name))]
+                                        )
+                                      : _vm._e()
                                   })
                                 ],
                                 2
@@ -51723,44 +51742,6 @@ var render = function() {
                                             _vm.$set(
                                               row,
                                               "comment",
-                                              $event.target.value
-                                            )
-                                          }
-                                        }
-                                      }),
-                                      _vm._v(" "),
-                                      _c("input", {
-                                        directives: [
-                                          {
-                                            name: "model",
-                                            rawName: "v-model",
-                                            value: row.type_id,
-                                            expression: "row.type_id"
-                                          }
-                                        ],
-                                        attrs: {
-                                          type: "hidden",
-                                          hidden: "hidden",
-                                          name:
-                                            "offer_group[offers][" +
-                                            offerTab.id +
-                                            "][equipments][" +
-                                            row.class +
-                                            "][" +
-                                            offerContentTab.id +
-                                            "][" +
-                                            row.id +
-                                            "][type_id]"
-                                        },
-                                        domProps: { value: row.type_id },
-                                        on: {
-                                          input: function($event) {
-                                            if ($event.target.composing) {
-                                              return
-                                            }
-                                            _vm.$set(
-                                              row,
-                                              "type_id",
                                               $event.target.value
                                             )
                                           }
@@ -52170,7 +52151,7 @@ if (false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-var normalizeComponent = __webpack_require__(4)
+var normalizeComponent = __webpack_require__(5)
 /* script */
 var __vue_script__ = __webpack_require__(58)
 /* template */
@@ -52218,8 +52199,9 @@ module.exports = Component.exports
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
+//
 //
 //
 //
@@ -52313,6 +52295,7 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "row" }, [
+    _vm._v("\n    " + _vm._s(_vm.offerGroup) + "\n    "),
     _vm.offerGroup.offer_group
       ? _c(
           "div",
@@ -52324,7 +52307,7 @@ var render = function() {
               return _c("div", { staticClass: "kp-total-offer" }, [
                 _c("h3", [_vm._v(_vm._s(offerData.name))]),
                 _vm._v(" "),
-                offerData.equipments.equipment
+                offerData.equipments && offerData.equipments.equipment
                   ? _c(
                       "table",
                       {
@@ -52379,7 +52362,7 @@ var render = function() {
                     )
                   : _vm._e(),
                 _vm._v(" "),
-                offerData.equipments.work
+                offerData.equipments && offerData.equipments.work
                   ? _c(
                       "table",
                       {
@@ -52416,7 +52399,26 @@ var render = function() {
           ],
           2
         )
-      : _vm._e()
+      : _vm._e(),
+    _vm._v(" "),
+    _c("div", { staticClass: "col-12" }, [
+      _vm.offerGroup.offer_group
+        ? _c(
+            "a",
+            {
+              staticClass: "btn btn-success",
+              attrs: { href: "" },
+              on: {
+                click: function($event) {
+                  $event.preventDefault()
+                  return _vm.saveOfferGroup($event)
+                }
+              }
+            },
+            [_vm._v("Сохранить группу КП")]
+          )
+        : _vm._e()
+    ])
   ])
 }
 var staticRenderFns = [

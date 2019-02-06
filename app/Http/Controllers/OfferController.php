@@ -83,25 +83,95 @@ class OfferController extends Controller
         if(!isset($group)){
             return "no";
         }
-        $createGroup = new OfferGroup();
-        $createGroup->name = $group['name'];
-        $createGroup->save();
-        foreach ($group->offers as $offer){
-            $createOffer = new Offer();
-            $createOffer->tax = $offer['tax'];
-            $createOffer->name = $offer['name'];
-            foreach ($offer->equipments->equipment as $equipment_tab){
-                foreach($equipment_tab as $equipment){
-                    if($equipment['base_id'] === -1){
+        try{
 
+            $createGroup = new OfferGroup();
+            $createGroup->name = $group['name'];
+            $createGroup->save();
+            foreach ($group['offers'] as $offer){
+                $createOffer = new Offer();
+                $createOffer->group_id = $createGroup->id;
+                $createOffer->tax = $offer['tax'];
+                $createOffer->name = $offer['name'];
+                $createOffer->save();
+                foreach ($offer['equipments']['equipment'] as $equipment_tab){
+                    foreach($equipment_tab as $equipment){
+                        if($equipment['base_id'] === -1){
+                            $createEquipment = new Equipment();
+                            $createEquipment->code = $equipment['code'];
+                            $createEquipment->name = $equipment['name'];
+                            $createEquipment->description = $equipment['description'];
+                            $createEquipment->points = $equipment['points'];
+                            $createEquipment->price = $equipment['price'];
+                            $createEquipment->price_trade = $equipment['price'];
+                            $createEquipment->price_small_trade = $equipment['price'];
+                            $createEquipment->price_special = $equipment['price'];
+                            $createEquipment->class = Type::where('slug', $equipment['type'])->first()->class;
+                            $createEquipment->type_id = Type::where('slug', $equipment['type'])->first()->id;
+                            $createEquipment->save();
+
+                            $createOffer->equipments()->attach($createEquipment->id, array(
+                                'quantity' => $equipment['quantity'],
+                                'price' => $equipment['price'],
+                                'price_trade' => $equipment['price'],
+                                'price_small_trade' => $equipment['price'],
+                                'price_special' => $equipment['price'],
+                                'comment' => $equipment['comment'],
+                            ));
+                        }
+                        else{
+                            $createOffer->equipments()->attach($equipment['base_id'], array(
+                                'quantity' => $equipment['quantity'],
+                                'price' => $equipment['price'],
+                                'price_trade' => $equipment['price'],
+                                'price_small_trade' => $equipment['price'],
+                                'price_special' => $equipment['price'],
+                                'comment' => $equipment['comment'],
+                            ));
+                        }
+                    }
+                }
+                foreach ($offer['equipments']['work'] as $work_tab){
+                    foreach($work_tab as $work){
+                        if($work['base_id'] === -1){
+                            $createWork = new Equipment();
+                            $createWork->code = $work['code'];
+                            $createWork->name = $work['name'];
+                            $createWork->description = $work['description'];
+                            $createWork->points = $work['points'];
+                            $createWork->price = $work['price'];
+                            $createWork->price_trade = $work['price'];
+                            $createWork->price_small_trade = $work['price'];
+                            $createWork->price_special = $work['price'];
+                            $createWork->class = Type::where('slug', $work['type'])->first()->class;
+                            $createWork->type_id = Type::where('slug', $work['type'])->first()->id;
+                            $createWork->save();
+
+                            $createOffer->equipments()->attach($createWork->id, array(
+                                'quantity' => $work['quantity'],
+                                'price' => $work['price'],
+                                'price_trade' => $work['price'],
+                                'price_small_trade' => $work['price'],
+                                'price_special' => $work['price'],
+                                'comment' => $work['comment'],
+                            ));
+                        }
+                        else{
+                            $createOffer->equipments()->attach($work['base_id'], array(
+                                'quantity' => $work['quantity'],
+                                'price' => $work['price'],
+                                'price_trade' => $work['price'],
+                                'price_small_trade' => $work['price'],
+                                'price_special' => $work['price'],
+                                'comment' => $work['comment'],
+                            ));
+                        }
                     }
                 }
             }
-            foreach ($offer->equipments->work as $work_tab){
-                foreach($work_tab as $work){
-
-                }
-            }
+        }
+        catch (\Exception $e){
+            return $e;
         }
         return "ok";
     }

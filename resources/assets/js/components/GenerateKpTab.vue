@@ -37,7 +37,7 @@
                                     <!--<input type="hidden" hidden="hidden" v-if="types[selected[offerTab.id][offerContentTab.id]]" :name="'offer_group[offers]['+offerTab.id+'][equipments][`'+types[selected[offerTab.id][offerContentTab.id]][0].id+'`][type_name]'" v-model="types[selected[offerTab.id][offerContentTab.id]][0].name"/>-->
                                     <select v-model="selected[offerTab.id][offerContentTab.id][0]">
                                         <option disabled value="new">Выберите</option>
-                                        <option v-for="type in types" :value="type[0].id">{{ type[0].name }}</option>
+                                        <option v-for="type in types" v-if="type[0]!='new'" :value="type[0].id">{{ type[0].name }}</option>
                                     </select>
                                     <span @click="deleteTab(offerTab.id,offerContentTab.id)">X</span>
                                 </a>
@@ -69,7 +69,7 @@
                                         <input type="hidden" hidden="hidden" :name="'offer_group[offers]['+offerTab.id+'][equipments]['+row.class+']['+offerContentTab.id+']['+row.id+'][price_small_trade]'" v-model="row.price_small_trade"/>
                                         <input type="hidden" hidden="hidden" :name="'offer_group[offers]['+offerTab.id+'][equipments]['+row.class+']['+offerContentTab.id+']['+row.id+'][price_special]'" v-model="row.price_special"/>
                                         <input type="hidden" hidden="hidden" :name="'offer_group[offers]['+offerTab.id+'][equipments]['+row.class+']['+offerContentTab.id+']['+row.id+'][comment]'" v-model="row.comment"/>
-                                        <input type="hidden" hidden="hidden" :name="'offer_group[offers]['+offerTab.id+'][equipments]['+row.class+']['+offerContentTab.id+']['+row.id+'][type_id]'" v-model="row.type_id"/>
+                                        <!--<input type="hidden" hidden="hidden" :name="'offer_group[offers]['+offerTab.id+'][equipments]['+row.class+']['+offerContentTab.id+']['+row.id+'][type_id]'" v-model="row.type_id"/>-->
                                         <input type="hidden" hidden="hidden" :name="'offer_group[offers]['+offerTab.id+'][equipments]['+row.class+']['+offerContentTab.id+']['+row.id+'][type]'" v-model="row.type"/>
                                         <td>
                                             <input type="text" @keyup="searchEquipmentByCode(row.code, row.id)" :name="'offer_group[offers]['+offerTab.id+'][equipments]['+row.class+']['+offerContentTab.id+']['+row.id+'][code]'" v-model="row.code" />
@@ -157,7 +157,7 @@
                 })
                 .then((res) => {
                     this.types = res.data;
-                    this.types['new'] = [{'id': 1}];
+                    // this.types['new'] = [{'id': 1}];
 
                     return axios.post(window.location.href + 'getDefaultTypesWithEquipment');
                 })
@@ -233,7 +233,7 @@
                     }
                 );
                 this.selected[lastOfferTabId] = {
-                    0: 'new'
+                    0: {0:'new'}
                 };
             },
             addOfferContentTab(offerTabId){
@@ -248,7 +248,7 @@
                         rows:[]
                     }
                 );
-                this.selected[offerTabId][lastOfferContentTab.id+1] = 'new';
+                this.selected[offerTabId][lastOfferContentTabId] = {0:'new'};
             },
             addTableRow(offerTabId,offerContentTabId){
                 let lastRow;
@@ -260,7 +260,6 @@
                 }
 
                 this.autocompletesDisplays.push({lastRow: false});
-
                 this.offersContentTabs[offerTabId][offerContentTabId]['rows'].push(
                     {
                         id: lastRow,
@@ -276,8 +275,8 @@
                         price_small_trade:'',
                         price_special:'',
                         comment:'',
-                        class: this.types[this.selected[offerTabId][offerContentTabId][0]][0].class,
-                        type: this.types[this.selected[offerTabId][offerContentTabId][0]][0].slug,
+                        class: '',
+                        type: '',
                     }
                 );
             },
@@ -419,6 +418,10 @@
                         for(let j = 0; j < this.offersContentTabs[offerTabId][i]['rows'].length; j++) {
                             if(this.offersContentTabs[offerTabId][i]['rows'][j].id === rowId){
                                 this.offersContentTabs[offerTabId][i]['rows'].splice(j, 1);
+                                // for(let k = j; k < this.offersContentTabs[offerTabId][i]['rows'].length; k++){
+                                //     this.offersContentTabs[offerTabId][i]['rows'][k].id--;
+                                // }
+                                //todo не считает расходники
                                 break;
                             }
                         }
@@ -429,6 +432,10 @@
                 for(let i = 0; i < this.offersContentTabs[offerTabId].length; i++){
                     if(this.offersContentTabs[offerTabId][i].id === offerContentTabId){
                         this.offersContentTabs[offerTabId].splice(i, 1);
+                        this.selected[offerTabId].splice(i,1);
+                        for(let j = i; j < this.offersContentTabs[offerTabId].length; j++){
+                            this.offersContentTabs[offerTabId][j].id--;
+                        }
                         break;
                     }
                 }
@@ -437,6 +444,9 @@
                 for(let i = 0; i < this.offersTabs.length; i++){
                     if(this.offersTabs[i].id === offerTabId){
                         this.offersTabs.splice(i, 1);
+                        for(let j = i; j < this.offersTabs.length; j++){
+                            this.offersTabs[j].id--;
+                        }
                         this.offersContentTabs.splice(i, 1);
                         break;
                     }

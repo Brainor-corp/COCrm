@@ -1,10 +1,11 @@
 <template>
     <div class="row">
+        {{offerGroup}}
         <div v-if="offerGroup.offer_group" class="col-12 kp-total-tab">
             <h2>{{ offerGroup.offer_group.name}}</h2>
             <div class="kp-total-offer" v-for="offerData in offerGroup.offer_group.offers">
                 <h3>{{ offerData.name }}</h3>
-                <table v-if="offerData.equipments.equipment" class="table table-striped table-hover table-bordered">
+                <table v-if="offerData.equipments && offerData.equipments.equipment" class="table table-striped table-hover table-bordered">
                     <thead>
                     <tr><th colspan="5">Оборудование и расходные материалы</th></tr>
                     <tr>
@@ -34,7 +35,7 @@
                     </tr>
                     </tbody>
                 </table>
-                <table v-if="offerData.equipments.work" class="table table-striped table-hover table-bordered">
+                <table v-if="offerData.equipments && offerData.equipments.work" class="table table-striped table-hover table-bordered">
                     <thead>
                     <tr><th colspan="4">Монтажные и пуско-наладочные работы</th></tr>
                     <tr>
@@ -57,9 +58,9 @@
                 </table>
             </div>
         </div>
-        <!--<div class="col-12">-->
-            <!--<a href="" class="btn btn-success" v-if="offerGroup.offer_group" @click.prevent="saveOfferGroup">Сохранить группу КП</a>-->
-        <!--</div>-->
+        <div class="col-12">
+            <a href="" class="btn btn-success" v-if="offerGroup.offer_group" @click.prevent="saveOfferGroup">Сохранить группу КП</a>
+        </div>
     </div>
 </template>
 
