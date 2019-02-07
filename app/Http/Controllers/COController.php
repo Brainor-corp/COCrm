@@ -28,7 +28,7 @@ class COController extends Controller
             abort(404);
         }
 
-        $offersGroup = OfferGroup::where('id', $request->id)->with('offers.equipments.type')->first();
+        $offersGroup = OfferGroup::where('id', $request->id)->with('offers.equipments.type', 'equipment')->first();
         $groupedArr = $offersGroup->toArray();
 
         foreach ($offersGroup->offers as $key => $offer) {

@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">
     <link href="{{ asset('css/kp-app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/pages/main.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/pages/kpPage.css') }}" rel="stylesheet">
     <title>КП генератор</title>
 </head>
 <body>

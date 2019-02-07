@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+    <div class="container main-container">
         <div class="row">
             <div class="col-12 first-line-tabs">
                 <ul class="nav nav-tabs">
@@ -71,7 +71,6 @@
                                                 stop = false;
                                                 break;
                                             }
-                                            console.log(this.offerGroup['offer_group']['offers'][offer]['equipments']['equipment'][equipment_tab][equipment].type );
                                             if(this.offerGroup['offer_group']['offers'][offer]['equipments']['equipment'][equipment_tab][equipment].type == 'rashodnye-materialy'){
                                                 this.consumablePrice += this.offerGroup['offer_group']['offers'][offer]['equipments']['equipment'][equipment_tab][equipment].quantity * this.offerGroup['offer_group']['offers'][offer]['equipments']['equipment'][equipment_tab][equipment].price;
                                             }
@@ -79,23 +78,23 @@
                                         // this.findEqualEquipments(offer, 'equipment', equipment_tab);
                                     }
                                 }
-                                if(this.offerGroup['offer_group']['offers'][offer]['equipments']['work']){
-                                    for (let work_tab = 0; work_tab < this.offerGroup['offer_group']['offers'][offer]['equipments']['work'].length; work_tab++) {
-                                        if (this.offerGroup['offer_group']['offers'][offer]['equipments']['work'][work_tab] == null) {
-                                            this.offerGroup['offer_group']['offers'][offer]['equipments']['work'].splice(work_tab, 1);
-                                            stop = false;
-                                            break;
-                                        }
-                                        for (let work = 0; work < this.offerGroup['offer_group']['offers'][offer]['equipments']['work'][work_tab].length; work++) {
-                                            if (this.offerGroup['offer_group']['offers'][offer]['equipments']['work'][work_tab][work].quantity === "" || parseInt(this.offerGroup['offer_group']['offers'][offer]['equipments']['work'][work_tab][work].quantity) < 1) {
-                                                this.offerGroup['offer_group']['offers'][offer]['equipments']['work'][work_tab].splice(work, 1);
-                                                stop = false;
-                                                break;
-                                            }
-                                        }
-                                        // this.findEqualEquipments(offer, 'work', work_tab);
-                                    }
-                                }
+                                // if(this.offerGroup['offer_group']['offers'][offer]['equipments']['work']){
+                                //     for (let work_tab = 0; work_tab < this.offerGroup['offer_group']['offers'][offer]['equipments']['work'].length; work_tab++) {
+                                //         if (this.offerGroup['offer_group']['offers'][offer]['equipments']['work'][work_tab] == null) {
+                                //             this.offerGroup['offer_group']['offers'][offer]['equipments']['work'].splice(work_tab, 1);
+                                //             stop = false;
+                                //             break;
+                                //         }
+                                //         for (let work = 0; work < this.offerGroup['offer_group']['offers'][offer]['equipments']['work'][work_tab].length; work++) {
+                                //             if (this.offerGroup['offer_group']['offers'][offer]['equipments']['work'][work_tab][work].quantity === "" || parseInt(this.offerGroup['offer_group']['offers'][offer]['equipments']['work'][work_tab][work].quantity) < 1) {
+                                //                 this.offerGroup['offer_group']['offers'][offer]['equipments']['work'][work_tab].splice(work, 1);
+                                //                 stop = false;
+                                //                 break;
+                                //             }
+                                //         }
+                                //         // this.findEqualEquipments(offer, 'work', work_tab);
+                                //     }
+                                // }
                             }
                         }
                         if(stop)

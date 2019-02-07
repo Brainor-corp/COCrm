@@ -7,13 +7,16 @@
                 <h3>{{ offerData.name }}</h3>
                 <table v-if="offerData.equipments && offerData.equipments.equipment" class="table table-striped table-hover table-bordered">
                     <thead>
-                    <tr><th colspan="5">Оборудование и расходные материалы</th></tr>
+                    <tr><th colspan="8">Оборудование и расходные материалы</th></tr>
                     <tr>
                         <th scope="col">Артикул</th>
                         <th scope="col">Название</th>
                         <th scope="col">Описание</th>
                         <th scope="col">Количество</th>
                         <th scope="col">Цена</th>
+                        <th scope="col">Розн. цена</th>
+                        <th scope="col">Мин. розн. цена</th>
+                        <th scope="col">Спец. цена</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -24,6 +27,9 @@
                             <td>{{ row.description }}</td>
                             <td>{{ row.quantity }}</td>
                             <td>{{ row.price }}</td>
+                            <td>{{ row.price_trade }}</td>
+                            <td>{{ row.price_small_trade }}</td>
+                            <td>{{ row.price_special }}</td>
                         </tr>
                     </template>
                     <tr>
@@ -32,6 +38,12 @@
                         <td>Коробы, провода и т.д.</td>
                         <td>{{ (consumablePrice != 0) ? 1 : 0 }}</td>
                         <td>{{ consumablePrice }}</td>
+                        <td> --- </td>
+                        <td> --- </td>
+                        <td> --- </td>
+                    </tr>
+                    <tr>
+                        <td colspan="8" class="bg-light-blue text-right"><h4>Всего за оборудование {{ consumableSum }}р.</h4></td>
                     </tr>
                     </tbody>
                 </table>
