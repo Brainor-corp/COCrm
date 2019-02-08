@@ -18,6 +18,7 @@ class AddAdjustmentFieldsToOfferGroupsTable extends Migration
             $table->integer('adjustments_days')->default(1);
             $table->integer('fuel_number')->default(0);
             $table->double('adjusters_wage');
+            $table->double('pay_percentage');
         });
     }
 
@@ -33,6 +34,7 @@ class AddAdjustmentFieldsToOfferGroupsTable extends Migration
             $table->dropColumn('adjustments_days');
             $table->dropColumn('fuel_number');
             $table->dropColumn('adjusters_wage');
+            $table->dropColumn('pay_percentage');
         });
     }
 }

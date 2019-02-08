@@ -16,7 +16,13 @@ class EquipmentController extends Controller
 {
     public function findEquipmentByCode(Request $request){
         if(isset($request->code)){
-            return Equipment::where('code', 'like', '%' . $request->code . '%')->with('type')->get();
+            return Equipment::where([['code', 'like', '%' . $request->code . '%'], ['class', 'equipment']])->with('type')->get();
+        }
+        return [];
+    }
+    public function findWorkByCode(Request $request){
+        if(isset($request->code)){
+            return Equipment::where([['code', 'like', '%' . $request->code . '%'], ['class', 'work']])->with('type')->get();
         }
         return [];
     }

@@ -25,6 +25,7 @@ Route::post('/getAllEquipmentTypes', 'TypeController@getAllEquipmentTypes')->nam
 Route::post('/getDefaultTypesWithEquipment', 'TypeController@getDefaultTypesWithEquipment')->name('getDefaultTypesWithEquipment');
 
 Route::post('/findEquipmentByCode', 'EquipmentController@findEquipmentByCode')->name('findEquipment');
+Route::post('/findWorkByCode', 'EquipmentController@findWorkByCode')->name('findWork'); //todo continue
 Route::post('/getTaxBySlug', 'SettingsController@getTaxBySlug')->name('getTax');
 Route::post('/getOfferGroup', 'COController@getOfferGroup')->name('getOfferGroup');
 Route::get('/test', 'OfferController@testRequest');
