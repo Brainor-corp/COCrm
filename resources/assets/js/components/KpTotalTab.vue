@@ -36,14 +36,14 @@
                         <td>----</td>
                         <td>Расходные материалы</td>
                         <td>Коробы, провода и т.д.</td>
-                        <td>{{ (consumablePrice != 0) ? 1 : 0 }}</td>
-                        <td>{{ consumablePrice }}</td>
+                        <td>{{ (calcPrices['consumablePrice'] != 0) ? 1 : 0 }}</td>
+                        <td>{{ calcPrices['consumablePrice'] }}</td>
                         <td> --- </td>
                         <td> --- </td>
                         <td> --- </td>
                     </tr>
                     <tr>
-                        <td colspan="8" class="bg-light-blue text-right"><h4>Всего за оборудование {{ consumableSum }}р.</h4></td>
+                        <td colspan="8" class="bg-light-blue text-right"><h4>Всего за оборудование {{ calcPrices['equipmentPrice'] + calcPrices['consumablePrice'] }}р.</h4></td>
                     </tr>
                     </tbody>
                 </table>
@@ -65,10 +65,16 @@
                             <td>{{ row.quantity }}</td>
                         </tr>
                         <tr>
-                            <td colspan="4" class="bg-beige text-right"><h4>Всего за работы ( с НДС ): р.</h4></td>
+                            <td colspan="4" class="bg-beige text-right"><h4>Всего за работы ( с НДС ): {{ calcPrices['totalWorkPrice'] }}р.</h4></td>
                         </tr>
                         <tr>
-                            <td colspan="4" class="bg-light-blue text-right"><h4>Всего за работы ( без НДС, Доп. скидка - ??? ): ???р.</h4></td>
+                            <td colspan="4" class="bg-light-blue text-right"><h4>Всего за работы ( без НДС, Доп. скидка - {{ calcPrices['additionalDiscount'] }} ): {{calcPrices['totalWorkPriceNoVAT']}}р.</h4></td>
+                        </tr>
+                        <tr>
+                            <td colspan="4" class="bg-beige text-right"><h4>Общая стоимость (1 договор - все с НДС): {{ calcPrices['equipmentPrice'] + calcPrices['consumablePrice'] + calcPrices['totalWorkPrice'] }}р.</h4></td>
+                        </tr>
+                        <tr>
+                            <td colspan="4" class="bg-light-blue text-right"><h4>Общая стоимость (2 договора - оборудование с НДС, работы без НДС): {{calcPrices['equipmentPrice'] + calcPrices['consumablePrice'] + calcPrices['totalWorkPriceNoVAT']}}р.</h4></td>
                         </tr>
                     </tbody>
                 </table>
@@ -83,7 +89,7 @@
 <script>
     import axios from 'axios';
     export default {
-        props: ['offerGroup', 'consumablePrice'],
+        props: ['offerGroup', 'calcPrices'],
         data(){
             return {
 

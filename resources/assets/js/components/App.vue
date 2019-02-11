@@ -18,7 +18,7 @@
                         ></generate-kp-tab>
                     </div>
                     <div id="kpTotalTab" class="tab-pane fade">
-                        <kp-total-tab :offerGroup="offerGroup" :consumablePrice="consumablePrice"></kp-total-tab>
+                        <kp-total-tab :offerGroup="offerGroup" :calcPrices="calcPrices"></kp-total-tab>
                     </div>
                 </div>
             </div>
@@ -30,6 +30,7 @@
     import GenerateKpTab from './GenerateKpTab';
     import KpTotalTab from './KpTotalTab';
     import deparam from 'deparam';
+    import axios from 'axios';
     import $ from 'jquery';
 
     export default {
@@ -37,7 +38,7 @@
         data(){
             return {
                 offerGroup:[],
-                consumablePrice: 0,
+                calcPrices: [],
             };
         },
         computed: {
@@ -51,8 +52,8 @@
             updateOfferGroup(newOfferGroup) {
                 if (typeof newOfferGroup !== 'undefined') {
                     this.offerGroup = newOfferGroup;
+                    this.calcPrices = [];
                 }else{
-                    this.consumablePrice = 0;
                     this.offerGroup = deparam($('#kp-generate-form').serialize());
                     while(true) {
                         var stop = true;
@@ -71,9 +72,9 @@
                                                 stop = false;
                                                 break;
                                             }
-                                            if(this.offerGroup['offer_group']['offers'][offer]['equipments'][equipment_tab][equipment].type === 'rashodnye-materialy'){
-                                                this.consumablePrice += this.offerGroup['offer_group']['offers'][offer]['equipments'][equipment_tab][equipment].quantity * this.offerGroup['offer_group']['offers'][offer]['equipments'][equipment_tab][equipment].price;
-                                            }
+                                            // if(this.offerGroup['offer_group']['offers'][offer]['equipments'][equipment_tab][equipment].type === 'rashodnye-materialy'){
+                                            //     this.consumablePrice += this.offerGroup['offer_group']['offers'][offer]['equipments'][equipment_tab][equipment].quantity * this.offerGroup['offer_group']['offers'][offer]['equipments'][equipment_tab][equipment].price;
+                                            // }
                                         }
                                     }
                                 }
@@ -90,6 +91,13 @@
                         if(stop)
                             break;
                     }
+                    axios
+                        .post(window.location.href + 'calculateAllPrices',
+                             this.offerGroup
+                        )
+                        .then(res=>{
+                            this.calcPrices = res.data;
+                        });
                 }
             },
         }

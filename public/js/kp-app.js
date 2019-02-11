@@ -25225,7 +25225,7 @@ module.exports=function (params, coerce) {
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(16);
-module.exports = __webpack_require__(61);
+module.exports = __webpack_require__(55);
 
 
 /***/ }),
@@ -49144,7 +49144,7 @@ var normalizeComponent = __webpack_require__(5)
 /* script */
 var __vue_script__ = __webpack_require__(47)
 /* template */
-var __vue_template__ = __webpack_require__(60)
+var __vue_template__ = __webpack_require__(54)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -49190,12 +49190,14 @@ module.exports = Component.exports
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__GenerateKpTab__ = __webpack_require__(48);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__GenerateKpTab___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__GenerateKpTab__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__KpTotalTab__ = __webpack_require__(57);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__KpTotalTab__ = __webpack_require__(51);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__KpTotalTab___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__KpTotalTab__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_deparam__ = __webpack_require__(14);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_deparam___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_deparam__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_jquery__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_jquery___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_jquery__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_axios__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_axios__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_jquery__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_jquery___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_jquery__);
 //
 //
 //
@@ -49224,6 +49226,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+
 
 
 
@@ -49235,7 +49238,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     data: function data() {
         return {
             offerGroup: [],
-            consumablePrice: 0
+            calcPrices: []
         };
     },
 
@@ -49247,11 +49250,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     created: function created() {},
     methods: {
         updateOfferGroup: function updateOfferGroup(newOfferGroup) {
+            var _this = this;
+
             if (typeof newOfferGroup !== 'undefined') {
                 this.offerGroup = newOfferGroup;
+                this.calcPrices = [];
             } else {
-                this.consumablePrice = 0;
-                this.offerGroup = __WEBPACK_IMPORTED_MODULE_2_deparam___default()(__WEBPACK_IMPORTED_MODULE_3_jquery___default()('#kp-generate-form').serialize());
+                this.offerGroup = __WEBPACK_IMPORTED_MODULE_2_deparam___default()(__WEBPACK_IMPORTED_MODULE_4_jquery___default()('#kp-generate-form').serialize());
                 while (true) {
                     var stop = true;
                     for (var offer = 0; offer < this.offerGroup['offer_group']['offers'].length; offer++) {
@@ -49270,9 +49275,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                                             stop = false;
                                             break;
                                         }
-                                        if (this.offerGroup['offer_group']['offers'][offer]['equipments'][equipment_tab][equipment].type === 'rashodnye-materialy') {
-                                            this.consumablePrice += this.offerGroup['offer_group']['offers'][offer]['equipments'][equipment_tab][equipment].quantity * this.offerGroup['offer_group']['offers'][offer]['equipments'][equipment_tab][equipment].price;
-                                        }
+                                        // if(this.offerGroup['offer_group']['offers'][offer]['equipments'][equipment_tab][equipment].type === 'rashodnye-materialy'){
+                                        //     this.consumablePrice += this.offerGroup['offer_group']['offers'][offer]['equipments'][equipment_tab][equipment].quantity * this.offerGroup['offer_group']['offers'][offer]['equipments'][equipment_tab][equipment].price;
+                                        // }
                                     }
                                 }
                             }
@@ -49288,6 +49293,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     }
                     if (stop) break;
                 }
+                __WEBPACK_IMPORTED_MODULE_3_axios___default.a.post(window.location.href + 'calculateAllPrices', this.offerGroup).then(function (res) {
+                    _this.calcPrices = res.data;
+                });
             }
         }
     }
@@ -49302,7 +49310,7 @@ var normalizeComponent = __webpack_require__(5)
 /* script */
 var __vue_script__ = __webpack_require__(49)
 /* template */
-var __vue_template__ = __webpack_require__(56)
+var __vue_template__ = __webpack_require__(50)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -49563,7 +49571,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                 equipments: [],
                 works: []
             },
-            types: {},
+            types: [],
             defaultTypes: [],
             selected: [[]],
             search: "",
@@ -49583,16 +49591,18 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             return __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post(window.location.href + 'getDefaultTypesWithEquipment');
         }).then(function (res) {
             _this.defaultTypes = res.data;
+            _this.autocompletesDisplays['equipments'].push([]);
             for (var i = 0; i < res.data.length; i++) {
                 _this.offersContentTabs[0].push({
                     'id': i,
                     'name': res.data[i]['name'],
                     'rows': []
                 });
-                console.log(_this.offersContentTabs);
                 _this.selected[0].push(res.data[i]['id']);
+                _this.autocompletesDisplays['equipments'][0].push([]);
                 if (res.data[i]['equipment'].length > 0) {
                     for (var j = 0; j < res.data[i]['equipment'].length; j++) {
+                        _this.autocompletesDisplays['equipments'][0][j].push(false);
                         _this.offersContentTabs[0][i]['rows'].push({
                             'id': j,
                             'saveType': 'old',
@@ -49600,7 +49610,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                             'name': res.data[i]['equipment'][j].name,
                             'quantity': res.data[i]['equipment'][j].pivot.quantity,
                             'code': res.data[i]['equipment'][j].code,
-                            'type': _this.types[res.data[i]['equipment'][j].type_id].slug,
+                            'type': _this.types[res.data[i]['equipment'][j].type_id][0].slug,
                             'price': res.data[i]['equipment'][j].pivot.price,
                             'price_trade': res.data[i]['equipment'][j].pivot.price_trade,
                             'price_small_trade': res.data[i]['equipment'][j].pivot.price_small_trade,
@@ -49613,6 +49623,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                     }
                 }
             }
+            console.log(_this.autocompletesDisplays['equipments']);
         });
     },
     created: function created() {
@@ -49637,10 +49648,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                         'name': res.data[i]['name'],
                         'rows': []
                     });
-                    console.log(_this2.offersContentTabs);
                     _this2.selected[index].push(res.data[i]['id']);
+                    _this2.autocompletesDisplays['equipments'][index].push([]);
                     if (res.data[i]['equipment'].length > 0) {
                         for (var j = 0; j < res.data[i]['equipment'].length; j++) {
+                            _this2.autocompletesDisplays['equipments'][index][i].push(false);
                             _this2.offersContentTabs[index][i]['rows'].push({
                                 'id': j,
                                 'saveType': 'old',
@@ -49648,7 +49660,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                                 'name': res.data[i]['equipment'][j].name,
                                 'quantity': res.data[i]['equipment'][j].pivot.quantity,
                                 'code': res.data[i]['equipment'][j].code,
-                                'type': _this2.types[res.data[i]['equipment'][j].type_id].slug,
+                                'type': _this2.types[res.data[i]['equipment'][j].type_id][0].slug,
                                 'price': res.data[i]['equipment'][j].pivot.price,
                                 'price_trade': res.data[i]['equipment'][j].pivot.price_trade,
                                 'price_small_trade': res.data[i]['equipment'][j].pivot.price_small_trade,
@@ -49709,7 +49721,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                     lastRow = 0;
                 }
 
-                this.autocompletesDisplays['equipments'].push({ lastRow: false });
+                this.autocompletesDisplays['equipments'][offerTabId][offerContentTabId].push({ lastRow: false });
                 this.offersContentTabs[offerTabId][offerContentTabId]['rows'].push({
                     id: lastRow,
                     saveType: 'new',
@@ -49729,7 +49741,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                 });
             }
         },
-        searchEquipmentByCode: function searchEquipmentByCode(codePart, rowId) {
+        searchEquipmentByCode: function searchEquipmentByCode(codePart, offerTabId, offerContentTabId, rowId) {
             var _this3 = this;
 
             var context = this;
@@ -49744,7 +49756,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                 _this3.results = resp.data;
                 _this3.isLoading = false;
             });
-            this.autocompletesDisplays['equipments'][rowId] = true;
+            this.autocompletesDisplays['equipments'][offerTabId][offerContentTabId][rowId] = true;
         },
         searchWorkByCode: function searchWorkByCode(codePart, rowId) {
             var _this4 = this;
@@ -49764,8 +49776,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             this.autocompletesDisplays['works'][rowId] = true;
         },
         setResult: function setResult(equipment, offerTabId, offerContentTabId, rowId) {
+            console.log(this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]);
             this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['id'] = rowId;
             this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['saveType'] = 'old';
+            this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['base_id'] = equipment.id;
             this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['code'] = equipment.code;
             this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['name'] = equipment.name;
             this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['description'] = equipment.description;
@@ -49777,9 +49791,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['price_special'] = equipment.price_special;
             this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['comment'] = equipment.comment;
             this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['type_id'] = equipment.type.id;
-            this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['type'] = equipment.type.name;
+            this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['type'] = equipment.type.slug;
             // this.row.code = result;
-            this.autocompletesDisplays[rowId] = false;
+            this.autocompletesDisplays['equipments'][offerTabId][offerContentTabId][rowId] = false;
         },
         setWorkResult: function setWorkResult(work, index) {
             this.works[index] = {
@@ -49792,7 +49806,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         handleClickOutside: function handleClickOutside(event) {
             if ('autocomplete-results' !== __WEBPACK_IMPORTED_MODULE_0_jquery___default()(event.target).attr('class')) {
                 for (var i = 0; i < this.autocompletesDisplays['equipments'].length; i++) {
-                    Vue.set(this.autocompletesDisplays['equipments'], i, false);
+                    for (var j = 0; j < this.autocompletesDisplays['equipments'][i].length; j++) {
+                        for (var k = 0; k < this.autocompletesDisplays['equipments'][i][j].length; k++) {
+                            Vue.set(this.autocompletesDisplays['equipments'][i][j], k, false);
+                        }
+                    }
                 }
                 for (var _i = 0; _i < this.autocompletesDisplays['works'].length; _i++) {
                     Vue.set(this.autocompletesDisplays['works'], _i, false);
@@ -49940,13 +49958,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 });
 
 /***/ }),
-/* 50 */,
-/* 51 */,
-/* 52 */,
-/* 53 */,
-/* 54 */,
-/* 55 */,
-/* 56 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -50577,6 +50589,8 @@ var render = function() {
                                             keyup: function($event) {
                                               _vm.searchEquipmentByCode(
                                                 row.code,
+                                                offerTab.id,
+                                                offerContentTab.id,
                                                 row.id
                                               )
                                             },
@@ -50603,15 +50617,22 @@ var render = function() {
                                                 value:
                                                   _vm.autocompletesDisplays[
                                                     "equipments"
+                                                  ][offerTab.id][
+                                                    offerContentTab.id
                                                   ][row.id],
                                                 expression:
-                                                  "autocompletesDisplays['equipments'][row.id]"
+                                                  "autocompletesDisplays['equipments'][offerTab.id][offerContentTab.id][row.id]"
                                               }
                                             ],
                                             staticClass: "autocomplete-results",
                                             attrs: {
                                               id:
-                                                "autocomplete-results-" + row.id
+                                                "autocomplete-results-e-" +
+                                                offerTab.id +
+                                                "-" +
+                                                offerContentTab.id +
+                                                "-" +
+                                                row.id
                                             }
                                           },
                                           [
@@ -51219,7 +51240,7 @@ var render = function() {
                               }
                             ],
                             staticClass: "autocomplete-results",
-                            attrs: { id: "autocomplete-results-" + key }
+                            attrs: { id: "autocomplete-results-w" + key }
                           },
                           [
                             _vm.isLoading
@@ -51434,15 +51455,15 @@ if (false) {
 }
 
 /***/ }),
-/* 57 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(5)
 /* script */
-var __vue_script__ = __webpack_require__(58)
+var __vue_script__ = __webpack_require__(52)
 /* template */
-var __vue_template__ = __webpack_require__(59)
+var __vue_template__ = __webpack_require__(53)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -51481,7 +51502,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 58 */
+/* 52 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -51570,10 +51591,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['offerGroup', 'consumablePrice'],
+    props: ['offerGroup', 'calcPrices'],
     data: function data() {
         return {};
     },
@@ -51590,7 +51617,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 59 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -51663,10 +51690,20 @@ var render = function() {
                               _c("td", [_vm._v("Коробы, провода и т.д.")]),
                               _vm._v(" "),
                               _c("td", [
-                                _vm._v(_vm._s(_vm.consumablePrice != 0 ? 1 : 0))
+                                _vm._v(
+                                  _vm._s(
+                                    _vm.calcPrices["consumablePrice"] != 0
+                                      ? 1
+                                      : 0
+                                  )
+                                )
                               ]),
                               _vm._v(" "),
-                              _c("td", [_vm._v(_vm._s(_vm.consumablePrice))]),
+                              _c("td", [
+                                _vm._v(
+                                  _vm._s(_vm.calcPrices["consumablePrice"])
+                                )
+                              ]),
                               _vm._v(" "),
                               _c("td", [_vm._v(" --- ")]),
                               _vm._v(" "),
@@ -51686,7 +51723,10 @@ var render = function() {
                                   _c("h4", [
                                     _vm._v(
                                       "Всего за оборудование " +
-                                        _vm._s(_vm.consumableSum) +
+                                        _vm._s(
+                                          _vm.calcPrices["equipmentPrice"] +
+                                            _vm.calcPrices["consumablePrice"]
+                                        ) +
                                         "р."
                                     )
                                   ])
@@ -51727,9 +51767,99 @@ var render = function() {
                               ])
                             }),
                             _vm._v(" "),
-                            _vm._m(2, true),
+                            _c("tr", [
+                              _c(
+                                "td",
+                                {
+                                  staticClass: "bg-beige text-right",
+                                  attrs: { colspan: "4" }
+                                },
+                                [
+                                  _c("h4", [
+                                    _vm._v(
+                                      "Всего за работы ( с НДС ): " +
+                                        _vm._s(
+                                          _vm.calcPrices["totalWorkPrice"]
+                                        ) +
+                                        "р."
+                                    )
+                                  ])
+                                ]
+                              )
+                            ]),
                             _vm._v(" "),
-                            _vm._m(3, true)
+                            _c("tr", [
+                              _c(
+                                "td",
+                                {
+                                  staticClass: "bg-light-blue text-right",
+                                  attrs: { colspan: "4" }
+                                },
+                                [
+                                  _c("h4", [
+                                    _vm._v(
+                                      "Всего за работы ( без НДС, Доп. скидка - " +
+                                        _vm._s(
+                                          _vm.calcPrices["additionalDiscount"]
+                                        ) +
+                                        " ): " +
+                                        _vm._s(
+                                          _vm.calcPrices["totalWorkPriceNoVAT"]
+                                        ) +
+                                        "р."
+                                    )
+                                  ])
+                                ]
+                              )
+                            ]),
+                            _vm._v(" "),
+                            _c("tr", [
+                              _c(
+                                "td",
+                                {
+                                  staticClass: "bg-beige text-right",
+                                  attrs: { colspan: "4" }
+                                },
+                                [
+                                  _c("h4", [
+                                    _vm._v(
+                                      "Общая стоимость (1 договор - все с НДС): " +
+                                        _vm._s(
+                                          _vm.calcPrices["equipmentPrice"] +
+                                            _vm.calcPrices["consumablePrice"] +
+                                            _vm.calcPrices["totalWorkPrice"]
+                                        ) +
+                                        "р."
+                                    )
+                                  ])
+                                ]
+                              )
+                            ]),
+                            _vm._v(" "),
+                            _c("tr", [
+                              _c(
+                                "td",
+                                {
+                                  staticClass: "bg-light-blue text-right",
+                                  attrs: { colspan: "4" }
+                                },
+                                [
+                                  _c("h4", [
+                                    _vm._v(
+                                      "Общая стоимость (2 договора - оборудование с НДС, работы без НДС): " +
+                                        _vm._s(
+                                          _vm.calcPrices["equipmentPrice"] +
+                                            _vm.calcPrices["consumablePrice"] +
+                                            _vm.calcPrices[
+                                              "totalWorkPriceNoVAT"
+                                            ]
+                                        ) +
+                                        "р."
+                                    )
+                                  ])
+                                ]
+                              )
+                            ])
                           ],
                           2
                         )
@@ -51815,34 +51945,6 @@ var staticRenderFns = [
         _c("th", { attrs: { scope: "col" } }, [_vm._v("Количество")])
       ])
     ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("tr", [
-      _c(
-        "td",
-        { staticClass: "bg-beige text-right", attrs: { colspan: "4" } },
-        [_c("h4", [_vm._v("Всего за работы ( с НДС ): р.")])]
-      )
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("tr", [
-      _c(
-        "td",
-        { staticClass: "bg-light-blue text-right", attrs: { colspan: "4" } },
-        [
-          _c("h4", [
-            _vm._v("Всего за работы ( без НДС, Доп. скидка - ??? ): ???р.")
-          ])
-        ]
-      )
-    ])
   }
 ]
 render._withStripped = true
@@ -51855,7 +51957,7 @@ if (false) {
 }
 
 /***/ }),
-/* 60 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -51907,7 +52009,7 @@ var render = function() {
               _c("kp-total-tab", {
                 attrs: {
                   offerGroup: _vm.offerGroup,
-                  consumablePrice: _vm.consumablePrice
+                  calcPrices: _vm.calcPrices
                 }
               })
             ],
@@ -51945,7 +52047,7 @@ if (false) {
 }
 
 /***/ }),
-/* 61 */
+/* 55 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

@@ -78,7 +78,7 @@ class OfferController extends Controller
         return 'ok';
     }
 
-    public function saveOfferGroup(Request $request){
+    public function saveOfferGroup(Request $request){//todo saving and autocomplete fix
         $group = $request->offer_group;
         if(!isset($group)){
             return "no";

@@ -75,8 +75,8 @@
                                             <input type="hidden" hidden="hidden" :name="'offer_group[offers]['+offerTab.id+'][equipments]['+offerContentTab.id+']['+row.id+'][comment]'" v-model="row.comment"/>
                                             <input type="hidden" hidden="hidden" :name="'offer_group[offers]['+offerTab.id+'][equipments]['+offerContentTab.id+']['+row.id+'][type]'" v-model="row.type"/>
 
-                                            <input type="text" @keyup="searchEquipmentByCode(row.code, row.id)" :name="'offer_group[offers]['+offerTab.id+'][equipments]['+offerContentTab.id+']['+row.id+'][code]'" v-model="row.code" />
-                                            <ul :id="'autocomplete-results-'+row.id" v-show="autocompletesDisplays['equipments'][row.id]" class="autocomplete-results">
+                                            <input type="text" @keyup="searchEquipmentByCode(row.code, offerTab.id, offerContentTab.id, row.id)" :name="'offer_group[offers]['+offerTab.id+'][equipments]['+offerContentTab.id+']['+row.id+'][code]'" v-model="row.code" />
+                                            <ul :id="'autocomplete-results-e-'+offerTab.id+'-'+offerContentTab.id+'-'+row.id" v-show="autocompletesDisplays['equipments'][offerTab.id][offerContentTab.id][row.id]" class="autocomplete-results">
                                                 <li class="loading" v-if="isLoading">
                                                     Поиск...
                                                 </li>
@@ -156,7 +156,7 @@
                     <tr v-for="(work, key) in works" :key="key">
                         <td>
                             <input type="text" @keyup="searchWorkByCode(work.code, key)" :name="'offer_group[works]['+key+'][code]'" v-model="work.code"/>
-                            <ul :id="'autocomplete-results-'+key" v-show="autocompletesDisplays['works'][key]" class="autocomplete-results">
+                            <ul :id="'autocomplete-results-w'+key" v-show="autocompletesDisplays['works'][key]" class="autocomplete-results">
                                 <li class="loading" v-if="isLoading">
                                     Поиск...
                                 </li>
@@ -209,7 +209,7 @@
                     equipments: [],
                     works: []
                 },
-                types: {},
+                types: [],
                 defaultTypes:[],
                 selected: [
                     []
@@ -232,16 +232,18 @@
                 })
                 .then((res) => {
                     this.defaultTypes = res.data;
+                    this.autocompletesDisplays['equipments'].push([]);
                     for(let i = 0 ; i < res.data.length ; i++) {
                         this.offersContentTabs[0].push({
                             'id': i,
                             'name': res.data[i]['name'],
                             'rows': [],
                         });
-                        console.log(this.offersContentTabs);
                         this.selected[0].push( res.data[i]['id'] );
+                        this.autocompletesDisplays['equipments'][0].push([]);
                         if(res.data[i]['equipment'].length > 0){
                             for (let j = 0; j < res.data[i]['equipment'].length; j++) {
+                                this.autocompletesDisplays['equipments'][0][j].push(false);
                                 this.offersContentTabs[0][i]['rows'].push({
                                     'id': j,
                                     'saveType': 'old',
@@ -249,7 +251,7 @@
                                     'name': res.data[i]['equipment'][j].name,
                                     'quantity': res.data[i]['equipment'][j].pivot.quantity,
                                     'code': res.data[i]['equipment'][j].code,
-                                    'type': this.types[res.data[i]['equipment'][j].type_id].slug,
+                                    'type': this.types[res.data[i]['equipment'][j].type_id][0].slug,
                                     'price': res.data[i]['equipment'][j].pivot.price,
                                     'price_trade': res.data[i]['equipment'][j].pivot.price_trade,
                                     'price_small_trade': res.data[i]['equipment'][j].pivot.price_small_trade,
@@ -262,6 +264,7 @@
                             }
                         }
                     }
+                    console.log(this.autocompletesDisplays['equipments']);
                 });
         },
         created: function (){
@@ -285,10 +288,11 @@
                                 'name': res.data[i]['name'],
                                 'rows': [],
                             });
-                            console.log(this.offersContentTabs);
                             this.selected[index].push( res.data[i]['id'] );
+                            this.autocompletesDisplays['equipments'][index].push([]);
                             if(res.data[i]['equipment'].length > 0){
                                 for (let j = 0; j < res.data[i]['equipment'].length; j++) {
+                                    this.autocompletesDisplays['equipments'][index][i].push(false);
                                     this.offersContentTabs[index][i]['rows'].push({
                                         'id': j,
                                         'saveType': 'old',
@@ -296,7 +300,7 @@
                                         'name': res.data[i]['equipment'][j].name,
                                         'quantity': res.data[i]['equipment'][j].pivot.quantity,
                                         'code': res.data[i]['equipment'][j].code,
-                                        'type': this.types[res.data[i]['equipment'][j].type_id].slug,
+                                        'type': this.types[res.data[i]['equipment'][j].type_id][0].slug,
                                         'price': res.data[i]['equipment'][j].pivot.price,
                                         'price_trade': res.data[i]['equipment'][j].pivot.price_trade,
                                         'price_small_trade': res.data[i]['equipment'][j].pivot.price_small_trade,
@@ -361,7 +365,7 @@
                         lastRow = 0;
                     }
 
-                    this.autocompletesDisplays['equipments'].push({lastRow: false});
+                    this.autocompletesDisplays['equipments'][offerTabId][offerContentTabId].push({lastRow: false});
                     this.offersContentTabs[offerTabId][offerContentTabId]['rows'].push(
                         {
                             id: lastRow,
@@ -383,7 +387,7 @@
                     );
                 }
             },
-            searchEquipmentByCode(codePart, rowId){
+            searchEquipmentByCode(codePart, offerTabId, offerContentTabId, rowId){
                 let context = this;
                 axios.interceptors.request.use(function (config) {
                     context.isLoading = true;
@@ -398,7 +402,7 @@
                         this.results = resp.data;
                         this.isLoading = false;
                     });
-                this.autocompletesDisplays['equipments'][rowId] = true;
+                this.autocompletesDisplays['equipments'][offerTabId][offerContentTabId][rowId] = true;
             },
             searchWorkByCode(codePart, rowId){
                 let context = this;
@@ -418,8 +422,10 @@
                 this.autocompletesDisplays['works'][rowId] = true;
             },
             setResult(equipment, offerTabId, offerContentTabId, rowId) {
+                console.log(this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]);
                 this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['id'] = rowId;
                 this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['saveType'] = 'old';
+                this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['base_id'] = equipment.id;
                 this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['code'] = equipment.code;
                 this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['name'] = equipment.name;
                 this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['description'] = equipment.description;
@@ -431,9 +437,9 @@
                 this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['price_special'] = equipment.price_special;
                 this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['comment'] = equipment.comment;
                 this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['type_id'] = equipment.type.id;
-                this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['type'] = equipment.type.name;
+                this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['type'] = equipment.type.slug;
                 // this.row.code = result;
-                this.autocompletesDisplays[rowId] = false;
+                this.autocompletesDisplays['equipments'][offerTabId][offerContentTabId][rowId] = false;
             },
             setWorkResult(work, index) {
                 this.works[index] = {
@@ -446,7 +452,11 @@
             handleClickOutside(event) {
                 if ('autocomplete-results' !== $(event.target).attr('class')) {
                     for (let i = 0; i < this.autocompletesDisplays['equipments'].length; i++) {
-                        Vue.set(this.autocompletesDisplays['equipments'], i, false)
+                        for (let j = 0; j < this.autocompletesDisplays['equipments'][i].length; j++) {
+                            for (let k = 0; k < this.autocompletesDisplays['equipments'][i][j].length; k++) {
+                                Vue.set(this.autocompletesDisplays['equipments'][i][j], k, false)
+                            }
+                        }
                     }
                     for (let i = 0; i < this.autocompletesDisplays['works'].length; i++) {
                         Vue.set(this.autocompletesDisplays['works'], i, false)
