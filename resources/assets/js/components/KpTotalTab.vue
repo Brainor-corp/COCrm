@@ -82,6 +82,8 @@
         </div>
         <div class="col-12">
             <a href="" class="btn btn-success" v-if="offerGroup.offer_group" @click.prevent="saveOfferGroup">Сохранить группу КП</a>
+            <a :href="url" target="_blank" v-if="url">{{url}}</a>
+            <span v-if="err" class="text-danger">{{err}}</span>
         </div>
     </div>
 </template>
@@ -92,7 +94,8 @@
         props: ['offerGroup', 'calcPrices'],
         data(){
             return {
-
+                url: "",
+                err: "",
             };
         },
         computed: {
@@ -103,8 +106,9 @@
                 axios
                     .post(window.location.href + 'saveOfferGroup', this.offerGroup)
                     .then((res) => {
-                        console.log(res);
-                    });
+                        this.url = res.data;
+                    })
+                    .catch(error => this.err = error);
             },
         }
     }
