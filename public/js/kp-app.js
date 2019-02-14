@@ -51646,20 +51646,29 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: ['offerGroup', 'calcPrices'],
     data: function data() {
-        return {};
+        return {
+            url: "",
+            err: ""
+        };
     },
 
     computed: {},
     created: function created() {},
     methods: {
         saveOfferGroup: function saveOfferGroup() {
+            var _this = this;
+
             __WEBPACK_IMPORTED_MODULE_0_axios___default.a.post(window.location.href + 'saveOfferGroup', this.offerGroup).then(function (res) {
-                console.log(res);
+                _this.url = res.data;
+            }).catch(function (error) {
+                return _this.err = error;
             });
         }
     }
@@ -51972,6 +51981,16 @@ var render = function() {
             },
             [_vm._v("Сохранить группу КП")]
           )
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.url
+        ? _c("a", { attrs: { href: _vm.url, target: "_blank" } }, [
+            _vm._v(_vm._s(_vm.url))
+          ])
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.err
+        ? _c("span", { staticClass: "text-danger" }, [_vm._v(_vm._s(_vm.err))])
         : _vm._e()
     ])
   ])
