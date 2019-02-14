@@ -17,6 +17,10 @@ class CreateEquipmentTypesTable extends Migration
             $table->bigInteger('equipment_id');
             $table->bigInteger('type_id');
             $table->integer('quantity')->default(1);
+            $table->double('price')->default(0);
+            $table->double('price_trade')->default(0);
+            $table->double('price_small_trade')->default(0);
+            $table->double('price_special')->default(0);
         });
     }
 

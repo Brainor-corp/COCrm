@@ -10775,6 +10775,12 @@ return jQuery;
 /* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
+module.exports = __webpack_require__(21);
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
 "use strict";
 /* WEBPACK VAR INJECTION */(function(process) {
 
@@ -10872,7 +10878,7 @@ module.exports = defaults;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(8)))
 
 /***/ }),
-/* 4 */
+/* 5 */
 /***/ (function(module, exports) {
 
 /* globals __VUE_SSR_CONTEXT__ */
@@ -10981,7 +10987,7 @@ module.exports = function normalizeComponent (
 
 
 /***/ }),
-/* 5 */
+/* 6 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -13560,12 +13566,6 @@ Popper.Defaults = Defaults;
 //# sourceMappingURL=popper.js.map
 
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(1)))
-
-/***/ }),
-/* 6 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(21);
 
 /***/ }),
 /* 7 */
@@ -25225,7 +25225,7 @@ module.exports=function (params, coerce) {
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(16);
-module.exports = __webpack_require__(61);
+module.exports = __webpack_require__(55);
 
 
 /***/ }),
@@ -25266,7 +25266,7 @@ var app = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
 
 
 window._ = __webpack_require__(18);
-window.Popper = __webpack_require__(5).default;
+window.Popper = __webpack_require__(6).default;
 
 /**
  * We'll load jQuery and the Bootstrap jQuery plugin which provides support
@@ -25286,7 +25286,7 @@ try {
  * CSRF token as a header based on the value of the "XSRF" token cookie.
  */
 
-window.axios = __webpack_require__(6);
+window.axios = __webpack_require__(3);
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
@@ -42474,7 +42474,7 @@ module.exports = function(module) {
   * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
   */
 (function (global, factory) {
-   true ? factory(exports, __webpack_require__(5), __webpack_require__(2)) :
+   true ? factory(exports, __webpack_require__(6), __webpack_require__(2)) :
   typeof define === 'function' && define.amd ? define(['exports', 'popper.js', 'jquery'], factory) :
   (factory((global.bootstrap = {}),global.Popper,global.jQuery));
 }(this, (function (exports,Popper,$) { 'use strict';
@@ -46729,7 +46729,7 @@ module.exports = function(module) {
 var utils = __webpack_require__(0);
 var bind = __webpack_require__(7);
 var Axios = __webpack_require__(23);
-var defaults = __webpack_require__(3);
+var defaults = __webpack_require__(4);
 
 /**
  * Create an instance of Axios
@@ -46812,7 +46812,7 @@ function isSlowBuffer (obj) {
 "use strict";
 
 
-var defaults = __webpack_require__(3);
+var defaults = __webpack_require__(4);
 var utils = __webpack_require__(0);
 var InterceptorManager = __webpack_require__(32);
 var dispatchRequest = __webpack_require__(33);
@@ -47353,7 +47353,7 @@ module.exports = InterceptorManager;
 var utils = __webpack_require__(0);
 var transformData = __webpack_require__(34);
 var isCancel = __webpack_require__(11);
-var defaults = __webpack_require__(3);
+var defaults = __webpack_require__(4);
 var isAbsoluteURL = __webpack_require__(35);
 var combineURLs = __webpack_require__(36);
 
@@ -49140,11 +49140,11 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-var normalizeComponent = __webpack_require__(4)
+var normalizeComponent = __webpack_require__(5)
 /* script */
 var __vue_script__ = __webpack_require__(47)
 /* template */
-var __vue_template__ = __webpack_require__(60)
+var __vue_template__ = __webpack_require__(54)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -49190,12 +49190,14 @@ module.exports = Component.exports
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__GenerateKpTab__ = __webpack_require__(48);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__GenerateKpTab___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__GenerateKpTab__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__KpTotalTab__ = __webpack_require__(57);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__KpTotalTab__ = __webpack_require__(51);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__KpTotalTab___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__KpTotalTab__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_deparam__ = __webpack_require__(14);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_deparam___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_deparam__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_jquery__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_jquery___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_jquery__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_axios__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_axios__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_jquery__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_jquery___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_jquery__);
 //
 //
 //
@@ -49224,6 +49226,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+
 
 
 
@@ -49235,7 +49238,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     data: function data() {
         return {
             offerGroup: [],
-            consumablePrice: 0
+            calcPrices: []
         };
     },
 
@@ -49249,50 +49252,51 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         updateOfferGroup: function updateOfferGroup(newOfferGroup) {
             if (typeof newOfferGroup !== 'undefined') {
                 this.offerGroup = newOfferGroup;
+                this.calcPrices = [];
             } else {
-                this.consumablePrice = 0;
-                this.offerGroup = __WEBPACK_IMPORTED_MODULE_2_deparam___default()(__WEBPACK_IMPORTED_MODULE_3_jquery___default()('#kp-generate-form').serialize());
+                this.offerGroup = __WEBPACK_IMPORTED_MODULE_2_deparam___default()(__WEBPACK_IMPORTED_MODULE_4_jquery___default()('#kp-generate-form').serialize());
                 while (true) {
                     var stop = true;
                     for (var offer = 0; offer < this.offerGroup['offer_group']['offers'].length; offer++) {
-                        for (var equipment_tab = 0; equipment_tab < this.offerGroup['offer_group']['offers'][offer]['equipments']['equipment'].length; equipment_tab++) {
-                            if (this.offerGroup['offer_group']['offers'][offer]['equipments']['equipment'][equipment_tab] == null) {
-                                this.offerGroup['offer_group']['offers'][offer]['equipments']['equipment'].splice(equipment_tab, 1);
-                                stop = false;
-                                break;
-                            }
-                            for (var equipment = 0; equipment < this.offerGroup['offer_group']['offers'][offer]['equipments']['equipment'][equipment_tab].length; equipment++) {
-                                if (this.offerGroup['offer_group']['offers'][offer]['equipments']['equipment'][equipment_tab][equipment].quantity === "" || parseInt(this.offerGroup['offer_group']['offers'][offer]['equipments']['equipment'][equipment_tab][equipment].quantity) < 1) {
-                                    //проверка на ненулевое кол-во
-                                    this.offerGroup['offer_group']['offers'][offer]['equipments']['equipment'][equipment_tab].splice(equipment, 1);
-                                    stop = false;
-                                    break;
+                        if (this.offerGroup['offer_group']['offers'][offer]['equipments']) {
+                            if (this.offerGroup['offer_group']['offers'][offer]['equipments']) {
+                                for (var equipment_tab = 0; equipment_tab < this.offerGroup['offer_group']['offers'][offer]['equipments'].length; equipment_tab++) {
+                                    if (!this.offerGroup['offer_group']['offers'][offer]['equipments'][equipment_tab]) {
+                                        this.offerGroup['offer_group']['offers'][offer]['equipments'].splice(equipment_tab, 1);
+                                        stop = false;
+                                        break;
+                                    }
+                                    for (var equipment = 0; equipment < this.offerGroup['offer_group']['offers'][offer]['equipments'][equipment_tab].length; equipment++) {
+                                        console.log(this.offerGroup['offer_group']['offers'][offer]['equipments'][equipment_tab]);
+                                        if (!this.offerGroup['offer_group']['offers'][offer]['equipments'][equipment_tab][equipment] || this.offerGroup['offer_group']['offers'][offer]['equipments'][equipment_tab][equipment].quantity === "" || parseInt(this.offerGroup['offer_group']['offers'][offer]['equipments'][equipment_tab][equipment].quantity) < 1) {
+                                            //проверка на ненулевое кол-во
+                                            this.offerGroup['offer_group']['offers'][offer]['equipments'][equipment_tab].splice(equipment, 1);
+                                            stop = false;
+                                            break;
+                                        }
+                                    }
                                 }
-                                if (this.offerGroup['offer_group']['offers'][offer]['equipments']['equipment'][equipment_tab][equipment].type == 'rashodnye-materialy') {
-                                    this.consumablePrice += this.offerGroup['offer_group']['offers'][offer]['equipments']['equipment'][equipment_tab][equipment].quantity * this.offerGroup['offer_group']['offers'][offer]['equipments']['equipment'][equipment_tab][equipment].price;
-                                }
                             }
-                            // this.findEqualEquipments(offer, 'equipment', equipment_tab);
                         }
-                        for (var work_tab = 0; work_tab < this.offerGroup['offer_group']['offers'][offer]['equipments']['work'].length; work_tab++) {
-                            if (this.offerGroup['offer_group']['offers'][offer]['equipments']['work'][work_tab] == null) {
-                                this.offerGroup['offer_group']['offers'][offer]['equipments']['work'].splice(work_tab, 1);
+                    }
+                    if (this.offerGroup['offer_group']['works']) {
+                        for (var work = 0; work < this.offerGroup['offer_group']['works'].length; work++) {
+                            if (this.offerGroup['offer_group']['works'][work].quantity === "" || this.offerGroup['offer_group']['works'][work].quantity < 1) {
+                                this.offerGroup['offer_group']['works'].splice(work, 1);
                                 stop = false;
-                                break;
                             }
-                            for (var work = 0; work < this.offerGroup['offer_group']['offers'][offer]['equipments']['work'][work_tab].length; work++) {
-                                if (this.offerGroup['offer_group']['offers'][offer]['equipments']['work'][work_tab][work].quantity === "" || parseInt(this.offerGroup['offer_group']['offers'][offer]['equipments']['work'][work_tab][work].quantity) < 1) {
-                                    this.offerGroup['offer_group']['offers'][offer]['equipments']['work'][work_tab].splice(work, 1);
-                                    stop = false;
-                                    break;
-                                }
-                            }
-                            // this.findEqualEquipments(offer, 'work', work_tab);
                         }
                     }
                     if (stop) break;
                 }
             }
+        },
+        calculatePrices: function calculatePrices() {
+            var _this = this;
+
+            __WEBPACK_IMPORTED_MODULE_3_axios___default.a.post(window.location.href + 'calculateAllPrices', this.offerGroup).then(function (res) {
+                _this.calcPrices = res.data;
+            });
         }
     }
 });
@@ -49302,11 +49306,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-var normalizeComponent = __webpack_require__(4)
+var normalizeComponent = __webpack_require__(5)
 /* script */
 var __vue_script__ = __webpack_require__(49)
 /* template */
-var __vue_template__ = __webpack_require__(56)
+var __vue_template__ = __webpack_require__(50)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -49354,10 +49358,88 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_jquery___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_jquery__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_deparam__ = __webpack_require__(14);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_deparam___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_deparam__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_axios__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_axios__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_axios__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue2_autocomplete_js__ = __webpack_require__(50);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue2_autocomplete_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_vue2_autocomplete_js__);
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -49476,8 +49558,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 
-
-__webpack_require__(51);
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -49485,17 +49565,17 @@ __webpack_require__(51);
             offersTabs: [{ id: 0, name: 'Новый тип КП' }],
             offersContentTabs: [[]],
             offerGroup: { name: 'Шаблон КП' },
+            works: [],
+            adjusters: [],
             results: [],
             groupId: null,
-            autocompletesDisplays: [],
-            types: { 'new': [{ id: 'new' }] },
-            taxes: [],
-            defaultTypes: [],
-            selected: {
-                0: [{
-                    0: 'new'
-                }]
+            autocompletesDisplays: {
+                equipments: [[[]]],
+                works: []
             },
+            types: [],
+            defaultTypes: [],
+            selected: [[]],
             search: "",
             isLoading: false,
             redactMode: false,
@@ -49503,37 +49583,29 @@ __webpack_require__(51);
         };
     },
 
-    components: { Autocomplete: __WEBPACK_IMPORTED_MODULE_3_vue2_autocomplete_js___default.a },
+    components: {},
     computed: {},
     beforeCreate: function beforeCreate() {
         var _this = this;
 
-        __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post(window.location.href + 'getTaxBySlug').then(function (res) {
-            _this.taxes = res.data;
-
-            return __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post(window.location.href + 'getAllEquipmentTypes');
-        }).then(function (res) {
+        __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post(window.location.href + 'getAllEquipmentTypes').then(function (res) {
             _this.types = res.data;
-            _this.types['new'] = [{ 'id': 1 }];
-
             return __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post(window.location.href + 'getDefaultTypesWithEquipment');
         }).then(function (res) {
             _this.defaultTypes = res.data;
-            _this.offersContentTabs[0].push({
-                'id': 0,
-                'name': 'Новая ',
-                'rows': []
-            });
+            _this.autocompletesDisplays['equipments'].push([]);
             for (var i = 0; i < res.data.length; i++) {
                 _this.offersContentTabs[0].push({
-                    'id': i + 1,
+                    'id': i,
                     'name': res.data[i]['name'],
                     'rows': []
                 });
-                _this.selected[0].push([res.data[i]['id']]);
+                _this.selected[0].push(res.data[i]['id']);
+                _this.autocompletesDisplays['equipments'][0].push([]);
                 if (res.data[i]['equipment'].length > 0) {
                     for (var j = 0; j < res.data[i]['equipment'].length; j++) {
-                        _this.offersContentTabs[0][i + 1]['rows'].push({
+                        _this.autocompletesDisplays['equipments'][0][j].push(false);
+                        _this.offersContentTabs[0][i]['rows'].push({
                             'id': j,
                             'saveType': 'old',
                             'base_id': res.data[i]['equipment'][j].id,
@@ -49541,12 +49613,13 @@ __webpack_require__(51);
                             'quantity': res.data[i]['equipment'][j].pivot.quantity,
                             'code': res.data[i]['equipment'][j].code,
                             'type': _this.types[res.data[i]['equipment'][j].type_id][0].slug,
-                            // 'price': res.data[i]['equipment'][j].pivot.price,
-                            // 'price_trade': res.data[i]['equipment'][j].pivot.price_trade,
-                            // 'price_small_trade': res.data[i]['equipment'][j].pivot.price_small_trade,
-                            // 'price_special': res.data[i]['equipment'][j].pivot.price_special,
-                            // 'comment': res.data[i]['equipment'][j].pivot.comment,
+                            'price': res.data[i]['equipment'][j].pivot.price,
+                            'price_trade': res.data[i]['equipment'][j].pivot.price_trade,
+                            'price_small_trade': res.data[i]['equipment'][j].pivot.price_small_trade,
+                            'price_special': res.data[i]['equipment'][j].pivot.price_special,
+                            'comment': res.data[i]['equipment'][j].pivot.comment,
                             'description': res.data[i]['equipment'][j].description,
+                            'points': res.data[i]['equipment'][j].points,
                             'class': res.data[i]['equipment'][j].class
                         });
                     }
@@ -49565,6 +49638,47 @@ __webpack_require__(51);
     },
 
     methods: {
+        setDefaultTabs: function setDefaultTabs(index) {
+            var _this2 = this;
+
+            __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post(window.location.href + 'getDefaultTypesWithEquipment').then(function (res) {
+                _this2.defaultTypes = res.data;
+                for (var i = 0; i < res.data.length; i++) {
+                    _this2.offersContentTabs[index].push({
+                        'id': i,
+                        'name': res.data[i]['name'],
+                        'rows': []
+                    });
+                    _this2.selected[index].push(res.data[i]['id']);
+                    if (!_this2.autocompletesDisplays['equipments'][index]) {
+                        _this2.autocompletesDisplays['equipments'][index] = [];
+                    }
+                    _this2.autocompletesDisplays['equipments'][index].push([]);
+                    if (res.data[i]['equipment'].length > 0) {
+                        for (var j = 0; j < res.data[i]['equipment'].length; j++) {
+                            _this2.autocompletesDisplays['equipments'][index][i].push(false);
+                            _this2.offersContentTabs[index][i]['rows'].push({
+                                'id': j,
+                                'saveType': 'old',
+                                'base_id': res.data[i]['equipment'][j].id,
+                                'name': res.data[i]['equipment'][j].name,
+                                'quantity': res.data[i]['equipment'][j].pivot.quantity,
+                                'code': res.data[i]['equipment'][j].code,
+                                'type': _this2.types[res.data[i]['equipment'][j].type_id][0].slug,
+                                'price': res.data[i]['equipment'][j].pivot.price,
+                                'price_trade': res.data[i]['equipment'][j].pivot.price_trade,
+                                'price_small_trade': res.data[i]['equipment'][j].pivot.price_small_trade,
+                                'price_special': res.data[i]['equipment'][j].pivot.price_special,
+                                'comment': res.data[i]['equipment'][j].pivot.comment,
+                                'description': res.data[i]['equipment'][j].description,
+                                'points': res.data[i]['equipment'][j].points,
+                                'class': res.data[i]['equipment'][j].class
+                            });
+                        }
+                    }
+                }
+            });
+        },
         updateOfferGroup: function updateOfferGroup() {
             this.$emit('updateOfferGroup');
             this.redactMode = true;
@@ -49580,14 +49694,10 @@ __webpack_require__(51);
                 name: 'Новый тип КП'
             });
             this.offersContentTabs.push([]);
-            this.offersContentTabs[lastOfferTabId].push({
-                id: 0,
-                name: 'Новое оборудование',
-                rows: []
-            });
-            this.selected[lastOfferTabId] = {
-                0: 'new'
-            };
+            if (!this.selected[lastOfferTabId]) {
+                this.selected[lastOfferTabId] = [];
+            }
+            this.setDefaultTabs(lastOfferTabId);
         },
         addOfferContentTab: function addOfferContentTab(offerTabId) {
             var lastOfferContentTab = void 0;
@@ -49599,39 +49709,47 @@ __webpack_require__(51);
                 name: 'Новое оборудование',
                 rows: []
             });
-            this.selected[offerTabId][lastOfferContentTab.id + 1] = 'new';
+            this.selected[offerTabId][lastOfferContentTabId] = 'new';
         },
         addTableRow: function addTableRow(offerTabId, offerContentTabId) {
-            var lastRow = void 0;
-
-            if (this.offersContentTabs[offerTabId][offerContentTabId]['rows'].length > 0) {
-                lastRow = this.offersContentTabs[offerTabId][offerContentTabId]['rows'][this.offersContentTabs[offerTabId][offerContentTabId]['rows'].length - 1].id + 1;
+            if (this.selected[offerTabId][offerContentTabId] === 'new') {
+                __WEBPACK_IMPORTED_MODULE_0_jquery___default()('[data-toggle="tooltip-' + offerTabId + '-' + offerContentTabId + '"]').tooltip({ trigger: 'manual' });
+                __WEBPACK_IMPORTED_MODULE_0_jquery___default()('[data-toggle="tooltip-' + offerTabId + '-' + offerContentTabId + '"]').tooltip('toggle');
             } else {
-                lastRow = 0;
+                __WEBPACK_IMPORTED_MODULE_0_jquery___default()('[data-toggle="tooltip-' + offerTabId + '-' + offerContentTabId + '"]').tooltip('hide');
+                var lastRow = void 0;
+
+                if (this.offersContentTabs[offerTabId][offerContentTabId]['rows'].length > 0) {
+                    lastRow = this.offersContentTabs[offerTabId][offerContentTabId]['rows'][this.offersContentTabs[offerTabId][offerContentTabId]['rows'].length - 1].id + 1;
+                } else {
+                    lastRow = 0;
+                }
+
+                if (!this.autocompletesDisplays['equipments'][offerTabId][offerContentTabId]) {
+                    this.autocompletesDisplays['equipments'][offerTabId][offerContentTabId] = [];
+                }
+                this.autocompletesDisplays['equipments'][offerTabId][offerContentTabId].push({ lastRow: false });
+                this.offersContentTabs[offerTabId][offerContentTabId]['rows'].push({
+                    id: lastRow,
+                    saveType: 'new',
+                    base_id: -1,
+                    code: '',
+                    name: '',
+                    description: '',
+                    quantity: '',
+                    points: '',
+                    price: '',
+                    price_trade: '',
+                    price_small_trade: '',
+                    price_special: '',
+                    comment: '',
+                    class: this.types[this.selected[offerTabId][offerContentTabId]][0].class,
+                    type: this.types[this.selected[offerTabId][offerContentTabId]][0].slug
+                });
             }
-
-            this.autocompletesDisplays.push({ lastRow: false });
-
-            this.offersContentTabs[offerTabId][offerContentTabId]['rows'].push({
-                id: lastRow,
-                saveType: 'new',
-                base_id: -1,
-                code: '',
-                name: '',
-                description: '',
-                quantity: '',
-                points: '',
-                price: '',
-                price_trade: '',
-                price_small_trade: '',
-                price_special: '',
-                comment: '',
-                class: this.types[this.selected[offerTabId][offerContentTabId][0]][0].class,
-                type: this.types[this.selected[offerTabId][offerContentTabId][0]][0].slug
-            });
         },
-        searchEquipmentByCode: function searchEquipmentByCode(codePart, rowId) {
-            var _this2 = this;
+        searchEquipmentByCode: function searchEquipmentByCode(codePart, offerTabId, offerContentTabId, rowId) {
+            var _this3 = this;
 
             var context = this;
             __WEBPACK_IMPORTED_MODULE_2_axios___default.a.interceptors.request.use(function (config) {
@@ -49642,14 +49760,37 @@ __webpack_require__(51);
             __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post(window.location.href + 'findEquipmentByCode', {
                 code: codePart
             }).then(function (resp) {
-                _this2.results = resp.data;
-                _this2.isLoading = false;
+                // console.log('eq');
+                // console.log(resp.data);
+                _this3.results = resp.data;
+                _this3.isLoading = false;
             });
-            this.autocompletesDisplays[rowId] = true;
+            this.autocompletesDisplays['equipments'][offerTabId][offerContentTabId][rowId] = true;
+        },
+        searchWorkByCode: function searchWorkByCode(codePart, rowId) {
+            var _this4 = this;
+
+            var context = this;
+            __WEBPACK_IMPORTED_MODULE_2_axios___default.a.interceptors.request.use(function (config) {
+                context.isLoading = true;
+                return config;
+            });
+
+            __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post(window.location.href + 'findWorkByCode', {
+                code: codePart
+            }).then(function (resp) {
+                // console.log('w');
+                // console.log(resp.data);
+                _this4.results = resp.data;
+                _this4.isLoading = false;
+            });
+            this.autocompletesDisplays['works'][rowId] = true;
+            // console.log(this.autocompletesDisplays);
         },
         setResult: function setResult(equipment, offerTabId, offerContentTabId, rowId) {
             this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['id'] = rowId;
             this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['saveType'] = 'old';
+            this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['base_id'] = equipment.id;
             this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['code'] = equipment.code;
             this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['name'] = equipment.name;
             this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['description'] = equipment.description;
@@ -49661,21 +49802,35 @@ __webpack_require__(51);
             this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['price_special'] = equipment.price_special;
             this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['comment'] = equipment.comment;
             this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['type_id'] = equipment.type.id;
-            this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['type'] = equipment.type.name;
-            // this.row.code = result;
-            this.autocompletesDisplays[rowId] = false;
+            this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['type'] = equipment.type.slug;
+            this.autocompletesDisplays['equipments'][offerTabId][offerContentTabId][rowId] = false;
+            console.log(this.offersContentTabs[offerTabId][offerContentTabId]['rows']);
+        },
+        setWorkResult: function setWorkResult(work, index) {
+            this.works[index] = {
+                name: work.name,
+                code: work.code,
+                points: work.points,
+                pivot: { quantity: 1 }
+            };
+            this.autocompletesDisplays['works'][index] = false;
         },
         handleClickOutside: function handleClickOutside(event) {
-            if ('autocomplete-results' !== __WEBPACK_IMPORTED_MODULE_0_jquery___default()(event.target).attr('class')) {
-                var i = void 0,
-                    length = this.autocompletesDisplays.length;
-                for (i = 0; i < length; i = i + 1) {
-                    Vue.set(this.autocompletesDisplays, i, false);
+            if (__WEBPACK_IMPORTED_MODULE_0_jquery___default()(event.target).attr('class') != 'autocomplete-results') {
+                for (var i = 0; i < this.autocompletesDisplays['equipments'].length; i++) {
+                    for (var j = 0; j < this.autocompletesDisplays['equipments'][i].length; j++) {
+                        for (var k = 0; k < this.autocompletesDisplays['equipments'][i][j].length; k++) {
+                            Vue.set(this.autocompletesDisplays['equipments'][i][j], k, false);
+                        }
+                    }
+                }
+                for (var _i = 0; _i < this.autocompletesDisplays['works'].length; _i++) {
+                    Vue.set(this.autocompletesDisplays['works'], _i, false);
                 }
             }
         },
         getOfferGroup: function getOfferGroup() {
-            var _this3 = this;
+            var _this5 = this;
 
             var lastOfferTabId = 0;
             var buffKP = [];
@@ -49683,6 +49838,7 @@ __webpack_require__(51);
             var buffRow = [];
             var buffGroupName = '';
             var buffSelected = [];
+            var buffAutocompletes = [];
             __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post(window.location.href + 'getOfferGroup', {
                 id: this.groupId
             }).then(function (resp) {
@@ -49691,13 +49847,17 @@ __webpack_require__(51);
                     var lastOfferContentTabId = 0;
                     buffKP.push({
                         id: lastOfferTabId,
-                        name: offer.name,
-                        tax: offer.tax
+                        name: offer.name
+                        // tax: offer.tax
                     });
-
+                    buffAutocompletes[lastOfferTabId] = [];
                     Object.keys(offer['equipments']).forEach(function (type) {
                         var lastRow = 0;
                         offer['equipments'][type].forEach(function (equipment) {
+                            buffAutocompletes[lastOfferTabId][lastOfferContentTabId] = false;
+                            // buffAutocompletes.push({
+                            //     [lastOfferContentTabId]: false
+                            // });
                             if (!buffRow[lastOfferTabId]) {
                                 buffRow[lastOfferTabId] = [];
                             }
@@ -49745,16 +49905,24 @@ __webpack_require__(51);
                             name: type,
                             rows: buffRow[lastOfferTabId][lastOfferContentTabId]['rows']
                         });
-                        buffSelected[lastOfferTabId][lastOfferContentTabId][0] = buffRow[lastOfferTabId][lastOfferContentTabId]['rows'][0]['type_id'];
+                        buffSelected[lastOfferTabId][lastOfferContentTabId] = buffRow[lastOfferTabId][lastOfferContentTabId]['rows'][0]['type_id'];
                         lastOfferContentTabId++;
                     });
 
                     lastOfferTabId++;
                 });
-                _this3.offerGroup.name = buffGroupName;
-                _this3.offersTabs = buffKP;
-                _this3.offersContentTabs = buffEq;
-                _this3.selected = buffSelected;
+                _this5.offerGroup.name = buffGroupName;
+                _this5.offersTabs = buffKP;
+                _this5.offersContentTabs = buffEq;
+                _this5.selected = buffSelected;
+                _this5.works = resp.data.equipment;
+                _this5.autocompletesDisplays['equipments'] = buffAutocompletes;
+                _this5.adjusters['number'] = resp.data.adjusters_number;
+                _this5.adjusters['days'] = resp.data.adjustments_days;
+                _this5.adjusters['fuel'] = resp.data.fuel_number;
+                _this5.adjusters['wage'] = resp.data.adjusters_wage;
+                _this5.adjusters['percentage'] = resp.data.pay_percentage;
+                console.log(_this5.autocompletesDisplays['equipments']);
             });
         },
         deleteRow: function deleteRow(offerTabId, offerContentTabId, rowId) {
@@ -49763,6 +49931,10 @@ __webpack_require__(51);
                     for (var j = 0; j < this.offersContentTabs[offerTabId][i]['rows'].length; j++) {
                         if (this.offersContentTabs[offerTabId][i]['rows'][j].id === rowId) {
                             this.offersContentTabs[offerTabId][i]['rows'].splice(j, 1);
+                            for (var k = j; k < this.offersContentTabs[offerTabId][i]['rows'].length; k++) {
+                                this.offersContentTabs[offerTabId][i]['rows'][k].id--;
+                            }
+                            console.log(this.offersContentTabs[offerTabId][i]['rows']);
                             break;
                         }
                     }
@@ -49773,6 +49945,10 @@ __webpack_require__(51);
             for (var i = 0; i < this.offersContentTabs[offerTabId].length; i++) {
                 if (this.offersContentTabs[offerTabId][i].id === offerContentTabId) {
                     this.offersContentTabs[offerTabId].splice(i, 1);
+                    this.selected[offerTabId].splice(i, 1);
+                    for (var j = i; j < this.offersContentTabs[offerTabId].length; j++) {
+                        this.offersContentTabs[offerTabId][j].id--;
+                    }
                     break;
                 }
             }
@@ -49781,1344 +49957,32 @@ __webpack_require__(51);
             for (var i = 0; i < this.offersTabs.length; i++) {
                 if (this.offersTabs[i].id === offerTabId) {
                     this.offersTabs.splice(i, 1);
+                    for (var j = i; j < this.offersTabs.length; j++) {
+                        this.offersTabs[j].id--;
+                    }
                     this.offersContentTabs.splice(i, 1);
                     break;
                 }
             }
+        },
+        addWork: function addWork() {
+            this.works.push({
+                id: -1,
+                name: '',
+                code: '',
+                points: '',
+                pivot: { quantity: '' }
+            });
+            this.autocompletesDisplays['works'].push(_defineProperty({}, this.works.length - 1, false));
+        },
+        deleteWork: function deleteWork(key) {
+            this.works.splice(key, 1);
         }
     }
 });
 
 /***/ }),
 /* 50 */
-/***/ (function(module, exports, __webpack_require__) {
-
-/*!
- * Copyright (c) 2016 Naufal Rabbani (http://github.com/BosNaufal),
- * ,Licensed Under MIT (http://opensource.org/licenses/MIT),
- * ,
- * ,Vue 2 Autocomplete @ Version 0.2.2,
- * 
- */
-(function webpackUniversalModuleDefinition(root, factory) {
-	if(true)
-		module.exports = factory();
-	else if(typeof define === 'function' && define.amd)
-		define([], factory);
-	else if(typeof exports === 'object')
-		exports["Vue2Autocomplete"] = factory();
-	else
-		root["Vue2Autocomplete"] = factory();
-})(this, function() {
-return /******/ (function(modules) { // webpackBootstrap
-/******/ 	// The module cache
-/******/ 	var installedModules = {};
-/******/
-/******/ 	// The require function
-/******/ 	function __webpack_require__(moduleId) {
-/******/
-/******/ 		// Check if module is in cache
-/******/ 		if(installedModules[moduleId]) {
-/******/ 			return installedModules[moduleId].exports;
-/******/ 		}
-/******/ 		// Create a new module (and put it into the cache)
-/******/ 		var module = installedModules[moduleId] = {
-/******/ 			i: moduleId,
-/******/ 			l: false,
-/******/ 			exports: {}
-/******/ 		};
-/******/
-/******/ 		// Execute the module function
-/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-/******/
-/******/ 		// Flag the module as loaded
-/******/ 		module.l = true;
-/******/
-/******/ 		// Return the exports of the module
-/******/ 		return module.exports;
-/******/ 	}
-/******/
-/******/
-/******/ 	// expose the modules object (__webpack_modules__)
-/******/ 	__webpack_require__.m = modules;
-/******/
-/******/ 	// expose the module cache
-/******/ 	__webpack_require__.c = installedModules;
-/******/
-/******/ 	// identity function for calling harmony imports with the correct context
-/******/ 	__webpack_require__.i = function(value) { return value; };
-/******/
-/******/ 	// define getter function for harmony exports
-/******/ 	__webpack_require__.d = function(exports, name, getter) {
-/******/ 		if(!__webpack_require__.o(exports, name)) {
-/******/ 			Object.defineProperty(exports, name, {
-/******/ 				configurable: false,
-/******/ 				enumerable: true,
-/******/ 				get: getter
-/******/ 			});
-/******/ 		}
-/******/ 	};
-/******/
-/******/ 	// getDefaultExport function for compatibility with non-harmony modules
-/******/ 	__webpack_require__.n = function(module) {
-/******/ 		var getter = module && module.__esModule ?
-/******/ 			function getDefault() { return module['default']; } :
-/******/ 			function getModuleExports() { return module; };
-/******/ 		__webpack_require__.d(getter, 'a', getter);
-/******/ 		return getter;
-/******/ 	};
-/******/
-/******/ 	// Object.prototype.hasOwnProperty.call
-/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
-/******/
-/******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "../dist/";
-/******/
-/******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 2);
-/******/ })
-/************************************************************************/
-/******/ ([
-/* 0 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_vue_autocomplete_vue__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_e47ae2be_hasScoped_false_node_modules_vue_loader_lib_selector_type_template_index_0_vue_autocomplete_vue__ = __webpack_require__(4);
-var disposed = false
-var normalizeComponent = __webpack_require__(3)
-/* script */
-
-/* template */
-
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_vue_autocomplete_vue__["a" /* default */],
-  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_e47ae2be_hasScoped_false_node_modules_vue_loader_lib_selector_type_template_index_0_vue_autocomplete_vue__["a" /* default */],
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "src/js/components/vue-autocomplete.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
-if (Component.options.functional) {console.error("[vue-loader] vue-autocomplete.vue: functional components are not supported with templates, they should use render functions.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-e47ae2be", Component.options)
-  } else {
-    hotAPI.reload("data-v-e47ae2be", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-/* harmony default export */ __webpack_exports__["a"] = (Component.exports);
-
-
-/***/ }),
-/* 1 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-/*! Copyright (c) 2016 Naufal Rabbani (http://github.com/BosNaufal)
-* Licensed Under MIT (http://opensource.org/licenses/MIT)
-*
-* Vue 2 Autocomplete @ Version 0.0.1
-*
-*/
-
-/* harmony default export */ __webpack_exports__["a"] = ({
-
-  props: {
-    id: String,
-    name: String,
-    className: String,
-    classes: {
-      type: Object,
-      default: function _default() {
-        return {
-          wrapper: false,
-          input: false,
-          list: false,
-          item: false
-        };
-      }
-    },
-    placeholder: String,
-    required: Boolean,
-
-    // Intial Value
-    initValue: {
-      type: String,
-      default: ""
-    },
-
-    // Manual List
-    options: Array,
-
-    // Filter After Get the data
-    filterByAnchor: {
-      type: Boolean,
-      default: true
-    },
-
-    // Anchor of list
-    anchor: {
-      type: String,
-      required: true
-    },
-
-    // Label of list
-    label: String,
-
-    // Debounce time
-    debounce: Number,
-
-    // ajax URL will be fetched
-    url: {
-      type: String,
-      required: true
-    },
-
-    // query param
-    param: {
-      type: String,
-      default: 'q'
-    },
-
-    encodeParams: {
-      type: Boolean,
-      default: true
-    },
-
-    // Custom Params
-    customParams: Object,
-
-    // Custom Headers
-    customHeaders: Object,
-
-    // minimum length
-    min: {
-      type: Number,
-      default: 0
-    },
-
-    // Create a custom template from data.
-    onShouldRenderChild: Function,
-
-    // Process the result before retrieveng the result array.
-    process: Function,
-
-    // Callback
-    onInput: Function,
-    onShow: Function,
-    onBlur: Function,
-    onHide: Function,
-    onFocus: Function,
-    onSelect: Function,
-    onBeforeAjax: Function,
-    onAjaxProgress: Function,
-    onAjaxLoaded: Function,
-    onShouldGetData: Function
-  },
-
-  data: function data() {
-    return {
-      showList: false,
-      type: "",
-      json: [],
-      focusList: "",
-      debounceTask: undefined
-    };
-  },
-
-
-  watch: {
-    options: function options(newVal, oldVal) {
-      if (this.filterByAnchor) {
-        var type = this.type,
-            anchor = this.anchor;
-
-        var regex = new RegExp("" + type, 'i');
-        var filtered = newVal.filter(function (item) {
-          var found = item[anchor].search(regex) !== -1;
-          return found;
-        });
-        this.json = filtered;
-      } else {
-        this.json = newVal;
-      }
-    }
-  },
-
-  methods: {
-    getClassName: function getClassName(part) {
-      var classes = this.classes,
-          className = this.className;
-
-      if (classes[part]) return "" + classes[part];
-      return className ? className + "-" + part : '';
-    },
-
-
-    // Netralize Autocomplete
-    clearInput: function clearInput() {
-      this.showList = false;
-      this.type = "";
-      this.json = [];
-      this.focusList = "";
-    },
-
-
-    // Get the original data
-    cleanUp: function cleanUp(data) {
-      return JSON.parse(JSON.stringify(data));
-    },
-
-
-    /*==============================
-      INPUT EVENTS
-    =============================*/
-    handleInput: function handleInput(e) {
-      var _this = this;
-
-      var value = e.target.value;
-
-      this.showList = true;
-      // Callback Event
-      if (this.onInput) this.onInput(value);
-      // If Debounce
-      if (this.debounce) {
-        if (this.debounceTask !== undefined) clearTimeout(this.debounceTask);
-        this.debounceTask = setTimeout(function () {
-          return _this.getData(value);
-        }, this.debounce);
-      } else {
-        return this.getData(value);
-      }
-    },
-    handleKeyDown: function handleKeyDown(e) {
-      var key = e.keyCode;
-
-      // Disable when list isn't showing up
-      if (!this.showList) return;
-
-      // Key List
-      var DOWN = 40;
-      var UP = 38;
-      var ENTER = 13;
-      var ESC = 27;
-
-      // Prevent Default for Prevent Cursor Move & Form Submit
-      switch (key) {
-        case DOWN:
-          e.preventDefault();
-          this.focusList++;
-          break;
-        case UP:
-          e.preventDefault();
-          this.focusList--;
-          break;
-        case ENTER:
-          e.preventDefault();
-          this.selectList(this.json[this.focusList]);
-          this.showList = false;
-          break;
-        case ESC:
-          this.showList = false;
-          break;
-      }
-
-      var listLength = this.json.length - 1;
-      var outOfRangeBottom = this.focusList > listLength;
-      var outOfRangeTop = this.focusList < 0;
-      var topItemIndex = 0;
-      var bottomItemIndex = listLength;
-
-      var nextFocusList = this.focusList;
-      if (outOfRangeBottom) nextFocusList = topItemIndex;
-      if (outOfRangeTop) nextFocusList = bottomItemIndex;
-      this.focusList = nextFocusList;
-    },
-    setValue: function setValue(val) {
-      this.type = val;
-    },
-
-
-    /*==============================
-      LIST EVENTS
-    =============================*/
-
-    handleDoubleClick: function handleDoubleClick() {
-      this.json = [];
-      this.getData("");
-      // Callback Event
-      this.onShow ? this.onShow() : null;
-      this.showList = true;
-    },
-    handleBlur: function handleBlur(e) {
-      var _this2 = this;
-
-      // Callback Event
-      this.onBlur ? this.onBlur(e) : null;
-      setTimeout(function () {
-        // Callback Event
-        _this2.onHide ? _this2.onHide() : null;
-        _this2.showList = false;
-      }, 250);
-    },
-    handleFocus: function handleFocus(e) {
-      this.focusList = 0;
-      // Callback Event
-      this.onFocus ? this.onFocus(e) : null;
-    },
-    mousemove: function mousemove(i) {
-      this.focusList = i;
-    },
-    activeClass: function activeClass(i) {
-      var focusClass = i === this.focusList ? 'focus-list' : '';
-      return "" + focusClass;
-    },
-    selectList: function selectList(data) {
-      // Deep clone of the original object
-      var clean = this.cleanUp(data);
-      // Put the selected data to type (model)
-      this.type = clean[this.anchor];
-      // Hide List
-      this.showList = false;
-      // Callback Event
-      this.onSelect ? this.onSelect(clean) : null;
-    },
-    deepValue: function deepValue(obj, path) {
-      var arrayPath = path.split('.');
-      for (var i = 0; i < arrayPath.length; i++) {
-        obj = obj[arrayPath[i]];
-      }
-      return obj;
-    },
-
-
-    /*==============================
-      AJAX EVENTS
-    =============================*/
-
-    composeParams: function composeParams(val) {
-      var _this3 = this;
-
-      var encode = function encode(val) {
-        return _this3.encodeParams ? encodeURIComponent(val) : val;
-      };
-      var params = this.param + "=" + encode(val);
-      if (this.customParams) {
-        Object.keys(this.customParams).forEach(function (key) {
-          params += "&" + key + "=" + encode(_this3.customParams[key]);
-        });
-      }
-      return params;
-    },
-    composeHeader: function composeHeader(ajax) {
-      var _this4 = this;
-
-      if (this.customHeaders) {
-        Object.keys(this.customHeaders).forEach(function (key) {
-          ajax.setRequestHeader(key, _this4.customHeaders[key]);
-        });
-      }
-    },
-    doAjax: function doAjax(val) {
-      var _this5 = this;
-
-      // Callback Event
-      this.onBeforeAjax ? this.onBeforeAjax(val) : null;
-      // Compose Params
-      var params = this.composeParams(val);
-      // Init Ajax
-      var ajax = new XMLHttpRequest();
-      ajax.open('GET', this.url + "?" + params, true);
-      this.composeHeader(ajax);
-      // Callback Event
-      ajax.addEventListener('progress', function (data) {
-        if (data.lengthComputable && _this5.onAjaxProgress) _this5.onAjaxProgress(data);
-      });
-      // On Done
-      ajax.addEventListener('loadend', function (e) {
-        var responseText = e.target.responseText;
-
-        var json = JSON.parse(responseText);
-        // Callback Event
-        _this5.onAjaxLoaded ? _this5.onAjaxLoaded(json) : null;
-        _this5.json = _this5.process ? _this5.process(json) : json;
-      });
-      // Send Ajax
-      ajax.send();
-    },
-    getData: function getData(value) {
-      if (value.length < this.min || !this.url) return;
-      if (this.onShouldGetData) this.manualGetData(value);else this.doAjax(value);
-    },
-
-
-    // Do Ajax Manually, so user can do whatever he want
-    manualGetData: function manualGetData(val) {
-      var _this6 = this;
-
-      var task = this.onShouldGetData(val);
-      if (task && task.then) {
-        return task.then(function (options) {
-          _this6.json = options;
-        });
-      }
-    }
-  },
-
-  created: function created() {
-    // Sync parent model with initValue Props
-    this.type = this.initValue ? this.initValue : null;
-  },
-  mounted: function mounted() {
-    if (this.required) this.$refs.input.setAttribute("required", this.required);
-  }
-});
-
-/***/ }),
-/* 2 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_vue_autocomplete_vue__ = __webpack_require__(0);
-
-/* harmony default export */ __webpack_exports__["default"] = (__WEBPACK_IMPORTED_MODULE_0__components_vue_autocomplete_vue__["a" /* default */]);
-
-/***/ }),
-/* 3 */
-/***/ (function(module, exports) {
-
-/* globals __VUE_SSR_CONTEXT__ */
-
-// this module is a runtime utility for cleaner component module output and will
-// be included in the final webpack user bundle
-
-module.exports = function normalizeComponent (
-  rawScriptExports,
-  compiledTemplate,
-  injectStyles,
-  scopeId,
-  moduleIdentifier /* server only */
-) {
-  var esModule
-  var scriptExports = rawScriptExports = rawScriptExports || {}
-
-  // ES6 modules interop
-  var type = typeof rawScriptExports.default
-  if (type === 'object' || type === 'function') {
-    esModule = rawScriptExports
-    scriptExports = rawScriptExports.default
-  }
-
-  // Vue.extend constructor export interop
-  var options = typeof scriptExports === 'function'
-    ? scriptExports.options
-    : scriptExports
-
-  // render functions
-  if (compiledTemplate) {
-    options.render = compiledTemplate.render
-    options.staticRenderFns = compiledTemplate.staticRenderFns
-  }
-
-  // scopedId
-  if (scopeId) {
-    options._scopeId = scopeId
-  }
-
-  var hook
-  if (moduleIdentifier) { // server build
-    hook = function (context) {
-      // 2.3 injection
-      context =
-        context || // cached call
-        (this.$vnode && this.$vnode.ssrContext) || // stateful
-        (this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext) // functional
-      // 2.2 with runInNewContext: true
-      if (!context && typeof __VUE_SSR_CONTEXT__ !== 'undefined') {
-        context = __VUE_SSR_CONTEXT__
-      }
-      // inject component styles
-      if (injectStyles) {
-        injectStyles.call(this, context)
-      }
-      // register component module identifier for async chunk inferrence
-      if (context && context._registeredComponents) {
-        context._registeredComponents.add(moduleIdentifier)
-      }
-    }
-    // used by ssr in case component is cached and beforeCreate
-    // never gets called
-    options._ssrRegister = hook
-  } else if (injectStyles) {
-    hook = injectStyles
-  }
-
-  if (hook) {
-    var functional = options.functional
-    var existing = functional
-      ? options.render
-      : options.beforeCreate
-    if (!functional) {
-      // inject component registration as beforeCreate hook
-      options.beforeCreate = existing
-        ? [].concat(existing, hook)
-        : [hook]
-    } else {
-      // register for functioal component in vue file
-      options.render = function renderWithStyleInjection (h, context) {
-        hook.call(context)
-        return existing(h, context)
-      }
-    }
-  }
-
-  return {
-    esModule: esModule,
-    exports: scriptExports,
-    options: options
-  }
-}
-
-
-/***/ }),
-/* 4 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    class: ((_vm.getClassName('wrapper')) + " autocomplete-wrapper")
-  }, [_c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.type),
-      expression: "type"
-    }],
-    ref: "input",
-    class: ((_vm.getClassName('input')) + " autocomplete-input"),
-    attrs: {
-      "type": "text",
-      "id": _vm.id,
-      "placeholder": _vm.placeholder,
-      "name": _vm.name,
-      "autocomplete": "off"
-    },
-    domProps: {
-      "value": (_vm.type)
-    },
-    on: {
-      "input": [function($event) {
-        if ($event.target.composing) { return; }
-        _vm.type = $event.target.value
-      }, _vm.handleInput],
-      "dblclick": _vm.handleDoubleClick,
-      "blur": _vm.handleBlur,
-      "keydown": _vm.handleKeyDown,
-      "focus": _vm.handleFocus
-    }
-  }), _vm._v(" "), _c('div', {
-    directives: [{
-      name: "show",
-      rawName: "v-show",
-      value: (_vm.showList && _vm.json.length),
-      expression: "showList && json.length"
-    }],
-    class: ((_vm.getClassName('list')) + " autocomplete autocomplete-list")
-  }, [_c('ul', _vm._l((_vm.json), function(data, i) {
-    return _c('li', {
-      class: _vm.activeClass(i)
-    }, [_c('a', {
-      attrs: {
-        "href": "#"
-      },
-      on: {
-        "click": function($event) {
-          $event.preventDefault();
-          _vm.selectList(data)
-        },
-        "mousemove": function($event) {
-          _vm.mousemove(i)
-        }
-      }
-    }, [(_vm.onShouldRenderChild) ? _c('div', {
-      domProps: {
-        "innerHTML": _vm._s(_vm.onShouldRenderChild(data))
-      }
-    }) : _vm._e(), _vm._v(" "), (!_vm.onShouldRenderChild) ? _c('div', [_c('b', {
-      staticClass: "autocomplete-anchor-text"
-    }, [_vm._v(_vm._s(_vm.deepValue(data, _vm.anchor)))]), _vm._v(" "), _c('span', {
-      staticClass: "autocomplete-anchor-label"
-    }, [_vm._v(_vm._s(_vm.deepValue(data, _vm.label)))])]) : _vm._e()])])
-  }))])])
-}
-var staticRenderFns = []
-render._withStripped = true
-var esExports = { render: render, staticRenderFns: staticRenderFns }
-/* harmony default export */ __webpack_exports__["a"] = (esExports);
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-e47ae2be", esExports)
-  }
-}
-
-/***/ })
-/******/ ]);
-});
-
-/***/ }),
-/* 51 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(52);
-if(typeof content === 'string') content = [[module.i, content, '']];
-// Prepare cssTransformation
-var transform;
-
-var options = {}
-options.transform = transform
-// add the styles to the DOM
-var update = __webpack_require__(54)(content, options);
-if(content.locals) module.exports = content.locals;
-// Hot Module Replacement
-if(false) {
-	// When the styles change, update the <style> tags
-	if(!content.locals) {
-		module.hot.accept("!!../../../css-loader/index.js!./vue2-autocomplete.css", function() {
-			var newContent = require("!!../../../css-loader/index.js!./vue2-autocomplete.css");
-			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-			update(newContent);
-		});
-	}
-	// When the module is disposed, remove the <style> tags
-	module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 52 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(53)(false);
-// imports
-
-
-// module
-exports.push([module.i, "\n.transition, .autocomplete, .showAll-transition, .autocomplete ul, .autocomplete ul li a{\n  transition:all 0.3s ease-out;\n  -moz-transition:all 0.3s ease-out;\n  -webkit-transition:all 0.3s ease-out;\n  -o-transition:all 0.3s ease-out;\n}\n\n.autocomplete ul{\n  font-family: sans-serif;\n  position: absolute;\n  list-style: none;\n  background: #f8f8f8;\n  padding: 10px 0;\n  margin: 0;\n  display: inline-block;\n  min-width: 15%;\n  margin-top: 10px;\n}\n\n.autocomplete ul:before{\n  content: \"\";\n  display: block;\n  position: absolute;\n  height: 0;\n  width: 0;\n  border: 10px solid transparent;\n  border-bottom: 10px solid #f8f8f8;\n  left: 46%;\n  top: -20px\n}\n\n.autocomplete ul li a{\n  text-decoration: none;\n  display: block;\n  background: #f8f8f8;\n  color: #2b2b2b;\n  padding: 5px;\n  padding-left: 10px;\n}\n\n.autocomplete ul li a:hover, .autocomplete ul li.focus-list a{\n  color: white;\n  background: #2F9AF7;\n}\n\n.autocomplete ul li a span, /*backwards compat*/\n.autocomplete ul li a .autocomplete-anchor-label{\n  display: block;\n  margin-top: 3px;\n  color: grey;\n  font-size: 13px;\n}\n\n.autocomplete ul li a:hover .autocomplete-anchor-label, \n.autocomplete ul li.focus-list a span, /*backwards compat*/\n.autocomplete ul li a:hover .autocomplete-anchor-label, \n.autocomplete ul li.focus-list a span{ /*backwards compat*/\n  color: white;\n}\n\n/*.showAll-transition{\n  opacity: 1;\n  height: 50px;\n  overflow: hidden;\n}\n\n.showAll-enter{\n  opacity: 0.3;\n  height: 0;\n}\n\n.showAll-leave{\n  display: none;\n}*/\n", ""]);
-
-// exports
-
-
-/***/ }),
-/* 53 */
-/***/ (function(module, exports) {
-
-/*
-	MIT License http://www.opensource.org/licenses/mit-license.php
-	Author Tobias Koppers @sokra
-*/
-// css base code, injected by the css-loader
-module.exports = function(useSourceMap) {
-	var list = [];
-
-	// return the list of modules as css string
-	list.toString = function toString() {
-		return this.map(function (item) {
-			var content = cssWithMappingToString(item, useSourceMap);
-			if(item[2]) {
-				return "@media " + item[2] + "{" + content + "}";
-			} else {
-				return content;
-			}
-		}).join("");
-	};
-
-	// import a list of modules into the list
-	list.i = function(modules, mediaQuery) {
-		if(typeof modules === "string")
-			modules = [[null, modules, ""]];
-		var alreadyImportedModules = {};
-		for(var i = 0; i < this.length; i++) {
-			var id = this[i][0];
-			if(typeof id === "number")
-				alreadyImportedModules[id] = true;
-		}
-		for(i = 0; i < modules.length; i++) {
-			var item = modules[i];
-			// skip already imported module
-			// this implementation is not 100% perfect for weird media query combinations
-			//  when a module is imported multiple times with different media queries.
-			//  I hope this will never occur (Hey this way we have smaller bundles)
-			if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
-				if(mediaQuery && !item[2]) {
-					item[2] = mediaQuery;
-				} else if(mediaQuery) {
-					item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
-				}
-				list.push(item);
-			}
-		}
-	};
-	return list;
-};
-
-function cssWithMappingToString(item, useSourceMap) {
-	var content = item[1] || '';
-	var cssMapping = item[3];
-	if (!cssMapping) {
-		return content;
-	}
-
-	if (useSourceMap && typeof btoa === 'function') {
-		var sourceMapping = toComment(cssMapping);
-		var sourceURLs = cssMapping.sources.map(function (source) {
-			return '/*# sourceURL=' + cssMapping.sourceRoot + source + ' */'
-		});
-
-		return [content].concat(sourceURLs).concat([sourceMapping]).join('\n');
-	}
-
-	return [content].join('\n');
-}
-
-// Adapted from convert-source-map (MIT)
-function toComment(sourceMap) {
-	// eslint-disable-next-line no-undef
-	var base64 = btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap))));
-	var data = 'sourceMappingURL=data:application/json;charset=utf-8;base64,' + base64;
-
-	return '/*# ' + data + ' */';
-}
-
-
-/***/ }),
-/* 54 */
-/***/ (function(module, exports, __webpack_require__) {
-
-/*
-	MIT License http://www.opensource.org/licenses/mit-license.php
-	Author Tobias Koppers @sokra
-*/
-
-var stylesInDom = {};
-
-var	memoize = function (fn) {
-	var memo;
-
-	return function () {
-		if (typeof memo === "undefined") memo = fn.apply(this, arguments);
-		return memo;
-	};
-};
-
-var isOldIE = memoize(function () {
-	// Test for IE <= 9 as proposed by Browserhacks
-	// @see http://browserhacks.com/#hack-e71d8692f65334173fee715c222cb805
-	// Tests for existence of standard globals is to allow style-loader
-	// to operate correctly into non-standard environments
-	// @see https://github.com/webpack-contrib/style-loader/issues/177
-	return window && document && document.all && !window.atob;
-});
-
-var getElement = (function (fn) {
-	var memo = {};
-
-	return function(selector) {
-		if (typeof memo[selector] === "undefined") {
-			memo[selector] = fn.call(this, selector);
-		}
-
-		return memo[selector]
-	};
-})(function (target) {
-	return document.querySelector(target)
-});
-
-var singleton = null;
-var	singletonCounter = 0;
-var	stylesInsertedAtTop = [];
-
-var	fixUrls = __webpack_require__(55);
-
-module.exports = function(list, options) {
-	if (typeof DEBUG !== "undefined" && DEBUG) {
-		if (typeof document !== "object") throw new Error("The style-loader cannot be used in a non-browser environment");
-	}
-
-	options = options || {};
-
-	options.attrs = typeof options.attrs === "object" ? options.attrs : {};
-
-	// Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
-	// tags it will allow on a page
-	if (!options.singleton) options.singleton = isOldIE();
-
-	// By default, add <style> tags to the <head> element
-	if (!options.insertInto) options.insertInto = "head";
-
-	// By default, add <style> tags to the bottom of the target
-	if (!options.insertAt) options.insertAt = "bottom";
-
-	var styles = listToStyles(list, options);
-
-	addStylesToDom(styles, options);
-
-	return function update (newList) {
-		var mayRemove = [];
-
-		for (var i = 0; i < styles.length; i++) {
-			var item = styles[i];
-			var domStyle = stylesInDom[item.id];
-
-			domStyle.refs--;
-			mayRemove.push(domStyle);
-		}
-
-		if(newList) {
-			var newStyles = listToStyles(newList, options);
-			addStylesToDom(newStyles, options);
-		}
-
-		for (var i = 0; i < mayRemove.length; i++) {
-			var domStyle = mayRemove[i];
-
-			if(domStyle.refs === 0) {
-				for (var j = 0; j < domStyle.parts.length; j++) domStyle.parts[j]();
-
-				delete stylesInDom[domStyle.id];
-			}
-		}
-	};
-};
-
-function addStylesToDom (styles, options) {
-	for (var i = 0; i < styles.length; i++) {
-		var item = styles[i];
-		var domStyle = stylesInDom[item.id];
-
-		if(domStyle) {
-			domStyle.refs++;
-
-			for(var j = 0; j < domStyle.parts.length; j++) {
-				domStyle.parts[j](item.parts[j]);
-			}
-
-			for(; j < item.parts.length; j++) {
-				domStyle.parts.push(addStyle(item.parts[j], options));
-			}
-		} else {
-			var parts = [];
-
-			for(var j = 0; j < item.parts.length; j++) {
-				parts.push(addStyle(item.parts[j], options));
-			}
-
-			stylesInDom[item.id] = {id: item.id, refs: 1, parts: parts};
-		}
-	}
-}
-
-function listToStyles (list, options) {
-	var styles = [];
-	var newStyles = {};
-
-	for (var i = 0; i < list.length; i++) {
-		var item = list[i];
-		var id = options.base ? item[0] + options.base : item[0];
-		var css = item[1];
-		var media = item[2];
-		var sourceMap = item[3];
-		var part = {css: css, media: media, sourceMap: sourceMap};
-
-		if(!newStyles[id]) styles.push(newStyles[id] = {id: id, parts: [part]});
-		else newStyles[id].parts.push(part);
-	}
-
-	return styles;
-}
-
-function insertStyleElement (options, style) {
-	var target = getElement(options.insertInto)
-
-	if (!target) {
-		throw new Error("Couldn't find a style target. This probably means that the value for the 'insertInto' parameter is invalid.");
-	}
-
-	var lastStyleElementInsertedAtTop = stylesInsertedAtTop[stylesInsertedAtTop.length - 1];
-
-	if (options.insertAt === "top") {
-		if (!lastStyleElementInsertedAtTop) {
-			target.insertBefore(style, target.firstChild);
-		} else if (lastStyleElementInsertedAtTop.nextSibling) {
-			target.insertBefore(style, lastStyleElementInsertedAtTop.nextSibling);
-		} else {
-			target.appendChild(style);
-		}
-		stylesInsertedAtTop.push(style);
-	} else if (options.insertAt === "bottom") {
-		target.appendChild(style);
-	} else {
-		throw new Error("Invalid value for parameter 'insertAt'. Must be 'top' or 'bottom'.");
-	}
-}
-
-function removeStyleElement (style) {
-	if (style.parentNode === null) return false;
-	style.parentNode.removeChild(style);
-
-	var idx = stylesInsertedAtTop.indexOf(style);
-	if(idx >= 0) {
-		stylesInsertedAtTop.splice(idx, 1);
-	}
-}
-
-function createStyleElement (options) {
-	var style = document.createElement("style");
-
-	options.attrs.type = "text/css";
-
-	addAttrs(style, options.attrs);
-	insertStyleElement(options, style);
-
-	return style;
-}
-
-function createLinkElement (options) {
-	var link = document.createElement("link");
-
-	options.attrs.type = "text/css";
-	options.attrs.rel = "stylesheet";
-
-	addAttrs(link, options.attrs);
-	insertStyleElement(options, link);
-
-	return link;
-}
-
-function addAttrs (el, attrs) {
-	Object.keys(attrs).forEach(function (key) {
-		el.setAttribute(key, attrs[key]);
-	});
-}
-
-function addStyle (obj, options) {
-	var style, update, remove, result;
-
-	// If a transform function was defined, run it on the css
-	if (options.transform && obj.css) {
-	    result = options.transform(obj.css);
-
-	    if (result) {
-	    	// If transform returns a value, use that instead of the original css.
-	    	// This allows running runtime transformations on the css.
-	    	obj.css = result;
-	    } else {
-	    	// If the transform function returns a falsy value, don't add this css.
-	    	// This allows conditional loading of css
-	    	return function() {
-	    		// noop
-	    	};
-	    }
-	}
-
-	if (options.singleton) {
-		var styleIndex = singletonCounter++;
-
-		style = singleton || (singleton = createStyleElement(options));
-
-		update = applyToSingletonTag.bind(null, style, styleIndex, false);
-		remove = applyToSingletonTag.bind(null, style, styleIndex, true);
-
-	} else if (
-		obj.sourceMap &&
-		typeof URL === "function" &&
-		typeof URL.createObjectURL === "function" &&
-		typeof URL.revokeObjectURL === "function" &&
-		typeof Blob === "function" &&
-		typeof btoa === "function"
-	) {
-		style = createLinkElement(options);
-		update = updateLink.bind(null, style, options);
-		remove = function () {
-			removeStyleElement(style);
-
-			if(style.href) URL.revokeObjectURL(style.href);
-		};
-	} else {
-		style = createStyleElement(options);
-		update = applyToTag.bind(null, style);
-		remove = function () {
-			removeStyleElement(style);
-		};
-	}
-
-	update(obj);
-
-	return function updateStyle (newObj) {
-		if (newObj) {
-			if (
-				newObj.css === obj.css &&
-				newObj.media === obj.media &&
-				newObj.sourceMap === obj.sourceMap
-			) {
-				return;
-			}
-
-			update(obj = newObj);
-		} else {
-			remove();
-		}
-	};
-}
-
-var replaceText = (function () {
-	var textStore = [];
-
-	return function (index, replacement) {
-		textStore[index] = replacement;
-
-		return textStore.filter(Boolean).join('\n');
-	};
-})();
-
-function applyToSingletonTag (style, index, remove, obj) {
-	var css = remove ? "" : obj.css;
-
-	if (style.styleSheet) {
-		style.styleSheet.cssText = replaceText(index, css);
-	} else {
-		var cssNode = document.createTextNode(css);
-		var childNodes = style.childNodes;
-
-		if (childNodes[index]) style.removeChild(childNodes[index]);
-
-		if (childNodes.length) {
-			style.insertBefore(cssNode, childNodes[index]);
-		} else {
-			style.appendChild(cssNode);
-		}
-	}
-}
-
-function applyToTag (style, obj) {
-	var css = obj.css;
-	var media = obj.media;
-
-	if(media) {
-		style.setAttribute("media", media)
-	}
-
-	if(style.styleSheet) {
-		style.styleSheet.cssText = css;
-	} else {
-		while(style.firstChild) {
-			style.removeChild(style.firstChild);
-		}
-
-		style.appendChild(document.createTextNode(css));
-	}
-}
-
-function updateLink (link, options, obj) {
-	var css = obj.css;
-	var sourceMap = obj.sourceMap;
-
-	/*
-		If convertToAbsoluteUrls isn't defined, but sourcemaps are enabled
-		and there is no publicPath defined then lets turn convertToAbsoluteUrls
-		on by default.  Otherwise default to the convertToAbsoluteUrls option
-		directly
-	*/
-	var autoFixUrls = options.convertToAbsoluteUrls === undefined && sourceMap;
-
-	if (options.convertToAbsoluteUrls || autoFixUrls) {
-		css = fixUrls(css);
-	}
-
-	if (sourceMap) {
-		// http://stackoverflow.com/a/26603875
-		css += "\n/*# sourceMappingURL=data:application/json;base64," + btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))) + " */";
-	}
-
-	var blob = new Blob([css], { type: "text/css" });
-
-	var oldSrc = link.href;
-
-	link.href = URL.createObjectURL(blob);
-
-	if(oldSrc) URL.revokeObjectURL(oldSrc);
-}
-
-
-/***/ }),
-/* 55 */
-/***/ (function(module, exports) {
-
-
-/**
- * When source maps are enabled, `style-loader` uses a link element with a data-uri to
- * embed the css on the page. This breaks all relative urls because now they are relative to a
- * bundle instead of the current page.
- *
- * One solution is to only use full urls, but that may be impossible.
- *
- * Instead, this function "fixes" the relative urls to be absolute according to the current page location.
- *
- * A rudimentary test suite is located at `test/fixUrls.js` and can be run via the `npm test` command.
- *
- */
-
-module.exports = function (css) {
-  // get current location
-  var location = typeof window !== "undefined" && window.location;
-
-  if (!location) {
-    throw new Error("fixUrls requires window.location");
-  }
-
-	// blank or null?
-	if (!css || typeof css !== "string") {
-	  return css;
-  }
-
-  var baseUrl = location.protocol + "//" + location.host;
-  var currentDir = baseUrl + location.pathname.replace(/\/[^\/]*$/, "/");
-
-	// convert each url(...)
-	/*
-	This regular expression is just a way to recursively match brackets within
-	a string.
-
-	 /url\s*\(  = Match on the word "url" with any whitespace after it and then a parens
-	   (  = Start a capturing group
-	     (?:  = Start a non-capturing group
-	         [^)(]  = Match anything that isn't a parentheses
-	         |  = OR
-	         \(  = Match a start parentheses
-	             (?:  = Start another non-capturing groups
-	                 [^)(]+  = Match anything that isn't a parentheses
-	                 |  = OR
-	                 \(  = Match a start parentheses
-	                     [^)(]*  = Match anything that isn't a parentheses
-	                 \)  = Match a end parentheses
-	             )  = End Group
-              *\) = Match anything and then a close parens
-          )  = Close non-capturing group
-          *  = Match anything
-       )  = Close capturing group
-	 \)  = Match a close parens
-
-	 /gi  = Get all matches, not the first.  Be case insensitive.
-	 */
-	var fixedCss = css.replace(/url\s*\(((?:[^)(]|\((?:[^)(]+|\([^)(]*\))*\))*)\)/gi, function(fullMatch, origUrl) {
-		// strip quotes (if they exist)
-		var unquotedOrigUrl = origUrl
-			.trim()
-			.replace(/^"(.*)"$/, function(o, $1){ return $1; })
-			.replace(/^'(.*)'$/, function(o, $1){ return $1; });
-
-		// already a full url? no change
-		if (/^(#|data:|http:\/\/|https:\/\/|file:\/\/\/)/i.test(unquotedOrigUrl)) {
-		  return fullMatch;
-		}
-
-		// convert the url to a full url
-		var newUrl;
-
-		if (unquotedOrigUrl.indexOf("//") === 0) {
-		  	//TODO: should we add protocol?
-			newUrl = unquotedOrigUrl;
-		} else if (unquotedOrigUrl.indexOf("/") === 0) {
-			// path should be relative to the base url
-			newUrl = baseUrl + unquotedOrigUrl; // already starts with '/'
-		} else {
-			// path should be relative to current directory
-			newUrl = currentDir + unquotedOrigUrl.replace(/^\.\//, ""); // Strip leading './'
-		}
-
-		// send back the fixed url(...)
-		return "url(" + JSON.stringify(newUrl) + ")";
-	});
-
-	// send back the fixed css
-	return fixedCss;
-};
-
-
-/***/ }),
-/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -51197,6 +50061,7 @@ var render = function() {
                 expression: "offerGroup.name"
               }
             ],
+            staticClass: "my-3",
             attrs: { type: "text", name: "offer_group[name]" },
             domProps: { value: _vm.offerGroup.name },
             on: {
@@ -51208,6 +50073,8 @@ var render = function() {
               }
             }
           }),
+          _vm._v(" "),
+          _c("h3", [_vm._v("Оборудование")]),
           _vm._v(" "),
           _c(
             "ul",
@@ -51225,94 +50092,49 @@ var render = function() {
                       }
                     },
                     [
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: offerTab.name,
-                            expression: "offerTab.name"
-                          }
-                        ],
-                        attrs: {
-                          type: "text",
-                          name: "offer_group[offers][" + offerTab.id + "][name]"
-                        },
-                        domProps: { value: offerTab.name },
-                        on: {
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
+                      _c("div", { staticClass: "row" }, [
+                        _c("div", { staticClass: "col-10" }, [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: offerTab.name,
+                                expression: "offerTab.name"
+                              }
+                            ],
+                            attrs: {
+                              type: "text",
+                              name:
+                                "offer_group[offers][" + offerTab.id + "][name]"
+                            },
+                            domProps: { value: offerTab.name },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(offerTab, "name", $event.target.value)
+                              }
                             }
-                            _vm.$set(offerTab, "name", $event.target.value)
-                          }
-                        }
-                      }),
-                      _c("br"),
-                      _vm._v(" "),
-                      _c(
-                        "label",
-                        { attrs: { for: "tax-select-" + offerTab.id } },
-                        [_vm._v("Налог")]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "select",
-                        {
-                          directives: [
+                          }),
+                          _c("br")
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "col-2" }, [
+                          _c(
+                            "span",
                             {
-                              name: "model",
-                              rawName: "v-model",
-                              value: offerTab.tax,
-                              expression: "offerTab.tax"
-                            }
-                          ],
-                          attrs: {
-                            id: "tax-select-" + offerTab.id,
-                            name:
-                              "offer_group[offers][" + offerTab.id + "][tax]"
-                          },
-                          on: {
-                            change: function($event) {
-                              var $$selectedVal = Array.prototype.filter
-                                .call($event.target.options, function(o) {
-                                  return o.selected
-                                })
-                                .map(function(o) {
-                                  var val = "_value" in o ? o._value : o.value
-                                  return val
-                                })
-                              _vm.$set(
-                                offerTab,
-                                "tax",
-                                $event.target.multiple
-                                  ? $$selectedVal
-                                  : $$selectedVal[0]
-                              )
-                            }
-                          }
-                        },
-                        _vm._l(_vm.taxes, function(tax) {
-                          return _c(
-                            "option",
-                            { domProps: { value: tax.value } },
-                            [_vm._v(_vm._s(tax.value))]
+                              on: {
+                                click: function($event) {
+                                  _vm.deleteOffer(offerTab.id)
+                                }
+                              }
+                            },
+                            [_vm._v("X")]
                           )
-                        }),
-                        0
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "span",
-                        {
-                          on: {
-                            click: function($event) {
-                              _vm.deleteOffer(offerTab.id)
-                            }
-                          }
-                        },
-                        [_vm._v("X")]
-                      )
+                        ])
+                      ])
                     ]
                   )
                 ])
@@ -51339,7 +50161,7 @@ var render = function() {
           _vm._v(" "),
           _c(
             "div",
-            { staticClass: "tab-content" },
+            { staticClass: "tab-content mb-5" },
             _vm._l(_vm.offersTabs, function(offerTab) {
               return _c(
                 "div",
@@ -51380,11 +50202,20 @@ var render = function() {
                                       value:
                                         _vm.selected[offerTab.id][
                                           offerContentTab.id
-                                        ][0],
+                                        ],
                                       expression:
-                                        "selected[offerTab.id][offerContentTab.id][0]"
+                                        "selected[offerTab.id][offerContentTab.id]"
                                     }
                                   ],
+                                  staticClass: "type-select",
+                                  attrs: {
+                                    "data-toggle":
+                                      "tooltip-" +
+                                      offerTab.id +
+                                      "-" +
+                                      offerContentTab.id,
+                                    title: "Сначала выберите тип"
+                                  },
                                   on: {
                                     change: function($event) {
                                       var $$selectedVal = Array.prototype.filter
@@ -51399,10 +50230,8 @@ var render = function() {
                                           return val
                                         })
                                       _vm.$set(
-                                        _vm.selected[offerTab.id][
-                                          offerContentTab.id
-                                        ],
-                                        0,
+                                        _vm.selected[offerTab.id],
+                                        offerContentTab.id,
                                         $event.target.multiple
                                           ? $$selectedVal
                                           : $$selectedVal[0]
@@ -51418,11 +50247,13 @@ var render = function() {
                                   ),
                                   _vm._v(" "),
                                   _vm._l(_vm.types, function(type) {
-                                    return _c(
-                                      "option",
-                                      { domProps: { value: type[0].id } },
-                                      [_vm._v(_vm._s(type[0].name))]
-                                    )
+                                    return type[0] != "new"
+                                      ? _c(
+                                          "option",
+                                          { domProps: { value: type[0].id } },
+                                          [_vm._v(_vm._s(type[0].name))]
+                                        )
+                                      : _vm._e()
                                   })
                                 ],
                                 2
@@ -51499,313 +50330,264 @@ var render = function() {
                                 [
                                   _vm._l(offerContentTab.rows, function(row) {
                                     return _c("tr", [
-                                      _c("input", {
-                                        directives: [
-                                          {
-                                            name: "model",
-                                            rawName: "v-model",
-                                            value: row.base_id,
-                                            expression: "row.base_id"
-                                          }
-                                        ],
-                                        attrs: {
-                                          type: "hidden",
-                                          hidden: "hidden",
-                                          name:
-                                            "offer_group[offers][" +
-                                            offerTab.id +
-                                            "][equipments][" +
-                                            row.class +
-                                            "][" +
-                                            offerContentTab.id +
-                                            "][" +
-                                            row.id +
-                                            "][base_id]"
-                                        },
-                                        domProps: { value: row.base_id },
-                                        on: {
-                                          input: function($event) {
-                                            if ($event.target.composing) {
-                                              return
-                                            }
-                                            _vm.$set(
-                                              row,
-                                              "base_id",
-                                              $event.target.value
-                                            )
-                                          }
-                                        }
-                                      }),
-                                      _vm._v(" "),
-                                      _c("input", {
-                                        directives: [
-                                          {
-                                            name: "model",
-                                            rawName: "v-model",
-                                            value: row.description,
-                                            expression: "row.description"
-                                          }
-                                        ],
-                                        attrs: {
-                                          type: "hidden",
-                                          hidden: "hidden",
-                                          name:
-                                            "offer_group[offers][" +
-                                            offerTab.id +
-                                            "][equipments][" +
-                                            row.class +
-                                            "][" +
-                                            offerContentTab.id +
-                                            "][" +
-                                            row.id +
-                                            "][description]"
-                                        },
-                                        domProps: { value: row.description },
-                                        on: {
-                                          input: function($event) {
-                                            if ($event.target.composing) {
-                                              return
-                                            }
-                                            _vm.$set(
-                                              row,
-                                              "description",
-                                              $event.target.value
-                                            )
-                                          }
-                                        }
-                                      }),
-                                      _vm._v(" "),
-                                      _c("input", {
-                                        directives: [
-                                          {
-                                            name: "model",
-                                            rawName: "v-model",
-                                            value: row.price_trade,
-                                            expression: "row.price_trade"
-                                          }
-                                        ],
-                                        attrs: {
-                                          type: "hidden",
-                                          hidden: "hidden",
-                                          name:
-                                            "offer_group[offers][" +
-                                            offerTab.id +
-                                            "][equipments][" +
-                                            row.class +
-                                            "][" +
-                                            offerContentTab.id +
-                                            "][" +
-                                            row.id +
-                                            "][price_trade]"
-                                        },
-                                        domProps: { value: row.price_trade },
-                                        on: {
-                                          input: function($event) {
-                                            if ($event.target.composing) {
-                                              return
-                                            }
-                                            _vm.$set(
-                                              row,
-                                              "price_trade",
-                                              $event.target.value
-                                            )
-                                          }
-                                        }
-                                      }),
-                                      _vm._v(" "),
-                                      _c("input", {
-                                        directives: [
-                                          {
-                                            name: "model",
-                                            rawName: "v-model",
-                                            value: row.price_small_trade,
-                                            expression: "row.price_small_trade"
-                                          }
-                                        ],
-                                        attrs: {
-                                          type: "hidden",
-                                          hidden: "hidden",
-                                          name:
-                                            "offer_group[offers][" +
-                                            offerTab.id +
-                                            "][equipments][" +
-                                            row.class +
-                                            "][" +
-                                            offerContentTab.id +
-                                            "][" +
-                                            row.id +
-                                            "][price_small_trade]"
-                                        },
-                                        domProps: {
-                                          value: row.price_small_trade
-                                        },
-                                        on: {
-                                          input: function($event) {
-                                            if ($event.target.composing) {
-                                              return
-                                            }
-                                            _vm.$set(
-                                              row,
-                                              "price_small_trade",
-                                              $event.target.value
-                                            )
-                                          }
-                                        }
-                                      }),
-                                      _vm._v(" "),
-                                      _c("input", {
-                                        directives: [
-                                          {
-                                            name: "model",
-                                            rawName: "v-model",
-                                            value: row.price_special,
-                                            expression: "row.price_special"
-                                          }
-                                        ],
-                                        attrs: {
-                                          type: "hidden",
-                                          hidden: "hidden",
-                                          name:
-                                            "offer_group[offers][" +
-                                            offerTab.id +
-                                            "][equipments][" +
-                                            row.class +
-                                            "][" +
-                                            offerContentTab.id +
-                                            "][" +
-                                            row.id +
-                                            "][price_special]"
-                                        },
-                                        domProps: { value: row.price_special },
-                                        on: {
-                                          input: function($event) {
-                                            if ($event.target.composing) {
-                                              return
-                                            }
-                                            _vm.$set(
-                                              row,
-                                              "price_special",
-                                              $event.target.value
-                                            )
-                                          }
-                                        }
-                                      }),
-                                      _vm._v(" "),
-                                      _c("input", {
-                                        directives: [
-                                          {
-                                            name: "model",
-                                            rawName: "v-model",
-                                            value: row.comment,
-                                            expression: "row.comment"
-                                          }
-                                        ],
-                                        attrs: {
-                                          type: "hidden",
-                                          hidden: "hidden",
-                                          name:
-                                            "offer_group[offers][" +
-                                            offerTab.id +
-                                            "][equipments][" +
-                                            row.class +
-                                            "][" +
-                                            offerContentTab.id +
-                                            "][" +
-                                            row.id +
-                                            "][comment]"
-                                        },
-                                        domProps: { value: row.comment },
-                                        on: {
-                                          input: function($event) {
-                                            if ($event.target.composing) {
-                                              return
-                                            }
-                                            _vm.$set(
-                                              row,
-                                              "comment",
-                                              $event.target.value
-                                            )
-                                          }
-                                        }
-                                      }),
-                                      _vm._v(" "),
-                                      _c("input", {
-                                        directives: [
-                                          {
-                                            name: "model",
-                                            rawName: "v-model",
-                                            value: row.type_id,
-                                            expression: "row.type_id"
-                                          }
-                                        ],
-                                        attrs: {
-                                          type: "hidden",
-                                          hidden: "hidden",
-                                          name:
-                                            "offer_group[offers][" +
-                                            offerTab.id +
-                                            "][equipments][" +
-                                            row.class +
-                                            "][" +
-                                            offerContentTab.id +
-                                            "][" +
-                                            row.id +
-                                            "][type_id]"
-                                        },
-                                        domProps: { value: row.type_id },
-                                        on: {
-                                          input: function($event) {
-                                            if ($event.target.composing) {
-                                              return
-                                            }
-                                            _vm.$set(
-                                              row,
-                                              "type_id",
-                                              $event.target.value
-                                            )
-                                          }
-                                        }
-                                      }),
-                                      _vm._v(" "),
-                                      _c("input", {
-                                        directives: [
-                                          {
-                                            name: "model",
-                                            rawName: "v-model",
-                                            value: row.type,
-                                            expression: "row.type"
-                                          }
-                                        ],
-                                        attrs: {
-                                          type: "hidden",
-                                          hidden: "hidden",
-                                          name:
-                                            "offer_group[offers][" +
-                                            offerTab.id +
-                                            "][equipments][" +
-                                            row.class +
-                                            "][" +
-                                            offerContentTab.id +
-                                            "][" +
-                                            row.id +
-                                            "][type]"
-                                        },
-                                        domProps: { value: row.type },
-                                        on: {
-                                          input: function($event) {
-                                            if ($event.target.composing) {
-                                              return
-                                            }
-                                            _vm.$set(
-                                              row,
-                                              "type",
-                                              $event.target.value
-                                            )
-                                          }
-                                        }
-                                      }),
-                                      _vm._v(" "),
                                       _c("td", [
+                                        _c("input", {
+                                          directives: [
+                                            {
+                                              name: "model",
+                                              rawName: "v-model",
+                                              value: row.base_id,
+                                              expression: "row.base_id"
+                                            }
+                                          ],
+                                          attrs: {
+                                            type: "hidden",
+                                            hidden: "hidden",
+                                            name:
+                                              "offer_group[offers][" +
+                                              offerTab.id +
+                                              "][equipments][" +
+                                              offerContentTab.id +
+                                              "][" +
+                                              row.id +
+                                              "][base_id]"
+                                          },
+                                          domProps: { value: row.base_id },
+                                          on: {
+                                            input: function($event) {
+                                              if ($event.target.composing) {
+                                                return
+                                              }
+                                              _vm.$set(
+                                                row,
+                                                "base_id",
+                                                $event.target.value
+                                              )
+                                            }
+                                          }
+                                        }),
+                                        _vm._v(" "),
+                                        _c("input", {
+                                          directives: [
+                                            {
+                                              name: "model",
+                                              rawName: "v-model",
+                                              value: row.description,
+                                              expression: "row.description"
+                                            }
+                                          ],
+                                          attrs: {
+                                            type: "hidden",
+                                            hidden: "hidden",
+                                            name:
+                                              "offer_group[offers][" +
+                                              offerTab.id +
+                                              "][equipments][" +
+                                              offerContentTab.id +
+                                              "][" +
+                                              row.id +
+                                              "][description]"
+                                          },
+                                          domProps: { value: row.description },
+                                          on: {
+                                            input: function($event) {
+                                              if ($event.target.composing) {
+                                                return
+                                              }
+                                              _vm.$set(
+                                                row,
+                                                "description",
+                                                $event.target.value
+                                              )
+                                            }
+                                          }
+                                        }),
+                                        _vm._v(" "),
+                                        _c("input", {
+                                          directives: [
+                                            {
+                                              name: "model",
+                                              rawName: "v-model",
+                                              value: row.price_trade,
+                                              expression: "row.price_trade"
+                                            }
+                                          ],
+                                          attrs: {
+                                            type: "hidden",
+                                            hidden: "hidden",
+                                            name:
+                                              "offer_group[offers][" +
+                                              offerTab.id +
+                                              "][equipments][" +
+                                              offerContentTab.id +
+                                              "][" +
+                                              row.id +
+                                              "][price_trade]"
+                                          },
+                                          domProps: { value: row.price_trade },
+                                          on: {
+                                            input: function($event) {
+                                              if ($event.target.composing) {
+                                                return
+                                              }
+                                              _vm.$set(
+                                                row,
+                                                "price_trade",
+                                                $event.target.value
+                                              )
+                                            }
+                                          }
+                                        }),
+                                        _vm._v(" "),
+                                        _c("input", {
+                                          directives: [
+                                            {
+                                              name: "model",
+                                              rawName: "v-model",
+                                              value: row.price_small_trade,
+                                              expression:
+                                                "row.price_small_trade"
+                                            }
+                                          ],
+                                          attrs: {
+                                            type: "hidden",
+                                            hidden: "hidden",
+                                            name:
+                                              "offer_group[offers][" +
+                                              offerTab.id +
+                                              "][equipments][" +
+                                              offerContentTab.id +
+                                              "][" +
+                                              row.id +
+                                              "][price_small_trade]"
+                                          },
+                                          domProps: {
+                                            value: row.price_small_trade
+                                          },
+                                          on: {
+                                            input: function($event) {
+                                              if ($event.target.composing) {
+                                                return
+                                              }
+                                              _vm.$set(
+                                                row,
+                                                "price_small_trade",
+                                                $event.target.value
+                                              )
+                                            }
+                                          }
+                                        }),
+                                        _vm._v(" "),
+                                        _c("input", {
+                                          directives: [
+                                            {
+                                              name: "model",
+                                              rawName: "v-model",
+                                              value: row.price_special,
+                                              expression: "row.price_special"
+                                            }
+                                          ],
+                                          attrs: {
+                                            type: "hidden",
+                                            hidden: "hidden",
+                                            name:
+                                              "offer_group[offers][" +
+                                              offerTab.id +
+                                              "][equipments][" +
+                                              offerContentTab.id +
+                                              "][" +
+                                              row.id +
+                                              "][price_special]"
+                                          },
+                                          domProps: {
+                                            value: row.price_special
+                                          },
+                                          on: {
+                                            input: function($event) {
+                                              if ($event.target.composing) {
+                                                return
+                                              }
+                                              _vm.$set(
+                                                row,
+                                                "price_special",
+                                                $event.target.value
+                                              )
+                                            }
+                                          }
+                                        }),
+                                        _vm._v(" "),
+                                        _c("input", {
+                                          directives: [
+                                            {
+                                              name: "model",
+                                              rawName: "v-model",
+                                              value: row.comment,
+                                              expression: "row.comment"
+                                            }
+                                          ],
+                                          attrs: {
+                                            type: "hidden",
+                                            hidden: "hidden",
+                                            name:
+                                              "offer_group[offers][" +
+                                              offerTab.id +
+                                              "][equipments][" +
+                                              offerContentTab.id +
+                                              "][" +
+                                              row.id +
+                                              "][comment]"
+                                          },
+                                          domProps: { value: row.comment },
+                                          on: {
+                                            input: function($event) {
+                                              if ($event.target.composing) {
+                                                return
+                                              }
+                                              _vm.$set(
+                                                row,
+                                                "comment",
+                                                $event.target.value
+                                              )
+                                            }
+                                          }
+                                        }),
+                                        _vm._v(" "),
+                                        _c("input", {
+                                          directives: [
+                                            {
+                                              name: "model",
+                                              rawName: "v-model",
+                                              value: row.type,
+                                              expression: "row.type"
+                                            }
+                                          ],
+                                          attrs: {
+                                            type: "hidden",
+                                            hidden: "hidden",
+                                            name:
+                                              "offer_group[offers][" +
+                                              offerTab.id +
+                                              "][equipments][" +
+                                              offerContentTab.id +
+                                              "][" +
+                                              row.id +
+                                              "][type]"
+                                          },
+                                          domProps: { value: row.type },
+                                          on: {
+                                            input: function($event) {
+                                              if ($event.target.composing) {
+                                                return
+                                              }
+                                              _vm.$set(
+                                                row,
+                                                "type",
+                                                $event.target.value
+                                              )
+                                            }
+                                          }
+                                        }),
+                                        _vm._v(" "),
                                         _c("input", {
                                           directives: [
                                             {
@@ -51821,8 +50603,6 @@ var render = function() {
                                               "offer_group[offers][" +
                                               offerTab.id +
                                               "][equipments][" +
-                                              row.class +
-                                              "][" +
                                               offerContentTab.id +
                                               "][" +
                                               row.id +
@@ -51833,6 +50613,8 @@ var render = function() {
                                             keyup: function($event) {
                                               _vm.searchEquipmentByCode(
                                                 row.code,
+                                                offerTab.id,
+                                                offerContentTab.id,
                                                 row.id
                                               )
                                             },
@@ -51858,16 +50640,23 @@ var render = function() {
                                                 rawName: "v-show",
                                                 value:
                                                   _vm.autocompletesDisplays[
-                                                    row.id
-                                                  ],
+                                                    "equipments"
+                                                  ][offerTab.id][
+                                                    offerContentTab.id
+                                                  ][row.id],
                                                 expression:
-                                                  "autocompletesDisplays[row.id]"
+                                                  "autocompletesDisplays['equipments'][offerTab.id][offerContentTab.id][row.id]"
                                               }
                                             ],
                                             staticClass: "autocomplete-results",
                                             attrs: {
                                               id:
-                                                "autocomplete-results-" + row.id
+                                                "autocomplete-results-e-" +
+                                                offerTab.id +
+                                                "-" +
+                                                offerContentTab.id +
+                                                "-" +
+                                                row.id
                                             }
                                           },
                                           [
@@ -51895,6 +50684,7 @@ var render = function() {
                                                         click: function(
                                                           $event
                                                         ) {
+                                                          $event.preventDefault()
                                                           _vm.setResult(
                                                             result,
                                                             offerTab.id,
@@ -51936,8 +50726,6 @@ var render = function() {
                                               "offer_group[offers][" +
                                               offerTab.id +
                                               "][equipments][" +
-                                              row.class +
-                                              "][" +
                                               offerContentTab.id +
                                               "][" +
                                               row.id +
@@ -51975,8 +50763,6 @@ var render = function() {
                                               "offer_group[offers][" +
                                               offerTab.id +
                                               "][equipments][" +
-                                              row.class +
-                                              "][" +
                                               offerContentTab.id +
                                               "][" +
                                               row.id +
@@ -52010,12 +50796,11 @@ var render = function() {
                                           ],
                                           attrs: {
                                             type: "number",
+                                            min: "0",
                                             name:
                                               "offer_group[offers][" +
                                               offerTab.id +
                                               "][equipments][" +
-                                              row.class +
-                                              "][" +
                                               offerContentTab.id +
                                               "][" +
                                               row.id +
@@ -52048,13 +50833,12 @@ var render = function() {
                                             }
                                           ],
                                           attrs: {
-                                            type: "text",
+                                            type: "number",
+                                            min: "0",
                                             name:
                                               "offer_group[offers][" +
                                               offerTab.id +
                                               "][equipments][" +
-                                              row.class +
-                                              "][" +
                                               offerContentTab.id +
                                               "][" +
                                               row.id +
@@ -52069,6 +50853,125 @@ var render = function() {
                                               _vm.$set(
                                                 row,
                                                 "price",
+                                                $event.target.value
+                                              )
+                                            }
+                                          }
+                                        })
+                                      ]),
+                                      _vm._v(" "),
+                                      _c("td", [
+                                        _c("input", {
+                                          directives: [
+                                            {
+                                              name: "model",
+                                              rawName: "v-model",
+                                              value: row.price_trade,
+                                              expression: "row.price_trade"
+                                            }
+                                          ],
+                                          attrs: {
+                                            type: "number",
+                                            min: "0",
+                                            name:
+                                              "offer_group[offers][" +
+                                              offerTab.id +
+                                              "][equipments][" +
+                                              offerContentTab.id +
+                                              "][" +
+                                              row.id +
+                                              "][price_trade]"
+                                          },
+                                          domProps: { value: row.price_trade },
+                                          on: {
+                                            input: function($event) {
+                                              if ($event.target.composing) {
+                                                return
+                                              }
+                                              _vm.$set(
+                                                row,
+                                                "price_trade",
+                                                $event.target.value
+                                              )
+                                            }
+                                          }
+                                        })
+                                      ]),
+                                      _vm._v(" "),
+                                      _c("td", [
+                                        _c("input", {
+                                          directives: [
+                                            {
+                                              name: "model",
+                                              rawName: "v-model",
+                                              value: row.price_small_trade,
+                                              expression:
+                                                "row.price_small_trade"
+                                            }
+                                          ],
+                                          attrs: {
+                                            type: "number",
+                                            min: "0",
+                                            name:
+                                              "offer_group[offers][" +
+                                              offerTab.id +
+                                              "][equipments][" +
+                                              offerContentTab.id +
+                                              "][" +
+                                              row.id +
+                                              "][price_small_trade]"
+                                          },
+                                          domProps: {
+                                            value: row.price_small_trade
+                                          },
+                                          on: {
+                                            input: function($event) {
+                                              if ($event.target.composing) {
+                                                return
+                                              }
+                                              _vm.$set(
+                                                row,
+                                                "price_small_trade",
+                                                $event.target.value
+                                              )
+                                            }
+                                          }
+                                        })
+                                      ]),
+                                      _vm._v(" "),
+                                      _c("td", [
+                                        _c("input", {
+                                          directives: [
+                                            {
+                                              name: "model",
+                                              rawName: "v-model",
+                                              value: row.price_special,
+                                              expression: "row.price_special"
+                                            }
+                                          ],
+                                          attrs: {
+                                            type: "number",
+                                            min: "0",
+                                            name:
+                                              "offer_group[offers][" +
+                                              offerTab.id +
+                                              "][equipments][" +
+                                              offerContentTab.id +
+                                              "][" +
+                                              row.id +
+                                              "][price_special]"
+                                          },
+                                          domProps: {
+                                            value: row.price_special
+                                          },
+                                          on: {
+                                            input: function($event) {
+                                              if ($event.target.composing) {
+                                                return
+                                              }
+                                              _vm.$set(
+                                                row,
+                                                "price_special",
                                                 $event.target.value
                                               )
                                             }
@@ -52100,7 +51003,13 @@ var render = function() {
                                     _c(
                                       "td",
                                       {
-                                        attrs: { colspan: "6" },
+                                        attrs: {
+                                          colspan: "9",
+                                          disabled:
+                                            _vm.selected[offerTab.id][
+                                              offerContentTab.id
+                                            ] === "new"
+                                        },
                                         on: {
                                           click: function($event) {
                                             $event.preventDefault()
@@ -52128,6 +51037,411 @@ var render = function() {
               )
             }),
             0
+          ),
+          _vm._v(" "),
+          _c("h3", [_vm._v("Работы")]),
+          _vm._v(" "),
+          _c("div", { staticClass: "row" }, [
+            _c("div", { staticClass: "col-auto" }, [
+              _c("label", { attrs: { for: "adjusters-number" } }, [
+                _vm._v("Кол-во монтажников")
+              ]),
+              _c("br"),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.adjusters["number"],
+                    expression: "adjusters['number']"
+                  }
+                ],
+                attrs: {
+                  type: "number",
+                  min: "0",
+                  id: "adjusters-number",
+                  name: "offer_group[adjusters][adjusters_number]"
+                },
+                domProps: { value: _vm.adjusters["number"] },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.adjusters, "number", $event.target.value)
+                  }
+                }
+              })
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "col-auto" }, [
+              _c("label", { attrs: { for: "adjusters-days" } }, [
+                _vm._v("Дней работы")
+              ]),
+              _c("br"),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.adjusters["days"],
+                    expression: "adjusters['days']"
+                  }
+                ],
+                attrs: {
+                  type: "number",
+                  min: "0",
+                  id: "adjusters-days",
+                  name: "offer_group[adjusters][adjustment_days]"
+                },
+                domProps: { value: _vm.adjusters["days"] },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.adjusters, "days", $event.target.value)
+                  }
+                }
+              })
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "col-auto" }, [
+              _c("label", { attrs: { for: "adjusters-fuel" } }, [
+                _vm._v("Топливо")
+              ]),
+              _c("br"),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.adjusters["fuel"],
+                    expression: "adjusters['fuel']"
+                  }
+                ],
+                attrs: {
+                  type: "number",
+                  min: "0",
+                  id: "adjusters-fuel",
+                  name: "offer_group[adjusters][fuel]"
+                },
+                domProps: { value: _vm.adjusters["fuel"] },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.adjusters, "fuel", $event.target.value)
+                  }
+                }
+              })
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "col-auto" }, [
+              _c("label", { attrs: { for: "adjusters-wage" } }, [
+                _vm._v("Ставка")
+              ]),
+              _c("br"),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.adjusters["wage"],
+                    expression: "adjusters['wage']"
+                  }
+                ],
+                attrs: {
+                  type: "number",
+                  min: "1",
+                  step: "100",
+                  id: "adjusters-wage",
+                  name: "offer_group[adjusters][adjusters_wage]"
+                },
+                domProps: { value: _vm.adjusters["wage"] },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.adjusters, "wage", $event.target.value)
+                  }
+                }
+              })
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "col-auto" }, [
+              _c("label", { attrs: { for: "adjusters-wage" } }, [
+                _vm._v("Процент монтажникам")
+              ]),
+              _c("br"),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.adjusters["percentage"],
+                    expression: "adjusters['percentage']"
+                  }
+                ],
+                attrs: {
+                  type: "number",
+                  min: "1",
+                  max: "100",
+                  id: "adjusters-percent",
+                  name: "offer_group[adjusters][pay_percentage]"
+                },
+                domProps: { value: _vm.adjusters["percentage"] },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.adjusters, "percentage", $event.target.value)
+                  }
+                }
+              })
+            ])
+          ]),
+          _vm._v(" "),
+          _c(
+            "table",
+            {
+              staticClass: "table table-striped table-hover table-bordered my-3"
+            },
+            [
+              _vm._m(1),
+              _vm._v(" "),
+              _c(
+                "tbody",
+                [
+                  _vm._l(_vm.works, function(work, key) {
+                    return _c("tr", { key: key }, [
+                      _c("td", [
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: work.id,
+                              expression: "work.id"
+                            }
+                          ],
+                          attrs: {
+                            type: "hidden",
+                            hidden: "hidden",
+                            name: "offer_group[works][" + key + "][id]"
+                          },
+                          domProps: { value: work.id },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(work, "id", $event.target.value)
+                            }
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: work.code,
+                              expression: "work.code"
+                            }
+                          ],
+                          attrs: {
+                            type: "text",
+                            name: "offer_group[works][" + key + "][code]"
+                          },
+                          domProps: { value: work.code },
+                          on: {
+                            keyup: function($event) {
+                              _vm.searchWorkByCode(work.code, key)
+                            },
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(work, "code", $event.target.value)
+                            }
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c(
+                          "ul",
+                          {
+                            directives: [
+                              {
+                                name: "show",
+                                rawName: "v-show",
+                                value: _vm.autocompletesDisplays["works"][key],
+                                expression:
+                                  "autocompletesDisplays['works'][key]"
+                              }
+                            ],
+                            staticClass: "autocomplete-results",
+                            attrs: { id: "autocomplete-results-w" + key }
+                          },
+                          [
+                            _vm.isLoading
+                              ? _c("li", { staticClass: "loading" }, [
+                                  _vm._v(
+                                    "\n                                Поиск...\n                            "
+                                  )
+                                ])
+                              : _vm._l(_vm.results, function(result, i) {
+                                  return _c(
+                                    "li",
+                                    {
+                                      key: i,
+                                      staticClass: "autocomplete-result",
+                                      on: {
+                                        click: function($event) {
+                                          _vm.setWorkResult(result, key)
+                                        }
+                                      }
+                                    },
+                                    [
+                                      _vm._v(
+                                        "\n                                " +
+                                          _vm._s(result["code"]) +
+                                          "\n                            "
+                                      )
+                                    ]
+                                  )
+                                })
+                          ],
+                          2
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("td", [
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: work.name,
+                              expression: "work.name"
+                            }
+                          ],
+                          attrs: {
+                            type: "text",
+                            name: "offer_group[works][" + key + "][name]"
+                          },
+                          domProps: { value: work.name },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(work, "name", $event.target.value)
+                            }
+                          }
+                        })
+                      ]),
+                      _vm._v(" "),
+                      _c("td", [
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: work.points,
+                              expression: "work.points"
+                            }
+                          ],
+                          attrs: {
+                            type: "text",
+                            name: "offer_group[works][" + key + "][points]"
+                          },
+                          domProps: { value: work.points },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(work, "points", $event.target.value)
+                            }
+                          }
+                        })
+                      ]),
+                      _vm._v(" "),
+                      _c("td", [
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: work.pivot.quantity,
+                              expression: "work.pivot.quantity"
+                            }
+                          ],
+                          attrs: {
+                            type: "number",
+                            min: "0",
+                            name: "offer_group[works][" + key + "][quantity]"
+                          },
+                          domProps: { value: work.pivot.quantity },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                work.pivot,
+                                "quantity",
+                                $event.target.value
+                              )
+                            }
+                          }
+                        })
+                      ]),
+                      _vm._v(" "),
+                      _c("td", [
+                        _c(
+                          "span",
+                          {
+                            on: {
+                              click: function($event) {
+                                _vm.deleteWork(key)
+                              }
+                            }
+                          },
+                          [_vm._v("X")]
+                        )
+                      ])
+                    ])
+                  }),
+                  _vm._v(" "),
+                  _c("tr", [
+                    _c(
+                      "td",
+                      {
+                        attrs: { colspan: "9" },
+                        on: {
+                          click: function($event) {
+                            $event.preventDefault()
+                            _vm.addWork()
+                          }
+                        }
+                      },
+                      [_vm._v("+")]
+                    )
+                  ])
+                ],
+                2
+              )
+            ]
           )
         ]
       )
@@ -52151,6 +51465,30 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", { attrs: { scope: "col" } }, [_vm._v("Цена")]),
         _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Розн. цена")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Мин. розн. цена")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Спец. цена")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } })
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Артикул")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Название")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Ед.измерения")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Количество")]),
+        _vm._v(" "),
         _c("th", { attrs: { scope: "col" } })
       ])
     ])
@@ -52166,15 +51504,15 @@ if (false) {
 }
 
 /***/ }),
-/* 57 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-var normalizeComponent = __webpack_require__(4)
+var normalizeComponent = __webpack_require__(5)
 /* script */
-var __vue_script__ = __webpack_require__(58)
+var __vue_script__ = __webpack_require__(52)
 /* template */
-var __vue_template__ = __webpack_require__(59)
+var __vue_template__ = __webpack_require__(53)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -52213,13 +51551,36 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 58 */
+/* 52 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -52288,7 +51649,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['offerGroup', 'consumablePrice'],
+    props: ['offerGroup', 'calcPrices'],
     data: function data() {
         return {};
     },
@@ -52305,7 +51666,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 59 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -52320,11 +51681,11 @@ var render = function() {
           [
             _c("h2", [_vm._v(_vm._s(_vm.offerGroup.offer_group.name))]),
             _vm._v(" "),
-            _vm._l(_vm.offerGroup.offer_group.offers, function(offerData) {
-              return _c("div", { staticClass: "kp-total-offer" }, [
+            _vm._l(_vm.offerGroup.offer_group.offers, function(offerData, i) {
+              return _c("div", { key: i, staticClass: "kp-total-offer" }, [
                 _c("h3", [_vm._v(_vm._s(offerData.name))]),
                 _vm._v(" "),
-                offerData.equipments.equipment
+                offerData.equipments && offerData.equipments
                   ? _c(
                       "table",
                       {
@@ -52337,9 +51698,7 @@ var render = function() {
                         _c(
                           "tbody",
                           [
-                            _vm._l(offerData.equipments.equipment, function(
-                              tab
-                            ) {
+                            _vm._l(offerData.equipments, function(tab) {
                               return _vm._l(tab, function(row) {
                                 return row.type !== "rashodnye-materialy"
                                   ? _c("tr", [
@@ -52353,25 +51712,86 @@ var render = function() {
                                       _vm._v(" "),
                                       _c("td", [_vm._v(_vm._s(row.quantity))]),
                                       _vm._v(" "),
-                                      _c("td", [_vm._v(_vm._s(row.price))])
+                                      _c("td", [_vm._v(_vm._s(row.price))]),
+                                      _vm._v(" "),
+                                      _c("td", [
+                                        _vm._v(_vm._s(row.price_trade))
+                                      ]),
+                                      _vm._v(" "),
+                                      _c("td", [
+                                        _vm._v(_vm._s(row.price_small_trade))
+                                      ]),
+                                      _vm._v(" "),
+                                      _c("td", [
+                                        _vm._v(_vm._s(row.price_special))
+                                      ])
                                     ])
                                   : _vm._e()
                               })
                             }),
                             _vm._v(" "),
-                            _c("tr", [
-                              _c("td", [_vm._v("----")]),
-                              _vm._v(" "),
-                              _c("td", [_vm._v("Расходные материалы")]),
-                              _vm._v(" "),
-                              _c("td", [_vm._v("Коробы, провода и т.д.")]),
-                              _vm._v(" "),
-                              _c("td", [
-                                _vm._v(_vm._s(_vm.consumablePrice != 0 ? 1 : 0))
-                              ]),
-                              _vm._v(" "),
-                              _c("td", [_vm._v(_vm._s(_vm.consumablePrice))])
-                            ])
+                            _vm.calcPrices
+                              ? _c("tr", [
+                                  _c("td", [_vm._v("----")]),
+                                  _vm._v(" "),
+                                  _c("td", [_vm._v("Расходные материалы")]),
+                                  _vm._v(" "),
+                                  _c("td", [_vm._v("Коробы, провода и т.д.")]),
+                                  _vm._v(" "),
+                                  _c("td", [
+                                    _vm._v(
+                                      _vm._s(
+                                        _vm.calcPrices[i]["consumablePrice"] !=
+                                          0
+                                          ? 1
+                                          : 0
+                                      )
+                                    )
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("td", [
+                                    _vm._v(
+                                      _vm._s(
+                                        _vm.calcPrices[i]["consumablePrice"]
+                                      )
+                                    )
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("td", [_vm._v(" --- ")]),
+                                  _vm._v(" "),
+                                  _c("td", [_vm._v(" --- ")]),
+                                  _vm._v(" "),
+                                  _c("td", [_vm._v(" --- ")])
+                                ])
+                              : _vm._e(),
+                            _vm._v(" "),
+                            _vm.calcPrices
+                              ? _c("tr", [
+                                  _c(
+                                    "td",
+                                    {
+                                      staticClass: "bg-light-blue text-right",
+                                      attrs: { colspan: "8" }
+                                    },
+                                    [
+                                      _c("h4", [
+                                        _vm._v(
+                                          "Всего за оборудование " +
+                                            _vm._s(
+                                              _vm.calcPrices[i][
+                                                "equipmentPrice"
+                                              ] +
+                                                _vm.calcPrices[i][
+                                                  "consumablePrice"
+                                                ]
+                                            ) +
+                                            "р."
+                                        )
+                                      ])
+                                    ]
+                                  )
+                                ])
+                              : _vm._e()
                           ],
                           2
                         )
@@ -52379,7 +51799,7 @@ var render = function() {
                     )
                   : _vm._e(),
                 _vm._v(" "),
-                offerData.equipments.work
+                _vm.offerGroup.offer_group.works
                   ? _c(
                       "table",
                       {
@@ -52392,19 +51812,137 @@ var render = function() {
                         _c(
                           "tbody",
                           [
-                            _vm._l(offerData.equipments.work, function(tab) {
-                              return _vm._l(tab, function(row) {
-                                return _c("tr", [
-                                  _c("td", [_vm._v(_vm._s(row.code))]),
-                                  _vm._v(" "),
-                                  _c("td", [_vm._v(_vm._s(row.name))]),
-                                  _vm._v(" "),
-                                  _c("td", [_vm._v(_vm._s(row.points))]),
-                                  _vm._v(" "),
-                                  _c("td", [_vm._v(_vm._s(row.quantity))])
+                            _vm._l(_vm.offerGroup.offer_group.works, function(
+                              row
+                            ) {
+                              return _c("tr", [
+                                _c("td", [_vm._v(_vm._s(row.code))]),
+                                _vm._v(" "),
+                                _c("td", [_vm._v(_vm._s(row.name))]),
+                                _vm._v(" "),
+                                _c("td", [_vm._v(_vm._s(row.points))]),
+                                _vm._v(" "),
+                                _c("td", [_vm._v(_vm._s(row.quantity))])
+                              ])
+                            }),
+                            _vm._v(" "),
+                            _vm.calcPrices
+                              ? _c("tr", [
+                                  _c(
+                                    "td",
+                                    {
+                                      staticClass: "bg-beige text-right",
+                                      attrs: { colspan: "4" }
+                                    },
+                                    [
+                                      _c("h4", [
+                                        _vm._v(
+                                          "Всего за работы ( с НДС ): " +
+                                            _vm._s(
+                                              _vm.calcPrices[i][
+                                                "totalWorkPrice"
+                                              ]
+                                            ) +
+                                            "р."
+                                        )
+                                      ])
+                                    ]
+                                  )
                                 ])
-                              })
-                            })
+                              : _vm._e(),
+                            _vm._v(" "),
+                            _vm.calcPrices
+                              ? _c("tr", [
+                                  _c(
+                                    "td",
+                                    {
+                                      staticClass: "bg-light-blue text-right",
+                                      attrs: { colspan: "4" }
+                                    },
+                                    [
+                                      _c("h4", [
+                                        _vm._v(
+                                          "Всего за работы ( без НДС, Доп. скидка - " +
+                                            _vm._s(
+                                              _vm.calcPrices[i][
+                                                "additionalDiscount"
+                                              ]
+                                            ) +
+                                            " ): " +
+                                            _vm._s(
+                                              _vm.calcPrices[i][
+                                                "totalWorkPriceNoVAT"
+                                              ]
+                                            ) +
+                                            "р."
+                                        )
+                                      ])
+                                    ]
+                                  )
+                                ])
+                              : _vm._e(),
+                            _vm._v(" "),
+                            _vm.calcPrices
+                              ? _c("tr", [
+                                  _c(
+                                    "td",
+                                    {
+                                      staticClass: "bg-beige text-right",
+                                      attrs: { colspan: "4" }
+                                    },
+                                    [
+                                      _c("h4", [
+                                        _vm._v(
+                                          "Общая стоимость (1 договор - все с НДС): " +
+                                            _vm._s(
+                                              _vm.calcPrices[i][
+                                                "equipmentPrice"
+                                              ] +
+                                                _vm.calcPrices[i][
+                                                  "consumablePrice"
+                                                ] +
+                                                _vm.calcPrices[i][
+                                                  "totalWorkPrice"
+                                                ]
+                                            ) +
+                                            "р."
+                                        )
+                                      ])
+                                    ]
+                                  )
+                                ])
+                              : _vm._e(),
+                            _vm._v(" "),
+                            _vm.calcPrices
+                              ? _c("tr", [
+                                  _c(
+                                    "td",
+                                    {
+                                      staticClass: "bg-light-blue text-right",
+                                      attrs: { colspan: "4" }
+                                    },
+                                    [
+                                      _c("h4", [
+                                        _vm._v(
+                                          "Общая стоимость (2 договора - оборудование с НДС, работы без НДС): " +
+                                            _vm._s(
+                                              _vm.calcPrices[i][
+                                                "equipmentPrice"
+                                              ] +
+                                                _vm.calcPrices[i][
+                                                  "consumablePrice"
+                                                ] +
+                                                _vm.calcPrices[i][
+                                                  "totalWorkPriceNoVAT"
+                                                ]
+                                            ) +
+                                            "р."
+                                        )
+                                      ])
+                                    ]
+                                  )
+                                ])
+                              : _vm._e()
                           ],
                           2
                         )
@@ -52416,7 +51954,26 @@ var render = function() {
           ],
           2
         )
-      : _vm._e()
+      : _vm._e(),
+    _vm._v(" "),
+    _c("div", { staticClass: "col-12" }, [
+      _vm.offerGroup.offer_group
+        ? _c(
+            "a",
+            {
+              staticClass: "btn btn-success",
+              attrs: { href: "" },
+              on: {
+                click: function($event) {
+                  $event.preventDefault()
+                  return _vm.saveOfferGroup($event)
+                }
+              }
+            },
+            [_vm._v("Сохранить группу КП")]
+          )
+        : _vm._e()
+    ])
   ])
 }
 var staticRenderFns = [
@@ -52426,7 +51983,7 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("thead", [
       _c("tr", [
-        _c("th", { attrs: { colspan: "5" } }, [
+        _c("th", { attrs: { colspan: "8" } }, [
           _vm._v("Оборудование и расходные материалы")
         ])
       ]),
@@ -52440,7 +51997,13 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", { attrs: { scope: "col" } }, [_vm._v("Количество")]),
         _vm._v(" "),
-        _c("th", { attrs: { scope: "col" } }, [_vm._v("Цена")])
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Цена")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Розн. цена")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Мин. розн. цена")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Спец. цена")])
       ])
     ])
   },
@@ -52477,14 +52040,14 @@ if (false) {
 }
 
 /***/ }),
-/* 60 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "container" }, [
+  return _c("div", { staticClass: "container main-container" }, [
     _c("div", { staticClass: "row" }, [
       _c("div", { staticClass: "col-12 first-line-tabs" }, [
         _c("ul", { staticClass: "nav nav-tabs" }, [
@@ -52498,7 +52061,7 @@ var render = function() {
                 attrs: { "data-toggle": "tab", href: "#kpTotalTab" },
                 on: {
                   click: function($event) {
-                    _vm.updateOfferGroup()
+                    _vm.updateOfferGroup() + _vm.calculatePrices()
                   }
                 }
               },
@@ -52529,7 +52092,7 @@ var render = function() {
               _c("kp-total-tab", {
                 attrs: {
                   offerGroup: _vm.offerGroup,
-                  consumablePrice: _vm.consumablePrice
+                  calcPrices: _vm.calcPrices
                 }
               })
             ],
@@ -52567,7 +52130,7 @@ if (false) {
 }
 
 /***/ }),
-/* 61 */
+/* 55 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
