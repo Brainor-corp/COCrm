@@ -72,9 +72,6 @@
                                                 stop = false;
                                                 break;
                                             }
-                                            // if(this.offerGroup['offer_group']['offers'][offer]['equipments'][equipment_tab][equipment].type === 'rashodnye-materialy'){
-                                            //     this.consumablePrice += this.offerGroup['offer_group']['offers'][offer]['equipments'][equipment_tab][equipment].quantity * this.offerGroup['offer_group']['offers'][offer]['equipments'][equipment_tab][equipment].price;
-                                            // }
                                         }
                                     }
                                 }

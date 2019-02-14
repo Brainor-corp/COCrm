@@ -17,7 +17,7 @@ class CreateOffersTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->string('slug');
-            $table->double('tax');
+            $table->double('tax')->nullable();
             $table->timestamps();
         });
     }

@@ -131,15 +131,15 @@
                     </div>
                     <div class="col-auto">
                         <label for="adjusters-fuel">Топливо</label><br>
-                        <input type="number" step="50" min="0" id="adjusters-fuel" v-model="adjusters['fuel']" :name="'offer_group[adjusters][fuel]'"/>
+                        <input type="number" min="0" id="adjusters-fuel" v-model="adjusters['fuel']" :name="'offer_group[adjusters][fuel]'"/>
                     </div>
                     <div class="col-auto">
                         <label for="adjusters-wage">Ставка</label><br>
-                        <input type="number" min="0" step="100" id="adjusters-wage" v-model="adjusters['wage']" :name="'offer_group[adjusters][adjusters_wage]'"/>
+                        <input type="number" min="1" step="100" id="adjusters-wage" v-model="adjusters['wage']" :name="'offer_group[adjusters][adjusters_wage]'"/>
                     </div>
                     <div class="col-auto">
                         <label for="adjusters-wage">Процент монтажникам</label><br>
-                        <input type="number" min="0" max="100" id="adjusters-percent" v-model="adjusters['percentage']" :name="'offer_group[adjusters][pay_percentage]'"/>
+                        <input type="number" min="1" max="100" id="adjusters-percent" v-model="adjusters['percentage']" :name="'offer_group[adjusters][pay_percentage]'"/>
                     </div>
                 </div>
                 <table class="table table-striped table-hover table-bordered my-3">
@@ -155,6 +155,8 @@
                     <tbody>
                     <tr v-for="(work, key) in works" :key="key">
                         <td>
+                            <input type="hidden" hidden="hidden" :name="'offer_group[works]['+key+'][id]'" v-model="work.id"/>
+
                             <input type="text" @keyup="searchWorkByCode(work.code, key)" :name="'offer_group[works]['+key+'][code]'" v-model="work.code"/>
                             <ul :id="'autocomplete-results-w'+key" v-show="autocompletesDisplays['works'][key]" class="autocomplete-results">
                                 <li class="loading" v-if="isLoading">
@@ -264,7 +266,6 @@
                             }
                         }
                     }
-                    console.log(this.autocompletesDisplays['equipments']);
                 });
         },
         created: function (){
@@ -422,7 +423,6 @@
                 this.autocompletesDisplays['works'][rowId] = true;
             },
             setResult(equipment, offerTabId, offerContentTabId, rowId) {
-                console.log(this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]);
                 this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['id'] = rowId;
                 this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['saveType'] = 'old';
                 this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['base_id'] = equipment.id;
@@ -438,7 +438,6 @@
                 this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['comment'] = equipment.comment;
                 this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['type_id'] = equipment.type.id;
                 this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['type'] = equipment.type.slug;
-                // this.row.code = result;
                 this.autocompletesDisplays['equipments'][offerTabId][offerContentTabId][rowId] = false;
             },
             setWorkResult(work, index) {
@@ -596,6 +595,7 @@
             },
             addWork(){
                 this.works.push({
+                    id: -1,
                     name: '',
                     code: '',
                     points: '',

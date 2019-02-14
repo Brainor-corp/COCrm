@@ -49275,9 +49275,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                                             stop = false;
                                             break;
                                         }
-                                        // if(this.offerGroup['offer_group']['offers'][offer]['equipments'][equipment_tab][equipment].type === 'rashodnye-materialy'){
-                                        //     this.consumablePrice += this.offerGroup['offer_group']['offers'][offer]['equipments'][equipment_tab][equipment].quantity * this.offerGroup['offer_group']['offers'][offer]['equipments'][equipment_tab][equipment].price;
-                                        // }
                                     }
                                 }
                             }
@@ -49552,6 +49549,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
 
 
 
@@ -49623,7 +49622,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                     }
                 }
             }
-            console.log(_this.autocompletesDisplays['equipments']);
         });
     },
     created: function created() {
@@ -49776,7 +49774,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             this.autocompletesDisplays['works'][rowId] = true;
         },
         setResult: function setResult(equipment, offerTabId, offerContentTabId, rowId) {
-            console.log(this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]);
             this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['id'] = rowId;
             this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['saveType'] = 'old';
             this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['base_id'] = equipment.id;
@@ -49792,7 +49789,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['comment'] = equipment.comment;
             this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['type_id'] = equipment.type.id;
             this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['type'] = equipment.type.slug;
-            // this.row.code = result;
             this.autocompletesDisplays['equipments'][offerTabId][offerContentTabId][rowId] = false;
         },
         setWorkResult: function setWorkResult(work, index) {
@@ -49944,6 +49940,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         },
         addWork: function addWork() {
             this.works.push({
+                id: -1,
                 name: '',
                 code: '',
                 points: '',
@@ -51100,7 +51097,6 @@ var render = function() {
                 ],
                 attrs: {
                   type: "number",
-                  step: "50",
                   min: "0",
                   id: "adjusters-fuel",
                   name: "offer_group[adjusters][fuel]"
@@ -51134,7 +51130,7 @@ var render = function() {
                 ],
                 attrs: {
                   type: "number",
-                  min: "0",
+                  min: "1",
                   step: "100",
                   id: "adjusters-wage",
                   name: "offer_group[adjusters][adjusters_wage]"
@@ -51168,7 +51164,7 @@ var render = function() {
                 ],
                 attrs: {
                   type: "number",
-                  min: "0",
+                  min: "1",
                   max: "100",
                   id: "adjusters-percent",
                   name: "offer_group[adjusters][pay_percentage]"
@@ -51200,6 +51196,31 @@ var render = function() {
                   _vm._l(_vm.works, function(work, key) {
                     return _c("tr", { key: key }, [
                       _c("td", [
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: work.id,
+                              expression: "work.id"
+                            }
+                          ],
+                          attrs: {
+                            type: "hidden",
+                            hidden: "hidden",
+                            name: "offer_group[works][" + key + "][id]"
+                          },
+                          domProps: { value: work.id },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(work, "id", $event.target.value)
+                            }
+                          }
+                        }),
+                        _vm._v(" "),
                         _c("input", {
                           directives: [
                             {
