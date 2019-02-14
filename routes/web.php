@@ -23,10 +23,13 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::post('/getTypesByClass', 'TypeController@getTypesByClass')->name('getTypes');
 Route::post('/getAllEquipmentTypes', 'TypeController@getAllEquipmentTypes')->name('getAllEquipmentTypes');
 Route::post('/getDefaultTypesWithEquipment', 'TypeController@getDefaultTypesWithEquipment')->name('getDefaultTypesWithEquipment');
-
-Route::post('/findEquipmentByCode', 'EquipmentController@findEquipmentByCode')->name('findEquipment');
 Route::post('/getTaxBySlug', 'SettingsController@getTaxBySlug')->name('getTax');
 Route::post('/getOfferGroup', 'COController@getOfferGroup')->name('getOfferGroup');
+Route::post('/findEquipmentByCode', 'EquipmentController@findEquipmentByCode')->name('findEquipment');
+Route::post('/findWorkByCode', 'EquipmentController@findWorkByCode')->name('findWork');
+
+
+Route::post('/calculateAllPrices', 'COController@calculateAllPrices')->name('calculateAllPrices');
 Route::get('/test', 'OfferController@testRequest');
 Route::post('/saveOfferGroup', 'OfferController@saveOfferGroup');
 

@@ -23,4 +23,8 @@ class OfferGroup extends Model
     public function offers(){
         return $this->hasMany(Offer::class, 'group_id', 'id');
     }
+
+    public function equipment(){
+        return $this->belongsToMany(Equipment::class, 'equipment_offer_groups', 'offer_group_id', 'equipment_id')->withPivot('quantity');
+    }
 }

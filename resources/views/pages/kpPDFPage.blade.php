@@ -74,7 +74,7 @@
                         <td class="align-middle text-center">{{ $consumableSum }}</td>
                     </tr>
                     <tr>
-                        <td colspan="6" class="bg-light-blue text-right"><h4>Всего за оборудование {{ $totalEquipmentSum }}р.</h4></td>
+                        <td colspan="6" class="bg-light-blue text-right"><h4>Всего за оборудование {{ $totalEquipmentSum + $consumableSum }}р.</h4></td>
                     </tr>
                     </tbody>
                 </table>

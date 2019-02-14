@@ -32,3 +32,12 @@
 .nav-tabs .nav-item{
     margin-bottom: -2px!important;
 }
+
+.main-container{
+    max-width: 1600px!important;
+}
+
+.type-select{
+    background: transparent;
+    border: none;
+}

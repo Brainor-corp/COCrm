@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateOffersTable extends Migration
+class CreateEquipmentOfferGroupsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,10 @@ class CreateOffersTable extends Migration
      */
     public function up()
     {
-        Schema::create('offers', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('name');
-            $table->string('slug');
-            $table->double('tax')->nullable();
-            $table->timestamps();
+        Schema::create('equipment_offer_groups', function (Blueprint $table) {
+            $table->bigInteger('equipment_id');
+            $table->bigInteger('offer_group_id');
+            $table->integer('quantity')->default(1);
         });
     }
 
@@ -29,6 +27,6 @@ class CreateOffersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('offers');
+        Schema::dropIfExists('equipment_offer_groups');
     }
 }
