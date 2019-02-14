@@ -162,9 +162,9 @@ class OfferController extends Controller
             }
         }
         catch (\Exception $e){
-            return $e;
+            abort(500);
         }
-        return "ok";
+        return url('kp/' . $createGroup->uuid);
     }
 
     public function testRequest(){
