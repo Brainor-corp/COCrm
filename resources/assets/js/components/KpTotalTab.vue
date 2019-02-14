@@ -1,9 +1,9 @@
 <template>
     <div class="row">
-        {{offerGroup}}
+        <!--{{offerGroup}}-->
         <div v-if="offerGroup.offer_group" class="col-12 kp-total-tab">
             <h2>{{ offerGroup.offer_group.name}}</h2>
-            <div class="kp-total-offer" v-for="offerData in offerGroup.offer_group.offers">
+            <div class="kp-total-offer" v-for="(offerData, i) in offerGroup.offer_group.offers" :key="i">
                 <h3>{{ offerData.name }}</h3>
                 <table v-if="offerData.equipments && offerData.equipments" class="table table-striped table-hover table-bordered">
                     <thead>
@@ -32,18 +32,18 @@
                             <td>{{ row.price_special }}</td>
                         </tr>
                     </template>
-                    <tr>
+                    <tr v-if="calcPrices">
                         <td>----</td>
                         <td>Расходные материалы</td>
                         <td>Коробы, провода и т.д.</td>
-                        <td>{{ (calcPrices['consumablePrice'] != 0) ? 1 : 0 }}</td>
-                        <td>{{ calcPrices['consumablePrice'] }}</td>
+                        <td>{{ (calcPrices[i]['consumablePrice'] != 0) ? 1 : 0 }}</td>
+                        <td>{{ calcPrices[i]['consumablePrice'] }}</td>
                         <td> --- </td>
                         <td> --- </td>
                         <td> --- </td>
                     </tr>
-                    <tr>
-                        <td colspan="8" class="bg-light-blue text-right"><h4>Всего за оборудование {{ calcPrices['equipmentPrice'] + calcPrices['consumablePrice'] }}р.</h4></td>
+                    <tr v-if="calcPrices">
+                        <td colspan="8" class="bg-light-blue text-right"><h4>Всего за оборудование {{ calcPrices[i]['equipmentPrice'] + calcPrices[i]['consumablePrice'] }}р.</h4></td>
                     </tr>
                     </tbody>
                 </table>
@@ -64,17 +64,17 @@
                             <td>{{ row.points }}</td>
                             <td>{{ row.quantity }}</td>
                         </tr>
-                        <tr>
-                            <td colspan="4" class="bg-beige text-right"><h4>Всего за работы ( с НДС ): {{ calcPrices['totalWorkPrice'] }}р.</h4></td>
+                        <tr v-if="calcPrices">
+                            <td colspan="4" class="bg-beige text-right"><h4>Всего за работы ( с НДС ): {{ calcPrices[i]['totalWorkPrice'] }}р.</h4></td>
                         </tr>
-                        <tr>
-                            <td colspan="4" class="bg-light-blue text-right"><h4>Всего за работы ( без НДС, Доп. скидка - {{ calcPrices['additionalDiscount'] }} ): {{calcPrices['totalWorkPriceNoVAT']}}р.</h4></td>
+                        <tr v-if="calcPrices">
+                            <td colspan="4" class="bg-light-blue text-right"><h4>Всего за работы ( без НДС, Доп. скидка - {{ calcPrices[i]['additionalDiscount'] }} ): {{calcPrices[i]['totalWorkPriceNoVAT']}}р.</h4></td>
                         </tr>
-                        <tr>
-                            <td colspan="4" class="bg-beige text-right"><h4>Общая стоимость (1 договор - все с НДС): {{ calcPrices['equipmentPrice'] + calcPrices['consumablePrice'] + calcPrices['totalWorkPrice'] }}р.</h4></td>
+                        <tr v-if="calcPrices">
+                            <td colspan="4" class="bg-beige text-right"><h4>Общая стоимость (1 договор - все с НДС): {{ calcPrices[i]['equipmentPrice'] + calcPrices[i]['consumablePrice'] + calcPrices[i]['totalWorkPrice'] }}р.</h4></td>
                         </tr>
-                        <tr>
-                            <td colspan="4" class="bg-light-blue text-right"><h4>Общая стоимость (2 договора - оборудование с НДС, работы без НДС): {{calcPrices['equipmentPrice'] + calcPrices['consumablePrice'] + calcPrices['totalWorkPriceNoVAT']}}р.</h4></td>
+                        <tr v-if="calcPrices">
+                            <td colspan="4" class="bg-light-blue text-right"><h4>Общая стоимость (2 договора - оборудование с НДС, работы без НДС): {{calcPrices[i]['equipmentPrice'] + calcPrices[i]['consumablePrice'] + calcPrices[i]['totalWorkPriceNoVAT']}}р.</h4></td>
                         </tr>
                     </tbody>
                 </table>

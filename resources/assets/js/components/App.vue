@@ -7,7 +7,7 @@
                         <a class="nav-link active" data-toggle="tab" href="#generateKpTab">Редактирование КП</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" data-toggle="tab" href="#kpTotalTab" @click="updateOfferGroup()">Итог</a>
+                        <a class="nav-link" data-toggle="tab" href="#kpTotalTab" @click="updateOfferGroup() + calculatePrices()">Итог</a>
                     </li>
                 </ul>
 
@@ -61,13 +61,14 @@
                             if(this.offerGroup['offer_group']['offers'][offer]['equipments']){
                                 if(this.offerGroup['offer_group']['offers'][offer]['equipments']){
                                     for (let equipment_tab = 0; equipment_tab < this.offerGroup['offer_group']['offers'][offer]['equipments'].length; equipment_tab++) {
-                                        if(this.offerGroup['offer_group']['offers'][offer]['equipments'][equipment_tab] == null){
+                                        if(!this.offerGroup['offer_group']['offers'][offer]['equipments'][equipment_tab]){
                                             this.offerGroup['offer_group']['offers'][offer]['equipments'].splice(equipment_tab, 1);
                                             stop = false;
                                             break;
                                         }
                                         for (let equipment = 0; equipment < this.offerGroup['offer_group']['offers'][offer]['equipments'][equipment_tab].length; equipment++) {
-                                            if(this.offerGroup['offer_group']['offers'][offer]['equipments'][equipment_tab][equipment].quantity === "" || parseInt(this.offerGroup['offer_group']['offers'][offer]['equipments'][equipment_tab][equipment].quantity) < 1) { //проверка на ненулевое кол-во
+                                            console.log(this.offerGroup['offer_group']['offers'][offer]['equipments'][equipment_tab]);
+                                            if(!this.offerGroup['offer_group']['offers'][offer]['equipments'][equipment_tab][equipment] || this.offerGroup['offer_group']['offers'][offer]['equipments'][equipment_tab][equipment].quantity === "" || parseInt(this.offerGroup['offer_group']['offers'][offer]['equipments'][equipment_tab][equipment].quantity) < 1) { //проверка на ненулевое кол-во
                                                 this.offerGroup['offer_group']['offers'][offer]['equipments'][equipment_tab].splice(equipment, 1);
                                                 stop = false;
                                                 break;
@@ -88,15 +89,18 @@
                         if(stop)
                             break;
                     }
-                    axios
-                        .post(window.location.href + 'calculateAllPrices',
-                             this.offerGroup
-                        )
-                        .then(res=>{
-                            this.calcPrices = res.data;
-                        });
+
                 }
             },
+            calculatePrices(){
+                axios
+                    .post(window.location.href + 'calculateAllPrices',
+                         this.offerGroup
+                    )
+                    .then(res=>{
+                        this.calcPrices = res.data;
+                    });
+            }
         }
     }
 </script>

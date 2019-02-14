@@ -60,45 +60,43 @@ class COController extends Controller
     }
 
     public function calculateAllPrices(Request $request){
-        try{
-            $response['equipmentPrice'] = self::calculateEquipmentPrice($request['offer_group']['offers']);
-            $response['consumablePrice'] = self::calculateConsumablePrice($request['offer_group']['offers']);
-            $response['adjustmentPrice'] = self::calculateAdjustmentPrice($request['offer_group']['adjusters']);
-            $response['noTaxProfit'] = self::calculateNoTaxProfit($response['adjustmentPrice'], $request['offer_group']['adjusters']['pay_percentage']);
-            $response['VAT'] = self::calculateVAT($response['noTaxProfit']);
-            $response['totalWorkPrice'] = self::calculateTotalWorkPrice($response['noTaxProfit']);
-            $response['totalWorkPriceNoVAT'] = self::calculateTotalWorkPriceNoVAT($response['noTaxProfit']);
-            $response['additionalDiscount'] = ($response['noTaxProfit']+$response['noTaxProfit']*40/100) - $response['totalWorkPriceNoVAT'] - $response['VAT'];
+        $response = [];
+        $response['adjustmentPrice'] = self::calculateAdjustmentPrice($request['offer_group']['adjusters']);
+        foreach ($request['offer_group']['offers'] as $key => $offer) {
+            try {
+                $response[$key]['equipmentPrice'] = round(self::calculateEquipmentPrice($offer), 2);
+                $response[$key]['consumablePrice'] = round(self::calculateConsumablePrice($offer), 2);
+                $response[$key]['noTaxProfit'] = round(self::calculateNoTaxProfit($response['adjustmentPrice'], $request['offer_group']['adjusters']['pay_percentage']), 2);
+                $response[$key]['VAT'] = round(self::calculateVAT($response[$key]['noTaxProfit']), 2);
+                $response[$key]['totalWorkPrice'] = round(self::calculateTotalWorkPrice($response[$key]['noTaxProfit']), 2);
+                $response[$key]['totalWorkPriceNoVAT'] = round(self::calculateTotalWorkPriceNoVAT($response[$key]['noTaxProfit']), 2);
+                $response[$key]['additionalDiscount'] = round(($response[$key]['noTaxProfit'] + $response[$key]['noTaxProfit'] * 40 / 100) - $response[$key]['totalWorkPriceNoVAT'] - $response[$key]['VAT'], 2);
 //            $response['additionalDiscount'] = self::calculateAdditionalDiscount($response['noTaxProfit'],$response['VAT']);
-        }
-        catch (\Exception $e){
-            return $e;
+            } catch (\Exception $e) {
+                return $e;
+            }
         }
         return $response;
     }
 
-    private function calculateEquipmentPrice($offers){
+    private function calculateEquipmentPrice($offer){
         $totalPrice=0;
-        foreach ($offers as $offer){
-            foreach ($offer['equipments'] as $equipment_tab){
-                foreach ($equipment_tab as $equipment){
-                    if($equipment['type'] !== 'rashodnye-materialy'){
-                        $totalPrice+= $equipment['price'] * $equipment['quantity'];
-                    }
+        foreach ($offer['equipments'] as $equipment_tab){
+            foreach ($equipment_tab as $equipment){
+                if($equipment['type'] !== 'rashodnye-materialy'){
+                    $totalPrice+= $equipment['price'] * $equipment['quantity'];
                 }
             }
         }
         return $totalPrice;
     }
 
-    private function calculateConsumablePrice($offers){
+    private function calculateConsumablePrice($offer){
         $totalPrice=0;
-        foreach ($offers as $offer){
-            foreach ($offer['equipments'] as $equipment_tab){
-                foreach ($equipment_tab as $equipment){
-                    if($equipment['type'] === 'rashodnye-materialy'){
-                        $totalPrice+= $equipment['price'] * $equipment['quantity'];
-                    }
+        foreach ($offer['equipments'] as $equipment_tab){
+            foreach ($equipment_tab as $equipment){
+                if($equipment['type'] === 'rashodnye-materialy'){
+                    $totalPrice+= $equipment['price'] * $equipment['quantity'];
                 }
             }
         }

@@ -80,7 +80,7 @@
                                                 <li class="loading" v-if="isLoading">
                                                     Поиск...
                                                 </li>
-                                                <li v-else v-for="(result, i) in results" :key="i" @click="setResult(result, offerTab.id, offerContentTab.id, row.id)" class="autocomplete-result">
+                                                <li v-else v-for="(result, i) in results" :key="i" @click.prevent="setResult(result, offerTab.id, offerContentTab.id, row.id)" class="autocomplete-result">
                                                     {{ result['code'] }}
                                                 </li>
                                             </ul>
@@ -208,7 +208,7 @@
                 results: [],
                 groupId: null,
                 autocompletesDisplays: {
-                    equipments: [],
+                    equipments: [[[]]],
                     works: []
                 },
                 types: [],
@@ -290,6 +290,9 @@
                                 'rows': [],
                             });
                             this.selected[index].push( res.data[i]['id'] );
+                            if(!this.autocompletesDisplays['equipments'][index]){
+                                this.autocompletesDisplays['equipments'][index] = [];
+                            }
                             this.autocompletesDisplays['equipments'][index].push([]);
                             if(res.data[i]['equipment'].length > 0){
                                 for (let j = 0; j < res.data[i]['equipment'].length; j++) {
@@ -366,6 +369,9 @@
                         lastRow = 0;
                     }
 
+                    if(!this.autocompletesDisplays['equipments'][offerTabId][offerContentTabId]){
+                        this.autocompletesDisplays['equipments'][offerTabId][offerContentTabId] = [];
+                    }
                     this.autocompletesDisplays['equipments'][offerTabId][offerContentTabId].push({lastRow: false});
                     this.offersContentTabs[offerTabId][offerContentTabId]['rows'].push(
                         {
@@ -400,6 +406,8 @@
                         code: codePart
                     })
                     .then(resp => {
+                        // console.log('eq');
+                        // console.log(resp.data);
                         this.results = resp.data;
                         this.isLoading = false;
                     });
@@ -417,10 +425,14 @@
                         code: codePart
                     })
                     .then(resp => {
+                        // console.log('w');
+                        // console.log(resp.data);
                         this.results = resp.data;
                         this.isLoading = false;
                     });
                 this.autocompletesDisplays['works'][rowId] = true;
+                // console.log(this.autocompletesDisplays);
+
             },
             setResult(equipment, offerTabId, offerContentTabId, rowId) {
                 this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['id'] = rowId;
@@ -439,6 +451,8 @@
                 this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['type_id'] = equipment.type.id;
                 this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['type'] = equipment.type.slug;
                 this.autocompletesDisplays['equipments'][offerTabId][offerContentTabId][rowId] = false;
+                console.log(this.offersContentTabs[offerTabId][offerContentTabId]['rows']);
+
             },
             setWorkResult(work, index) {
                 this.works[index] = {
@@ -447,9 +461,10 @@
                     points: work.points,
                     pivot:{quantity: 1},
                 };
+                this.autocompletesDisplays['works'][index] = false;
             },
             handleClickOutside(event) {
-                if ('autocomplete-results' !== $(event.target).attr('class')) {
+                if ($(event.target).attr('class') != 'autocomplete-results') {
                     for (let i = 0; i < this.autocompletesDisplays['equipments'].length; i++) {
                         for (let j = 0; j < this.autocompletesDisplays['equipments'][i].length; j++) {
                             for (let k = 0; k < this.autocompletesDisplays['equipments'][i][j].length; k++) {
@@ -469,6 +484,7 @@
                 let buffRow = [];
                 let buffGroupName = '';
                 let buffSelected = [];
+                let buffAutocompletes = [];
                 axios
                     .post(window.location.href + 'getOfferGroup', {
                         id: this.groupId
@@ -481,13 +497,17 @@
                                 {
                                     id: lastOfferTabId,
                                     name: offer.name,
-                                    tax: offer.tax
+                                    // tax: offer.tax
                                 }
                             );
-
+                            buffAutocompletes[lastOfferTabId] =[];
                             Object.keys(offer['equipments']).forEach(function (type) {
                                 let lastRow = 0;
                                 offer['equipments'][type].forEach(function (equipment) {
+                                    buffAutocompletes[lastOfferTabId][lastOfferContentTabId] = false;
+                                    // buffAutocompletes.push({
+                                    //     [lastOfferContentTabId]: false
+                                    // });
                                     if(!buffRow[lastOfferTabId]){
                                         buffRow[lastOfferTabId] = [];
                                     }
@@ -550,11 +570,13 @@
                         this.offersContentTabs = buffEq;
                         this.selected = buffSelected;
                         this.works = resp.data.equipment;
+                        this.autocompletesDisplays['equipments'] = buffAutocompletes;
                         this.adjusters['number'] = resp.data.adjusters_number;
                         this.adjusters['days'] = resp.data.adjustments_days;
                         this.adjusters['fuel'] = resp.data.fuel_number;
                         this.adjusters['wage'] = resp.data.adjusters_wage;
                         this.adjusters['percentage'] = resp.data.pay_percentage;
+                        console.log(this.autocompletesDisplays['equipments']);
                     });
             },
             deleteRow(offerTabId, offerContentTabId, rowId){
@@ -563,6 +585,10 @@
                         for(let j = 0; j < this.offersContentTabs[offerTabId][i]['rows'].length; j++) {
                             if(this.offersContentTabs[offerTabId][i]['rows'][j].id === rowId){
                                 this.offersContentTabs[offerTabId][i]['rows'].splice(j, 1);
+                                for(let k = j; k < this.offersContentTabs[offerTabId][i]['rows'].length; k++){
+                                    this.offersContentTabs[offerTabId][i]['rows'][k].id--;
+                                }
+                                console.log(this.offersContentTabs[offerTabId][i]['rows']);
                                 break;
                             }
                         }
