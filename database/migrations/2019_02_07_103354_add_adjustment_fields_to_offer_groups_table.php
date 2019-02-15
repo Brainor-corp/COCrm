@@ -14,6 +14,7 @@ class AddAdjustmentFieldsToOfferGroupsTable extends Migration
     public function up()
     {
         Schema::table('offer_groups', function (Blueprint $table) {
+            $table->double('adjusters_no_tax')->nullable();
             $table->integer('adjusters_number')->default(1);
             $table->integer('adjustments_days')->default(1);
             $table->integer('fuel_number')->default(0);
@@ -30,6 +31,7 @@ class AddAdjustmentFieldsToOfferGroupsTable extends Migration
     public function down()
     {
         Schema::table('offer_groups', function (Blueprint $table) {
+            $table->dropColumn('adjusters_no_tax');
             $table->dropColumn('adjusters_number');
             $table->dropColumn('adjustments_days');
             $table->dropColumn('fuel_number');

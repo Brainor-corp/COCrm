@@ -67,7 +67,6 @@
                                             break;
                                         }
                                         for (let equipment = 0; equipment < this.offerGroup['offer_group']['offers'][offer]['equipments'][equipment_tab].length; equipment++) {
-                                            console.log(this.offerGroup['offer_group']['offers'][offer]['equipments'][equipment_tab]);
                                             if(!this.offerGroup['offer_group']['offers'][offer]['equipments'][equipment_tab][equipment] || this.offerGroup['offer_group']['offers'][offer]['equipments'][equipment_tab][equipment].quantity === "" || parseInt(this.offerGroup['offer_group']['offers'][offer]['equipments'][equipment_tab][equipment].quantity) < 1) { //проверка на ненулевое кол-во
                                                 this.offerGroup['offer_group']['offers'][offer]['equipments'][equipment_tab].splice(equipment, 1);
                                                 stop = false;
@@ -99,6 +98,7 @@
                     )
                     .then(res=>{
                         this.calcPrices = res.data;
+                        console.log(res.data);
                     });
             }
         }
