@@ -61,12 +61,12 @@ class COController extends Controller
 
     public function calculateAllPrices(Request $request){
         $response = [];
-        $response['adjustmentPrice'] = self::calculateAdjustmentPrice($request['offer_group']['adjusters']);
+        $response['adjustmentPrice'] = self::calculateAdjustmentPrice($request['offer_group']['adjusters']) ?? null;
         foreach ($request['offer_group']['offers'] as $key => $offer) {
             try {
                 $response[$key]['equipmentPrice'] = round(self::calculateEquipmentPrice($offer), 2);
                 $response[$key]['consumablePrice'] = round(self::calculateConsumablePrice($offer), 2);
-                $response[$key]['noTaxProfit'] = round(self::calculateNoTaxProfit($response['adjustmentPrice'], $request['offer_group']['adjusters']['pay_percentage']), 2);
+                $response[$key]['noTaxProfit'] = $request['offer_group']['adjusters']['adjusters_no_tax'] ?? round(self::calculateNoTaxProfit($response['adjustmentPrice'], $request['offer_group']['adjusters']['pay_percentage']), 2);
                 $response[$key]['VAT'] = round(self::calculateVAT($response[$key]['noTaxProfit']), 2);
                 $response[$key]['totalWorkPrice'] = round(self::calculateTotalWorkPrice($response[$key]['noTaxProfit']), 2);
                 $response[$key]['totalWorkPriceNoVAT'] = round(self::calculateTotalWorkPriceNoVAT($response[$key]['noTaxProfit']), 2);
@@ -79,11 +79,21 @@ class COController extends Controller
         return $response;
     }
 
+    public function calculatePrePrices(Request $request){
+        $response['adjustmentPrice'] = self::calculateAdjustmentPrice($request['offer_group']['adjusters']);
+        $response['noTaxProfit'] = $request['offer_group']['adjusters']['adjusters_no_tax'] ?? round(self::calculateNoTaxProfit($response['adjustmentPrice'], $request['offer_group']['adjusters']['pay_percentage']), 2);
+        $response['VAT'] = round(self::calculateVAT($response['noTaxProfit']), 2);
+        $response['totalWorkPrice'] = round(self::calculateTotalWorkPrice($response['noTaxProfit']), 2);
+        $response['totalWorkPriceNoVAT'] = round(self::calculateTotalWorkPriceNoVAT($response['noTaxProfit']), 2);
+        $response['additionalDiscount'] = round(($response['noTaxProfit'] + $response['noTaxProfit'] * 40 / 100) - $response['totalWorkPriceNoVAT'] - $response['VAT'], 2);
+        return $response;
+    }
+
     private function calculateEquipmentPrice($offer){
         $totalPrice=0;
-        foreach ($offer['equipments'] as $equipment_tab){
-            foreach ($equipment_tab as $equipment){
-                if($equipment['type'] !== 'rashodnye-materialy'){
+        foreach ($offer['equipments'] as $type => $equipments){
+            foreach ($equipments as $equipment){
+                if($type !== 'rashodnye-materialy'){
                     $totalPrice+= $equipment['price'] * $equipment['quantity'];
                 }
             }
@@ -93,9 +103,9 @@ class COController extends Controller
 
     private function calculateConsumablePrice($offer){
         $totalPrice=0;
-        foreach ($offer['equipments'] as $equipment_tab){
-            foreach ($equipment_tab as $equipment){
-                if($equipment['type'] === 'rashodnye-materialy'){
+        foreach ($offer['equipments'] as $type => $equipments){
+            foreach ($equipments as $equipment){
+                if($type === 'rashodnye-materialy'){
                     $totalPrice+= $equipment['price'] * $equipment['quantity'];
                 }
             }

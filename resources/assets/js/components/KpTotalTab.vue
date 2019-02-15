@@ -1,6 +1,6 @@
 <template>
     <div class="row">
-        <!--{{offerGroup}}-->
+        {{offerGroup}}
         <div v-if="offerGroup.offer_group" class="col-12 kp-total-tab">
             <h2>{{ offerGroup.offer_group.name}}</h2>
             <div class="kp-total-offer" v-for="(offerData, i) in offerGroup.offer_group.offers" :key="i">
@@ -20,8 +20,8 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <template v-for="tab in offerData.equipments">
-                        <tr v-if="row.type !== 'rashodnye-materialy'" v-for="row in tab">
+                    <template v-for="(tab, type) in offerData.equipments" v-if="type !== 'rashodnye-materialy'">
+                        <tr v-for="row in tab">
                             <td>{{ row.code }}</td>
                             <td>{{ row.name }}</td>
                             <td>{{ row.description }}</td>
@@ -32,7 +32,7 @@
                             <td>{{ row.price_special }}</td>
                         </tr>
                     </template>
-                    <tr v-if="calcPrices">
+                    <tr v-if="calcPrices[i]">
                         <td>----</td>
                         <td>Расходные материалы</td>
                         <td>Коробы, провода и т.д.</td>
@@ -42,7 +42,7 @@
                         <td> --- </td>
                         <td> --- </td>
                     </tr>
-                    <tr v-if="calcPrices">
+                    <tr v-if="calcPrices[i]">
                         <td colspan="8" class="bg-light-blue text-right"><h4>Всего за оборудование {{ calcPrices[i]['equipmentPrice'] + calcPrices[i]['consumablePrice'] }}р.</h4></td>
                     </tr>
                     </tbody>
@@ -58,22 +58,28 @@
                     </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="row in offerGroup.offer_group.works">
+                        <tr v-if="offerGroup.offer_group.works.length > 0" v-for="row in offerGroup.offer_group.works">
                             <td>{{ row.code }}</td>
                             <td>{{ row.name }}</td>
                             <td>{{ row.points }}</td>
                             <td>{{ row.quantity }}</td>
                         </tr>
-                        <tr v-if="calcPrices">
+                        <tr v-else>
+                            <td> ---- </td>
+                            <td> ---- </td>
+                            <td> ---- </td>
+                            <td> ---- </td>
+                        </tr>
+                        <tr v-if="calcPrices[i]">
                             <td colspan="4" class="bg-beige text-right"><h4>Всего за работы ( с НДС ): {{ calcPrices[i]['totalWorkPrice'] }}р.</h4></td>
                         </tr>
-                        <tr v-if="calcPrices">
+                        <tr v-if="calcPrices[i]">
                             <td colspan="4" class="bg-light-blue text-right"><h4>Всего за работы ( без НДС, Доп. скидка - {{ calcPrices[i]['additionalDiscount'] }} ): {{calcPrices[i]['totalWorkPriceNoVAT']}}р.</h4></td>
                         </tr>
-                        <tr v-if="calcPrices">
+                        <tr v-if="calcPrices[i]">
                             <td colspan="4" class="bg-beige text-right"><h4>Общая стоимость (1 договор - все с НДС): {{ calcPrices[i]['equipmentPrice'] + calcPrices[i]['consumablePrice'] + calcPrices[i]['totalWorkPrice'] }}р.</h4></td>
                         </tr>
-                        <tr v-if="calcPrices">
+                        <tr v-if="calcPrices[i]">
                             <td colspan="4" class="bg-light-blue text-right"><h4>Общая стоимость (2 договора - оборудование с НДС, работы без НДС): {{calcPrices[i]['equipmentPrice'] + calcPrices[i]['consumablePrice'] + calcPrices[i]['totalWorkPriceNoVAT']}}р.</h4></td>
                         </tr>
                     </tbody>

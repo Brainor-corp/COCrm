@@ -24,6 +24,10 @@ class TypeController extends Controller
     }
 
     public function getDefaultTypesWithEquipment(){
-        return Type::where('optional', 'default')->with('equipment')->get();
+        return Type::where('optional', 'default')->with('equipment')->where('class', 'equipment')->get();
+    }
+
+    public function getDefaultWorks(){
+        return Type::where('optional', 'default')->with('work')->where('class', 'work')->get();
     }
 }
