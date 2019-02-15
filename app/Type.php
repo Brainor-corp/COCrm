@@ -23,7 +23,11 @@ class Type extends Model
     }
 
     public function equipment(){
-        return $this->belongsToMany(Equipment::class, 'equipment_type', 'type_id', 'equipment_id')->where('class', 'equipment')->withPivot('quantity', 'price', 'price_trade', 'price_small_trade', 'price_special');
+        return $this->belongsToMany(Equipment::class, 'equipment_type', 'type_id', 'equipment_id')->withPivot('quantity', 'price', 'price_trade', 'price_small_trade', 'price_special');
+    }
+
+    public function work(){
+        return $this->belongsToMany(Equipment::class, 'equipment_type', 'type_id', 'equipment_id')->withPivot('quantity');
     }
 
     public function contacts(){
