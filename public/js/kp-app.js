@@ -49250,6 +49250,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     created: function created() {},
     methods: {
         updateOfferGroup: function updateOfferGroup(newOfferGroup) {
+            var _this = this;
+
             if (typeof newOfferGroup !== 'undefined') {
                 this.offerGroup = newOfferGroup;
                 this.calcPrices = [];
@@ -49257,26 +49259,35 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 this.offerGroup = __WEBPACK_IMPORTED_MODULE_2_deparam___default()(__WEBPACK_IMPORTED_MODULE_4_jquery___default()('#kp-generate-form').serialize());
                 while (true) {
                     var stop = true;
-                    for (var offer = 0; offer < this.offerGroup['offer_group']['offers'].length; offer++) {
-                        if (this.offerGroup['offer_group']['offers'][offer]['equipments']) {
-                            if (this.offerGroup['offer_group']['offers'][offer]['equipments']) {
-                                for (var equipment_tab = 0; equipment_tab < this.offerGroup['offer_group']['offers'][offer]['equipments'].length; equipment_tab++) {
-                                    if (!this.offerGroup['offer_group']['offers'][offer]['equipments'][equipment_tab]) {
-                                        this.offerGroup['offer_group']['offers'][offer]['equipments'].splice(equipment_tab, 1);
+
+                    var _loop = function _loop(offer) {
+                        if (_this.offerGroup['offer_group']['offers'][offer]['equipments']) {
+                            if (_this.offerGroup['offer_group']['offers'][offer]['equipments']) {
+                                __WEBPACK_IMPORTED_MODULE_4_jquery___default.a.each(_this.offerGroup['offer_group']['offers'][offer]['equipments'], function (type, equipments) {
+                                    if (!_this.offerGroup['offer_group']['offers'][offer]['equipments'][type]) {
+                                        _this.offerGroup['offer_group']['offers'][offer]['equipments'].splice(type, 1);
                                         stop = false;
-                                        break;
                                     }
-                                    for (var equipment = 0; equipment < this.offerGroup['offer_group']['offers'][offer]['equipments'][equipment_tab].length; equipment++) {
-                                        if (!this.offerGroup['offer_group']['offers'][offer]['equipments'][equipment_tab][equipment] || this.offerGroup['offer_group']['offers'][offer]['equipments'][equipment_tab][equipment].quantity === "" || parseInt(this.offerGroup['offer_group']['offers'][offer]['equipments'][equipment_tab][equipment].quantity) < 1) {
+                                    __WEBPACK_IMPORTED_MODULE_4_jquery___default.a.each(equipments, function (index, equipment) {
+                                        if (!equipment || equipment.quantity === "" || parseInt(equipment.quantity) < 1) {
                                             //проверка на ненулевое кол-во
-                                            this.offerGroup['offer_group']['offers'][offer]['equipments'][equipment_tab].splice(equipment, 1);
+                                            _this.offerGroup['offer_group']['offers'][offer]['equipments'][type].splice(index, 1);
                                             stop = false;
-                                            break;
                                         }
+                                    });
+                                    if (stop) {
+                                        __WEBPACK_IMPORTED_MODULE_4_jquery___default.a.each(equipments, function (index, equipment) {
+                                            // this.offerGroup['offer_group']['offers'][offer]['equipments'][type][index]['price'] = (((equipment['price_small_trade'] - equipment['price_special'])/2) + equipment['price_special']) * equipment['quantity'];
+                                            _this.offerGroup['offer_group']['offers'][offer]['equipments'][type][index]['counted_price'] = (parseFloat(equipment['price_small_trade']) + parseFloat(equipment['price_special'])) / 2 * parseFloat(equipment['quantity']);
+                                        });
                                     }
-                                }
+                                });
                             }
                         }
+                    };
+
+                    for (var offer = 0; offer < this.offerGroup['offer_group']['offers'].length; offer++) {
+                        _loop(offer);
                     }
                     if (this.offerGroup['offer_group']['works']) {
                         for (var work = 0; work < this.offerGroup['offer_group']['works'].length; work++) {
@@ -49291,11 +49302,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }
         },
         calculatePrices: function calculatePrices() {
-            var _this = this;
+            var _this2 = this;
 
             __WEBPACK_IMPORTED_MODULE_3_axios___default.a.post(window.location.href + 'calculateAllPrices', this.offerGroup).then(function (res) {
-                _this.calcPrices = res.data;
-                console.log(res.data);
+                _this2.calcPrices = res.data;
             });
         }
     }
@@ -49784,8 +49794,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post(window.location.href + 'findEquipmentByCode', {
                 code: codePart
             }).then(function (resp) {
-                // console.log('eq');
-                // console.log(resp.data);
                 _this3.results = resp.data;
                 _this3.isLoading = false;
             });
@@ -49803,13 +49811,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post(window.location.href + 'findWorkByCode', {
                 code: codePart
             }).then(function (resp) {
-                // console.log('w');
-                // console.log(resp.data);
                 _this4.results = resp.data;
                 _this4.isLoading = false;
             });
             this.autocompletesDisplays['works'][rowId] = true;
-            // console.log(this.autocompletesDisplays);
         },
         setResult: function setResult(equipment, offerTabId, offerContentTabId, rowId) {
             this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['id'] = rowId;
@@ -49828,7 +49833,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['type_id'] = equipment.type.id;
             this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['type'] = equipment.type.slug;
             this.autocompletesDisplays['equipments'][offerTabId][offerContentTabId][rowId] = false;
-            console.log(this.offersContentTabs[offerTabId][offerContentTabId]['rows']);
         },
         setWorkResult: function setWorkResult(work, index) {
             this.works[index] = {
@@ -49943,7 +49947,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                 _this5.adjusters['fuel'] = resp.data.fuel_number;
                 _this5.adjusters['wage'] = resp.data.adjusters_wage;
                 _this5.adjusters['percentage'] = resp.data.pay_percentage;
-                console.log(_this5.autocompletesDisplays['equipments']);
             });
         },
         deleteRow: function deleteRow(offerTabId, offerContentTabId, rowId) {
@@ -49955,7 +49958,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                             for (var k = j; k < this.offersContentTabs[offerTabId][i]['rows'].length; k++) {
                                 this.offersContentTabs[offerTabId][i]['rows'][k].id--;
                             }
-                            console.log(this.offersContentTabs[offerTabId][i]['rows']);
                             break;
                         }
                     }
@@ -50004,7 +50006,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
             __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post(window.location.href + 'calculatePrePrices', __WEBPACK_IMPORTED_MODULE_1_deparam___default()(__WEBPACK_IMPORTED_MODULE_0_jquery___default()('#kp-generate-form').serialize())).then(function (res) {
                 _this6.adjustmentPrePrice = res.data;
-                console.log(_this6.adjustmentPrePrice);
             });
         }
     }
@@ -51892,15 +51893,7 @@ var render = function() {
                                       _c("td", [_vm._v(_vm._s(row.price))]),
                                       _vm._v(" "),
                                       _c("td", [
-                                        _vm._v(_vm._s(row.price_trade))
-                                      ]),
-                                      _vm._v(" "),
-                                      _c("td", [
-                                        _vm._v(_vm._s(row.price_small_trade))
-                                      ]),
-                                      _vm._v(" "),
-                                      _c("td", [
-                                        _vm._v(_vm._s(row.price_special))
+                                        _vm._v(_vm._s(row.counted_price))
                                       ])
                                     ])
                                   })
@@ -51933,10 +51926,6 @@ var render = function() {
                                       )
                                     )
                                   ]),
-                                  _vm._v(" "),
-                                  _c("td", [_vm._v(" --- ")]),
-                                  _vm._v(" "),
-                                  _c("td", [_vm._v(" --- ")]),
                                   _vm._v(" "),
                                   _c("td", [_vm._v(" --- ")])
                                 ])
@@ -52196,11 +52185,7 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", { attrs: { scope: "col" } }, [_vm._v("Цена")]),
         _vm._v(" "),
-        _c("th", { attrs: { scope: "col" } }, [_vm._v("Розн. цена")]),
-        _vm._v(" "),
-        _c("th", { attrs: { scope: "col" } }, [_vm._v("Мин. розн. цена")]),
-        _vm._v(" "),
-        _c("th", { attrs: { scope: "col" } }, [_vm._v("Спец. цена")])
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Высчитанная цена")])
       ])
     ])
   },
