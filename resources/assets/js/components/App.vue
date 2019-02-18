@@ -60,20 +60,24 @@
                         for (let offer = 0; offer < this.offerGroup['offer_group']['offers'].length; offer++) {
                             if(this.offerGroup['offer_group']['offers'][offer]['equipments']){
                                 if(this.offerGroup['offer_group']['offers'][offer]['equipments']){
-                                    for (let equipment_tab = 0; equipment_tab < this.offerGroup['offer_group']['offers'][offer]['equipments'].length; equipment_tab++) {
-                                        if(!this.offerGroup['offer_group']['offers'][offer]['equipments'][equipment_tab]){
-                                            this.offerGroup['offer_group']['offers'][offer]['equipments'].splice(equipment_tab, 1);
+                                    $.each(this.offerGroup['offer_group']['offers'][offer]['equipments'], (type, equipments) => {
+                                        if(!this.offerGroup['offer_group']['offers'][offer]['equipments'][type]){
+                                            this.offerGroup['offer_group']['offers'][offer]['equipments'].splice(type, 1);
                                             stop = false;
-                                            break;
                                         }
-                                        for (let equipment = 0; equipment < this.offerGroup['offer_group']['offers'][offer]['equipments'][equipment_tab].length; equipment++) {
-                                            if(!this.offerGroup['offer_group']['offers'][offer]['equipments'][equipment_tab][equipment] || this.offerGroup['offer_group']['offers'][offer]['equipments'][equipment_tab][equipment].quantity === "" || parseInt(this.offerGroup['offer_group']['offers'][offer]['equipments'][equipment_tab][equipment].quantity) < 1) { //проверка на ненулевое кол-во
-                                                this.offerGroup['offer_group']['offers'][offer]['equipments'][equipment_tab].splice(equipment, 1);
+                                        $.each(equipments, (index, equipment) => {
+                                            if(!equipment || equipment.quantity === "" || parseInt(equipment.quantity) < 1) { //проверка на ненулевое кол-во
+                                                this.offerGroup['offer_group']['offers'][offer]['equipments'][type].splice(index, 1);
                                                 stop = false;
-                                                break;
                                             }
+                                        });
+                                        if(stop){
+                                            $.each(equipments, (index, equipment) => {
+                                                // this.offerGroup['offer_group']['offers'][offer]['equipments'][type][index]['price'] = (((equipment['price_small_trade'] - equipment['price_special'])/2) + equipment['price_special']) * equipment['quantity'];
+                                                this.offerGroup['offer_group']['offers'][offer]['equipments'][type][index]['counted_price'] = (parseFloat(equipment['price_small_trade']) + parseFloat(equipment['price_special']))/2 * parseFloat(equipment['quantity']);
+                                            });
                                         }
-                                    }
+                                    });
                                 }
                             }
                         }
@@ -98,7 +102,6 @@
                     )
                     .then(res=>{
                         this.calcPrices = res.data;
-                        console.log(res.data);
                     });
             }
         }

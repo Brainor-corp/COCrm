@@ -14,9 +14,10 @@
                         <th scope="col">Описание</th>
                         <th scope="col">Количество</th>
                         <th scope="col">Цена</th>
-                        <th scope="col">Розн. цена</th>
-                        <th scope="col">Мин. розн. цена</th>
-                        <th scope="col">Спец. цена</th>
+                        <th scope="col">Высчитанная цена</th>
+                        <!--<th scope="col">Розн. цена</th>-->
+                        <!--<th scope="col">Мин. розн. цена</th>-->
+                        <!--<th scope="col">Спец. цена</th>-->
                     </tr>
                     </thead>
                     <tbody>
@@ -27,9 +28,10 @@
                             <td>{{ row.description }}</td>
                             <td>{{ row.quantity }}</td>
                             <td>{{ row.price }}</td>
-                            <td>{{ row.price_trade }}</td>
-                            <td>{{ row.price_small_trade }}</td>
-                            <td>{{ row.price_special }}</td>
+                            <td>{{ row.counted_price }}</td>
+                            <!--<td>{{ row.price_trade }}</td>-->
+                            <!--<td>{{ row.price_small_trade }}</td>-->
+                            <!--<td>{{ row.price_special }}</td>-->
                         </tr>
                     </template>
                     <tr v-if="calcPrices[i]">
@@ -38,8 +40,6 @@
                         <td>Коробы, провода и т.д.</td>
                         <td>{{ (calcPrices[i]['consumablePrice'] != 0) ? 1 : 0 }}</td>
                         <td>{{ calcPrices[i]['consumablePrice'] }}</td>
-                        <td> --- </td>
-                        <td> --- </td>
                         <td> --- </td>
                     </tr>
                     <tr v-if="calcPrices[i]">
