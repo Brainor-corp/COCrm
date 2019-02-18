@@ -17,3 +17,32 @@
 .page-break {
     page-break-after: always;
 }
+.head-bg{
+    background-image: url("../../images/back-head.png");
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-position: right;
+    /*border-bottom: 5px solid #0961df;*/
+    height: 95px;
+}
+.head-bg-bottom{
+    background-image: url("../../images/back-head-bottom.png");
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-position: left;
+    height: 40px;
+}
+.create-btn{
+    width: 400px;
+    height: 120px;
+}
+.svg-icon{
+    width: 1.35rem;
+    height: auto;
+}
+.check-border{
+    border: 2px solid #888888;
+}
+.check-in-card-border{
+    border-top: 4px solid #000000!important;
+}
