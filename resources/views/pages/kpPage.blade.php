@@ -118,7 +118,7 @@
 @endsection
 
 @section('pdfButton')
-    <div class="container">
-        <a href="{{route('downloadAsPdf', ['uuid' => $offersGroup->uuid])}}" class="btn pdf-btn text-white my-5 btn-success">Скачать как pdf</a>
+    <div class="container text-center">
+        <a href="{{route('downloadAsPdf', ['uuid' => $offersGroup->uuid])}}" class="btn pdf-btn text-white my-5 btn-primary create-btn">Скачать как pdf</a>
     </div>
 @endsection
