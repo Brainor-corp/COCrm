@@ -208,6 +208,7 @@
     export default {
         data(){
             return {
+                offerGroupID: null,
                 offersTabs:[
                     { id: 0, name:'Вариант ' },
                 ],
@@ -247,11 +248,12 @@
         computed: {
         },
         beforeCreate: function(){
+            this.offerGroupID = new URL(window.location.href).searchParams.get("id");
 
-            axios.post(window.location.href + 'getAllEquipmentTypes')
+            axios.post('/getAllEquipmentTypes')
                 .then((res) => {
                     this.types = res.data;
-                    return axios.post(window.location.href + 'getDefaultTypesWithEquipment')
+                    return axios.post('/getDefaultTypesWithEquipment')
                 })
                 .then((res) => {
                     this.defaultTypes = res.data;
@@ -287,7 +289,7 @@
                             }
                         }
                     }
-                    return axios.post(window.location.href + 'getDefaultWorks')
+                    return axios.post('/getDefaultWorks')
                 })
                 .then((res) => {
                     this.works = res.data[0].work;
@@ -305,7 +307,7 @@
         methods: {
             setDefaultTabs(index){
                 axios
-                    .post(window.location.href + 'getDefaultTypesWithEquipment')
+                    .post('/getDefaultTypesWithEquipment')
                     .then(res => {
                         this.defaultTypes = res.data;
                         for(let i = 0 ; i < res.data.length ; i++) {
@@ -427,7 +429,7 @@
                 });
 
                 axios
-                    .post(window.location.href + 'findEquipmentByCode', {
+                    .post('/findEquipmentByCode', {
                         code: codePart
                     })
                     .then(resp => {
@@ -444,7 +446,7 @@
                 });
 
                 axios
-                    .post(window.location.href + 'findWorkByCode', {
+                    .post('/findWorkByCode', {
                         code: codePart
                     })
                     .then(resp => {
@@ -505,7 +507,7 @@
                 let buffSelected = [];
                 let buffAutocompletes = [];
                 axios
-                    .post(window.location.href + 'getOfferGroup', {
+                    .post('/getOfferGroup', {
                         id: this.groupId
                     })
                     .then(resp => {
@@ -648,7 +650,7 @@
             },
             calculatePrePrice(){
                 axios
-                    .post(window.location.href + 'calculatePrePrices',
+                    .post('/calculatePrePrices',
                         deparam($('#kp-generate-form').serialize())
                     )
                     .then(res=>{

@@ -9,14 +9,14 @@ class NavigationDefault
     {
         $navigation = [
             [
-                'url' => '/bradmin/users',
-                'icon' => 'fas fa-users',
-                'text' => 'Пользователи'
-            ],
-            [
                 'url' => '/bradmin/equipments',
                 'icon' => 'fas fa-address-book',
                 'text' => 'Оборудование'
+            ],
+            [
+                'url' => '/bradmin/offergroups',
+                'icon' => 'fas fa-address-book',
+                'text' => 'Группы КП'
             ]
         ];
 

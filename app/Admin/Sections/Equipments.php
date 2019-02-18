@@ -3,6 +3,7 @@
 namespace App\Admin\Sections;
 
 use App\Contact;
+use App\Equipment;
 use App\Role;
 use App\Type;
 use App\User;
@@ -49,12 +50,12 @@ class Equipments extends Section
                 FormField::input('code', 'Артикул')->setRequired(true),
                 FormField::input('name', 'Название')->setRequired(true),
                 FormField::textarea('description', 'Описание'),
-                FormField::input('points', 'Ед. измерения')->setValue('---'),
+                FormField::input('points', 'Ед. измерения')->setRequired(true),
                 FormField::input('price', 'Цена')->setRequired(true),
                 FormField::input('price_trade', 'Розница')->setRequired(true),
                 FormField::input('price_small_trade', '3 колонка')->setRequired(true),
                 FormField::input('price_special', 'Спец. цена')->setRequired(true),
-                FormField::hidden('class')->setValue('equipment'),
+                FormField::hidden('class')->setValue('e'),
 
                 FormField::select('type_id', 'Тип')
                     ->setModelForOptions(Type::class)
@@ -65,12 +66,11 @@ class Equipments extends Section
         return $form;
     }
 
-    public function beforeSave(Request $request, $model = null)
+    public function afterSave(Request $request, $model = null)
     {
-        $duplicate = User::where([['email', $request->email],['id', '!=', $request->id]])->first();
-        if($duplicate){
-            throw  new \Exception("Пользователь с таким адресом электронной почты уже зарегестрирован!");
-        }
+        $equipment = Equipment::where('id', $model->id)->first();
+        $equipment->class = Type::where('id', $equipment->type_id)->first()->class;
+        $equipment->save();
     }
 
 }

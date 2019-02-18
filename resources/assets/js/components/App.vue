@@ -97,7 +97,7 @@
             },
             calculatePrices(){
                 axios
-                    .post(window.location.href + 'calculateAllPrices',
+                    .post('/calculateAllPrices',
                          this.offerGroup
                     )
                     .then(res=>{

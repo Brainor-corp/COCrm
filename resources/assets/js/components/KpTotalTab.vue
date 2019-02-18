@@ -107,7 +107,7 @@
 <script>
     import axios from 'axios';
     export default {
-        props: ['offerGroup', 'calcPrices'],
+        props: ['offerGroup', 'calcPrices', 'offerGroupID'],
         data(){
             return {
                 url: "",
@@ -119,12 +119,17 @@
         created: function (){},
         methods: {
             saveOfferGroup(){
-                axios
-                    .post(window.location.href + 'saveOfferGroup', this.offerGroup)
-                    .then((res) => {
-                        this.url = res.data;
-                    })
-                    .catch(error => this.err = error);
+                if(this.offerGroupID == null){
+                    axios
+                        .post(window.location.host + 'saveOfferGroup', this.offerGroup)
+                        .then((res) => {
+                            this.url = res.data;
+                        })
+                        .catch(error => this.err = error);
+                }
+                else{
+                    //todo continue
+                }
             },
         }
     }

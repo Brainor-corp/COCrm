@@ -13,7 +13,7 @@
 
 Route::get('/', function () {
     return view('kpGenerator.index');
-});
+})->name('/');
 
 Auth::routes();
 
