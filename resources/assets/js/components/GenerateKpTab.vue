@@ -50,7 +50,7 @@
 
                         <div class="tab-content">
                             <div v-for="offerContentTab in offersContentTabs[offerTab.id]" :id="'kp-'+offerTab.id+'-content-edit-tab-'+offerContentTab.id" class="tab-pane fade">
-                                <table class="table table-striped table-hover table-bordered">
+                                <table class="table table-bordered">
                                     <thead>
                                     <tr>
                                         <th scope="col">Артикул</th>

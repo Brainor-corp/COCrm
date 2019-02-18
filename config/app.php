@@ -168,6 +168,7 @@ return [
         Emadadly\LaravelUuid\LaravelUuidServiceProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class,
         Bradmin\Providers\BrAdminServiceProvider::class,
+        Intervention\Image\ImageServiceProvider::class,
 
         /*
          * Package Service Providers...
