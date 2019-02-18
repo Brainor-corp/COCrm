@@ -58,6 +58,7 @@ class OfferController extends Controller
                                 'price_trade' => $equipment['price_trade'],
                                 'price_small_trade' => $equipment['price_small_trade'],
                                 'price_special' => $equipment['price_special'],
+                                'counted_price' => $equipment['counted_price'],
                                 'comment' => $equipment['comment'],
                             ));
                         }
@@ -68,6 +69,7 @@ class OfferController extends Controller
                                 'price_trade' => $equipment['price_trade'],
                                 'price_small_trade' => $equipment['price_small_trade'],
                                 'price_special' => $equipment['price_special'],
+                                'counted_price' => $equipment['counted_price'],
                                 'comment' => $equipment['comment'],
                             ));
                         }

@@ -431,8 +431,6 @@
                         code: codePart
                     })
                     .then(resp => {
-                        // console.log('eq');
-                        // console.log(resp.data);
                         this.results = resp.data;
                         this.isLoading = false;
                     });
@@ -450,13 +448,10 @@
                         code: codePart
                     })
                     .then(resp => {
-                        // console.log('w');
-                        // console.log(resp.data);
                         this.results = resp.data;
                         this.isLoading = false;
                     });
                 this.autocompletesDisplays['works'][rowId] = true;
-                // console.log(this.autocompletesDisplays);
 
             },
             setResult(equipment, offerTabId, offerContentTabId, rowId) {
@@ -476,7 +471,6 @@
                 this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['type_id'] = equipment.type.id;
                 this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['type'] = equipment.type.slug;
                 this.autocompletesDisplays['equipments'][offerTabId][offerContentTabId][rowId] = false;
-                console.log(this.offersContentTabs[offerTabId][offerContentTabId]['rows']);
 
             },
             setWorkResult(work, index) {
@@ -598,7 +592,6 @@
                         this.adjusters['fuel'] = resp.data.fuel_number;
                         this.adjusters['wage'] = resp.data.adjusters_wage;
                         this.adjusters['percentage'] = resp.data.pay_percentage;
-                        console.log(this.autocompletesDisplays['equipments']);
                     });
             },
             deleteRow(offerTabId, offerContentTabId, rowId){
@@ -610,7 +603,6 @@
                                 for(let k = j; k < this.offersContentTabs[offerTabId][i]['rows'].length; k++){
                                     this.offersContentTabs[offerTabId][i]['rows'][k].id--;
                                 }
-                                console.log(this.offersContentTabs[offerTabId][i]['rows']);
                                 break;
                             }
                         }
@@ -661,7 +653,6 @@
                     )
                     .then(res=>{
                         this.adjustmentPrePrice = res.data;
-                        console.log(this.adjustmentPrePrice);
                     });
             }
         }

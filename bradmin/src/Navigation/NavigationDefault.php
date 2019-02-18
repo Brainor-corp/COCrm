@@ -14,9 +14,9 @@ class NavigationDefault
                 'text' => 'Пользователи'
             ],
             [
-                'url' => '/bradmin/contacts',
+                'url' => '/bradmin/equipments',
                 'icon' => 'fas fa-address-book',
-                'text' => 'Контакты'
+                'text' => 'Оборудование'
             ]
         ];
 
