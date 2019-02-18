@@ -49250,8 +49250,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     created: function created() {},
     methods: {
         updateOfferGroup: function updateOfferGroup(newOfferGroup) {
-            var _this = this;
-
             if (typeof newOfferGroup !== 'undefined') {
                 this.offerGroup = newOfferGroup;
                 this.calcPrices = [];
@@ -49259,35 +49257,26 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 this.offerGroup = __WEBPACK_IMPORTED_MODULE_2_deparam___default()(__WEBPACK_IMPORTED_MODULE_4_jquery___default()('#kp-generate-form').serialize());
                 while (true) {
                     var stop = true;
-
-                    var _loop = function _loop(offer) {
-                        if (_this.offerGroup['offer_group']['offers'][offer]['equipments']) {
-                            if (_this.offerGroup['offer_group']['offers'][offer]['equipments']) {
-                                __WEBPACK_IMPORTED_MODULE_4_jquery___default.a.each(_this.offerGroup['offer_group']['offers'][offer]['equipments'], function (type, equipments) {
-                                    if (!_this.offerGroup['offer_group']['offers'][offer]['equipments'][type]) {
-                                        _this.offerGroup['offer_group']['offers'][offer]['equipments'].splice(type, 1);
+                    for (var offer = 0; offer < this.offerGroup['offer_group']['offers'].length; offer++) {
+                        if (this.offerGroup['offer_group']['offers'][offer]['equipments']) {
+                            if (this.offerGroup['offer_group']['offers'][offer]['equipments']) {
+                                for (var equipment_tab = 0; equipment_tab < this.offerGroup['offer_group']['offers'][offer]['equipments'].length; equipment_tab++) {
+                                    if (!this.offerGroup['offer_group']['offers'][offer]['equipments'][equipment_tab]) {
+                                        this.offerGroup['offer_group']['offers'][offer]['equipments'].splice(equipment_tab, 1);
                                         stop = false;
+                                        break;
                                     }
-                                    __WEBPACK_IMPORTED_MODULE_4_jquery___default.a.each(equipments, function (index, equipment) {
-                                        if (!equipment || equipment.quantity === "" || parseInt(equipment.quantity) < 1) {
+                                    for (var equipment = 0; equipment < this.offerGroup['offer_group']['offers'][offer]['equipments'][equipment_tab].length; equipment++) {
+                                        if (!this.offerGroup['offer_group']['offers'][offer]['equipments'][equipment_tab][equipment] || this.offerGroup['offer_group']['offers'][offer]['equipments'][equipment_tab][equipment].quantity === "" || parseInt(this.offerGroup['offer_group']['offers'][offer]['equipments'][equipment_tab][equipment].quantity) < 1) {
                                             //проверка на ненулевое кол-во
-                                            _this.offerGroup['offer_group']['offers'][offer]['equipments'][type].splice(index, 1);
+                                            this.offerGroup['offer_group']['offers'][offer]['equipments'][equipment_tab].splice(equipment, 1);
                                             stop = false;
+                                            break;
                                         }
-                                    });
-                                    if (stop) {
-                                        __WEBPACK_IMPORTED_MODULE_4_jquery___default.a.each(equipments, function (index, equipment) {
-                                            // this.offerGroup['offer_group']['offers'][offer]['equipments'][type][index]['price'] = (((equipment['price_small_trade'] - equipment['price_special'])/2) + equipment['price_special']) * equipment['quantity'];
-                                            _this.offerGroup['offer_group']['offers'][offer]['equipments'][type][index]['counted_price'] = (parseFloat(equipment['price_small_trade']) + parseFloat(equipment['price_special'])) / 2 * parseFloat(equipment['quantity']);
-                                        });
                                     }
-                                });
+                                }
                             }
                         }
-                    };
-
-                    for (var offer = 0; offer < this.offerGroup['offer_group']['offers'].length; offer++) {
-                        _loop(offer);
                     }
                     if (this.offerGroup['offer_group']['works']) {
                         for (var work = 0; work < this.offerGroup['offer_group']['works'].length; work++) {
@@ -49302,10 +49291,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }
         },
         calculatePrices: function calculatePrices() {
-            var _this2 = this;
+            var _this = this;
 
             __WEBPACK_IMPORTED_MODULE_3_axios___default.a.post(window.location.href + 'calculateAllPrices', this.offerGroup).then(function (res) {
-                _this2.calcPrices = res.data;
+                _this.calcPrices = res.data;
+                console.log(res.data);
             });
         }
     }
@@ -49794,6 +49784,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post(window.location.href + 'findEquipmentByCode', {
                 code: codePart
             }).then(function (resp) {
+                // console.log('eq');
+                // console.log(resp.data);
                 _this3.results = resp.data;
                 _this3.isLoading = false;
             });
@@ -49811,10 +49803,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post(window.location.href + 'findWorkByCode', {
                 code: codePart
             }).then(function (resp) {
+                // console.log('w');
+                // console.log(resp.data);
                 _this4.results = resp.data;
                 _this4.isLoading = false;
             });
             this.autocompletesDisplays['works'][rowId] = true;
+            // console.log(this.autocompletesDisplays);
         },
         setResult: function setResult(equipment, offerTabId, offerContentTabId, rowId) {
             this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['id'] = rowId;
@@ -49833,6 +49828,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['type_id'] = equipment.type.id;
             this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['type'] = equipment.type.slug;
             this.autocompletesDisplays['equipments'][offerTabId][offerContentTabId][rowId] = false;
+            console.log(this.offersContentTabs[offerTabId][offerContentTabId]['rows']);
         },
         setWorkResult: function setWorkResult(work, index) {
             this.works[index] = {
@@ -49947,6 +49943,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                 _this5.adjusters['fuel'] = resp.data.fuel_number;
                 _this5.adjusters['wage'] = resp.data.adjusters_wage;
                 _this5.adjusters['percentage'] = resp.data.pay_percentage;
+                console.log(_this5.autocompletesDisplays['equipments']);
             });
         },
         deleteRow: function deleteRow(offerTabId, offerContentTabId, rowId) {
@@ -49958,6 +49955,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                             for (var k = j; k < this.offersContentTabs[offerTabId][i]['rows'].length; k++) {
                                 this.offersContentTabs[offerTabId][i]['rows'][k].id--;
                             }
+                            console.log(this.offersContentTabs[offerTabId][i]['rows']);
                             break;
                         }
                     }
@@ -50006,6 +50004,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
             __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post(window.location.href + 'calculatePrePrices', __WEBPACK_IMPORTED_MODULE_1_deparam___default()(__WEBPACK_IMPORTED_MODULE_0_jquery___default()('#kp-generate-form').serialize())).then(function (res) {
                 _this6.adjustmentPrePrice = res.data;
+                console.log(_this6.adjustmentPrePrice);
             });
         }
     }
@@ -51816,6 +51815,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -51863,267 +51872,201 @@ var render = function() {
               return _c("div", { key: i, staticClass: "kp-total-offer" }, [
                 _c("h3", [_vm._v(_vm._s(offerData.name))]),
                 _vm._v(" "),
-                offerData.equipments && offerData.equipments
-                  ? _c(
-                      "table",
-                      {
-                        staticClass:
-                          "table table-striped table-hover table-bordered"
-                      },
-                      [
-                        _vm._m(0, true),
-                        _vm._v(" "),
-                        _c(
-                          "tbody",
-                          [
-                            _vm._l(offerData.equipments, function(tab, type) {
-                              return type !== "rashodnye-materialy"
-                                ? _vm._l(tab, function(row) {
-                                    return _c("tr", [
-                                      _c("td", [_vm._v(_vm._s(row.code))]),
-                                      _vm._v(" "),
-                                      _c("td", [_vm._v(_vm._s(row.name))]),
-                                      _vm._v(" "),
-                                      _c("td", [
-                                        _vm._v(_vm._s(row.description))
-                                      ]),
-                                      _vm._v(" "),
-                                      _c("td", [_vm._v(_vm._s(row.quantity))]),
-                                      _vm._v(" "),
-                                      _c("td", [_vm._v(_vm._s(row.price))]),
-                                      _vm._v(" "),
-                                      _c("td", [
-                                        _vm._v(_vm._s(row.counted_price))
-                                      ])
-                                    ])
-                                  })
-                                : _vm._e()
-                            }),
-                            _vm._v(" "),
-                            _vm.calcPrices[i]
-                              ? _c("tr", [
-                                  _c("td", [_vm._v("----")]),
-                                  _vm._v(" "),
-                                  _c("td", [_vm._v("Расходные материалы")]),
-                                  _vm._v(" "),
-                                  _c("td", [_vm._v("Коробы, провода и т.д.")]),
-                                  _vm._v(" "),
-                                  _c("td", [
-                                    _vm._v(
-                                      _vm._s(
-                                        _vm.calcPrices[i]["consumablePrice"] !=
-                                          0
-                                          ? 1
-                                          : 0
-                                      )
-                                    )
-                                  ]),
-                                  _vm._v(" "),
-                                  _c("td", [
-                                    _vm._v(
-                                      _vm._s(
-                                        _vm.calcPrices[i]["consumablePrice"]
-                                      )
-                                    )
-                                  ]),
-                                  _vm._v(" "),
-                                  _c("td", [_vm._v(" --- ")])
-                                ])
-                              : _vm._e(),
-                            _vm._v(" "),
-                            _vm.calcPrices[i]
-                              ? _c("tr", [
-                                  _c(
-                                    "td",
-                                    {
-                                      staticClass: "bg-light-blue text-right",
-                                      attrs: { colspan: "8" }
-                                    },
-                                    [
-                                      _c("h4", [
-                                        _vm._v(
-                                          "Всего за оборудование " +
-                                            _vm._s(
-                                              _vm.calcPrices[i][
-                                                "equipmentPrice"
-                                              ] +
-                                                _vm.calcPrices[i][
-                                                  "consumablePrice"
-                                                ]
-                                            ) +
-                                            "р."
-                                        )
-                                      ])
-                                    ]
-                                  )
-                                ])
-                              : _vm._e()
-                          ],
-                          2
-                        )
-                      ]
-                    )
-                  : _vm._e(),
+                _c("div", { staticClass: "my-4 h4 font-weight-bold" }, [
+                  _vm._v("Оборудование и расходные материалы")
+                ]),
                 _vm._v(" "),
-                _vm.offerGroup.offer_group.works
-                  ? _c(
-                      "table",
-                      {
-                        staticClass:
-                          "table table-striped table-hover table-bordered"
-                      },
-                      [
-                        _vm._m(1, true),
-                        _vm._v(" "),
-                        _c(
-                          "tbody",
-                          [
-                            _vm._l(_vm.offerGroup.offer_group.works, function(
-                              row
-                            ) {
-                              return _vm.offerGroup.offer_group.works.length > 0
-                                ? _c("tr", [
+                offerData.equipments && offerData.equipments
+                  ? _c("table", { staticClass: "table table-bordered" }, [
+                      _vm._m(0, true),
+                      _vm._v(" "),
+                      _c(
+                        "tbody",
+                        [
+                          _vm._l(offerData.equipments, function(tab, type) {
+                            return type !== "rashodnye-materialy"
+                              ? _vm._l(tab, function(row) {
+                                  return _c("tr", [
                                     _c("td", [_vm._v(_vm._s(row.code))]),
                                     _vm._v(" "),
                                     _c("td", [_vm._v(_vm._s(row.name))]),
                                     _vm._v(" "),
-                                    _c("td", [_vm._v(_vm._s(row.points))]),
+                                    _c("td", [_vm._v(_vm._s(row.description))]),
                                     _vm._v(" "),
-                                    _c("td", [_vm._v(_vm._s(row.quantity))])
+                                    _c("td", [_vm._v(_vm._s(row.quantity))]),
+                                    _vm._v(" "),
+                                    _c("td", [_vm._v(_vm._s(row.price))])
                                   ])
-                                : _c("tr", [
-                                    _c("td", [_vm._v(" ---- ")]),
-                                    _vm._v(" "),
-                                    _c("td", [_vm._v(" ---- ")]),
-                                    _vm._v(" "),
-                                    _c("td", [_vm._v(" ---- ")]),
-                                    _vm._v(" "),
-                                    _c("td", [_vm._v(" ---- ")])
-                                  ])
-                            }),
-                            _vm._v(" "),
-                            _vm.calcPrices[i]
-                              ? _c("tr", [
-                                  _c(
-                                    "td",
-                                    {
-                                      staticClass: "bg-beige text-right",
-                                      attrs: { colspan: "4" }
-                                    },
-                                    [
-                                      _c("h4", [
-                                        _vm._v(
-                                          "Всего за работы ( с НДС ): " +
-                                            _vm._s(
-                                              _vm.calcPrices[i][
-                                                "totalWorkPrice"
-                                              ]
-                                            ) +
-                                            "р."
-                                        )
-                                      ])
-                                    ]
-                                  )
-                                ])
-                              : _vm._e(),
-                            _vm._v(" "),
-                            _vm.calcPrices[i]
-                              ? _c("tr", [
-                                  _c(
-                                    "td",
-                                    {
-                                      staticClass: "bg-light-blue text-right",
-                                      attrs: { colspan: "4" }
-                                    },
-                                    [
-                                      _c("h4", [
-                                        _vm._v(
-                                          "Всего за работы ( без НДС, Доп. скидка - " +
-                                            _vm._s(
-                                              _vm.calcPrices[i][
-                                                "additionalDiscount"
-                                              ]
-                                            ) +
-                                            " ): " +
-                                            _vm._s(
-                                              _vm.calcPrices[i][
-                                                "totalWorkPriceNoVAT"
-                                              ]
-                                            ) +
-                                            "р."
-                                        )
-                                      ])
-                                    ]
-                                  )
-                                ])
-                              : _vm._e(),
-                            _vm._v(" "),
-                            _vm.calcPrices[i]
-                              ? _c("tr", [
-                                  _c(
-                                    "td",
-                                    {
-                                      staticClass: "bg-beige text-right",
-                                      attrs: { colspan: "4" }
-                                    },
-                                    [
-                                      _c("h4", [
-                                        _vm._v(
-                                          "Общая стоимость (1 договор - все с НДС): " +
-                                            _vm._s(
-                                              _vm.calcPrices[i][
-                                                "equipmentPrice"
-                                              ] +
-                                                _vm.calcPrices[i][
-                                                  "consumablePrice"
-                                                ] +
-                                                _vm.calcPrices[i][
-                                                  "totalWorkPrice"
-                                                ]
-                                            ) +
-                                            "р."
-                                        )
-                                      ])
-                                    ]
-                                  )
-                                ])
-                              : _vm._e(),
-                            _vm._v(" "),
-                            _vm.calcPrices[i]
-                              ? _c("tr", [
-                                  _c(
-                                    "td",
-                                    {
-                                      staticClass: "bg-light-blue text-right",
-                                      attrs: { colspan: "4" }
-                                    },
-                                    [
-                                      _c("h4", [
-                                        _vm._v(
-                                          "Общая стоимость (2 договора - оборудование с НДС, работы без НДС): " +
-                                            _vm._s(
-                                              _vm.calcPrices[i][
-                                                "equipmentPrice"
-                                              ] +
-                                                _vm.calcPrices[i][
-                                                  "consumablePrice"
-                                                ] +
-                                                _vm.calcPrices[i][
-                                                  "totalWorkPriceNoVAT"
-                                                ]
-                                            ) +
-                                            "р."
-                                        )
-                                      ])
-                                    ]
-                                  )
-                                ])
+                                })
                               : _vm._e()
-                          ],
-                          2
-                        )
-                      ]
+                          }),
+                          _vm._v(" "),
+                          _vm.calcPrices[i]
+                            ? _c("tr", [
+                                _c("td", [_vm._v("----")]),
+                                _vm._v(" "),
+                                _c("td", [_vm._v("Расходные материалы")]),
+                                _vm._v(" "),
+                                _c("td", [_vm._v("Коробы, провода и т.д.")]),
+                                _vm._v(" "),
+                                _c("td", [
+                                  _vm._v(
+                                    _vm._s(
+                                      _vm.calcPrices[i]["consumablePrice"] != 0
+                                        ? 1
+                                        : 0
+                                    )
+                                  )
+                                ]),
+                                _vm._v(" "),
+                                _c("td", [
+                                  _vm._v(
+                                    _vm._s(_vm.calcPrices[i]["consumablePrice"])
+                                  )
+                                ])
+                              ])
+                            : _vm._e(),
+                          _vm._v(" "),
+                          _vm.calcPrices[i] ? _c("tr") : _vm._e()
+                        ],
+                        2
+                      )
+                    ])
+                  : _vm._e(),
+                _vm._v(" "),
+                _c("div", { staticClass: "bg-light-blue text-right my-5" }, [
+                  _c("h4", { staticClass: "p-3  font-weight-bold" }, [
+                    _vm._v(
+                      "Всего за оборудование " +
+                        _vm._s(
+                          _vm.calcPrices[i]["equipmentPrice"] +
+                            _vm.calcPrices[i]["consumablePrice"]
+                        ) +
+                        "р."
                     )
+                  ])
+                ]),
+                _vm._v(" "),
+                _vm.offerGroup.offer_group.works
+                  ? _c("div", { staticClass: "my-4 h4 font-weight-bold" }, [
+                      _vm._v("Монтажные и пуско-наладочные работы")
+                    ])
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.offerGroup.offer_group.works
+                  ? _c("table", { staticClass: "table table-bordered" }, [
+                      _vm._m(1, true),
+                      _vm._v(" "),
+                      _c(
+                        "tbody",
+                        _vm._l(_vm.offerGroup.offer_group.works, function(row) {
+                          return _vm.offerGroup.offer_group.works.length > 0
+                            ? _c("tr", [
+                                _c("td", [_vm._v(_vm._s(row.code))]),
+                                _vm._v(" "),
+                                _c("td", [_vm._v(_vm._s(row.name))]),
+                                _vm._v(" "),
+                                _c("td", [_vm._v(_vm._s(row.points))]),
+                                _vm._v(" "),
+                                _c("td", [_vm._v(_vm._s(row.quantity))])
+                              ])
+                            : _c("tr", [
+                                _c("td", [_vm._v(" ---- ")]),
+                                _vm._v(" "),
+                                _c("td", [_vm._v(" ---- ")]),
+                                _vm._v(" "),
+                                _c("td", [_vm._v(" ---- ")]),
+                                _vm._v(" "),
+                                _c("td", [_vm._v(" ---- ")])
+                              ])
+                        }),
+                        0
+                      )
+                    ])
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.calcPrices[i]
+                  ? _c("div", { staticClass: "my-5" }, [
+                      _c("div", { staticClass: "bg-beige text-right" }, [
+                        _c(
+                          "h4",
+                          { staticClass: "p-3  font-weight-bold mb-0" },
+                          [
+                            _vm._v(
+                              "Всего за работы ( с НДС ): " +
+                                _vm._s(_vm.calcPrices[i]["totalWorkPrice"]) +
+                                "р."
+                            )
+                          ]
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "bg-light-blue text-right" }, [
+                        _c(
+                          "h4",
+                          { staticClass: "p-3  font-weight-bold mb-0" },
+                          [
+                            _vm._v("Всего за работы ( без НДС, "),
+                            _c("span", { staticClass: "text-danger" }, [
+                              _vm._v(
+                                "Доп. скидка - " +
+                                  _vm._s(
+                                    _vm.calcPrices[i]["additionalDiscount"]
+                                  ) +
+                                  " "
+                              )
+                            ]),
+                            _vm._v(
+                              "): " +
+                                _vm._s(
+                                  _vm.calcPrices[i]["totalWorkPriceNoVAT"]
+                                ) +
+                                "р."
+                            )
+                          ]
+                        )
+                      ])
+                    ])
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.calcPrices[i]
+                  ? _c("div", { staticClass: "my-5" }, [
+                      _c("div", { staticClass: "bg-beige text-right" }, [
+                        _c(
+                          "h4",
+                          { staticClass: "p-3  font-weight-bold mb-0" },
+                          [
+                            _vm._v(
+                              "Общая стоимость (1 договор - все с НДС): " +
+                                _vm._s(
+                                  _vm.calcPrices[i]["equipmentPrice"] +
+                                    _vm.calcPrices[i]["consumablePrice"] +
+                                    _vm.calcPrices[i]["totalWorkPrice"]
+                                ) +
+                                "р."
+                            )
+                          ]
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "bg-light-blue text-right" }, [
+                        _c(
+                          "h4",
+                          { staticClass: "p-3  font-weight-bold mb-0" },
+                          [
+                            _vm._v(
+                              "Общая стоимость (2 договора - оборудование с НДС, работы без НДС): " +
+                                _vm._s(
+                                  _vm.calcPrices[i]["equipmentPrice"] +
+                                    _vm.calcPrices[i]["consumablePrice"] +
+                                    _vm.calcPrices[i]["totalWorkPriceNoVAT"]
+                                ) +
+                                "р."
+                            )
+                          ]
+                        )
+                      ])
+                    ])
                   : _vm._e()
               ])
             })
@@ -52132,12 +52075,13 @@ var render = function() {
         )
       : _vm._e(),
     _vm._v(" "),
-    _c("div", { staticClass: "col-12" }, [
+    _c("div", { staticClass: "mx-auto mb-5" }, [
       _vm.offerGroup.offer_group
         ? _c(
             "a",
             {
-              staticClass: "btn btn-success",
+              staticClass:
+                "btn btn-lg btn-primary create-btn d-flex align-items-center justify-content-center",
               attrs: { href: "" },
               on: {
                 click: function($event) {
@@ -52169,23 +52113,15 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("thead", [
       _c("tr", [
-        _c("th", { attrs: { colspan: "8" } }, [
-          _vm._v("Оборудование и расходные материалы")
-        ])
-      ]),
-      _vm._v(" "),
-      _c("tr", [
         _c("th", { attrs: { scope: "col" } }, [_vm._v("Артикул")]),
         _vm._v(" "),
-        _c("th", { attrs: { scope: "col" } }, [_vm._v("Название")]),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Наименование")]),
         _vm._v(" "),
         _c("th", { attrs: { scope: "col" } }, [_vm._v("Описание")]),
         _vm._v(" "),
         _c("th", { attrs: { scope: "col" } }, [_vm._v("Количество")]),
         _vm._v(" "),
-        _c("th", { attrs: { scope: "col" } }, [_vm._v("Цена")]),
-        _vm._v(" "),
-        _c("th", { attrs: { scope: "col" } }, [_vm._v("Высчитанная цена")])
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Цена")])
       ])
     ])
   },
@@ -52194,12 +52130,6 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("thead", [
-      _c("tr", [
-        _c("th", { attrs: { colspan: "4" } }, [
-          _vm._v("Монтажные и пуско-наладочные работы")
-        ])
-      ]),
-      _vm._v(" "),
       _c("tr", [
         _c("th", { attrs: { scope: "col" } }, [_vm._v("Артикул")]),
         _vm._v(" "),
