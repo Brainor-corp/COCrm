@@ -2,15 +2,15 @@
 
 @section('content')
 
-    <div class="container">
+    <div class="container content-border">
         <div class="px-4 py-2">
             <div class="row head-bg">
                 <div class="col-3 mt-3">
                     <img class="img-fluid" src="{{ asset('images/logo.png') }}" alt="">
                 </div>
                 <div class="col-5 mt-3">
-                    <p class="mb-0 font-weight-bold h5">Продажа и установка систем безопасности</p>
-                    <p class="mb-0 font-weight-bold h5">в Москве и Московской области</p>
+                    <p class="mb-0 font-weight-bold">Продажа и установка систем безопасности</p>
+                    <p class="mb-0 font-weight-bold">в Москве и Московской области</p>
                 </div>
                 <div class="col-4 mt-3">
                     <div class="col-12 float-right">
@@ -35,8 +35,8 @@
 
         @foreach($offersGroup->offers as $offer)
 
-            <div class="offer my-5">
-                <div class="offer-name mt-3">
+            <div class="offer">
+                <div class="offer-name mt-2 mb-4 col-12">
                     <h3>
                         {{ $offer->name }}
                         <span class="text-right">{{ \Carbon\Carbon::parse($offersGroup->created_at)->format('d.m.Y') }}</span>
@@ -46,13 +46,13 @@
                     <table class="table table-sm">
                         <thead>
                         <tr>
-                            <th colspan="6" class="border-top-0 border-bottom-0">1. Оборудование и расходные материалы</th>
+                            <th colspan="6" class="border-top-0 border-bottom-0 h4">Оборудование и расходные материалы</th>
                         </tr>
                         <tr>
-                            <th scope="col" colspan="3">Наименование</th>
-                            <th scope="col" nowrap class="text-center">Кол-во</th>
-                            <th scope="col" nowrap class="text-center">Цена, руб.</th>
-                            <th scope="col" nowrap class="text-center">Всего, руб.</th>
+                            <th scope="col" colspan="3" class="text-gray border-top-0 border-bottom-0">Наименование</th>
+                            <th scope="col" nowrap class="text-center text-gray border-top-0 border-bottom-0">Кол-во</th>
+                            <th scope="col" nowrap class="text-center text-gray border-top-0 border-bottom-0">Цена, руб.</th>
+                            <th scope="col" nowrap class="text-center text-gray border-top-0 border-bottom-0">Всего, руб.</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -62,12 +62,12 @@
                             @if($equipment->class == 'equipment')
                                 @if($equipment->type->slug != 'rashodnye-materialy')
                                     @php($totalEquipmentSum += $equipment->pivot->price * $equipment->pivot->quantity)
-                                    <tr>
-                                        <td><img src="https://via.placeholder.com/100" alt=""></td>
-                                        <td class="align-middle" colspan="2"><b>{{ $equipment->name }}</b> {{ $equipment->description }}</td>
-                                        <td class="align-middle text-center">{{ $equipment->pivot->quantity }}</td>
-                                        <td class="align-middle text-center">{{ $equipment->pivot->price }}</td>
-                                        <td class="align-middle text-center">{{ $equipment->pivot->price * $equipment->pivot->quantity }}</td>
+                                    <tr class="border-top-0">
+                                        <td class="border-top-0 border-bottom"><img src="https://via.placeholder.com/100" alt=""></td>
+                                        <td class="align-middle border-bottom border-top-0" colspan="2"><b>{{ $equipment->name }}</b> {{ $equipment->description }}</td>
+                                        <td class="align-middle border-bottom border-top-0 text-center">{{ $equipment->pivot->quantity }}</td>
+                                        <td class="align-middle border-bottom border-top-0 text-center">{{ $equipment->pivot->price }}</td>
+                                        <td class="align-middle border-bottom border-top-0 text-center">{{ $equipment->pivot->price * $equipment->pivot->quantity }}</td>
                                     </tr>
                                 @else
                                     @php($consumableSum += $equipment->pivot->price * $equipment->pivot->quantity)
@@ -82,7 +82,8 @@
                             <td class="align-middle text-center">{{ $consumableSum }}</td>
                         </tr>
                         <tr>
-                            <td colspan="6" class="check-in-card-border my-4 text-right"><h4>Всего за оборудование {{ $totalEquipmentSum + $consumableSum }}р.</h4></td>
+                            <td colspan="2" class="check-in-card-border my-4 p-total"><h3>Всего за оборудование</h3></td>
+                            <td colspan="5" class="check-in-card-border my-4 text-right p-total"><h3>{{ $totalEquipmentSum + $consumableSum }}р.</h3></td>
                         </tr>
                         </tbody>
                     </table>
@@ -91,12 +92,12 @@
                     <table class="table table-sm">
                         <thead>
                         <tr>
-                            <th colspan="5" class="bg-gray">2. Монтажные и пуско-наладочные работы</th>
+                            <th colspan="5" class="border-top-0 border-bottom-0 h4">Монтажные и пуско-наладочные работы</th>
                         </tr>
                         <tr>
-                            <th scope="col" colspan="2">Наименование работ</th>
-                            <th scope="col" nowrap class="text-center">Ед. изм.</th>
-                            <th scope="col" nowrap class="text-center">Кол-во</th>
+                            <th scope="col" class="text-gray border-top-0 border-bottom-0" colspan="2">Наименование работ</th>
+                            <th scope="col" nowrap class="text-center text-gray border-top-0 border-bottom-0">Ед. изм.</th>
+                            <th scope="col" nowrap class="text-center text-gray border-top-0 border-bottom-0">Кол-во</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -105,18 +106,20 @@
                                 @if($equipment->class == 'work')
                                     @php($totalWorkSum += $equipment->pivot->price * $equipment->pivot->quantity)
                                     <tr>
-                                        <td class="align-middle">{{ $equipment->name }}</td>
-                                        <td class="align-middle text-center"></td>
-                                        <td class="align-middle text-center">{{ $equipment->points }}</td>
-                                        <td class="align-middle text-center">{{ $equipment->pivot->quantity }}</td>
+                                        <td class="align-middle border-bottom border-top-0">{{ $equipment->name }}</td>
+                                        <td class="align-middle border-bottom border-top-0 text-center"></td>
+                                        <td class="align-middle border-bottom border-top-0 text-center">{{ $equipment->points }}</td>
+                                        <td class="align-middle border-bottom border-top-0 text-center">{{ $equipment->pivot->quantity }}</td>
                                     </tr>
                                 @endif
                             @endforeach
                             <tr>
-                                <td colspan="5" class="check-in-card-border my-4 text-right"><h4>Всего за работы ( с НДС ): {{ $totalWorkSum }}р.</h4></td>
+                                <td colspan="2" class="check-in-card-border my-4 p-total"><h4>Всего за работы с НДС:</h4></td>
+                                <td colspan="5" class="check-in-card-border my-4 text-right p-total"><h4>{{ $totalWorkSum }}р.</h4></td>
                             </tr>
                             <tr>
-                                <td colspan="5" class="check-in-card-border my-4 text-right"><h4>Всего за работы ( без НДС, Доп. скидка - <span class="text-danger">???</span> ): ???р.</h4></td>
+                                <td colspan="2" class="check-in-card-border my-4 p-total"><h4>Всего за работы без НДС, Доп. скидка - <span class="text-danger">???</span></h4></td>
+                                <td colspan="5" class="check-in-card-border my-4 text-right p-total"><h4>???р.</h4></td>
                             </tr>
                         </tbody>
                     </table>
@@ -127,10 +130,10 @@
 
         <table class="table table-borderless">
             <tr>
-                <td class="text-right my-4 font-weight-bold"><h4>Общая стоимость ( 1 договор с НДС ): ???р.</h4></td>
+                <td class="text-right my-4 font-weight-bold p-total"><h4>Общая стоимость ( 1 договор с НДС ): ???р.</h4></td>
             </tr>
             <tr>
-                <td class="text-right my-4 font-weight-bold"><h4>Общая стоимость ( 2 договора - оборудование с НДС, работы без НДС ): ???р.</h4></td>
+                <td class="text-right my-4 font-weight-bold p-total"><h4>Общая стоимость ( 2 договора - оборудование с НДС, работы без НДС ): ???р.</h4></td>
             </tr>
         </table>
     </div>
@@ -138,7 +141,9 @@
 @endsection
 
 @section('pdfButton')
-    <div class="container text-center">
-        <a href="{{route('downloadAsPdf', ['uuid' => $offersGroup->uuid])}}" class="btn pdf-btn text-white my-5 btn-primary create-btn">Скачать как pdf</a>
+    <div class="container">
+        <div class="col-12">
+            <a href="{{route('downloadAsPdf', ['uuid' => $offersGroup->uuid])}}" class="btn pdf-btn btn-lg btn-primary create-btn d-flex align-items-center justify-content-center mx-auto my-5">Скачать как pdf</a>
+        </div>
     </div>
 @endsection

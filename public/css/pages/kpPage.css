@@ -46,3 +46,13 @@
 .check-in-card-border{
     border-top: 4px solid #000000!important;
 }
+.content-border{
+    border: 8px dashed #ededed ;
+}
+.text-gray{
+    color: #b6b6b6;
+}
+.p-total{
+    padding-top: 1.5rem!important;
+    padding-bottom: 1.5rem!important;
+}
