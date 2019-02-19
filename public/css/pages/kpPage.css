@@ -50,6 +50,13 @@
     background-position: left;
     height: 40px;
 }
+.head-bg-bottom-pdf{
+    background-image: url("../../images/back-head-bottom.png");
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-position: left;
+    height: 40px;
+}
 .create-btn{
     width: 400px;
     height: 120px;
@@ -133,25 +140,28 @@ table.head-table .last p {
     margin-bottom: 0px;
 }
 
-.head-bg-bottom {
+.head-bg-bottom-pdf {
     line-height: 10px;
     font-size: 10px;
 }
 
-.head-bg-bottom p {
+.head-bg-bottom-pdf p {
     vertical-align: middle;
     margin-bottom: 0px;
 }
 
-.head-bg-bottom img {
+.head-bg-bottom-pdf img {
     height: 10px !important;
     width: auto  !important;
     padding-right: 7px;
 }
 
-.head-bg-bottom table td {
+.head-bg-bottom-pdf table td {
     padding-left: 10px;
     height: 35px;
     width: 300px;
     vertical-align: middle;
+}
+.horizontal-flip{
+    transform: scale(-1, 1)
 }
