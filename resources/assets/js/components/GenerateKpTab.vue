@@ -209,8 +209,9 @@
         props: ['offerGroupID'],
         data(){
             return {
+                offersVariantsCount : 1,
                 offersTabs:[
-                    { id: 0, name:'Вариант ' },
+                    { id: 0, name:'Вариант 1' },
                 ],
                 offersContentTabs:[[]],
                 offerGroup:{name:'Шаблон КП'},
@@ -363,11 +364,12 @@
                 let lastOfferTab,lastOfferTabId;
                 lastOfferTab = this.offersTabs[this.offersTabs.length - 1];
                 lastOfferTabId = lastOfferTab ? lastOfferTab.id+1 : 0;
+                this.offersVariantsCount++;
                 this.offersTabs.push(
                     {
 
                         id: lastOfferTabId,
-                        name:'Вариант '
+                        name:'Вариант '+this.offersVariantsCount
                     }
                 );
                 this.offersContentTabs.push([]);
