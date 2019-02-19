@@ -37,3 +37,9 @@ Route::post('/saveOfferGroup', 'OfferController@saveOfferGroup');
 
 Route::get('/kp/{uuid}', 'COController@display')->where('uuid', '[a-zA-Z0-9/_-]+')->name('showCO');
 Route::get('/download/{uuid}', 'COController@downloadAsPdf')->where('uuid', '[a-zA-Z0-9/_-]+')->name('downloadAsPdf');
+
+
+Route::get('/test-pdf', function () {
+    $offersGroup = \App\OfferGroup::where('uuid', '123')->with('offers.equipments')->first();
+    return view('pages.kpPDFPage')->with(compact('offersGroup'));
+});
