@@ -47,7 +47,9 @@
                     </tr>
                     </tbody>
                 </table>
-                <div class="bg-light-blue text-right my-5"><h4 class="p-3  font-weight-bold">Всего за оборудование {{ calcPrices[i]['equipmentPrice'] + calcPrices[i]['consumablePrice'] }}р.</h4></div>
+                <div v-if="calcPrices[i]" class="bg-light-blue text-right my-5">
+                    <h4 class="p-3  font-weight-bold">Всего за оборудование {{ calcPrices[i]['equipmentPrice'] + calcPrices[i]['consumablePrice'] }}р.</h4>
+                </div>
                 <div v-if="offerGroup.offer_group.works" class="my-4 h4 font-weight-bold">Монтажные и пуско-наладочные работы</div>
                 <table v-if="offerGroup.offer_group.works" class="table table-bordered">
                     <thead>
@@ -107,7 +109,7 @@
 <script>
     import axios from 'axios';
     export default {
-        props: ['offerGroup', 'calcPrices'],
+        props: ['offerGroup', 'calcPrices', 'offerGroupID'],
         data(){
             return {
                 url: "",
@@ -119,12 +121,23 @@
         created: function (){},
         methods: {
             saveOfferGroup(){
-                axios
-                    .post(window.location.href + 'saveOfferGroup', this.offerGroup)
-                    .then((res) => {
-                        this.url = res.data;
-                    })
-                    .catch(error => this.err = error);
+                if(this.offerGroupID == null){
+                    axios
+                        .post('/saveOfferGroup', this.offerGroup)
+                        .then((res) => {
+                            this.url = res.data;
+                        })
+                        .catch(error => this.err = error);
+                }
+                else{
+                    axios
+                        .post('/updateOfferGroup', [this.offerGroup, this.offerGroupID])
+                        .then((res) => {
+                            console.log(res.data);
+                            // this.url = res.data;
+                        })
+                        .catch(error => this.err = error);
+                }
             },
         }
     }

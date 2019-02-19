@@ -15,7 +15,7 @@ class COController extends Controller
             abort(404);
         }
 
-        $offersGroup = OfferGroup::where('uuid', $uuid)->with('offers.equipments')->first();
+        $offersGroup = OfferGroup::where('uuid', $uuid)->with('offers.equipments', 'equipment')->first();
 
         if(!isset($offersGroup)){
             abort(404);

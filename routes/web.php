@@ -13,7 +13,7 @@
 
 Route::get('/', function () {
     return view('kpGenerator.index');
-});
+})->name('/');
 
 Auth::routes();
 
@@ -32,14 +32,9 @@ Route::post('/findWorkByCode', 'EquipmentController@findWorkByCode')->name('find
 
 Route::post('/calculateAllPrices', 'COController@calculateAllPrices')->name('calculateAllPrices');
 Route::post('/calculatePrePrices', 'COController@calculatePrePrices')->name('calculatePrePrices');
-Route::get('/test', 'OfferController@testRequest');
+
 Route::post('/saveOfferGroup', 'OfferController@saveOfferGroup');
+Route::post('/updateOfferGroup', 'OfferController@updateOfferGroup');
 
 Route::get('/kp/{uuid}', 'COController@display')->where('uuid', '[a-zA-Z0-9/_-]+')->name('showCO');
 Route::get('/download/{uuid}', 'COController@downloadAsPdf')->where('uuid', '[a-zA-Z0-9/_-]+')->name('downloadAsPdf');
-
-
-Route::get('/test-pdf', function () {
-    $offersGroup = \App\OfferGroup::where('uuid', '123')->with('offers.equipments')->first();
-    return view('pages.kpPDFPage')->with(compact('offersGroup'));
-});

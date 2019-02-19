@@ -24,10 +24,33 @@ class Offer extends Model
     ];
 
     public function equipments(){
-        return $this->belongsToMany(Equipment::class, 'equipment_offer', 'offer_id', 'equipment_id')->withPivot('quantity', 'price', 'price_trade', 'price_small_trade', 'price_special', 'comment');
+        return $this->belongsToMany(Equipment::class, 'equipment_offer', 'offer_id', 'equipment_id')->withPivot('quantity', 'price', 'price_trade', 'price_small_trade', 'price_special', 'counted_price', 'comment');
     }
 
     public function offer_groups(){
         return $this->belongsTo(OfferGroup::class, 'group_id', 'id');
     }
+
+//    public function getEquipmentPrice(){
+//        return $this->
+//
+//    }
+//    public function getConsumablePrice(){
+//
+//    }
+//    public function getAdjustmentPrice(){
+//
+//    }
+//    public function getNoTaxProfit(){
+//
+//    }
+//    public function getVAT(){
+//
+//    }
+//    public function getTotalWorkPrice(){
+//
+//    }
+//    public function getNoTaxProfit(){
+//
+//    }
 }
