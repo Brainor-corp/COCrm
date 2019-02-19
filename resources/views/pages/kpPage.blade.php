@@ -32,9 +32,7 @@
                 </div>
             </div>
         </div>
-
         @foreach($offersGroup->offers as $offer)
-
             <div class="offer">
                 <div class="offer-name mt-2 mb-4 col-12">
                     <h3>
@@ -127,7 +125,6 @@
             </div>
             <hr>
         @endforeach
-
         <table class="table table-borderless">
             <tr>
                 <td class="text-right my-4 font-weight-bold p-total"><h4>Общая стоимость ( 1 договор с НДС ): ???р.</h4></td>
@@ -136,8 +133,13 @@
                 <td class="text-right my-4 font-weight-bold p-total"><h4>Общая стоимость ( 2 договора - оборудование с НДС, работы без НДС ): ???р.</h4></td>
             </tr>
         </table>
+        <div class="row">
+            <div class="bottom-bg row align-items-center col">
+                <p class="font-weight-bold mt-1">www.aronasb.ru</p>
+            </div>
+            <div class="logo-bottom row align-items-center col"></div>
+        </div>
     </div>
-
 @endsection
 
 @section('pdfButton')

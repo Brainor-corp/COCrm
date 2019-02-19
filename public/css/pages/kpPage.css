@@ -25,6 +25,24 @@
     /*border-bottom: 5px solid #0961df;*/
     height: 95px;
 }
+.head-bg-pdf{
+    background-image: url("../../images/back-head.png");
+    background-repeat: no-repeat;
+    background-position: right;
+    background-size: cover;
+    /*border-bottom: 5px solid #0961df;*/
+    height: 90px;
+}
+.contacts-pdf{
+    margin-top: -150px;
+    margin-right: 0;
+}
+.logo-pdf{
+    width: 100%;
+}
+.fs-pdf{
+    font-size: 0.8rem;
+}
 .head-bg-bottom{
     background-image: url("../../images/back-head-bottom.png");
     background-size: 100%;
@@ -55,4 +73,85 @@
 .p-total{
     padding-top: 1.5rem!important;
     padding-bottom: 1.5rem!important;
+}
+.bottom-bg{
+    background-image: url("../../images/back-head-bottom.png");
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-position: left;
+    height: 40px;
+    margin: auto;
+}
+.logo-bottom{
+    background-image: url("../../images/logo-footer.png");
+    background-size: 5%;
+    background-repeat: no-repeat;
+    background-position: right;
+    height: 40px;
+    margin: auto;
+}
+
+.d-inline-block {
+    display: inline-block !important;
+}
+
+table.head-table td {
+    vertical-align: middle;
+    height: 70px;
+    padding: 10px;
+}
+
+table.head-table .svg-icon {
+    height: 12px !important;
+    width: auto  !important;;
+}
+
+table.head-table .logo-pdf {
+    width: 120px;
+}
+
+
+table.head-table .middle,
+table.head-table .last {
+    vertical-align: middle;
+}
+
+table.head-table .middle {
+    width: 300px;
+    line-height: 10px;
+    font-size: 10px;
+}
+
+table.head-table .last {
+    width: 400px;
+    line-height: 10px;
+    font-size: 12px;
+    letter-spacing: 2px;
+}
+
+table.head-table .last p {
+    margin-bottom: 0px;
+}
+
+.head-bg-bottom {
+    line-height: 10px;
+    font-size: 10px;
+}
+
+.head-bg-bottom p {
+    vertical-align: middle;
+    margin-bottom: 0px;
+}
+
+.head-bg-bottom img {
+    height: 10px !important;
+    width: auto  !important;
+    padding-right: 7px;
+}
+
+.head-bg-bottom table td {
+    padding-left: 10px;
+    height: 35px;
+    width: 300px;
+    vertical-align: middle;
 }
