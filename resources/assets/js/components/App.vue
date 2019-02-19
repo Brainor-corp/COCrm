@@ -13,12 +13,12 @@
 
                 <div class="tab-content">
                     <div id="generateKpTab" class="tab-pane fade active show">
-                        <generate-kp-tab
+                        <generate-kp-tab :offerGroupID="offerGroupID"
                             @updateOfferGroup="updateOfferGroup"
                         ></generate-kp-tab>
                     </div>
                     <div id="kpTotalTab" class="tab-pane fade">
-                        <kp-total-tab :offerGroup="offerGroup" :calcPrices="calcPrices"></kp-total-tab>
+                        <kp-total-tab :offerGroup="offerGroup" :offerGroupID="offerGroupID" :calcPrices="calcPrices"></kp-total-tab>
                     </div>
                 </div>
             </div>
@@ -39,6 +39,7 @@
             return {
                 offerGroup:[],
                 calcPrices: [],
+                offerGroupID: null,
             };
         },
         computed: {
@@ -46,7 +47,11 @@
                 return this.$store.state.title.title;
             }
         },
+        beforeCreate: function(){
+        },
         created: function (){
+            this.offerGroupID = new URL(window.location.href).searchParams.get("id");
+
         },
         methods: {
             updateOfferGroup(newOfferGroup) {

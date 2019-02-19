@@ -17,6 +17,16 @@ class NavigationDefault
                 'url' => '/bradmin/offergroups',
                 'icon' => 'fas fa-address-book',
                 'text' => 'Группы КП'
+            ],
+            [
+                'url' => '/bradmin/types',
+                'icon' => 'fas fa-address-book',
+                'text' => 'Типы'
+            ],
+            [
+                'url' => '/bradmin/settings',
+                'icon' => 'fas fa-cog',
+                'text' => 'Настройки'
             ]
         ];
 

@@ -16,7 +16,7 @@
                         <a class="nav-link" data-toggle="tab" :href="'#kp-edit-tab-'+offerTab.id">
                             <div class="row">
                                 <div class="col-10">
-                                    <input type="text" :name="'offer_group[offers]['+offerTab.id+'][name]'" :value="offerTab.name + (parseInt(offerTab.id) + 1)"/><br>
+                                    <input type="text" :name="'offer_group[offers]['+offerTab.id+'][name]'" v-model="offerTab.name"/><br>
                                 </div>
                                 <div class="col-2">
                                     <span @click="deleteOffer(offerTab.id)">X</span>
@@ -206,9 +206,9 @@
     import axios from 'axios';
 
     export default {
+        props: ['offerGroupID'],
         data(){
             return {
-                offerGroupID: null,
                 offersTabs:[
                     { id: 0, name:'Вариант ' },
                 ],
@@ -248,55 +248,64 @@
         computed: {
         },
         beforeCreate: function(){
-            this.offerGroupID = new URL(window.location.href).searchParams.get("id");
-
             axios.post('/getAllEquipmentTypes')
                 .then((res) => {
                     this.types = res.data;
-                    return axios.post('/getDefaultTypesWithEquipment')
+                    if(this.groupId !== null){
+                         this.getOfferGroup();
+                    }
+                    else{
+                        return axios.post('/getDefaultTypesWithEquipment')
+                    }
                 })
                 .then((res) => {
-                    this.defaultTypes = res.data;
-                    this.autocompletesDisplays['equipments'].push([]);
-                    for(let i = 0 ; i < res.data.length ; i++) {
-                        this.offersContentTabs[0].push({
-                            'id': i,
-                            'name': res.data[i]['name'],
-                            'rows': [],
-                        });
-                        this.selected[0].push( res.data[i]['id'] );
-                        this.autocompletesDisplays['equipments'][0].push([]);
-                        if(res.data[i]['equipment'].length > 0){
-                            for (let j = 0; j < res.data[i]['equipment'].length; j++) {
-                                this.autocompletesDisplays['equipments'][0][j].push(false);
-                                this.offersContentTabs[0][i]['rows'].push({
-                                    'id': j,
-                                    'saveType': 'old',
-                                    'base_id':  res.data[i]['equipment'][j].id,
-                                    'name': res.data[i]['equipment'][j].name,
-                                    'quantity': res.data[i]['equipment'][j].pivot.quantity,
-                                    'code': res.data[i]['equipment'][j].code,
-                                    'type': this.types[res.data[i]['equipment'][j].type_id][0].slug,
-                                    'price': res.data[i]['equipment'][j].pivot.price,
-                                    'price_trade': res.data[i]['equipment'][j].pivot.price_trade,
-                                    'price_small_trade': res.data[i]['equipment'][j].pivot.price_small_trade,
-                                    'price_special': res.data[i]['equipment'][j].pivot.price_special,
-                                    'comment': res.data[i]['equipment'][j].pivot.comment,
-                                    'description': res.data[i]['equipment'][j].description,
-                                    'points': res.data[i]['equipment'][j].points,
-                                    'class': res.data[i]['equipment'][j].class,
-                                });
+                    if(res) {
+                        this.defaultTypes = res.data;
+                        this.autocompletesDisplays['equipments'].push([]);
+                        for (let i = 0; i < res.data.length; i++) {
+                            this.offersContentTabs[0].push({
+                                'id': i,
+                                'name': res.data[i]['name'],
+                                'rows': [],
+                            });
+                            this.selected[0].push(res.data[i]['id']);
+                            this.autocompletesDisplays['equipments'][0].push([]);
+                            if (res.data[i]['equipment'].length > 0) {
+                                for (let j = 0; j < res.data[i]['equipment'].length; j++) {
+                                    this.autocompletesDisplays['equipments'][0][i].push(false);
+                                    this.offersContentTabs[0][i]['rows'].push({
+                                        'id': j,
+                                        'saveType': 'old',
+                                        'base_id': res.data[i]['equipment'][j].id,
+                                        'name': res.data[i]['equipment'][j].name,
+                                        'quantity': res.data[i]['equipment'][j].pivot.quantity,
+                                        'code': res.data[i]['equipment'][j].code,
+                                        'type': this.types[res.data[i]['equipment'][j].type_id][0].slug,
+                                        'price': res.data[i]['equipment'][j].pivot.price,
+                                        'price_trade': res.data[i]['equipment'][j].pivot.price_trade,
+                                        'price_small_trade': res.data[i]['equipment'][j].pivot.price_small_trade,
+                                        'price_special': res.data[i]['equipment'][j].pivot.price_special,
+                                        'comment': res.data[i]['equipment'][j].pivot.comment,
+                                        'description': res.data[i]['equipment'][j].description,
+                                        'points': res.data[i]['equipment'][j].points,
+                                        'class': res.data[i]['equipment'][j].class,
+                                    });
+                                }
                             }
                         }
+                        return axios.post('/getDefaultWorks')
                     }
-                    return axios.post('/getDefaultWorks')
                 })
                 .then((res) => {
-                    this.works = res.data[0].work;
+                    if(res) {
+                        this.works = res.data[0].work;
+                    }
                 });
         },
         created: function (){
             this.updateOfferGroup;
+            this.groupId = this.offerGroupID;
+
         },
         mounted() {
             document.addEventListener("click", this.handleClickOutside);
@@ -477,6 +486,7 @@
             },
             setWorkResult(work, index) {
                 this.works[index] = {
+                    id: work.id,
                     name: work.name,
                     code: work.code,
                     points: work.points,

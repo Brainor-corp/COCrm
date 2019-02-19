@@ -22,7 +22,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::post('/getTypesByClass', 'TypeController@getTypesByClass')->name('getTypes');
 Route::post('/getAllEquipmentTypes', 'TypeController@getAllEquipmentTypes')->name('getAllEquipmentTypes');
-Route::post('/getDefaultTypesWithEquipment', 'TypeController@getDefaultTypesWithEquipment')->name('getDefaultTypesWithEquipment');
+Route::any('/getDefaultTypesWithEquipment', 'TypeController@getDefaultTypesWithEquipment')->name('getDefaultTypesWithEquipment');
 Route::post('/getDefaultWorks', 'TypeController@getDefaultWorks')->name('getDefaultWorks');
 Route::post('/getTaxBySlug', 'SettingsController@getTaxBySlug')->name('getTax');
 Route::post('/getOfferGroup', 'COController@getOfferGroup')->name('getOfferGroup');
@@ -32,8 +32,18 @@ Route::post('/findWorkByCode', 'EquipmentController@findWorkByCode')->name('find
 
 Route::post('/calculateAllPrices', 'COController@calculateAllPrices')->name('calculateAllPrices');
 Route::post('/calculatePrePrices', 'COController@calculatePrePrices')->name('calculatePrePrices');
-Route::get('/test', 'OfferController@testRequest');
+
 Route::post('/saveOfferGroup', 'OfferController@saveOfferGroup');
+Route::post('/updateOfferGroup', 'OfferController@updateOfferGroup');
 
 Route::get('/kp/{uuid}', 'COController@display')->where('uuid', '[a-zA-Z0-9/_-]+')->name('showCO');
 Route::get('/download/{uuid}', 'COController@downloadAsPdf')->where('uuid', '[a-zA-Z0-9/_-]+')->name('downloadAsPdf');
+
+Route::get('/test12', function () {
+    $role = new \App\Role;
+    $role->slug = 'test';
+    $role->name = 'test';
+    $role->save();
+
+    dd($role->getRelations());
+});

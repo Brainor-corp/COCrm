@@ -11,6 +11,7 @@ use Bradmin\Section;
 use Bradmin\SectionBuilder\Display\BaseDisplay\Display;
 use Bradmin\SectionBuilder\Display\Table\Columns\BaseColumn\Column;
 use Bradmin\SectionBuilder\Display\Table\DisplayTable;
+use Bradmin\SectionBuilder\Filter\Types\BaseType\FilterType;
 use Bradmin\SectionBuilder\Form\BaseForm\Form;
 use Bradmin\SectionBuilder\Form\Panel\Columns\BaseColumn\FormColumn;
 use Bradmin\SectionBuilder\Form\Panel\Fields\BaseField\FormField;
@@ -28,12 +29,24 @@ class Equipments extends Section
     public static function onDisplay(Request $request){
         $display = Display::table([
             Column::text('code', 'Артикул'),
+            Column::text('real_class', 'Категория'),
             Column::text('name', 'Название'),
             Column::text('description', 'Описание'),
             Column::text('points', 'Ед. измерения'),
             Column::text('price', 'Цена'),
             Column::text('created_at', 'Дата добавления'),
-        ])->setPagination(10);
+        ])->setPagination(10)->setFilter([
+            FilterType::text('code'),
+            FilterType::select('class')->setOptions([
+                'equipment' => 'Оборудование',
+                'work' => 'Работы'
+            ]),
+            FilterType::text('name'),
+            null,
+            null,
+            null,
+            null,
+        ]);
 
         return $display;
     }
@@ -59,7 +72,7 @@ class Equipments extends Section
 
                 FormField::select('type_id', 'Тип')
                     ->setModelForOptions(Type::class)
-                    ->setDisplay('name'),
+                    ->setDisplay('name_class'),
             ])
         ]);
 
@@ -71,6 +84,14 @@ class Equipments extends Section
         $equipment = Equipment::where('id', $model->id)->first();
         $equipment->class = Type::where('id', $equipment->type_id)->first()->class;
         $equipment->save();
+    }
+
+    public function beforeDelete(Request $request, $id = null)
+    {
+        $equipment = Equipment::where('id', $id)->first();
+        $equipment->offers()->detach();
+        $equipment->offer_group()->detach();
+        $equipment->types()->detach();
     }
 
 }

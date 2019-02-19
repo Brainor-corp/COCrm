@@ -49238,7 +49238,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     data: function data() {
         return {
             offerGroup: [],
-            calcPrices: []
+            calcPrices: [],
+            offerGroupID: null
         };
     },
 
@@ -49247,7 +49248,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             return this.$store.state.title.title;
         }
     },
-    created: function created() {},
+    beforeCreate: function beforeCreate() {},
+    created: function created() {
+        this.offerGroupID = new URL(window.location.href).searchParams.get("id");
+    },
     methods: {
         updateOfferGroup: function updateOfferGroup(newOfferGroup) {
             var _this = this;
@@ -49580,9 +49584,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+    props: ['offerGroupID'],
     data: function data() {
         return {
-            offerGroupID: null,
             offersTabs: [{ id: 0, name: 'Вариант ' }],
             offersContentTabs: [[]],
             offerGroup: { name: 'Шаблон КП' },
@@ -49620,52 +49624,59 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     beforeCreate: function beforeCreate() {
         var _this = this;
 
-        this.offerGroupID = new URL(window.location.href).searchParams.get("id");
-
         __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post('/getAllEquipmentTypes').then(function (res) {
             _this.types = res.data;
-            return __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post('/getDefaultTypesWithEquipment');
+            if (_this.groupId !== null) {
+                _this.getOfferGroup();
+            } else {
+                return __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post('/getDefaultTypesWithEquipment');
+            }
         }).then(function (res) {
-            _this.defaultTypes = res.data;
-            _this.autocompletesDisplays['equipments'].push([]);
-            for (var i = 0; i < res.data.length; i++) {
-                _this.offersContentTabs[0].push({
-                    'id': i,
-                    'name': res.data[i]['name'],
-                    'rows': []
-                });
-                _this.selected[0].push(res.data[i]['id']);
-                _this.autocompletesDisplays['equipments'][0].push([]);
-                if (res.data[i]['equipment'].length > 0) {
-                    for (var j = 0; j < res.data[i]['equipment'].length; j++) {
-                        _this.autocompletesDisplays['equipments'][0][j].push(false);
-                        _this.offersContentTabs[0][i]['rows'].push({
-                            'id': j,
-                            'saveType': 'old',
-                            'base_id': res.data[i]['equipment'][j].id,
-                            'name': res.data[i]['equipment'][j].name,
-                            'quantity': res.data[i]['equipment'][j].pivot.quantity,
-                            'code': res.data[i]['equipment'][j].code,
-                            'type': _this.types[res.data[i]['equipment'][j].type_id][0].slug,
-                            'price': res.data[i]['equipment'][j].pivot.price,
-                            'price_trade': res.data[i]['equipment'][j].pivot.price_trade,
-                            'price_small_trade': res.data[i]['equipment'][j].pivot.price_small_trade,
-                            'price_special': res.data[i]['equipment'][j].pivot.price_special,
-                            'comment': res.data[i]['equipment'][j].pivot.comment,
-                            'description': res.data[i]['equipment'][j].description,
-                            'points': res.data[i]['equipment'][j].points,
-                            'class': res.data[i]['equipment'][j].class
-                        });
+            if (res) {
+                _this.defaultTypes = res.data;
+                _this.autocompletesDisplays['equipments'].push([]);
+                for (var i = 0; i < res.data.length; i++) {
+                    _this.offersContentTabs[0].push({
+                        'id': i,
+                        'name': res.data[i]['name'],
+                        'rows': []
+                    });
+                    _this.selected[0].push(res.data[i]['id']);
+                    _this.autocompletesDisplays['equipments'][0].push([]);
+                    if (res.data[i]['equipment'].length > 0) {
+                        for (var j = 0; j < res.data[i]['equipment'].length; j++) {
+                            _this.autocompletesDisplays['equipments'][0][i].push(false);
+                            _this.offersContentTabs[0][i]['rows'].push({
+                                'id': j,
+                                'saveType': 'old',
+                                'base_id': res.data[i]['equipment'][j].id,
+                                'name': res.data[i]['equipment'][j].name,
+                                'quantity': res.data[i]['equipment'][j].pivot.quantity,
+                                'code': res.data[i]['equipment'][j].code,
+                                'type': _this.types[res.data[i]['equipment'][j].type_id][0].slug,
+                                'price': res.data[i]['equipment'][j].pivot.price,
+                                'price_trade': res.data[i]['equipment'][j].pivot.price_trade,
+                                'price_small_trade': res.data[i]['equipment'][j].pivot.price_small_trade,
+                                'price_special': res.data[i]['equipment'][j].pivot.price_special,
+                                'comment': res.data[i]['equipment'][j].pivot.comment,
+                                'description': res.data[i]['equipment'][j].description,
+                                'points': res.data[i]['equipment'][j].points,
+                                'class': res.data[i]['equipment'][j].class
+                            });
+                        }
                     }
                 }
+                return __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post('/getDefaultWorks');
             }
-            return __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post('/getDefaultWorks');
         }).then(function (res) {
-            _this.works = res.data[0].work;
+            if (res) {
+                _this.works = res.data[0].work;
+            }
         });
     },
     created: function created() {
         this.updateOfferGroup;
+        this.groupId = this.offerGroupID;
     },
     mounted: function mounted() {
         document.addEventListener("click", this.handleClickOutside);
@@ -49839,6 +49850,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         },
         setWorkResult: function setWorkResult(work, index) {
             this.works[index] = {
+                id: work.id,
                 name: work.name,
                 code: work.code,
                 points: work.points,
@@ -50128,13 +50140,27 @@ var render = function() {
                       _c("div", { staticClass: "row" }, [
                         _c("div", { staticClass: "col-10" }, [
                           _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: offerTab.name,
+                                expression: "offerTab.name"
+                              }
+                            ],
                             attrs: {
                               type: "text",
                               name:
                                 "offer_group[offers][" + offerTab.id + "][name]"
                             },
-                            domProps: {
-                              value: offerTab.name + (parseInt(offerTab.id) + 1)
+                            domProps: { value: offerTab.name },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(offerTab, "name", $event.target.value)
+                              }
                             }
                           }),
                           _c("br")
@@ -51812,6 +51838,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -51830,13 +51858,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var _this = this;
 
             if (this.offerGroupID == null) {
-                __WEBPACK_IMPORTED_MODULE_0_axios___default.a.post(window.location.host + 'saveOfferGroup', this.offerGroup).then(function (res) {
+                __WEBPACK_IMPORTED_MODULE_0_axios___default.a.post('/saveOfferGroup', this.offerGroup).then(function (res) {
                     _this.url = res.data;
                 }).catch(function (error) {
                     return _this.err = error;
                 });
             } else {
-                //todo continue
+                __WEBPACK_IMPORTED_MODULE_0_axios___default.a.post('/updateOfferGroup', [this.offerGroup, this.offerGroupID]).then(function (res) {
+                    console.log(res.data);
+                    // this.url = res.data;
+                }).catch(function (error) {
+                    return _this.err = error;
+                });
             }
         }
     }
@@ -51931,18 +51964,24 @@ var render = function() {
                     ])
                   : _vm._e(),
                 _vm._v(" "),
-                _c("div", { staticClass: "bg-light-blue text-right my-5" }, [
-                  _c("h4", { staticClass: "p-3  font-weight-bold" }, [
-                    _vm._v(
-                      "Всего за оборудование " +
-                        _vm._s(
-                          _vm.calcPrices[i]["equipmentPrice"] +
-                            _vm.calcPrices[i]["consumablePrice"]
-                        ) +
-                        "р."
+                _vm.calcPrices[i]
+                  ? _c(
+                      "div",
+                      { staticClass: "bg-light-blue text-right my-5" },
+                      [
+                        _c("h4", { staticClass: "p-3  font-weight-bold" }, [
+                          _vm._v(
+                            "Всего за оборудование " +
+                              _vm._s(
+                                _vm.calcPrices[i]["equipmentPrice"] +
+                                  _vm.calcPrices[i]["consumablePrice"]
+                              ) +
+                              "р."
+                          )
+                        ])
+                      ]
                     )
-                  ])
-                ]),
+                  : _vm._e(),
                 _vm._v(" "),
                 _vm.offerGroup.offer_group.works
                   ? _c("div", { staticClass: "my-4 h4 font-weight-bold" }, [
@@ -52190,6 +52229,7 @@ var render = function() {
             },
             [
               _c("generate-kp-tab", {
+                attrs: { offerGroupID: _vm.offerGroupID },
                 on: { updateOfferGroup: _vm.updateOfferGroup }
               })
             ],
@@ -52203,6 +52243,7 @@ var render = function() {
               _c("kp-total-tab", {
                 attrs: {
                   offerGroup: _vm.offerGroup,
+                  offerGroupID: _vm.offerGroupID,
                   calcPrices: _vm.calcPrices
                 }
               })
