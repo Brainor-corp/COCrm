@@ -9,22 +9,22 @@ class NavigationDefault
     {
         $navigation = [
             [
-                'url' => '/bradmin/equipments',
+                'url' => '/bradmin/Equipments',
                 'icon' => 'fas fa-address-book',
                 'text' => 'Оборудование'
             ],
             [
-                'url' => '/bradmin/offergroups',
+                'url' => '/bradmin/OfferGroups',
                 'icon' => 'fas fa-address-book',
                 'text' => 'Группы КП'
             ],
             [
-                'url' => '/bradmin/types',
+                'url' => '/bradmin/Types',
                 'icon' => 'fas fa-address-book',
                 'text' => 'Типы'
             ],
             [
-                'url' => '/bradmin/settings',
+                'url' => '/bradmin/Settings',
                 'icon' => 'fas fa-cog',
                 'text' => 'Настройки'
             ]
