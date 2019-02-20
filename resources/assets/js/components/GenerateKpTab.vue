@@ -365,7 +365,7 @@
                         $.each(this.offersContentTabs, (offerTabId, offerTab) => {
                             $.each(offerTab, (offerContentTabId, offerContentTab) => {
                                 $.each(offerContentTab['rows'], (rowId, row) => {
-                                    this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['price'] = ((row['price_small_trade'] - row['price_special'])/2) + row['price_special'];
+                                    this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['price'] = Math.round((row['price_small_trade'] - row['price_special'])/2) + row['price_special'];
                                 });
                             });
                         });
@@ -499,7 +499,13 @@
                 this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['type_id'] = equipment.type.id;
                 this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['type'] = equipment.type.slug;
                 this.autocompletesDisplays['equipments'][offerTabId][offerContentTabId][rowId] = false;
-
+                $.each(this.offersContentTabs, (offerTabId, offerTab) => {
+                    $.each(offerTab, (offerContentTabId, offerContentTab) => {
+                        $.each(offerContentTab['rows'], (rowId, row) => {
+                            this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['price'] = Math.round((row['price_small_trade'] - row['price_special'])/2) + row['price_special'];
+                        });
+                    });
+                });
             },
             setWorkResult(work, index) {
                 this.works[index] = {
@@ -688,7 +694,7 @@
             },
             recalcPrice(offerTabId, offerContentTabId, rowId){
                 let row = this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId];
-                row['price'] = ((row['price_small_trade'] - row['price_special'])/2) + row['price_special'];
+                row['price'] = Math.round((row['price_small_trade'] - row['price_special'])/2) + row['price_special'];
                 this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId] = row;
             }
         }

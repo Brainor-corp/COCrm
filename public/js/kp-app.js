@@ -49736,7 +49736,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                 __WEBPACK_IMPORTED_MODULE_0_jquery___default.a.each(_this2.offersContentTabs, function (offerTabId, offerTab) {
                     __WEBPACK_IMPORTED_MODULE_0_jquery___default.a.each(offerTab, function (offerContentTabId, offerContentTab) {
                         __WEBPACK_IMPORTED_MODULE_0_jquery___default.a.each(offerContentTab['rows'], function (rowId, row) {
-                            _this2.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['price'] = (row['price_small_trade'] - row['price_special']) / 2 + row['price_special'];
+                            _this2.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['price'] = Math.round((row['price_small_trade'] - row['price_special']) / 2) + row['price_special'];
                         });
                     });
                 });
@@ -49847,6 +49847,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             this.autocompletesDisplays['works'][rowId] = true;
         },
         setResult: function setResult(equipment, offerTabId, offerContentTabId, rowId) {
+            var _this5 = this;
+
             this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['id'] = rowId;
             this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['saveType'] = 'old';
             this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['base_id'] = equipment.id;
@@ -49863,6 +49865,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['type_id'] = equipment.type.id;
             this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['type'] = equipment.type.slug;
             this.autocompletesDisplays['equipments'][offerTabId][offerContentTabId][rowId] = false;
+            __WEBPACK_IMPORTED_MODULE_0_jquery___default.a.each(this.offersContentTabs, function (offerTabId, offerTab) {
+                __WEBPACK_IMPORTED_MODULE_0_jquery___default.a.each(offerTab, function (offerContentTabId, offerContentTab) {
+                    __WEBPACK_IMPORTED_MODULE_0_jquery___default.a.each(offerContentTab['rows'], function (rowId, row) {
+                        _this5.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['price'] = Math.round((row['price_small_trade'] - row['price_special']) / 2) + row['price_special'];
+                    });
+                });
+            });
         },
         setWorkResult: function setWorkResult(work, index) {
             this.works[index] = {
@@ -49889,7 +49898,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             }
         },
         getOfferGroup: function getOfferGroup() {
-            var _this5 = this;
+            var _this6 = this;
 
             var lastOfferTabId = 0;
             var buffKP = [];
@@ -49966,18 +49975,18 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
                     lastOfferTabId++;
                 });
-                _this5.offerGroup.name = buffGroupName;
-                _this5.offersTabs = buffKP;
-                _this5.offersContentTabs = buffEq;
-                _this5.selected = buffSelected;
-                _this5.works = resp.data.equipment;
-                _this5.autocompletesDisplays['equipments'] = buffAutocompletes;
-                _this5.adjusters['noTax'] = resp.data.adjusters_no_tax;
-                _this5.adjusters['number'] = resp.data.adjusters_number;
-                _this5.adjusters['days'] = resp.data.adjustments_days;
-                _this5.adjusters['fuel'] = resp.data.fuel_number;
-                _this5.adjusters['wage'] = resp.data.adjusters_wage;
-                _this5.adjusters['percentage'] = resp.data.pay_percentage;
+                _this6.offerGroup.name = buffGroupName;
+                _this6.offersTabs = buffKP;
+                _this6.offersContentTabs = buffEq;
+                _this6.selected = buffSelected;
+                _this6.works = resp.data.equipment;
+                _this6.autocompletesDisplays['equipments'] = buffAutocompletes;
+                _this6.adjusters['noTax'] = resp.data.adjusters_no_tax;
+                _this6.adjusters['number'] = resp.data.adjusters_number;
+                _this6.adjusters['days'] = resp.data.adjustments_days;
+                _this6.adjusters['fuel'] = resp.data.fuel_number;
+                _this6.adjusters['wage'] = resp.data.adjusters_wage;
+                _this6.adjusters['percentage'] = resp.data.pay_percentage;
             });
         },
         deleteRow: function deleteRow(offerTabId, offerContentTabId, rowId) {
@@ -50034,15 +50043,15 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             this.works.splice(key, 1);
         },
         calculatePrePrice: function calculatePrePrice() {
-            var _this6 = this;
+            var _this7 = this;
 
             __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post('/calculatePrePrices', __WEBPACK_IMPORTED_MODULE_1_deparam___default()(__WEBPACK_IMPORTED_MODULE_0_jquery___default()('#kp-generate-form').serialize())).then(function (res) {
-                _this6.adjustmentPrePrice = res.data;
+                _this7.adjustmentPrePrice = res.data;
             });
         },
         recalcPrice: function recalcPrice(offerTabId, offerContentTabId, rowId) {
             var row = this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId];
-            row['price'] = (row['price_small_trade'] - row['price_special']) / 2 + row['price_special'];
+            row['price'] = Math.round((row['price_small_trade'] - row['price_special']) / 2) + row['price_special'];
             this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId] = row;
         }
     }
