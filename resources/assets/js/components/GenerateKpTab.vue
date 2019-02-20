@@ -39,7 +39,7 @@
                                         <option disabled value="new">Выберите</option>
                                         <option v-for="type in types" v-if="type[0]!='new'" :value="type[0].id">{{ type[0].name }}</option>
                                     </select>
-                                    <span v-if="types[selected[offerTab.id][offerContentTab.id]][0].slug !== 'rashodnye-materialy'" @click="deleteTab(offerTab.id,offerContentTab.id)">X</span>
+                                    <span v-if="types[selected[offerTab.id][offerContentTab.id]] && types[selected[offerTab.id][offerContentTab.id]][0].slug !== 'rashodnye-materialy'" @click="deleteTab(offerTab.id,offerContentTab.id)">X</span>
                                 </a>
                             </li>
 
@@ -57,7 +57,7 @@
                                         <th scope="col">Название</th>
                                         <th scope="col">Ед.измерения</th>
                                         <th scope="col">Количество</th>
-                                        <th scope="col">Цена</th>
+                                        <th scope="col">Высчитанная цена</th>
                                         <th scope="col">Розн. цена</th>
                                         <th scope="col">Мин. розн. цена</th>
                                         <th scope="col">Спец. цена</th>
@@ -95,16 +95,16 @@
                                             <input class="form-control" type="number" min="0" :name="'offer_group[offers]['+offerTab.id+'][equipments]['+types[selected[offerTab.id][offerContentTab.id]][0].slug+']['+row.id+'][quantity]'" v-model="row.quantity"/>
                                         </td>
                                         <td>
-                                            <input class="form-control" type="number" min="0" :name="'offer_group[offers]['+offerTab.id+'][equipments]['+types[selected[offerTab.id][offerContentTab.id]][0].slug+']['+row.id+'][price]'" v-model="row.price"/>
+                                            <input class="form-control" readonly type="number" min="0" :name="'offer_group[offers]['+offerTab.id+'][equipments]['+types[selected[offerTab.id][offerContentTab.id]][0].slug+']['+row.id+'][price]'" v-model="row.price"/>
                                         </td>
                                         <td>
-                                            <input class="form-control" type="number" min="0" :name="'offer_group[offers]['+offerTab.id+'][equipments]['+types[selected[offerTab.id][offerContentTab.id]][0].slug+']['+row.id+'][price_trade]'" v-model="row.price_trade"/>
+                                            <input @change="recalcPrice(offerTab.id, offerContentTab.id, row.id)" class="form-control" type="number" min="0" :name="'offer_group[offers]['+offerTab.id+'][equipments]['+types[selected[offerTab.id][offerContentTab.id]][0].slug+']['+row.id+'][price_trade]'" v-model="row.price_trade"/>
                                         </td>
                                         <td>
-                                            <input class="form-control" type="number" min="0" :name="'offer_group[offers]['+offerTab.id+'][equipments]['+types[selected[offerTab.id][offerContentTab.id]][0].slug+']['+row.id+'][price_small_trade]'" v-model="row.price_small_trade"/>
+                                            <input @change="recalcPrice(offerTab.id, offerContentTab.id, row.id)" class="form-control" type="number" min="0" :name="'offer_group[offers]['+offerTab.id+'][equipments]['+types[selected[offerTab.id][offerContentTab.id]][0].slug+']['+row.id+'][price_small_trade]'" v-model="row.price_small_trade"/>
                                         </td>
                                         <td>
-                                            <input class="form-control" type="number" min="0" :name="'offer_group[offers]['+offerTab.id+'][equipments]['+types[selected[offerTab.id][offerContentTab.id]][0].slug+']['+row.id+'][price_special]'" v-model="row.price_special"/>
+                                            <input @change="recalcPrice(offerTab.id, offerContentTab.id, row.id)" class="form-control" type="number" min="0" :name="'offer_group[offers]['+offerTab.id+'][equipments]['+types[selected[offerTab.id][offerContentTab.id]][0].slug+']['+row.id+'][price_special]'" v-model="row.price_special"/>
                                         </td>
                                         <td >
                                             <span @click="deleteRow(offerTab.id, offerContentTab.id, row.id)">X</span>
@@ -282,10 +282,10 @@
                                         'quantity': res.data[i]['equipment'][j].pivot.quantity,
                                         'code': res.data[i]['equipment'][j].code,
                                         'type': this.types[res.data[i]['equipment'][j].type_id][0].slug,
-                                        'price': res.data[i]['equipment'][j].pivot.price,
-                                        'price_trade': res.data[i]['equipment'][j].pivot.price_trade,
-                                        'price_small_trade': res.data[i]['equipment'][j].pivot.price_small_trade,
-                                        'price_special': res.data[i]['equipment'][j].pivot.price_special,
+                                        'price': res.data[i]['equipment'][j].price,
+                                        'price_trade': res.data[i]['equipment'][j].price_trade,
+                                        'price_small_trade': res.data[i]['equipment'][j].price_small_trade,
+                                        'price_special': res.data[i]['equipment'][j].price_special,
                                         'comment': res.data[i]['equipment'][j].pivot.comment,
                                         'description': res.data[i]['equipment'][j].description,
                                         'points': res.data[i]['equipment'][j].points,
@@ -294,11 +294,18 @@
                                 }
                             }
                         }
+                        $.each(this.offersContentTabs, (offerTabId, offerTab) => {
+                            $.each(offerTab, (offerContentTabId, offerContentTab) => {
+                                $.each(offerContentTab['rows'], (rowId, row) => {
+                                    this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['price'] = ((row['price_small_trade'] - row['price_special'])/2) + row['price_special'];
+                                });
+                            });
+                        });
                         return axios.post('/getDefaultWorks')
                     }
                 })
                 .then((res) => {
-                    if(res) {
+                    if(res.data[0]) {
                         this.works = res.data[0].work;
                     }
                 });
@@ -306,6 +313,7 @@
         created: function (){
             this.updateOfferGroup;
             this.groupId = this.offerGroupID;
+
 
         },
         mounted() {
@@ -342,10 +350,10 @@
                                         'quantity': res.data[i]['equipment'][j].pivot.quantity,
                                         'code': res.data[i]['equipment'][j].code,
                                         'type': this.types[res.data[i]['equipment'][j].type_id][0].slug,
-                                        'price': res.data[i]['equipment'][j].pivot.price,
-                                        'price_trade': res.data[i]['equipment'][j].pivot.price_trade,
-                                        'price_small_trade': res.data[i]['equipment'][j].pivot.price_small_trade,
-                                        'price_special': res.data[i]['equipment'][j].pivot.price_special,
+                                        'price': res.data[i]['equipment'][j].price,
+                                        'price_trade': res.data[i]['equipment'][j].price_trade,
+                                        'price_small_trade': res.data[i]['equipment'][j].price_small_trade,
+                                        'price_special': res.data[i]['equipment'][j].price_special,
                                         'comment': res.data[i]['equipment'][j].pivot.comment,
                                         'description': res.data[i]['equipment'][j].description,
                                         'points': res.data[i]['equipment'][j].points,
@@ -354,6 +362,13 @@
                                 }
                             }
                         }
+                        $.each(this.offersContentTabs, (offerTabId, offerTab) => {
+                            $.each(offerTab, (offerContentTabId, offerContentTab) => {
+                                $.each(offerContentTab['rows'], (rowId, row) => {
+                                    this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['price'] = ((row['price_small_trade'] - row['price_special'])/2) + row['price_special'];
+                                });
+                            });
+                        });
                     });
             },
             updateOfferGroup() {
@@ -476,7 +491,7 @@
                 this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['description'] = equipment.description;
                 this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['quantity'] = 1;
                 this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['points'] = equipment.points;
-                this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['price'] = equipment.price;
+                this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['price'] = 0;
                 this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['price_trade'] = equipment.price_trade;
                 this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['price_small_trade'] = equipment.price_small_trade;
                 this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['price_special'] = equipment.price_special;
@@ -670,6 +685,11 @@
                     .then(res=>{
                         this.adjustmentPrePrice = res.data;
                     });
+            },
+            recalcPrice(offerTabId, offerContentTabId, rowId){
+                let row = this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId];
+                row['price'] = ((row['price_small_trade'] - row['price_special'])/2) + row['price_special'];
+                this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId] = row;
             }
         }
     }

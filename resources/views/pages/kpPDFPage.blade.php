@@ -72,7 +72,7 @@
                     @php($consumableSum = 0)
                     @foreach($offer->equipments as $equipment)
                         @if($equipment->class == 'equipment')
-                            @if($equipment->type->slug != 'rashodnye-materialy')
+                            @if($equipment->pivot->type != 'rashodnye-materialy')
                                 @php($totalEquipmentSum += $equipment->pivot->counted_price * $equipment->pivot->quantity)
                                 <tr>
                                     <td class="border-top-0 border-bottom"><img src="https://via.placeholder.com/100" alt=""></td>

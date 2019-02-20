@@ -49282,7 +49282,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                                     if (stop) {
                                         __WEBPACK_IMPORTED_MODULE_4_jquery___default.a.each(equipments, function (index, equipment) {
                                             // this.offerGroup['offer_group']['offers'][offer]['equipments'][type][index]['price'] = (((equipment['price_small_trade'] - equipment['price_special'])/2) + equipment['price_special']) * equipment['quantity'];
-                                            _this.offerGroup['offer_group']['offers'][offer]['equipments'][type][index]['counted_price'] = (parseFloat(equipment['price_small_trade']) + parseFloat(equipment['price_special'])) / 2 * parseFloat(equipment['quantity']);
+                                            _this.offerGroup['offer_group']['offers'][offer]['equipments'][type][index]['counted_price'] = (parseFloat(equipment['price_small_trade']) + parseFloat(equipment['price_special'])) / 2;
                                         });
                                     }
                                 });
@@ -49655,10 +49655,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                                 'quantity': res.data[i]['equipment'][j].pivot.quantity,
                                 'code': res.data[i]['equipment'][j].code,
                                 'type': _this.types[res.data[i]['equipment'][j].type_id][0].slug,
-                                'price': res.data[i]['equipment'][j].pivot.price,
-                                'price_trade': res.data[i]['equipment'][j].pivot.price_trade,
-                                'price_small_trade': res.data[i]['equipment'][j].pivot.price_small_trade,
-                                'price_special': res.data[i]['equipment'][j].pivot.price_special,
+                                'price': res.data[i]['equipment'][j].price,
+                                'price_trade': res.data[i]['equipment'][j].price_trade,
+                                'price_small_trade': res.data[i]['equipment'][j].price_small_trade,
+                                'price_special': res.data[i]['equipment'][j].price_special,
                                 'comment': res.data[i]['equipment'][j].pivot.comment,
                                 'description': res.data[i]['equipment'][j].description,
                                 'points': res.data[i]['equipment'][j].points,
@@ -49667,10 +49667,17 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                         }
                     }
                 }
+                __WEBPACK_IMPORTED_MODULE_0_jquery___default.a.each(_this.offersContentTabs, function (offerTabId, offerTab) {
+                    __WEBPACK_IMPORTED_MODULE_0_jquery___default.a.each(offerTab, function (offerContentTabId, offerContentTab) {
+                        __WEBPACK_IMPORTED_MODULE_0_jquery___default.a.each(offerContentTab['rows'], function (rowId, row) {
+                            _this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['price'] = (row['price_small_trade'] - row['price_special']) / 2 + row['price_special'];
+                        });
+                    });
+                });
                 return __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post('/getDefaultWorks');
             }
         }).then(function (res) {
-            if (res) {
+            if (res.data[0]) {
                 _this.works = res.data[0].work;
             }
         });
@@ -49714,10 +49721,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                                 'quantity': res.data[i]['equipment'][j].pivot.quantity,
                                 'code': res.data[i]['equipment'][j].code,
                                 'type': _this2.types[res.data[i]['equipment'][j].type_id][0].slug,
-                                'price': res.data[i]['equipment'][j].pivot.price,
-                                'price_trade': res.data[i]['equipment'][j].pivot.price_trade,
-                                'price_small_trade': res.data[i]['equipment'][j].pivot.price_small_trade,
-                                'price_special': res.data[i]['equipment'][j].pivot.price_special,
+                                'price': res.data[i]['equipment'][j].price,
+                                'price_trade': res.data[i]['equipment'][j].price_trade,
+                                'price_small_trade': res.data[i]['equipment'][j].price_small_trade,
+                                'price_special': res.data[i]['equipment'][j].price_special,
                                 'comment': res.data[i]['equipment'][j].pivot.comment,
                                 'description': res.data[i]['equipment'][j].description,
                                 'points': res.data[i]['equipment'][j].points,
@@ -49726,6 +49733,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                         }
                     }
                 }
+                __WEBPACK_IMPORTED_MODULE_0_jquery___default.a.each(_this2.offersContentTabs, function (offerTabId, offerTab) {
+                    __WEBPACK_IMPORTED_MODULE_0_jquery___default.a.each(offerTab, function (offerContentTabId, offerContentTab) {
+                        __WEBPACK_IMPORTED_MODULE_0_jquery___default.a.each(offerContentTab['rows'], function (rowId, row) {
+                            _this2.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['price'] = (row['price_small_trade'] - row['price_special']) / 2 + row['price_special'];
+                        });
+                    });
+                });
             });
         },
         updateOfferGroup: function updateOfferGroup() {
@@ -49841,7 +49855,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['description'] = equipment.description;
             this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['quantity'] = 1;
             this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['points'] = equipment.points;
-            this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['price'] = equipment.price;
+            this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['price'] = 0;
             this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['price_trade'] = equipment.price_trade;
             this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['price_small_trade'] = equipment.price_small_trade;
             this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['price_special'] = equipment.price_special;
@@ -50025,6 +50039,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post('/calculatePrePrices', __WEBPACK_IMPORTED_MODULE_1_deparam___default()(__WEBPACK_IMPORTED_MODULE_0_jquery___default()('#kp-generate-form').serialize())).then(function (res) {
                 _this6.adjustmentPrePrice = res.data;
             });
+        },
+        recalcPrice: function recalcPrice(offerTabId, offerContentTabId, rowId) {
+            var row = this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId];
+            row['price'] = (row['price_small_trade'] - row['price_special']) / 2 + row['price_special'];
+            this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId] = row;
         }
     }
 });
@@ -50317,6 +50336,9 @@ var render = function() {
                                 2
                               ),
                               _vm._v(" "),
+                              _vm.types[
+                                _vm.selected[offerTab.id][offerContentTab.id]
+                              ] &&
                               _vm.types[
                                 _vm.selected[offerTab.id][offerContentTab.id]
                               ][0].slug !== "rashodnye-materialy"
@@ -50935,6 +50957,7 @@ var render = function() {
                                         ],
                                         staticClass: "form-control",
                                         attrs: {
+                                          readonly: "",
                                           type: "number",
                                           min: "0",
                                           name:
@@ -50995,6 +51018,13 @@ var render = function() {
                                         },
                                         domProps: { value: row.price_trade },
                                         on: {
+                                          change: function($event) {
+                                            _vm.recalcPrice(
+                                              offerTab.id,
+                                              offerContentTab.id,
+                                              row.id
+                                            )
+                                          },
                                           input: function($event) {
                                             if ($event.target.composing) {
                                               return
@@ -51040,6 +51070,13 @@ var render = function() {
                                           value: row.price_small_trade
                                         },
                                         on: {
+                                          change: function($event) {
+                                            _vm.recalcPrice(
+                                              offerTab.id,
+                                              offerContentTab.id,
+                                              row.id
+                                            )
+                                          },
                                           input: function($event) {
                                             if ($event.target.composing) {
                                               return
@@ -51083,6 +51120,13 @@ var render = function() {
                                         },
                                         domProps: { value: row.price_special },
                                         on: {
+                                          change: function($event) {
+                                            _vm.recalcPrice(
+                                              offerTab.id,
+                                              offerContentTab.id,
+                                              row.id
+                                            )
+                                          },
                                           input: function($event) {
                                             if ($event.target.composing) {
                                               return
@@ -51671,7 +51715,7 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", { attrs: { scope: "col" } }, [_vm._v("Количество")]),
         _vm._v(" "),
-        _c("th", { attrs: { scope: "col" } }, [_vm._v("Цена")]),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Высчитанная цена")]),
         _vm._v(" "),
         _c("th", { attrs: { scope: "col" } }, [_vm._v("Розн. цена")]),
         _vm._v(" "),
@@ -51766,6 +51810,8 @@ module.exports = Component.exports
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_jquery__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_jquery___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_jquery__);
 //
 //
 //
@@ -51876,6 +51922,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -51906,6 +51953,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     return _this.err = error;
                 });
             }
+        },
+        copyUrl: function copyUrl() {
+            __WEBPACK_IMPORTED_MODULE_1_jquery___default()('#url-input').select();
+            document.execCommand("copy");
         }
     }
 });
@@ -51953,10 +52004,12 @@ var render = function() {
                                     _vm._v(" "),
                                     _c("td", [_vm._v(_vm._s(row.quantity))]),
                                     _vm._v(" "),
-                                    _c("td", [_vm._v(_vm._s(row.price))]),
-                                    _vm._v(" "),
                                     _c("td", [
                                       _vm._v(_vm._s(row.counted_price))
+                                    ]),
+                                    _vm._v(" "),
+                                    _c("td", [
+                                      _vm._v(_vm._s(row.price * row.quantity))
                                     ])
                                   ])
                                 })
@@ -52145,11 +52198,35 @@ var render = function() {
         )
       : _vm._e(),
     _vm._v(" "),
-    _c("div", { staticClass: "mx-auto mb-5" }, [
-      _vm.url
-        ? _c("input", { attrs: { type: "url" }, domProps: { value: _vm.url } })
-        : _vm._e()
-    ]),
+    _vm.url
+      ? _c("div", { staticClass: "col-12 mx-auto mb-5" }, [
+          _c("label", { attrs: { for: "url-input" } }, [
+            _vm._v("Ссылка на КП")
+          ]),
+          _vm._v(" "),
+          _c("input", {
+            staticClass: "form-control",
+            attrs: { id: "url-input", readonly: "", type: "text" },
+            domProps: { value: _vm.url }
+          }),
+          _c(
+            "button",
+            {
+              staticClass: "btn btn-warning",
+              on: {
+                click: function($event) {
+                  $event.preventDefault()
+                  return _vm.copyUrl($event)
+                }
+              }
+            },
+            [
+              _vm._v("Скопировать ссылку "),
+              _c("i", { staticClass: "far fa-copy" })
+            ]
+          )
+        ])
+      : _vm._e(),
     _vm._v(" "),
     _c("div", { staticClass: "mx-auto mb-5" }, [
       _vm.offerGroup.offer_group
@@ -52191,9 +52268,9 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", { attrs: { scope: "col" } }, [_vm._v("Количество")]),
         _vm._v(" "),
-        _c("th", { attrs: { scope: "col" } }, [_vm._v("Цена")]),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Высчитанная цена")]),
         _vm._v(" "),
-        _c("th", { attrs: { scope: "col" } }, [_vm._v("Высчитанная цена")])
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Сумма")])
       ])
     ])
   },

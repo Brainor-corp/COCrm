@@ -23,6 +23,7 @@ class CreateEquipmentOfferTable extends Migration
             $table->double('price_special');
             $table->double('counted_price');
             $table->text('comment')->nullable();
+            $table->string('type');
         });
     }
 

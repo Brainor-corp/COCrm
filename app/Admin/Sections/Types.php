@@ -51,9 +51,9 @@ class Types extends Section
                 FormField::multiselect('equipment', 'Оборудование')
                     ->setModelForOptions(Equipment::class)
                     ->setDisplay('name')
-                    ->setQueryFunctionForModel(function ($q) {
-                        return $q->where('class', 'equipment');
-                    }),
+//                    ->setQueryFunctionForModel(function ($q) {
+//                        return $q->where('class', 'equipment');
+//                    }),
             ])
         ]);
 
