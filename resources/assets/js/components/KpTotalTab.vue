@@ -12,8 +12,8 @@
                         <th scope="col">Наименование</th>
                         <th scope="col">Описание</th>
                         <th scope="col">Количество</th>
-                        <th scope="col">Цена</th>
                         <th scope="col">Высчитанная цена</th>
+                        <th scope="col">Сумма</th>
                         <!--<th scope="col">Розн. цена</th>-->
                         <!--<th scope="col">Мин. розн. цена</th>-->
                         <!--<th scope="col">Спец. цена</th>-->
@@ -26,8 +26,8 @@
                             <td>{{ row.name }}</td>
                             <td>{{ row.description }}</td>
                             <td>{{ row.quantity }}</td>
-                            <td>{{ row.price }}</td>
                             <td>{{ row.counted_price }}</td>
+                            <td>{{ row.price * row.quantity }}</td>
                             <!--<td>{{ row.price_trade }}</td>-->
                             <!--<td>{{ row.price_small_trade }}</td>-->
                             <!--<td>{{ row.price_special }}</td>-->
@@ -97,9 +97,9 @@
                 </div>
             </div>
         </div>
-        <div class="mx-auto mb-5">
-            <input v-if="url" :value="url" type="url">
-            <!--<a :href="url" target="_blank" v-if="url">{{url}}</a>-->
+        <div v-if="url" class="col-12 mx-auto mb-5">
+            <label for="url-input">Ссылка на КП</label>
+            <input id="url-input" class="form-control" readonly :value="url" type="text"><button class="btn btn-warning" @click.prevent="copyUrl">Скопировать ссылку <i class="far fa-copy"></i></button>
         </div>
         <div class="mx-auto mb-5">
             <a href="" class="btn btn-lg btn-primary create-btn d-flex align-items-center justify-content-center" v-if="offerGroup.offer_group" @click.prevent="saveOfferGroup">Сохранить группу КП</a>
@@ -110,6 +110,7 @@
 
 <script>
     import axios from 'axios';
+    import $ from 'jquery'
     export default {
         props: ['offerGroup', 'calcPrices', 'offerGroupID'],
         data(){
@@ -140,6 +141,10 @@
                         .catch(error => this.err = error);
                 }
             },
+            copyUrl(){
+                $('#url-input').select();
+                document.execCommand("copy");
+            }
         }
     }
 </script>

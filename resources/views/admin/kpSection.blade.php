@@ -25,3 +25,4 @@
     {{--</tbody>--}}
 {{--</table>--}}
 <a class="btn btn-info text-white" target="_blank" href="{{route('/', ['id' => $request->id])}}">Перейти к редактированию в генераторе КП</a>
+<a class="btn btn-info text-white" target="_blank" href="{{route('showCO', ['uuid' => $request->uuid])}}">Перейти к просмотру КП</a>
