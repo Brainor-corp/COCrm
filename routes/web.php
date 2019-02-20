@@ -17,13 +17,9 @@ Route::group(['middleware' => ['web', 'auth']], function () {
         return view('kpGenerator.index');
     })->name('/');
 
-    Route::get('/kp/{uuid}', 'COController@display')->where('uuid', '[a-zA-Z0-9/_-]+')->name('showCO');
-    Route::get('/download/{uuid}', 'COController@downloadAsPdf')->where('uuid', '[a-zA-Z0-9/_-]+')->name('downloadAsPdf');
-});
-
 Auth::routes();
-//Route::get('/login', 'Auth\LoginController@logout')->name('logout');
 
+Route::get('/home', 'HomeController@index')->name('home');
 
 
 Route::post('/getTypesByClass', 'TypeController@getTypesByClass')->name('getTypes');
@@ -42,3 +38,9 @@ Route::post('/calculatePrePrices', 'COController@calculatePrePrices')->name('cal
 Route::post('/saveOfferGroup', 'OfferController@saveOfferGroup');
 Route::post('/updateOfferGroup', 'OfferController@updateOfferGroup');
 
+Route::post('/excel-upload', 'UploadsController@excelUploadEquipment')->name('excel-upload');
+
+
+
+Route::get('/kp/{uuid}', 'COController@display')->where('uuid', '[a-zA-Z0-9/_-]+')->name('showCO');
+Route::get('/download/{uuid}', 'COController@downloadAsPdf')->where('uuid', '[a-zA-Z0-9/_-]+')->name('downloadAsPdf');

@@ -19,4 +19,14 @@ class EquipmentHelper
             default: return $class;
         }
     }
+
+    public static function getClassByTypeName($typeName) {
+        $works = [
+            'кабели и провода',
+            'расходники',
+            'монтажные и расходные материалы',
+        ];
+
+        return in_array(mb_strtolower($typeName), $works) ? 'works' : 'equipment';
+    }
 }

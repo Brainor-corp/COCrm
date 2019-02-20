@@ -32,6 +32,11 @@ class NavigationDefault
                 'url' => '/bradmin/Users',
                 'icon' => 'fas fa-address-book',
                 'text' => 'Пользователи'
+            ],
+            [
+                'url' => '/bradmin/ExcelUploads',
+                'icon' => 'fas fa-cog',
+                'text' => 'Excel загрузка'
             ]
         ];
 
