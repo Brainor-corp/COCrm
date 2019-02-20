@@ -49578,6 +49578,27 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -49596,6 +49617,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                 noTax: 1
             },
             adjustmentPrePrice: [],
+            offerGroupTemplates: [],
             adjustmentPrePriceKeys: {
                 VAT: "НДС: ",
                 additionalDiscount: "Доп. Скидка: ",
@@ -49605,7 +49627,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                 totalWorkPriceNoVAT: "За работы без НДС: "
             },
             results: [],
-            groupId: null,
+            groupId: '',
             autocompletesDisplays: {
                 equipments: [[[]]],
                 works: []
@@ -49627,7 +49649,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
         __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post('/getAllEquipmentTypes').then(function (res) {
             _this.types = res.data;
-            console.log(_this.types);
 
             if (_this.groupId !== null) {
                 _this.getOfferGroup();
@@ -49685,8 +49706,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         });
     },
     created: function created() {
+        var _this2 = this;
+
         this.updateOfferGroup;
         this.groupId = this.offerGroupID;
+        __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post('/getOfferGroupTemplates').then(function (res) {
+            _this2.offerGroupTemplates = res.data;
+        });
+        console.log(this.offerGroupTemplates);
     },
     mounted: function mounted() {
         document.addEventListener("click", this.handleClickOutside);
@@ -49697,32 +49724,32 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
     methods: {
         setDefaultTabs: function setDefaultTabs(index) {
-            var _this2 = this;
+            var _this3 = this;
 
             __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post('/getDefaultTypesWithEquipment').then(function (res) {
-                _this2.defaultTypes = res.data;
+                _this3.defaultTypes = res.data;
                 for (var i = 0; i < res.data.length; i++) {
-                    _this2.offersContentTabs[index].push({
+                    _this3.offersContentTabs[index].push({
                         'id': i,
                         'name': res.data[i]['name'],
                         'rows': []
                     });
-                    _this2.selected[index].push(res.data[i]['id']);
-                    if (!_this2.autocompletesDisplays['equipments'][index]) {
-                        _this2.autocompletesDisplays['equipments'][index] = [];
+                    _this3.selected[index].push(res.data[i]['id']);
+                    if (!_this3.autocompletesDisplays['equipments'][index]) {
+                        _this3.autocompletesDisplays['equipments'][index] = [];
                     }
-                    _this2.autocompletesDisplays['equipments'][index].push([]);
+                    _this3.autocompletesDisplays['equipments'][index].push([]);
                     if (res.data[i]['equipment'].length > 0) {
                         for (var j = 0; j < res.data[i]['equipment'].length; j++) {
-                            _this2.autocompletesDisplays['equipments'][index][i].push(false);
-                            _this2.offersContentTabs[index][i]['rows'].push({
+                            _this3.autocompletesDisplays['equipments'][index][i].push(false);
+                            _this3.offersContentTabs[index][i]['rows'].push({
                                 'id': j,
                                 'saveType': 'old',
                                 'base_id': res.data[i]['equipment'][j].id,
                                 'name': res.data[i]['equipment'][j].name,
                                 'quantity': res.data[i]['equipment'][j].pivot.quantity,
                                 'code': res.data[i]['equipment'][j].code,
-                                'type': _this2.types[res.data[i]['equipment'][j].type_id][0].slug,
+                                'type': _this3.types[res.data[i]['equipment'][j].type_id][0].slug,
                                 'price': res.data[i]['equipment'][j].price,
                                 'price_trade': res.data[i]['equipment'][j].price_trade,
                                 'price_small_trade': res.data[i]['equipment'][j].price_small_trade,
@@ -49735,10 +49762,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                         }
                     }
                 }
-                __WEBPACK_IMPORTED_MODULE_0_jquery___default.a.each(_this2.offersContentTabs, function (offerTabId, offerTab) {
+                __WEBPACK_IMPORTED_MODULE_0_jquery___default.a.each(_this3.offersContentTabs, function (offerTabId, offerTab) {
                     __WEBPACK_IMPORTED_MODULE_0_jquery___default.a.each(offerTab, function (offerContentTabId, offerContentTab) {
                         __WEBPACK_IMPORTED_MODULE_0_jquery___default.a.each(offerContentTab['rows'], function (rowId, row) {
-                            _this2.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['price'] = Math.round((row['price_small_trade'] - row['price_special']) / 2) + row['price_special'];
+                            _this3.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['price'] = Math.round((row['price_small_trade'] - row['price_special']) / 2) + row['price_special'];
                         });
                     });
                 });
@@ -49815,7 +49842,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             }
         },
         searchEquipmentByCode: function searchEquipmentByCode(codePart, offerTabId, offerContentTabId, rowId) {
-            var _this3 = this;
+            var _this4 = this;
 
             var context = this;
             __WEBPACK_IMPORTED_MODULE_2_axios___default.a.interceptors.request.use(function (config) {
@@ -49826,13 +49853,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post('/findEquipmentByCode', {
                 code: codePart
             }).then(function (resp) {
-                _this3.results = resp.data;
-                _this3.isLoading = false;
+                _this4.results = resp.data;
+                _this4.isLoading = false;
             });
             this.autocompletesDisplays['equipments'][offerTabId][offerContentTabId][rowId] = true;
         },
         searchWorkByCode: function searchWorkByCode(codePart, rowId) {
-            var _this4 = this;
+            var _this5 = this;
 
             var context = this;
             __WEBPACK_IMPORTED_MODULE_2_axios___default.a.interceptors.request.use(function (config) {
@@ -49843,13 +49870,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post('/findWorkByCode', {
                 code: codePart
             }).then(function (resp) {
-                _this4.results = resp.data;
-                _this4.isLoading = false;
+                _this5.results = resp.data;
+                _this5.isLoading = false;
             });
             this.autocompletesDisplays['works'][rowId] = true;
         },
         setResult: function setResult(equipment, offerTabId, offerContentTabId, rowId) {
-            var _this5 = this;
+            var _this6 = this;
 
             this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['id'] = rowId;
             this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['saveType'] = 'old';
@@ -49870,7 +49897,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             __WEBPACK_IMPORTED_MODULE_0_jquery___default.a.each(this.offersContentTabs, function (offerTabId, offerTab) {
                 __WEBPACK_IMPORTED_MODULE_0_jquery___default.a.each(offerTab, function (offerContentTabId, offerContentTab) {
                     __WEBPACK_IMPORTED_MODULE_0_jquery___default.a.each(offerContentTab['rows'], function (rowId, row) {
-                        _this5.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['price'] = Math.round((row['price_small_trade'] - row['price_special']) / 2) + row['price_special'];
+                        _this6.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['price'] = Math.round((row['price_small_trade'] - row['price_special']) / 2) + row['price_special'];
                     });
                 });
             });
@@ -49900,7 +49927,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             }
         },
         getOfferGroup: function getOfferGroup() {
-            var _this6 = this;
+            var _this7 = this;
 
             var lastOfferTabId = 0;
             var buffKP = [];
@@ -49977,22 +50004,22 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
                     lastOfferTabId++;
                 });
-                _this6.offerGroup.name = buffGroupName;
-                _this6.offersTabs = buffKP;
-                _this6.offersContentTabs = buffEq;
-                _this6.selected = buffSelected;
-                _this6.works = resp.data.equipment;
-                _this6.autocompletesDisplays['equipments'] = buffAutocompletes;
-                _this6.adjusters['noTax'] = resp.data.adjusters_no_tax;
-                _this6.adjusters['number'] = resp.data.adjusters_number;
-                _this6.adjusters['days'] = resp.data.adjustments_days;
-                _this6.adjusters['fuel'] = resp.data.fuel_number;
-                _this6.adjusters['wage'] = resp.data.adjusters_wage;
-                _this6.adjusters['percentage'] = resp.data.pay_percentage;
-                __WEBPACK_IMPORTED_MODULE_0_jquery___default.a.each(_this6.offersContentTabs, function (offerTabId, offerTab) {
+                _this7.offerGroup.name = buffGroupName;
+                _this7.offersTabs = buffKP;
+                _this7.offersContentTabs = buffEq;
+                _this7.selected = buffSelected;
+                _this7.works = resp.data.equipment;
+                _this7.autocompletesDisplays['equipments'] = buffAutocompletes;
+                _this7.adjusters['noTax'] = resp.data.adjusters_no_tax;
+                _this7.adjusters['number'] = resp.data.adjusters_number;
+                _this7.adjusters['days'] = resp.data.adjustments_days;
+                _this7.adjusters['fuel'] = resp.data.fuel_number;
+                _this7.adjusters['wage'] = resp.data.adjusters_wage;
+                _this7.adjusters['percentage'] = resp.data.pay_percentage;
+                __WEBPACK_IMPORTED_MODULE_0_jquery___default.a.each(_this7.offersContentTabs, function (offerTabId, offerTab) {
                     __WEBPACK_IMPORTED_MODULE_0_jquery___default.a.each(offerTab, function (offerContentTabId, offerContentTab) {
                         __WEBPACK_IMPORTED_MODULE_0_jquery___default.a.each(offerContentTab['rows'], function (rowId, row) {
-                            _this6.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['price'] = Math.round((row['price_small_trade'] - row['price_special']) / 2) + row['price_special'];
+                            _this7.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['price'] = Math.round((row['price_small_trade'] - row['price_special']) / 2) + row['price_special'];
                         });
                     });
                 });
@@ -50052,15 +50079,15 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             this.works.splice(key, 1);
         },
         calculatePrePrice: function calculatePrePrice() {
-            var _this7 = this;
+            var _this8 = this;
 
             __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post('/calculatePrePrices', __WEBPACK_IMPORTED_MODULE_1_deparam___default()(__WEBPACK_IMPORTED_MODULE_0_jquery___default()('#kp-generate-form').serialize())).then(function (res) {
-                _this7.adjustmentPrePrice = res.data;
+                _this8.adjustmentPrePrice = res.data;
             });
         },
         recalcPrice: function recalcPrice(offerTabId, offerContentTabId, rowId) {
             var row = this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId];
-            row['price'] = Math.round((row['price_small_trade'] - row['price_special']) / 2) + row['price_special'];
+            row['price'] = Math.round((parseInt(row['price_small_trade']) - parseInt(row['price_special'])) / 2) + parseInt(row['price_special']);
             this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId] = row;
         }
     }
@@ -50076,53 +50103,138 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "row" }, [
     _c("div", { staticClass: "col-12 my-5" }, [
-      _c(
-        "form",
-        {
-          attrs: { id: "getOfferGroup" },
-          on: {
-            submit: function($event) {
-              $event.preventDefault()
-              return _vm.getOfferGroup($event)
-            }
-          }
-        },
-        [
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.groupId,
-                expression: "groupId"
-              }
-            ],
-            attrs: {
-              type: "text",
-              disabled: _vm.redactMode,
-              placeholder: "id КП"
-            },
-            domProps: { value: _vm.groupId },
-            on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
-                }
-                _vm.groupId = $event.target.value
-              }
-            }
-          }),
-          _vm._v(" "),
+      _c("div", { staticClass: "row" }, [
+        _c("div", { staticClass: "col-6" }, [
           _c(
-            "button",
+            "form",
             {
-              staticClass: "btn btn-secondary",
-              attrs: { type: "submit", disabled: _vm.redactMode }
+              attrs: { id: "getOfferGroup" },
+              on: {
+                submit: function($event) {
+                  $event.preventDefault()
+                  return _vm.getOfferGroup($event)
+                }
+              }
             },
-            [_vm._v("Вставить КП")]
+            [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.groupId,
+                    expression: "groupId"
+                  }
+                ],
+                attrs: {
+                  type: "text",
+                  disabled: _vm.redactMode,
+                  placeholder: "id КП"
+                },
+                domProps: { value: _vm.groupId },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.groupId = $event.target.value
+                  }
+                }
+              }),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-secondary",
+                  attrs: { type: "submit", disabled: _vm.redactMode }
+                },
+                [_vm._v("Вставить КП")]
+              )
+            ]
           )
-        ]
-      )
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "col-6" }, [
+          _c(
+            "form",
+            {
+              staticStyle: { width: "100%" },
+              attrs: { id: "getOfferGroupByTemplate" },
+              on: {
+                submit: function($event) {
+                  $event.preventDefault()
+                  return _vm.getOfferGroup($event)
+                }
+              }
+            },
+            [
+              _c("div", { staticClass: "row" }, [
+                _c("div", { staticClass: "col-6" }, [
+                  _c(
+                    "select",
+                    {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.groupId,
+                          expression: "groupId"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: { disabled: _vm.redactMode },
+                      on: {
+                        change: function($event) {
+                          var $$selectedVal = Array.prototype.filter
+                            .call($event.target.options, function(o) {
+                              return o.selected
+                            })
+                            .map(function(o) {
+                              var val = "_value" in o ? o._value : o.value
+                              return val
+                            })
+                          _vm.groupId = $event.target.multiple
+                            ? $$selectedVal
+                            : $$selectedVal[0]
+                        }
+                      }
+                    },
+                    [
+                      _c(
+                        "option",
+                        { attrs: { disabled: "", value: "", selected: "" } },
+                        [_vm._v("Выберите шаблон кп")]
+                      ),
+                      _vm._v(" "),
+                      _vm._l(_vm.offerGroupTemplates, function(
+                        offerGroupTemplate
+                      ) {
+                        return _c(
+                          "option",
+                          { domProps: { value: offerGroupTemplate.id } },
+                          [_vm._v(_vm._s(offerGroupTemplate.name))]
+                        )
+                      })
+                    ],
+                    2
+                  )
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-6" }, [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-secondary",
+                      attrs: { type: "submit", disabled: _vm.redactMode }
+                    },
+                    [_vm._v("Вставить КП")]
+                  )
+                ])
+              ])
+            ]
+          )
+        ])
+      ])
     ]),
     _vm._v(" "),
     _c("div", { staticClass: "col-12 generate-kp-tab" }, [
@@ -50168,12 +50280,13 @@ var render = function() {
             "ul",
             { staticClass: "nav nav-tabs" },
             [
-              _vm._l(_vm.offersTabs, function(offerTab) {
+              _vm._l(_vm.offersTabs, function(offerTab, index) {
                 return _c("li", { staticClass: "nav-item" }, [
                   _c(
                     "a",
                     {
                       staticClass: "nav-link",
+                      class: { "active show": index === 0 },
                       attrs: {
                         "data-toggle": "tab",
                         href: "#kp-edit-tab-" + offerTab.id
@@ -50251,11 +50364,12 @@ var render = function() {
           _c(
             "div",
             { staticClass: "tab-content mb-5" },
-            _vm._l(_vm.offersTabs, function(offerTab) {
+            _vm._l(_vm.offersTabs, function(offerTab, index) {
               return _c(
                 "div",
                 {
                   staticClass: "tab-pane fade",
+                  class: { "active show": index === 0 },
                   attrs: { id: "kp-edit-tab-" + offerTab.id }
                 },
                 [
@@ -50264,13 +50378,15 @@ var render = function() {
                     { staticClass: "nav nav-tabs" },
                     [
                       _vm._l(_vm.offersContentTabs[offerTab.id], function(
-                        offerContentTab
+                        offerContentTab,
+                        index
                       ) {
                         return _c("li", { staticClass: "nav-item" }, [
                           _c(
                             "a",
                             {
                               staticClass: "nav-link",
+                              class: { "active show": index === 0 },
                               attrs: {
                                 "data-toggle": "tab",
                                 href:
@@ -50403,12 +50519,14 @@ var render = function() {
                     "div",
                     { staticClass: "tab-content" },
                     _vm._l(_vm.offersContentTabs[offerTab.id], function(
-                      offerContentTab
+                      offerContentTab,
+                      index
                     ) {
                       return _c(
                         "div",
                         {
                           staticClass: "tab-pane fade",
+                          class: { "active show": index === 0 },
                           attrs: {
                             id:
                               "kp-" +
@@ -50975,7 +51093,6 @@ var render = function() {
                                         ],
                                         staticClass: "form-control",
                                         attrs: {
-                                          readonly: "",
                                           type: "number",
                                           min: "0",
                                           name:
@@ -51737,7 +51854,7 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", { attrs: { scope: "col" } }, [_vm._v("Розн. цена")]),
         _vm._v(" "),
-        _c("th", { attrs: { scope: "col" } }, [_vm._v("Мин. розн. цена")]),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("3я колонка")]),
         _vm._v(" "),
         _c("th", { attrs: { scope: "col" } }, [_vm._v("Спец. цена")]),
         _vm._v(" "),

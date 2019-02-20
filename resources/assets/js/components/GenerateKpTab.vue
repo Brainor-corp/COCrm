@@ -1,10 +1,31 @@
 <template>
     <div class="row">
         <div class="col-12 my-5">
-            <form id="getOfferGroup" @submit.prevent="getOfferGroup">
-                <input type="text" v-bind:disabled="redactMode" placeholder="id КП" v-model="groupId">
-                <button class="btn btn-secondary" type="submit" v-bind:disabled="redactMode">Вставить КП</button>
-            </form>
+            <div class="row">
+                <div class="col-6">
+                    <form id="getOfferGroup" @submit.prevent="getOfferGroup">
+                        <input type="text" v-bind:disabled="redactMode" placeholder="id КП" v-model="groupId">
+                        <button class="btn btn-secondary" type="submit" v-bind:disabled="redactMode">Вставить КП</button>
+                    </form>
+                </div>
+                <div class="col-6">
+                    <form id="getOfferGroupByTemplate" @submit.prevent="getOfferGroup" style="width:100%">
+                        <div class="row">
+                        <div class="col-6">
+                            <select class="form-control" v-bind:disabled="redactMode" v-model="groupId">
+                                <option disabled value="" selected>Выберите шаблон кп</option>
+                                <option v-for="offerGroupTemplate in offerGroupTemplates" :value="offerGroupTemplate.id">{{ offerGroupTemplate.name }}</option>
+                            </select>
+                        </div>
+                        <div class="col-6">
+                            <button class="btn btn-secondary" type="submit" v-bind:disabled="redactMode">Вставить КП</button>
+                        </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+
         </div>
         <div class="col-12 generate-kp-tab">
             <h3>Редактирование КП</h3>
@@ -12,8 +33,8 @@
                 <input class="form-control my-3" type="text" :name="'offer_group[name]'" v-model="offerGroup.name"/>
                 <h3>Оборудование</h3>
                 <ul class="nav nav-tabs">
-                    <li v-for="offerTab in offersTabs" class="nav-item">
-                        <a class="nav-link" data-toggle="tab" :href="'#kp-edit-tab-'+offerTab.id">
+                    <li v-for="(offerTab, index) in offersTabs" class="nav-item">
+                        <a class="nav-link" v-bind:class="{ 'active show': index === 0 }" data-toggle="tab" :href="'#kp-edit-tab-'+offerTab.id">
                             <div class="row align-items-baseline">
                                 <div class="col-10">
                                     <input class="form-control" type="text" :name="'offer_group[offers]['+offerTab.id+'][name]'" v-model="offerTab.name"/><br>
@@ -31,10 +52,10 @@
                 </ul>
 
                 <div class="tab-content mb-5">
-                    <div v-for="offerTab in offersTabs" :id="'kp-edit-tab-'+offerTab.id" class="tab-pane fade">
+                    <div v-for="(offerTab, index) in offersTabs" :id="'kp-edit-tab-'+offerTab.id" class="tab-pane fade" v-bind:class="{ 'active show': index === 0 }">
                         <ul class="nav nav-tabs">
-                            <li v-for="offerContentTab in offersContentTabs[offerTab.id]" class="nav-item">
-                                <a class="nav-link" data-toggle="tab" :href="'#kp-'+offerTab.id+'-content-edit-tab-'+offerContentTab.id">
+                            <li v-for="(offerContentTab,index) in offersContentTabs[offerTab.id]" class="nav-item">
+                                <a class="nav-link" v-bind:class="{ 'active show': index === 0 }" data-toggle="tab" :href="'#kp-'+offerTab.id+'-content-edit-tab-'+offerContentTab.id">
                                     <select v-bind:disabled="types[selected[offerTab.id][offerContentTab.id]][0].slug === 'rashodnye-materialy'" class="type-select" :data-toggle="'tooltip-'+offerTab.id+'-'+offerContentTab.id" title="Сначала выберите тип" v-model="selected[offerTab.id][offerContentTab.id]">
                                         <option disabled value="new">Выберите</option>
                                         <option v-for="type in types" v-if="type[0]!='new'" :value="type[0].id">{{ type[0].name }}</option>
@@ -49,7 +70,7 @@
                         </ul>
 
                         <div class="tab-content">
-                            <div v-for="offerContentTab in offersContentTabs[offerTab.id]" :id="'kp-'+offerTab.id+'-content-edit-tab-'+offerContentTab.id" class="tab-pane fade">
+                            <div v-for="(offerContentTab, index) in offersContentTabs[offerTab.id]" :id="'kp-'+offerTab.id+'-content-edit-tab-'+offerContentTab.id" class="tab-pane fade" v-bind:class="{ 'active show': index === 0 }">
                                 <table class="table table-bordered">
                                     <thead>
                                     <tr>
@@ -59,7 +80,7 @@
                                         <th scope="col">Количество</th>
                                         <th scope="col">Высчитанная цена</th>
                                         <th scope="col">Розн. цена</th>
-                                        <th scope="col">Мин. розн. цена</th>
+                                        <th scope="col">3я колонка</th>
                                         <th scope="col">Спец. цена</th>
                                         <th scope="col"></th>
                                     </tr>
@@ -95,7 +116,7 @@
                                             <input class="form-control" type="number" min="0" :name="'offer_group[offers]['+offerTab.id+'][equipments]['+types[selected[offerTab.id][offerContentTab.id]][0].slug+']['+row.id+'][quantity]'" v-model="row.quantity"/>
                                         </td>
                                         <td>
-                                            <input class="form-control" readonly type="number" min="0" :name="'offer_group[offers]['+offerTab.id+'][equipments]['+types[selected[offerTab.id][offerContentTab.id]][0].slug+']['+row.id+'][price]'" v-model="row.price"/>
+                                            <input class="form-control" type="number" min="0" :name="'offer_group[offers]['+offerTab.id+'][equipments]['+types[selected[offerTab.id][offerContentTab.id]][0].slug+']['+row.id+'][price]'" v-model="row.price"/>
                                         </td>
                                         <td>
                                             <input @change="recalcPrice(offerTab.id, offerContentTab.id, row.id)" class="form-control" type="number" min="0" :name="'offer_group[offers]['+offerTab.id+'][equipments]['+types[selected[offerTab.id][offerContentTab.id]][0].slug+']['+row.id+'][price_trade]'" v-model="row.price_trade"/>
@@ -220,6 +241,7 @@
                     noTax: 1
                 },
                 adjustmentPrePrice:[],
+                offerGroupTemplates:[],
                 adjustmentPrePriceKeys:{
                     VAT: "НДС: ",
                     additionalDiscount: "Доп. Скидка: ",
@@ -229,7 +251,7 @@
                     totalWorkPriceNoVAT: "За работы без НДС: ",
                 },
                 results: [],
-                groupId: null,
+                groupId: '',
                 autocompletesDisplays: {
                     equipments: [[[]]],
                     works: []
@@ -252,7 +274,6 @@
             axios.post('/getAllEquipmentTypes')
                 .then((res) => {
                     this.types = res.data;
-                    console.log(this.types);
 
                     if(this.groupId !== null){
                          this.getOfferGroup();
@@ -316,8 +337,11 @@
         created: function (){
             this.updateOfferGroup;
             this.groupId = this.offerGroupID;
-
-
+            axios.post('/getOfferGroupTemplates')
+                .then(res=>{
+                    this.offerGroupTemplates = res.data;
+                });
+            console.log(this.offerGroupTemplates);
         },
         mounted() {
             document.addEventListener("click", this.handleClickOutside);
@@ -704,7 +728,7 @@
             },
             recalcPrice(offerTabId, offerContentTabId, rowId){
                 let row = this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId];
-                row['price'] = Math.round((row['price_small_trade'] - row['price_special'])/2) + row['price_special'];
+                row['price'] = Math.round((parseInt(row['price_small_trade']) - parseInt(row['price_special']))/2) + parseInt(row['price_special']);
                 this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId] = row;
             }
         }
