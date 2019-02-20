@@ -193,6 +193,6 @@ class OfferController extends Controller
         }
         $offerGroup->equipment()->sync($buffWork);
         $offerGroup->save();
-        return $offerGroup;
+        return url('kp/' . $offerGroup->uuid);
     }
 }

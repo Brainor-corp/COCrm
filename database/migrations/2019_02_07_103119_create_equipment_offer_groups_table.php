@@ -13,7 +13,7 @@ class CreateEquipmentOfferGroupsTable extends Migration
      */
     public function up()
     {
-        Schema::create('equipment_offer_groups', function (Blueprint $table) {
+        Schema::create('equipment_offer_group', function (Blueprint $table) {
             $table->bigInteger('equipment_id');
             $table->bigInteger('offer_group_id');
             $table->integer('quantity')->default(1);
@@ -27,6 +27,6 @@ class CreateEquipmentOfferGroupsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('equipment_offer_groups');
+        Schema::dropIfExists('equipment_offer_group');
     }
 }

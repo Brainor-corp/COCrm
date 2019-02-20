@@ -17,6 +17,7 @@ class BRHelper
     public static function getModelRelationships($model) {
         $relationships = [];
 
+
         foreach((new ReflectionClass($model))->getMethods(ReflectionMethod::IS_PUBLIC) as $method)
         {
             if ($method->class != get_class($model) ||
@@ -29,12 +30,13 @@ class BRHelper
                 $return = $method->invoke($model);
 
                 if ($return instanceof Relation) {
+
                     $relationships[$method->getName()] = [
                         'type' => (new ReflectionClass($return))->getShortName(),
                         'model' => (new ReflectionClass($return->getRelated()))->getName()
                     ];
                 }
-            } catch(ErrorException $e) {}
+            } catch(\Exception $e) {}
         }
 
         return $relationships;

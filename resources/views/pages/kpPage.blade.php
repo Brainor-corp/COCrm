@@ -67,7 +67,7 @@
                                     <td class="align-middle text-center">{{ $equipment->pivot->counted_price * $equipment->pivot->quantity }}</td>
                                 </tr>
                             @else
-                                @php($consumableSum += $equipment->pivot->price * $equipment->pivot->quantity)
+                                @php($consumableSum += $equipment->pivot->counted_price * $equipment->pivot->quantity)
                             @endif
                         @endforeach
                         <tr>

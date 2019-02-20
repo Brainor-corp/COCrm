@@ -29,15 +29,14 @@ class OfferGroups extends Section
 //    protected $model = '\App\Equipment';
 
     public static function onDisplay(Request $request){
-//        $offerGroups = OfferGroup::all();
-//        $display = Display::custom([])->setView(View::make('admin.kpSection')->with(compact('offerGroups')));
 
         $display = Display::table([
             Column::text('name', 'Наименование')->setSortable(true),
             Column::text('uuid', 'Уникальный ID'),
+            Column::text('template', 'Является шаблоном'),
         ])
             ->setPagination(10)
-        ->setFilter([FilterType::text('name', '-'), null]);
+        ->setFilter([FilterType::text('name', '-'), null, null]);
 
         return $display;
     }
@@ -57,6 +56,9 @@ class OfferGroups extends Section
                     ->setLanguage('ru')
                     ->setTodayBtn(true)
                     ->setClearBtn(true),
+                FormField::select('template', 'Является шаблоном')
+                    ->setOptions([0=>'Нет', 1=>'Да'])
+                    ->setRequired(true),
                 FormField::custom(View::make('admin.kpSection')->with(compact('request')))
             ])
         ]);

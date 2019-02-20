@@ -2,47 +2,89 @@
 
 namespace App\Admin\Sections;
 
-use App\Contact;
-use App\Role;
+use App\Post;
 use App\User;
 use Bradmin\Section;
 use Bradmin\SectionBuilder\Display\BaseDisplay\Display;
 use Bradmin\SectionBuilder\Display\Table\Columns\BaseColumn\Column;
-use Bradmin\SectionBuilder\Display\Table\DisplayTable;
 use Bradmin\SectionBuilder\Form\BaseForm\Form;
 use Bradmin\SectionBuilder\Form\Panel\Columns\BaseColumn\FormColumn;
 use Bradmin\SectionBuilder\Form\Panel\Fields\BaseField\FormField;
-//use Illuminate\Support\Facades\Request;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\View\View;
+use Illuminate\Support\Carbon;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Hash;
 
 class Users extends Section
 {
     protected $title = 'Пользователи';
-    protected $model = '\App\User';
 
-    public static function onDisplay(Request $request){
+    public static function onDisplay(){
+        $display = Display::table([
+            Column::text('id', '#'),
+            Column::text('name', 'Имя'),
+            Column::text('email', 'EMail'),
+        ])->setPagination(10);
 
+        return $display;
     }
 
     public static function onCreate()
     {
-        return self::onEdit();
+        $form = Form::panel([
+            FormColumn::column([
+                FormField::input('name', 'Имя')->setRequired(true),
+                FormField::input('last', 'Фамилия')->setRequired(true),
+                FormField::input('middle', 'Отчество')->setRequired(true),
+                FormField::input('company', 'Компания')->setRequired(true),
+                FormField::input('position', 'Должность')->setRequired(true),
+                FormField::hidden('verified')->setValue(0),
+                FormField::input('email', 'EMail')->setRequired(true)
+                    ->setType('email'),
+                FormField::input('password', 'Пароль')
+                    ->setRequired(true)
+                    ->setType('password'),
+                FormField::input('repeat_password', 'Повторите пароль')
+                    ->setRequired(true)
+                    ->setType('password'),
+            ]),
+        ]);
+
+        return $form;
     }
 
     public static function onEdit()
     {
+        $form = Form::panel([
+            FormColumn::column([
+                FormField::input('name', 'Имя')->setRequired(true),
+                FormField::input('last', 'Фамилия')->setRequired(true),
+                FormField::input('middle', 'Отчество')->setRequired(true),
+                FormField::input('company', 'Компания')->setRequired(true),
+                FormField::input('position', 'Должность')->setRequired(true),
+                FormField::input('email', 'EMail')->setRequired(true)
+                    ->setType('email'),
+            ]),
+        ]);
 
+        return $form;
     }
 
     public function beforeSave(Request $request, $model = null)
     {
+        if($request->password !== $request->repeat_password){
+            throw  new \Exception("Пароли не совпадают, попытайтесь снова");
+        }
+
         $duplicate = User::where([['email', $request->email],['id', '!=', $request->id]])->first();
         if($duplicate){
             throw  new \Exception("Пользователь с таким адресом электронной почты уже зарегестрирован!");
         }
+    }
+
+    public function afterSave(Request $request, $model = null)
+    {
+        $model->password = Hash::make($request->password);
+        $model->save();
     }
 
 }

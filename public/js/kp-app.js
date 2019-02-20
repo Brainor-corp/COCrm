@@ -50004,6 +50004,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                     break;
                 }
             }
+            this.offersVariantsCount--;
         },
         addWork: function addWork() {
             this.works.push({
@@ -50077,7 +50078,10 @@ var render = function() {
           _vm._v(" "),
           _c(
             "button",
-            { attrs: { type: "submit", disabled: _vm.redactMode } },
+            {
+              staticClass: "btn btn-secondary",
+              attrs: { type: "submit", disabled: _vm.redactMode }
+            },
             [_vm._v("Вставить КП")]
           )
         ]
@@ -50108,7 +50112,7 @@ var render = function() {
                 expression: "offerGroup.name"
               }
             ],
-            staticClass: "my-3",
+            staticClass: "form-control my-3",
             attrs: { type: "text", name: "offer_group[name]" },
             domProps: { value: _vm.offerGroup.name },
             on: {
@@ -50139,7 +50143,7 @@ var render = function() {
                       }
                     },
                     [
-                      _c("div", { staticClass: "row" }, [
+                      _c("div", { staticClass: "row align-items-baseline" }, [
                         _c("div", { staticClass: "col-10" }, [
                           _c("input", {
                             directives: [
@@ -50150,6 +50154,7 @@ var render = function() {
                                 expression: "offerTab.name"
                               }
                             ],
+                            staticClass: "form-control",
                             attrs: {
                               type: "text",
                               name:
@@ -50187,7 +50192,7 @@ var render = function() {
                 ])
               }),
               _vm._v(" "),
-              _c("li", { staticClass: "nav-item" }, [
+              _c("li", { staticClass: "nav-item addOfferTab" }, [
                 _c(
                   "a",
                   {
@@ -50673,6 +50678,7 @@ var render = function() {
                                             expression: "row.code"
                                           }
                                         ],
+                                        staticClass: "form-control",
                                         attrs: {
                                           type: "text",
                                           name:
@@ -50775,7 +50781,11 @@ var render = function() {
                                                   [
                                                     _vm._v(
                                                       "\n                                                " +
-                                                        _vm._s(result["code"]) +
+                                                        _vm._s(
+                                                          result["code"] +
+                                                            " - " +
+                                                            result["name"]
+                                                        ) +
                                                         "\n                                            "
                                                     )
                                                   ]
@@ -50796,6 +50806,7 @@ var render = function() {
                                             expression: "row.name"
                                           }
                                         ],
+                                        staticClass: "form-control",
                                         attrs: {
                                           type: "text",
                                           name:
@@ -50837,6 +50848,7 @@ var render = function() {
                                             expression: "row.points"
                                           }
                                         ],
+                                        staticClass: "form-control",
                                         attrs: {
                                           type: "text",
                                           name:
@@ -50878,6 +50890,7 @@ var render = function() {
                                             expression: "row.quantity"
                                           }
                                         ],
+                                        staticClass: "form-control",
                                         attrs: {
                                           type: "number",
                                           min: "0",
@@ -50920,6 +50933,7 @@ var render = function() {
                                             expression: "row.price"
                                           }
                                         ],
+                                        staticClass: "form-control",
                                         attrs: {
                                           type: "number",
                                           min: "0",
@@ -50962,6 +50976,7 @@ var render = function() {
                                             expression: "row.price_trade"
                                           }
                                         ],
+                                        staticClass: "form-control",
                                         attrs: {
                                           type: "number",
                                           min: "0",
@@ -51004,6 +51019,7 @@ var render = function() {
                                             expression: "row.price_small_trade"
                                           }
                                         ],
+                                        staticClass: "form-control",
                                         attrs: {
                                           type: "number",
                                           min: "0",
@@ -51048,6 +51064,7 @@ var render = function() {
                                             expression: "row.price_special"
                                           }
                                         ],
+                                        staticClass: "form-control",
                                         attrs: {
                                           type: "number",
                                           min: "0",
@@ -51157,6 +51174,7 @@ var render = function() {
                     expression: "adjusters['noTax']"
                   }
                 ],
+                staticClass: "form-control",
                 attrs: {
                   type: "number",
                   min: "0",
@@ -51190,6 +51208,7 @@ var render = function() {
                     expression: "adjusters['number']"
                   }
                 ],
+                staticClass: "form-control",
                 attrs: {
                   type: "number",
                   min: "0",
@@ -51223,6 +51242,7 @@ var render = function() {
                     expression: "adjusters['days']"
                   }
                 ],
+                staticClass: "form-control",
                 attrs: {
                   type: "number",
                   min: "0",
@@ -51256,6 +51276,7 @@ var render = function() {
                     expression: "adjusters['fuel']"
                   }
                 ],
+                staticClass: "form-control",
                 attrs: {
                   type: "number",
                   min: "0",
@@ -51289,6 +51310,7 @@ var render = function() {
                     expression: "adjusters['wage']"
                   }
                 ],
+                staticClass: "form-control",
                 attrs: {
                   type: "number",
                   min: "1",
@@ -51308,7 +51330,7 @@ var render = function() {
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "col-auto" }, [
-              _c("label", { attrs: { for: "adjusters-wage" } }, [
+              _c("label", { attrs: { for: "adjusters-percent" } }, [
                 _vm._v("Процент монтажникам")
               ]),
               _c("br"),
@@ -51322,6 +51344,7 @@ var render = function() {
                     expression: "adjusters['percentage']"
                   }
                 ],
+                staticClass: "form-control",
                 attrs: {
                   type: "number",
                   min: "1",
@@ -51409,6 +51432,7 @@ var render = function() {
                               expression: "work.id"
                             }
                           ],
+                          staticClass: "form-control",
                           attrs: {
                             type: "hidden",
                             hidden: "hidden",
@@ -51434,6 +51458,7 @@ var render = function() {
                               expression: "work.code"
                             }
                           ],
+                          staticClass: "form-control",
                           attrs: {
                             type: "text",
                             name: "offer_group[works][" + key + "][code]"
@@ -51489,7 +51514,11 @@ var render = function() {
                                     [
                                       _vm._v(
                                         "\n                                " +
-                                          _vm._s(result["code"]) +
+                                          _vm._s(
+                                            result["code"] +
+                                              " - " +
+                                              result["name"]
+                                          ) +
                                           "\n                            "
                                       )
                                     ]
@@ -51510,6 +51539,7 @@ var render = function() {
                               expression: "work.name"
                             }
                           ],
+                          staticClass: "form-control",
                           attrs: {
                             type: "text",
                             name: "offer_group[works][" + key + "][name]"
@@ -51536,6 +51566,7 @@ var render = function() {
                               expression: "work.points"
                             }
                           ],
+                          staticClass: "form-control",
                           attrs: {
                             type: "text",
                             name: "offer_group[works][" + key + "][points]"
@@ -51562,6 +51593,7 @@ var render = function() {
                               expression: "work.pivot.quantity"
                             }
                           ],
+                          staticClass: "form-control",
                           attrs: {
                             type: "number",
                             min: "0",
@@ -51841,6 +51873,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -51866,8 +51901,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 });
             } else {
                 __WEBPACK_IMPORTED_MODULE_0_axios___default.a.post('/updateOfferGroup', [this.offerGroup, this.offerGroupID]).then(function (res) {
-                    console.log(res.data);
-                    // this.url = res.data;
+                    _this.url = res.data;
                 }).catch(function (error) {
                     return _this.err = error;
                 });
@@ -52112,6 +52146,12 @@ var render = function() {
       : _vm._e(),
     _vm._v(" "),
     _c("div", { staticClass: "mx-auto mb-5" }, [
+      _vm.url
+        ? _c("input", { attrs: { type: "url" }, domProps: { value: _vm.url } })
+        : _vm._e()
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "mx-auto mb-5" }, [
       _vm.offerGroup.offer_group
         ? _c(
             "a",
@@ -52128,12 +52168,6 @@ var render = function() {
             },
             [_vm._v("Сохранить группу КП")]
           )
-        : _vm._e(),
-      _vm._v(" "),
-      _vm.url
-        ? _c("a", { attrs: { href: _vm.url, target: "_blank" } }, [
-            _vm._v(_vm._s(_vm.url))
-          ])
         : _vm._e(),
       _vm._v(" "),
       _vm.err
