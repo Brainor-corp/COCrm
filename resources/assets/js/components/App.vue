@@ -79,7 +79,7 @@
                                         if(stop){
                                             $.each(equipments, (index, equipment) => {
                                                 // this.offerGroup['offer_group']['offers'][offer]['equipments'][type][index]['price'] = (((equipment['price_small_trade'] - equipment['price_special'])/2) + equipment['price_special']) * equipment['quantity'];
-                                                this.offerGroup['offer_group']['offers'][offer]['equipments'][type][index]['counted_price'] = (parseFloat(equipment['price_small_trade']) + parseFloat(equipment['price_special']))/2 * parseFloat(equipment['quantity']);
+                                                this.offerGroup['offer_group']['offers'][offer]['equipments'][type][index]['counted_price'] = (parseFloat(equipment['price_small_trade']) + parseFloat(equipment['price_special']))/2;
                                             });
                                         }
                                     });

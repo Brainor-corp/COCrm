@@ -6,6 +6,7 @@ use App\Offer;
 use App\OfferGroup;
 use App\Setting;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\App;
 
 class COController extends Controller
@@ -56,7 +57,7 @@ class COController extends Controller
         ];
         $pdf->loadView('pages.kpPDFPage', $vars);
 
-        return $pdf->download('KommercheskoePredlojenie.pdf');
+        return $pdf->download('Kommercheskoe Predlojenie '.Carbon::now()->format('d.m.Y h-i').'.pdf');
     }
 
     public function calculateAllPrices(Request $request){
