@@ -28,7 +28,7 @@ class User extends Authenticatable
 
     public function offerGroups()
     {
-        return $this->hasMany(OfferGroup::class);
+        return $this->hasMany(OfferGroup::class,'user_id', 'id');
     }
     public function getFullNameAttribute(){
         return $this->middle . ' ' . $this->name . ' ' . $this->last;
