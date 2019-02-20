@@ -79,7 +79,7 @@ class UploadsController extends Controller
                             'price' => 0,
                             'class' => $type->class,
                         ];
-                        DB::table('equipment')->update($toUpdate);
+                        DB::table('equipment')->where('code', $row[2])->update($toUpdate);
                     } else {
                         $toInsert = [
                             'type_id' => $type->id,
