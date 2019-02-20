@@ -46,7 +46,8 @@ class OfferGroups extends Section
         return false;
     }
 
-    public static function onEdit(Request $request){
+    public static function onEdit($model){
+        $modelData = OfferGroup::where('id', $model)->first();
         $form = Form::panel([
             FormColumn::column([
                 FormField::input('name', 'Наименовение'),
@@ -59,7 +60,7 @@ class OfferGroups extends Section
                 FormField::select('template', 'Является шаблоном')
                     ->setOptions([0=>'Нет', 1=>'Да'])
                     ->setRequired(true),
-                FormField::custom(View::make('admin.kpSection')->with(compact('request')))
+                FormField::custom(View::make('admin.kpSection')->with(compact('model','modelData')))
             ])
         ]);
 
