@@ -30,6 +30,7 @@ Route::group(['middleware' => ['web', 'auth']], function () {
     Route::post('/getOfferGroup', 'COController@getOfferGroup')->name('getOfferGroup');
     Route::post('/findEquipmentByCode', 'EquipmentController@findEquipmentByCode')->name('findEquipment');
     Route::post('/findWorkByCode', 'EquipmentController@findWorkByCode')->name('findWork');
+    Route::get('/searchEquipment', 'EquipmentController@searchEquipment')->name('searchEquipment');
 
 
     Route::post('/calculateAllPrices', 'COController@calculateAllPrices')->name('calculateAllPrices');

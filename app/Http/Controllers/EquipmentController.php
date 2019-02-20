@@ -10,6 +10,7 @@ namespace App\Http\Controllers;
 
 use App\Equipment;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class EquipmentController extends Controller
 
@@ -20,10 +21,18 @@ class EquipmentController extends Controller
         }
         return [];
     }
+
     public function findWorkByCode(Request $request){
         if(isset($request->code)){
             return Equipment::where([['code', 'like', '%' . $request->code . '%'], ['class', 'work']])->with('type')->limit(10)->get();
         }
         return [];
+    }
+
+    public function searchEquipment(Request $request) {
+        $equipment = Equipment::where('name', 'like', '%' . $request->term . '%')
+            ->select(['id', 'name'])->limit(10)->get();
+
+        return ['results' => $equipment];
     }
 }
