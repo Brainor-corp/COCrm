@@ -34,7 +34,7 @@ class COController extends Controller
         $groupedArr = $offersGroup->toArray();
 
         foreach ($offersGroup->offers as $key => $offer) {
-            $groupedArr['offers'][$key]['equipments'] = $offer->equipments->groupBy('type.name');
+            $groupedArr['offers'][$key]['equipments'] = $offer->equipments->groupBy('pivot.type');
         }
 
         return $groupedArr;
