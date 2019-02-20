@@ -37,7 +37,7 @@ class OfferController extends Controller
                 $createOffer->group_id = $createGroup->id;
                 $createOffer->name = $offer['name'];
                 $createOffer->save();
-                foreach ($offer['equipments'] as $equipment_tab){
+                foreach ($offer['equipments'] as $type => $equipment_tab){
                     foreach($equipment_tab as $equipment){
                         if($equipment['base_id'] === '-1'){
                             $createEquipment = new Equipment();
@@ -61,6 +61,7 @@ class OfferController extends Controller
                                 'price_special' => $equipment['price_special'],
                                 'counted_price' => $equipment['counted_price'],
                                 'comment' => $equipment['comment'],
+                                'type' => $type,
                             ));
                         }
                         else{
@@ -72,6 +73,7 @@ class OfferController extends Controller
                                 'price_special' => $equipment['price_special'],
                                 'counted_price' => $equipment['counted_price'],
                                 'comment' => $equipment['comment'],
+                                'type' => $type,
                             ));
                         }
                     }

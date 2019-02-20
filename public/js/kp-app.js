@@ -49282,7 +49282,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                                     if (stop) {
                                         __WEBPACK_IMPORTED_MODULE_4_jquery___default.a.each(equipments, function (index, equipment) {
                                             // this.offerGroup['offer_group']['offers'][offer]['equipments'][type][index]['price'] = (((equipment['price_small_trade'] - equipment['price_special'])/2) + equipment['price_special']) * equipment['quantity'];
-                                            _this.offerGroup['offer_group']['offers'][offer]['equipments'][type][index]['counted_price'] = (parseFloat(equipment['price_small_trade']) + parseFloat(equipment['price_special'])) / 2;
+                                            _this.offerGroup['offer_group']['offers'][offer]['equipments'][type][index]['counted_price'] = Math.floor(parseFloat(equipment['price_small_trade']) + parseFloat(equipment['price_special'])) / 2;
                                         });
                                     }
                                 });
@@ -49627,6 +49627,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
         __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post('/getAllEquipmentTypes').then(function (res) {
             _this.types = res.data;
+            console.log(_this.types);
+
             if (_this.groupId !== null) {
                 _this.getOfferGroup();
             } else {
@@ -49940,13 +49942,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                                 description: equipment.description,
                                 quantity: equipment.pivot.quantity,
                                 points: equipment.points,
-                                price: equipment.pivot.price,
-                                price_trade: equipment.pivot.price_trade,
-                                price_small_trade: equipment.pivot.price_small_trade,
-                                price_special: equipment.pivot.price_special,
+                                price: equipment.price,
+                                price_trade: equipment.price_trade,
+                                price_small_trade: equipment.price_small_trade,
+                                price_special: equipment.price_special,
                                 comment: equipment.pivot.comment,
-                                type_id: equipment.type.id,
-                                type: equipment.type.slug,
+                                type_id: equipment.pivot.type_id,
+                                type: equipment.pivot.type,
                                 class: equipment.type.class
                             });
                             lastRow++;
@@ -49987,6 +49989,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                 _this6.adjusters['fuel'] = resp.data.fuel_number;
                 _this6.adjusters['wage'] = resp.data.adjusters_wage;
                 _this6.adjusters['percentage'] = resp.data.pay_percentage;
+                __WEBPACK_IMPORTED_MODULE_0_jquery___default.a.each(_this6.offersContentTabs, function (offerTabId, offerTab) {
+                    __WEBPACK_IMPORTED_MODULE_0_jquery___default.a.each(offerTab, function (offerContentTabId, offerContentTab) {
+                        __WEBPACK_IMPORTED_MODULE_0_jquery___default.a.each(offerContentTab['rows'], function (rowId, row) {
+                            _this6.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['price'] = Math.round((row['price_small_trade'] - row['price_special']) / 2) + row['price_special'];
+                        });
+                    });
+                });
             });
         },
         deleteRow: function deleteRow(offerTabId, offerContentTabId, rowId) {
@@ -51931,6 +51940,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
 
 
 
@@ -51953,13 +51965,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 __WEBPACK_IMPORTED_MODULE_0_axios___default.a.post('/saveOfferGroup', this.offerGroup).then(function (res) {
                     _this.url = res.data;
                 }).catch(function (error) {
-                    return _this.err = error;
+                    _this.err = true;
+                    console.log(error);
                 });
             } else {
                 __WEBPACK_IMPORTED_MODULE_0_axios___default.a.post('/updateOfferGroup', [this.offerGroup, this.offerGroupID]).then(function (res) {
                     _this.url = res.data;
                 }).catch(function (error) {
-                    return _this.err = error;
+                    _this.err = true;
+                    console.log(error);
                 });
             }
         },
@@ -52237,6 +52251,10 @@ var render = function() {
         ])
       : _vm._e(),
     _vm._v(" "),
+    _vm.err
+      ? _c("div", { staticClass: "col-12 mx-auto mb-5" }, [_vm._m(2)])
+      : _vm._e(),
+    _vm._v(" "),
     _c("div", { staticClass: "mx-auto mb-5" }, [
       _vm.offerGroup.offer_group
         ? _c(
@@ -52254,10 +52272,6 @@ var render = function() {
             },
             [_vm._v("Сохранить группу КП")]
           )
-        : _vm._e(),
-      _vm._v(" "),
-      _vm.err
-        ? _c("span", { staticClass: "text-danger" }, [_vm._v(_vm._s(_vm.err))])
         : _vm._e()
     ])
   ])
@@ -52296,6 +52310,18 @@ var staticRenderFns = [
         _c("th", { attrs: { scope: "col" } }, [_vm._v("Ед.измерения")]),
         _vm._v(" "),
         _c("th", { attrs: { scope: "col" } }, [_vm._v("Количество")])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("span", { staticClass: "text-danger text-center" }, [
+      _c("h2", [
+        _vm._v(
+          "Произошла ошибка. Пожалуйста, обновите страницу и попробуйте снова."
+        )
       ])
     ])
   }

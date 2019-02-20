@@ -101,10 +101,13 @@
             <label for="url-input">Ссылка на КП</label>
             <input id="url-input" class="form-control" readonly :value="url" type="text"><button class="btn btn-warning" @click.prevent="copyUrl">Скопировать ссылку <i class="far fa-copy"></i></button>
         </div>
+        <div v-if="err" class="col-12 mx-auto mb-5">
+            <span class="text-danger text-center"><h2>Произошла ошибка. Пожалуйста, обновите страницу и попробуйте снова.</h2></span>
+        </div>
         <div class="mx-auto mb-5">
             <a href="" class="btn btn-lg btn-primary create-btn d-flex align-items-center justify-content-center" v-if="offerGroup.offer_group" @click.prevent="saveOfferGroup">Сохранить группу КП</a>
-            <span v-if="err" class="text-danger">{{err}}</span>
         </div>
+
     </div>
 </template>
 
@@ -130,7 +133,10 @@
                         .then((res) => {
                             this.url = res.data;
                         })
-                        .catch(error => this.err = error);
+                        .catch(error => {
+                            this.err = true;
+                            console.log(error);
+                        });
                 }
                 else{
                     axios
@@ -138,7 +144,10 @@
                         .then((res) => {
                             this.url = res.data;
                         })
-                        .catch(error => this.err = error);
+                        .catch(error => {
+                            this.err = true;
+                            console.log(error);
+                        });
                 }
             },
             copyUrl(){

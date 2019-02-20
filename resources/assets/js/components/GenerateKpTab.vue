@@ -252,6 +252,8 @@
             axios.post('/getAllEquipmentTypes')
                 .then((res) => {
                     this.types = res.data;
+                    console.log(this.types);
+
                     if(this.groupId !== null){
                          this.getOfferGroup();
                     }
@@ -309,6 +311,7 @@
                         this.works = res.data[0].work;
                     }
                 });
+
         },
         created: function (){
             this.updateOfferGroup;
@@ -577,13 +580,13 @@
                                             description: equipment.description,
                                             quantity: equipment.pivot.quantity,
                                             points: equipment.points,
-                                            price: equipment.pivot.price,
-                                            price_trade: equipment.pivot.price_trade,
-                                            price_small_trade: equipment.pivot.price_small_trade,
-                                            price_special: equipment.pivot.price_special,
+                                            price: equipment.price,
+                                            price_trade: equipment.price_trade,
+                                            price_small_trade: equipment.price_small_trade,
+                                            price_special: equipment.price_special,
                                             comment: equipment.pivot.comment,
-                                            type_id: equipment.type.id,
-                                            type: equipment.type.slug,
+                                            type_id: equipment.pivot.type_id,
+                                            type: equipment.pivot.type,
                                             class: equipment.type.class,
                                         }
                                     );
@@ -627,6 +630,13 @@
                         this.adjusters['fuel'] = resp.data.fuel_number;
                         this.adjusters['wage'] = resp.data.adjusters_wage;
                         this.adjusters['percentage'] = resp.data.pay_percentage;
+                        $.each(this.offersContentTabs, (offerTabId, offerTab) => {
+                            $.each(offerTab, (offerContentTabId, offerContentTab) => {
+                                $.each(offerContentTab['rows'], (rowId, row) => {
+                                    this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['price'] = Math.round((row['price_small_trade'] - row['price_special'])/2) + row['price_special'];
+                                });
+                            });
+                        });
                     });
             },
             deleteRow(offerTabId, offerContentTabId, rowId){
