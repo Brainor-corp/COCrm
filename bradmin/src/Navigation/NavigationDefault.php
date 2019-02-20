@@ -27,6 +27,11 @@ class NavigationDefault
                 'url' => '/bradmin/Settings',
                 'icon' => 'fas fa-cog',
                 'text' => 'Настройки'
+            ],
+            [
+                'url' => '/bradmin/ExcelUploads',
+                'icon' => 'fas fa-cog',
+                'text' => 'Excel загрузка'
             ]
         ];
 

@@ -26,7 +26,7 @@ use Illuminate\Http\Request;
 class OfferGroups extends Section
 {
     protected $title = 'Группа КП';
-//    protected $model = '\App\Equipment';
+    protected $model = '\App\OfferGroup';
 
     public static function onDisplay(Request $request){
 //        $offerGroups = OfferGroup::all();
