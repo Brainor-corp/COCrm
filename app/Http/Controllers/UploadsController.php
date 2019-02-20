@@ -67,7 +67,7 @@ class UploadsController extends Controller
                     && !empty($row[7])
                     && !empty($row[8])
                 ) {
-                    if(Equipment::where('code', $row[2])->exists()) {
+                    if(DB::table('equipment')->where('code', $row[2])->exists()) {
                         $toUpdate = [
                             'type_id' => $type->id,
                             'name' => $row[3],
