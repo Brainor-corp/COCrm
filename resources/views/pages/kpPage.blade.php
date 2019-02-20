@@ -14,10 +14,10 @@
                 </div>
                 <div class="col-4 mt-3">
                     <div class="col-12 float-right">
-                        <p class="mb-0 text-white h4 text-right float-right"><img class="svg-icon mx-2" src="{{ asset('images/svg/phone-solid.svg') }}" alt="phone">{{ $offersGroup->user->tel or '+7(495)003-45-62'}}</p>
+                        <p class="mb-0 text-white h4 text-right float-right"><img class="svg-icon mx-2" src="{{ asset('images/svg/phone-solid.svg') }}" alt="phone">{{ $offersGroup->user->tel }}</p>
                     </div>
                     <div class="float-right">
-                        <p class="mb-0 text-white h4 text-right"><img class="svg-icon mx-2" src="{{ asset('images/svg/envelope-regular.svg') }}" alt="email">{{ $offersGroup->user->contact_email or 'zapros@aronasb.ru'}}</p>
+                        <p class="mb-0 text-white h4 text-right"><img class="svg-icon mx-2" src="{{ asset('images/svg/envelope-regular.svg') }}" alt="email">{{ $offersGroup->user->contact_email }}</p>
                     </div>
                 </div>
             </div>
