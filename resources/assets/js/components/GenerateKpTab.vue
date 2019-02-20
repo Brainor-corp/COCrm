@@ -3,20 +3,20 @@
         <div class="col-12 my-5">
             <form id="getOfferGroup" @submit.prevent="getOfferGroup">
                 <input type="text" v-bind:disabled="redactMode" placeholder="id КП" v-model="groupId">
-                <button type="submit" v-bind:disabled="redactMode">Вставить КП</button>
+                <button class="btn btn-secondary" type="submit" v-bind:disabled="redactMode">Вставить КП</button>
             </form>
         </div>
         <div class="col-12 generate-kp-tab">
             <h3>Редактирование КП</h3>
             <form id="kp-generate-form" @change.prevent="updateOfferGroup">
-                <input class="my-3" type="text" :name="'offer_group[name]'" v-model="offerGroup.name"/>
+                <input class="form-control my-3" type="text" :name="'offer_group[name]'" v-model="offerGroup.name"/>
                 <h3>Оборудование</h3>
                 <ul class="nav nav-tabs">
                     <li v-for="offerTab in offersTabs" class="nav-item">
                         <a class="nav-link" data-toggle="tab" :href="'#kp-edit-tab-'+offerTab.id">
-                            <div class="row">
+                            <div class="row align-items-baseline">
                                 <div class="col-10">
-                                    <input type="text" :name="'offer_group[offers]['+offerTab.id+'][name]'" v-model="offerTab.name"/><br>
+                                    <input class="form-control" type="text" :name="'offer_group[offers]['+offerTab.id+'][name]'" v-model="offerTab.name"/><br>
                                 </div>
                                 <div class="col-2">
                                     <span @click="deleteOffer(offerTab.id)">X</span>
@@ -25,7 +25,7 @@
                         </a>
                     </li>
 
-                    <li class="nav-item">
+                    <li class="nav-item addOfferTab">
                         <a class="nav-link" @click.prevent="addOfferTab">+</a>
                     </li>
                 </ul>
@@ -74,37 +74,37 @@
                                             <input type="hidden" hidden="hidden" :name="'offer_group[offers]['+offerTab.id+'][equipments]['+types[selected[offerTab.id][offerContentTab.id]][0].slug+']['+row.id+'][price_special]'" v-model="row.price_special"/>
                                             <input type="hidden" hidden="hidden" :name="'offer_group[offers]['+offerTab.id+'][equipments]['+types[selected[offerTab.id][offerContentTab.id]][0].slug+']['+row.id+'][comment]'" v-model="row.comment"/>
                                             <input type="hidden" hidden="hidden" :name="'offer_group[offers]['+offerTab.id+'][equipments]['+types[selected[offerTab.id][offerContentTab.id]][0].slug+']['+row.id+'][type]'" v-model="row.type"/>
-                                            <input type="text" @keyup="searchEquipmentByCode(row.code, offerTab.id, offerContentTab.id, row.id)" :name="'offer_group[offers]['+offerTab.id+'][equipments]['+types[selected[offerTab.id][offerContentTab.id]][0].slug+']['+row.id+'][code]'" v-model="row.code" />
+                                            <input class="form-control" type="text" @keyup="searchEquipmentByCode(row.code, offerTab.id, offerContentTab.id, row.id)" :name="'offer_group[offers]['+offerTab.id+'][equipments]['+types[selected[offerTab.id][offerContentTab.id]][0].slug+']['+row.id+'][code]'" v-model="row.code" />
 
                                             <ul :id="'autocomplete-results-e-'+offerTab.id+'-'+offerContentTab.id+'-'+row.id" v-show="autocompletesDisplays['equipments'][offerTab.id][offerContentTab.id][row.id]" class="autocomplete-results">
                                                 <li class="loading" v-if="isLoading">
                                                     Поиск...
                                                 </li>
                                                 <li v-else v-for="(result, i) in results" :key="i" @click.prevent="setResult(result, offerTab.id, offerContentTab.id, row.id)" class="autocomplete-result">
-                                                    {{ result['code'] }}
+                                                    {{ result['code'] + " - " + result['name'] }}
                                                 </li>
                                             </ul>
                                         </td>
                                         <td>
-                                            <input type="text" :name="'offer_group[offers]['+offerTab.id+'][equipments]['+types[selected[offerTab.id][offerContentTab.id]][0].slug+']['+row.id+'][name]'" v-model="row.name"/>
+                                            <input class="form-control" type="text" :name="'offer_group[offers]['+offerTab.id+'][equipments]['+types[selected[offerTab.id][offerContentTab.id]][0].slug+']['+row.id+'][name]'" v-model="row.name"/>
                                         </td>
                                         <td>
-                                            <input type="text" :name="'offer_group[offers]['+offerTab.id+'][equipments]['+types[selected[offerTab.id][offerContentTab.id]][0].slug+']['+row.id+'][points]'" v-model="row.points"/>
+                                            <input class="form-control" type="text" :name="'offer_group[offers]['+offerTab.id+'][equipments]['+types[selected[offerTab.id][offerContentTab.id]][0].slug+']['+row.id+'][points]'" v-model="row.points"/>
                                         </td>
                                         <td>
-                                            <input type="number" min="0" :name="'offer_group[offers]['+offerTab.id+'][equipments]['+types[selected[offerTab.id][offerContentTab.id]][0].slug+']['+row.id+'][quantity]'" v-model="row.quantity"/>
+                                            <input class="form-control" type="number" min="0" :name="'offer_group[offers]['+offerTab.id+'][equipments]['+types[selected[offerTab.id][offerContentTab.id]][0].slug+']['+row.id+'][quantity]'" v-model="row.quantity"/>
                                         </td>
                                         <td>
-                                            <input type="number" min="0" :name="'offer_group[offers]['+offerTab.id+'][equipments]['+types[selected[offerTab.id][offerContentTab.id]][0].slug+']['+row.id+'][price]'" v-model="row.price"/>
+                                            <input class="form-control" type="number" min="0" :name="'offer_group[offers]['+offerTab.id+'][equipments]['+types[selected[offerTab.id][offerContentTab.id]][0].slug+']['+row.id+'][price]'" v-model="row.price"/>
                                         </td>
                                         <td>
-                                            <input type="number" min="0" :name="'offer_group[offers]['+offerTab.id+'][equipments]['+types[selected[offerTab.id][offerContentTab.id]][0].slug+']['+row.id+'][price_trade]'" v-model="row.price_trade"/>
+                                            <input class="form-control" type="number" min="0" :name="'offer_group[offers]['+offerTab.id+'][equipments]['+types[selected[offerTab.id][offerContentTab.id]][0].slug+']['+row.id+'][price_trade]'" v-model="row.price_trade"/>
                                         </td>
                                         <td>
-                                            <input type="number" min="0" :name="'offer_group[offers]['+offerTab.id+'][equipments]['+types[selected[offerTab.id][offerContentTab.id]][0].slug+']['+row.id+'][price_small_trade]'" v-model="row.price_small_trade"/>
+                                            <input class="form-control" type="number" min="0" :name="'offer_group[offers]['+offerTab.id+'][equipments]['+types[selected[offerTab.id][offerContentTab.id]][0].slug+']['+row.id+'][price_small_trade]'" v-model="row.price_small_trade"/>
                                         </td>
                                         <td>
-                                            <input type="number" min="0" :name="'offer_group[offers]['+offerTab.id+'][equipments]['+types[selected[offerTab.id][offerContentTab.id]][0].slug+']['+row.id+'][price_special]'" v-model="row.price_special"/>
+                                            <input class="form-control" type="number" min="0" :name="'offer_group[offers]['+offerTab.id+'][equipments]['+types[selected[offerTab.id][offerContentTab.id]][0].slug+']['+row.id+'][price_special]'" v-model="row.price_special"/>
                                         </td>
                                         <td >
                                             <span @click="deleteRow(offerTab.id, offerContentTab.id, row.id)">X</span>
@@ -123,27 +123,27 @@
                 <div class="input-group-text row">
                     <div class="col-auto">
                         <label for="adjusters-number">Без налогов</label><br>
-                        <input type="number" min="0" id="adjusters-no-tax" v-model="adjusters['noTax']" :name="'offer_group[adjusters][adjusters_no_tax]'"/>
+                        <input class="form-control" type="number" min="0" id="adjusters-no-tax" v-model="adjusters['noTax']" :name="'offer_group[adjusters][adjusters_no_tax]'"/>
                     </div>
                     <div class="col-auto">
                         <label for="adjusters-number">Кол-во монтажников</label><br>
-                        <input type="number" min="0" id="adjusters-number" v-model="adjusters['number']" :name="'offer_group[adjusters][adjusters_number]'"/>
+                        <input class="form-control" type="number" min="0" id="adjusters-number" v-model="adjusters['number']" :name="'offer_group[adjusters][adjusters_number]'"/>
                     </div>
                     <div class="col-auto">
                         <label for="adjusters-days">Дней работы</label><br>
-                        <input type="number" min="0" id="adjusters-days" v-model="adjusters['days']" :name="'offer_group[adjusters][adjustment_days]'"/>
+                        <input class="form-control" type="number" min="0" id="adjusters-days" v-model="adjusters['days']" :name="'offer_group[adjusters][adjustment_days]'"/>
                     </div>
                     <div class="col-auto">
                         <label for="adjusters-fuel">Топливо</label><br>
-                        <input type="number" min="0" id="adjusters-fuel" v-model="adjusters['fuel']" :name="'offer_group[adjusters][fuel]'"/>
+                        <input class="form-control" type="number" min="0" id="adjusters-fuel" v-model="adjusters['fuel']" :name="'offer_group[adjusters][fuel]'"/>
                     </div>
                     <div class="col-auto">
                         <label for="adjusters-wage">Ставка</label><br>
-                        <input type="number" min="1" id="adjusters-wage" v-model="adjusters['wage']" :name="'offer_group[adjusters][adjusters_wage]'"/>
+                        <input class="form-control" type="number" min="1" id="adjusters-wage" v-model="adjusters['wage']" :name="'offer_group[adjusters][adjusters_wage]'"/>
                     </div>
                     <div class="col-auto">
-                        <label for="adjusters-wage">Процент монтажникам</label><br>
-                        <input type="number" min="1" max="100" id="adjusters-percent" v-model="adjusters['percentage']" :name="'offer_group[adjusters][pay_percentage]'"/>
+                        <label for="adjusters-percent">Процент монтажникам</label><br>
+                        <input class="form-control" type="number" min="1" max="100" id="adjusters-percent" v-model="adjusters['percentage']" :name="'offer_group[adjusters][pay_percentage]'"/>
                     </div>
                     <div class="col-auto align-self-center">
                         <button type="button" class="btn text-white btn-info" @click.prevent="calculatePrePrice()">Просчитать</button>
@@ -165,26 +165,26 @@
                     <tbody>
                     <tr v-for="(work, key) in works" :key="key">
                         <td>
-                            <input type="hidden" hidden="hidden" :name="'offer_group[works]['+key+'][id]'" v-model="work.id"/>
+                            <input class="form-control" type="hidden" hidden="hidden" :name="'offer_group[works]['+key+'][id]'" v-model="work.id"/>
 
-                            <input type="text" @keyup="searchWorkByCode(work.code, key)" :name="'offer_group[works]['+key+'][code]'" v-model="work.code"/>
+                            <input class="form-control" type="text" @keyup="searchWorkByCode(work.code, key)" :name="'offer_group[works]['+key+'][code]'" v-model="work.code"/>
                             <ul :id="'autocomplete-results-w'+key" v-show="autocompletesDisplays['works'][key]" class="autocomplete-results">
                                 <li class="loading" v-if="isLoading">
                                     Поиск...
                                 </li>
                                 <li v-else v-for="(result, i) in results" :key="i" @click="setWorkResult(result, key)" class="autocomplete-result">
-                                    {{ result['code'] }}
+                                    {{ result['code'] + " - " + result['name'] }}
                                 </li>
                             </ul>
                         </td>
                         <td>
-                            <input type="text" :name="'offer_group[works]['+key+'][name]'" v-model="work.name"/>
+                            <input class="form-control" type="text" :name="'offer_group[works]['+key+'][name]'" v-model="work.name"/>
                         </td>
                         <td>
-                            <input type="text" :name="'offer_group[works]['+key+'][points]'" v-model="work.points"/>
+                            <input class="form-control" type="text" :name="'offer_group[works]['+key+'][points]'" v-model="work.points"/>
                         </td>
                         <td>
-                            <input type="number" min="0" :name="'offer_group[works]['+key+'][quantity]'" v-model="work.pivot.quantity"/>
+                            <input class="form-control" type="number" min="0" :name="'offer_group[works]['+key+'][quantity]'" v-model="work.pivot.quantity"/>
                         </td>
                         <td>
                             <span @click="deleteWork(key)">X</span>
@@ -634,6 +634,7 @@
                         break;
                     }
                 }
+
             },
             deleteOffer(offerTabId){
                 for(let i = 0; i < this.offersTabs.length; i++){
@@ -646,6 +647,7 @@
                         break;
                     }
                 }
+                this.offersVariantsCount--;
             },
             addWork(){
                 this.works.push({

@@ -73,16 +73,16 @@
                     @foreach($offer->equipments as $equipment)
                         @if($equipment->class == 'equipment')
                             @if($equipment->type->slug != 'rashodnye-materialy')
-                                @php($totalEquipmentSum += $equipment->pivot->price * $equipment->pivot->quantity)
+                                @php($totalEquipmentSum += $equipment->pivot->counted_price * $equipment->pivot->quantity)
                                 <tr>
                                     <td class="border-top-0 border-bottom"><img src="https://via.placeholder.com/100" alt=""></td>
                                     <td class="align-middle border-top-0 border-bottom" colspan="2"><b>{{ $equipment->name }}</b> {{ $equipment->description }}</td>
                                     <td class="align-middle border-top-0 border-bottom text-center">{{ $equipment->pivot->quantity }}</td>
-                                    <td class="align-middle border-top-0 border-bottom text-center">{{ $equipment->pivot->price }}</td>
-                                    <td class="align-middle border-top-0 border-bottom text-center">{{ $equipment->pivot->price * $equipment->pivot->quantity }}</td>
+                                    <td class="align-middle border-top-0 border-bottom text-center">{{ $equipment->pivot->counted_price }}</td>
+                                    <td class="align-middle border-top-0 border-bottom text-center">{{ $equipment->pivot->counted_price * $equipment->pivot->quantity }}</td>
                                 </tr>
                             @else
-                                @php($consumableSum += $equipment->pivot->price * $equipment->pivot->quantity)
+                                @php($consumableSum += $equipment->pivot->counted_price * $equipment->pivot->quantity)
                             @endif
                         @endif
                     @endforeach
@@ -112,25 +112,21 @@
                     </tr>
                     </thead>
                     <tbody>
-                        @php($totalWorkSum = 0)
-                        @foreach($offer->equipments as $equipment)
-                            @if($equipment->class == 'work')
-                                @php($totalWorkSum += $equipment->pivot->price * $equipment->pivot->quantity)
-                                <tr>
-                                    <td class="align-middle border-bottom border-top-0">{{ $equipment->name }}</td>
-                                    <td class="align-middle border-bottom border-top-0 text-center"></td>
-                                    <td class="align-middle border-bottom border-top-0 text-center">{{ $equipment->points }}</td>
-                                    <td class="align-middle border-bottom border-top-0 text-center">{{ $equipment->pivot->quantity }}</td>
-                                </tr>
-                            @endif
+                    @foreach($offersGroup->equipment as $work)
+                            <tr>
+                                <td class="align-middle border-bottom border-top-0">{{ $work->name }}</td>
+                                <td class="align-middle border-bottom border-top-0 text-center"></td>
+                                <td class="align-middle border-bottom border-top-0 text-center">{{ $work->points }}</td>
+                                <td class="align-middle border-bottom border-top-0 text-center">{{ $work->pivot->quantity }}</td>
+                            </tr>
                         @endforeach
                         <tr>
                             <td colspan="2" class="check-in-card-border my-4 p-total"><h5>Всего за работы с НДС:</h5></td>
-                            <td colspan="5" class="check-in-card-border my-4 text-right p-total"><h5>{{ $totalWorkSum }}р.</h5></td>
+                            <td colspan="5" class="check-in-card-border my-4 text-right p-total"><h5>{{ $offersGroup->getTotalWorkPrice() }}р.</h5></td>
                         </tr>
                         <tr>
-                            <td colspan="2" class="check-in-card-border my-4 p-total"><h5>Всего за работы без НДС, Доп. скидка - <span class="text-danger">???</span></h5></td>
-                            <td colspan="5" class="check-in-card-border my-4 text-right p-total"><h5>???р.</h5></td>
+                            <td colspan="2" class="check-in-card-border my-4 p-total"><h5>Всего за работы без НДС, Доп. скидка - <span class="text-danger">{{ $offersGroup->getAdditionalDiscount() }}</span></h5></td>
+                            <td colspan="5" class="check-in-card-border my-4 text-right p-total"><h5>{{ $offersGroup->getTotalWorkPriceNoVAT() }}р.</h5></td>
                         </tr>
                     </tbody>
                 </table>
@@ -139,10 +135,10 @@
 
         <table class="table table-sm table-borderless">
             <tr>
-                <td colspan="5" class="my-4 font-weight-bold"><h5>Общая стоимость ( 1 договор с НДС ): ???р.</h5></td>
+                <td colspan="5" class="my-4 font-weight-bold"><h5>Общая стоимость ( 1 договор с НДС ): {{ $totalEquipmentSum + $consumableSum + $offersGroup->getTotalWorkPrice() }}р.</h5></td>
             </tr>
             <tr>
-                <td colspan="5" class="my-4 font-weight-bold"><h5>Общая стоимость ( 2 договора - оборудование с НДС, работы без НДС ): ???р.</h5></td>
+                <td colspan="5" class="my-4 font-weight-bold"><h5>Общая стоимость ( 2 договора - оборудование с НДС, работы без НДС ): {{ $totalEquipmentSum + $consumableSum + $offersGroup->getTotalWorkPriceNoVAT() }}р.</h5></td>
             </tr>
         </table>
         </div>

@@ -15,11 +15,12 @@ class AddAdjustmentFieldsToOfferGroupsTable extends Migration
     {
         Schema::table('offer_groups', function (Blueprint $table) {
             $table->double('adjusters_no_tax')->nullable();
-            $table->integer('adjusters_number')->default(1);
-            $table->integer('adjustments_days')->default(1);
-            $table->integer('fuel_number')->default(0);
-            $table->double('adjusters_wage');
-            $table->double('pay_percentage');
+            $table->integer('adjusters_number')->nullable()->default(1);
+            $table->integer('adjustments_days')->nullable()->default(1);
+            $table->integer('fuel_number')->nullable()->default(0);
+            $table->double('adjusters_wage')->nullable();
+            $table->double('pay_percentage')->nullable();
+            $table->boolean('template')->default(false);
         });
     }
 
@@ -37,6 +38,7 @@ class AddAdjustmentFieldsToOfferGroupsTable extends Migration
             $table->dropColumn('fuel_number');
             $table->dropColumn('adjusters_wage');
             $table->dropColumn('pay_percentage');
+            $table->dropColumn('template');
         });
     }
 }

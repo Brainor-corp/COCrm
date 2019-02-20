@@ -27,6 +27,11 @@ class NavigationDefault
                 'url' => '/bradmin/Settings',
                 'icon' => 'fas fa-cog',
                 'text' => 'Настройки'
+            ],
+            [
+                'url' => '/bradmin/Users',
+                'icon' => 'fas fa-address-book',
+                'text' => 'Пользователи'
             ]
         ];
 
