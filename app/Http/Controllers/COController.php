@@ -79,6 +79,12 @@ class COController extends Controller
         }
         return $response;
     }
+    public function getOfferGroupTemplates(Request $request){
+
+        $offerGroupTemplates = OfferGroup::where('template', 1)->get()->toArray();
+
+        return $offerGroupTemplates;
+    }
 
     public function calculatePrePrices(Request $request){
         $response['adjustmentPrice'] = self::calculateAdjustmentPrice($request['offer_group']['adjusters']);
