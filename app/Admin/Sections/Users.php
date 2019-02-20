@@ -23,6 +23,8 @@ class Users extends Section
             Column::text('id', '#'),
             Column::text('name', 'Имя'),
             Column::text('email', 'EMail'),
+            Column::text('tel', 'Телефон'),
+            Column::text('contact_email', 'Контактная почта'),
         ])->setPagination(10);
 
         return $display;
@@ -40,6 +42,9 @@ class Users extends Section
                 FormField::hidden('verified')->setValue(0),
                 FormField::input('email', 'EMail')->setRequired(true)
                     ->setType('email'),
+                FormField::input('contact_email', 'Контактная почта')->setRequired(true)
+                    ->setType('email'),
+                FormField::input('tel', 'Телефон')->setRequired(true),
                 FormField::input('password', 'Пароль')
                     ->setRequired(true)
                     ->setType('password'),
@@ -61,8 +66,10 @@ class Users extends Section
                 FormField::input('middle', 'Отчество')->setRequired(true),
                 FormField::input('company', 'Компания')->setRequired(true),
                 FormField::input('position', 'Должность')->setRequired(true),
-                FormField::input('email', 'EMail')->setRequired(true)
+                FormField::input('email', 'EMail')->setRequired(true),
+                FormField::input('contact_email', 'Контактная почта')->setRequired(true)
                     ->setType('email'),
+                FormField::input('tel', 'Телефон')->setRequired(true),
             ]),
         ]);
 
