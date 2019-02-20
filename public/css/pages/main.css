@@ -8,7 +8,7 @@
     margin: 0;
     height: 120px;
     overflow: auto;
-    width: 175px;
+    width: auto;
     position: absolute;
     z-index: 999;
     background-color: #eeeeee;
@@ -44,4 +44,13 @@
 .create-btn{
     width: 400px;
     height: 120px;
+}
+
+#login-form{
+    border: 1px solid #3f9ae5;
+    border-radius: 20px;
+}
+
+.addOfferTab .nav-link{
+    height: 100%;
 }

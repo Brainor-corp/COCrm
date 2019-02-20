@@ -98,8 +98,11 @@
             </div>
         </div>
         <div class="mx-auto mb-5">
+            <input v-if="url" :value="url" type="url">
+            <!--<a :href="url" target="_blank" v-if="url">{{url}}</a>-->
+        </div>
+        <div class="mx-auto mb-5">
             <a href="" class="btn btn-lg btn-primary create-btn d-flex align-items-center justify-content-center" v-if="offerGroup.offer_group" @click.prevent="saveOfferGroup">Сохранить группу КП</a>
-            <a :href="url" target="_blank" v-if="url">{{url}}</a>
             <span v-if="err" class="text-danger">{{err}}</span>
         </div>
     </div>
@@ -132,8 +135,7 @@
                     axios
                         .post('/updateOfferGroup', [this.offerGroup, this.offerGroupID])
                         .then((res) => {
-                            console.log(res.data);
-                            // this.url = res.data;
+                            this.url = res.data;
                         })
                         .catch(error => this.err = error);
                 }
