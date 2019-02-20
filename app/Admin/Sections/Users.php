@@ -90,8 +90,10 @@ class Users extends Section
 
     public function afterSave(Request $request, $model = null)
     {
-        $model->password = Hash::make($request->password);
-        $model->save();
+        if($request->has('password')){
+            $model->password = Hash::make($request->password);
+            $model->save();
+        }
     }
 
 }
