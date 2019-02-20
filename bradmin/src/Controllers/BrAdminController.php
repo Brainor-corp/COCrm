@@ -192,7 +192,6 @@ class BrAdminController extends Controller
             $modelPath = $sectionModelSettings['model'] ?? config('bradmin.base_models_path') . studly_case(strtolower(str_singular($sectionName)));
             $request->offsetUnset('pluginData');
 
-
             $model = new $modelPath;
             $relationFields = array_keys(BRHelper::getModelRelationships($model));
 

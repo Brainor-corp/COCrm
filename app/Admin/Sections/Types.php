@@ -15,8 +15,9 @@ use Bradmin\SectionBuilder\Form\BaseForm\Form;
 use Bradmin\SectionBuilder\Form\Panel\Columns\BaseColumn\FormColumn;
 use Bradmin\SectionBuilder\Form\Panel\Fields\BaseField\FormField;
 //use Illuminate\Support\Facades\Request;
+use Bradmin\SectionBuilder\Meta\Meta;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\View\View;
+use Illuminate\Support\Facades\View;
 use Illuminate\Http\Request;
 
 
@@ -35,11 +36,23 @@ class Types extends Section
 
     public static function onCreate()
     {
-        return self::onEdit();
+        return self::onEdit(null);
     }
 
-    public static function onEdit()
+    public static function onEdit($id)
     {
+        $meta = new Meta;
+        $meta->setScripts([
+            'body' => [
+                asset('packages/select2/js/select2.min.js'),
+                asset('js/admin.js')
+            ]
+        ])->setStyles([
+            'select2' => asset('packages/select2/css/select2.min.css')
+        ]);
+
+        $type = Type::where('id', $id)->with('equipment')->first();
+
         $form = Form::panel([
             FormColumn::column([
                 FormField::input('name', 'Название')->setRequired(true),
@@ -48,14 +61,15 @@ class Types extends Section
                 FormField::select('optional', 'Выводить при загрузке КП')
                     ->setOptions(['optional'=>'Нет', 'default'=>'Да'])
                     ->setRequired(true),
-                FormField::multiselect('equipment', 'Оборудование')
-                    ->setModelForOptions(Equipment::class)
-                    ->setDisplay('name')
-                    ->setQueryFunctionForModel(function ($q) {
-                        return $q->where('class', 'equipment');
-                    }),
+//                FormField::multiselect('equipment', 'Оборудование')
+//                    ->setModelForOptions(Equipment::class)
+//                    ->setDisplay('name')
+//                    ->setQueryFunctionForModel(function ($q) {
+//                        return $q->where('class', 'equipment');
+//                    }),
+                FormField::custom(View::make('admin.equipmentAjaxMultiselect')->with(compact('type')))
             ])
-        ]);
+        ])->setMeta($meta);
 
         return $form;
     }
@@ -65,6 +79,13 @@ class Types extends Section
 //        $type = Type::where('id', $model->id)->first();
 //        $type->equipment()->sync($request->equipment);
 //    }
+
+    public function beforeSave(Request $request, $model = null)
+    {
+        if(!$request->has('equipment')) {
+            $model->equipment()->sync(null);
+        }
+    }
 
     public function beforeDelete(Request $request, $id = null)
     {
