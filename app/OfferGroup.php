@@ -20,6 +20,11 @@ class OfferGroup extends Model
         ];
     }
 
+    public function user()
+    {
+        return $this->hasOne(User::class);
+    }
+
     public function offers(){
         return $this->hasMany(Offer::class, 'group_id', 'id');
     }

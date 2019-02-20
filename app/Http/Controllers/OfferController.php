@@ -13,11 +13,14 @@ use App\Offer;
 use App\OfferGroup;
 use App\Type;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class OfferController extends Controller
 {
     public function saveOfferGroup(Request $request){
 //        return $request;
+        $userId = Auth::user()->id;
+
         $group = $request->offer_group;
         if(!isset($group)){
             return "no";
@@ -31,6 +34,7 @@ class OfferController extends Controller
             $createGroup->fuel_number = $group['adjusters']['fuel'];
             $createGroup->adjusters_wage = $group['adjusters']['adjusters_wage'];
             $createGroup->pay_percentage = $group['adjusters']['pay_percentage'];
+            $createGroup->user_id = $userId;
             $createGroup->save();
             foreach ($group['offers'] as $offer){
                 $createOffer = new Offer();

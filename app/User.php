@@ -7,7 +7,6 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
-    use Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -27,6 +26,10 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    public function offerGroups()
+    {
+        return $this->hasMany(OfferGroup::class);
+    }
     public function getFullNameAttribute(){
         return $this->middle . ' ' . $this->name . ' ' . $this->last;
     }
