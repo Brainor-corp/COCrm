@@ -21,8 +21,8 @@
                         </td>
                         <td>
                             <div class="last">
-                                <p class="mb-0 text-white"><img class="svg-icon mx-2 horizontal-flip" src="{{ asset('images/svg/phone-solid-pdf.svg') }}" alt="phone">+7(495)003-45-62</p>
-                                <p class="mb-0 text-white"><img class="svg-icon mx-2" src="{{ asset('images/svg/envelope-regular.svg') }}" alt="email">zapros@aronasb.ru</p>
+                                <p class="mb-0 text-white"><img class="svg-icon mx-2 horizontal-flip" src="{{ asset('images/svg/phone-solid-pdf.svg') }}" alt="phone">{{ $offersGroup->user->contact_email or '+7(495)003-45-62'}}</p>
+                                <p class="mb-0 text-white"><img class="svg-icon mx-2" src="{{ asset('images/svg/envelope-regular.svg') }}" alt="email">{{ $offersGroup->user->contact_email or 'zapros@aronasb.ru'}}</p>
                             </div>
                         </td>
                     </tr>

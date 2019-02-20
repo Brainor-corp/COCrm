@@ -15,7 +15,7 @@ class COController extends Controller
             abort(404);
         }
 
-        $offersGroup = OfferGroup::where('uuid', $uuid)->with('offers.equipments', 'equipment')->first();
+        $offersGroup = OfferGroup::where('uuid', $uuid)->with('offers.equipments', 'equipment', 'user')->first();
 
         if(!isset($offersGroup)){
             abort(404);
@@ -29,7 +29,7 @@ class COController extends Controller
             abort(404);
         }
 
-        $offersGroup = OfferGroup::where('id', $request->id)->with('offers.equipments.type', 'equipment')->first();
+        $offersGroup = OfferGroup::where('id', $request->id)->with('offers.equipments.type', 'equipment', 'user')->first();
         $groupedArr = $offersGroup->toArray();
 
         foreach ($offersGroup->offers as $key => $offer) {
@@ -44,7 +44,7 @@ class COController extends Controller
             abort(404);
         }
 
-        $offersGroup = OfferGroup::where('uuid', $uuid)->with('offers.equipments')->first();
+        $offersGroup = OfferGroup::where('uuid', $uuid)->with('offers.equipments', 'user')->first();
 
         if(!isset($offersGroup)){
             abort(404);
