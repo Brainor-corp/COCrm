@@ -32,6 +32,8 @@
     import deparam from 'deparam';
     import axios from 'axios';
     import $ from 'jquery';
+    require('nprogress/nprogress.css');
+    require('nprogress/nprogress');
 
     export default {
         components: { GenerateKpTab, KpTotalTab },
@@ -51,7 +53,6 @@
         },
         created: function (){
             this.offerGroupID = new URL(window.location.href).searchParams.get("id");
-
         },
         methods: {
             updateOfferGroup(newOfferGroup) {
@@ -94,8 +95,9 @@
                                 }
                             }
                         }
-                        if(stop)
+                        if(stop){
                             break;
+                        }
                     }
 
                 }
