@@ -54,3 +54,43 @@
 .addOfferTab .nav-link{
     height: 100%;
 }
+
+.offerTabContentName{
+    border-left: 0;
+    border-right: 0;
+    border-top: 0;
+    outline: none;
+    box-shadow: none;
+    background: transparent;
+    border-radius: 0;
+}
+
+.upper-tabs .nav-link.active{
+    background-color: #ffffff;
+}
+
+.type-tab.tab-content .nav.nav-tabs .nav-item .nav-link.active{
+    background-color: #ffffff;
+}
+
+.copyBtn{
+    background-color: dodgerblue;
+    color: white;
+    opacity: 0.6;
+    transition: 0.3s;
+}
+
+.copyBtn:hover{
+    opacity: 1;
+}
+
+.copyBtn:active{
+    background-color: palegreen;
+}
+
+#url-input{
+    background: transparent;
+}
+i.fa-times:hover{
+    cursor: pointer;
+}
