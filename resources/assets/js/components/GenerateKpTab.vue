@@ -2,22 +2,30 @@
     <div class="row">
         <div class="col-12 my-5">
             <div class="row">
-                <div class="col-6">
+                <div class="col-12 mb-3">
                     <form id="getOfferGroup" @submit.prevent="getOfferGroup">
-                        <input type="text" v-bind:disabled="redactMode" placeholder="id КП" v-model="groupId">
-                        <button class="btn btn-secondary" type="submit" v-bind:disabled="redactMode">Вставить КП</button>
+                        <div class="row">
+                            <div class="col-4">
+                                <label for="getKPById">Вставить КП по ID</label>
+                                <input type="text" id="getKPById" class="form-control" v-bind:disabled="redactMode" placeholder="id КП" v-model="groupId">
+                            </div>
+                            <div class="col-3 align-self-end">
+                                <button class="btn btn-secondary" type="submit" v-bind:disabled="redactMode">Вставить КП</button>
+                            </div>
+                        </div>
                     </form>
                 </div>
-                <div class="col-6">
+                <div class="col-12">
                     <form id="getOfferGroupByTemplate" @submit.prevent="getOfferGroup" style="width:100%">
                         <div class="row">
-                        <div class="col-6">
-                            <select class="form-control" v-bind:disabled="redactMode" v-model="groupId">
+                        <div class="col-4">
+                            <label for="getKPBySelect">Выбрать шаблон КП для вставки</label>
+                            <select id="getKPBySelect" class="form-control" v-bind:disabled="redactMode" v-model="groupId">
                                 <option disabled value="" selected>Выберите шаблон кп</option>
                                 <option v-for="offerGroupTemplate in offerGroupTemplates" :value="offerGroupTemplate.id">{{ offerGroupTemplate.name }}</option>
                             </select>
                         </div>
-                        <div class="col-6">
+                        <div class="col-3 align-self-end">
                             <button class="btn btn-secondary" type="submit" v-bind:disabled="redactMode">Вставить КП</button>
                         </div>
                         </div>
@@ -37,10 +45,10 @@
                         <a class="nav-link" v-bind:class="{ 'active show': index === 0 }" data-toggle="tab" :href="'#kp-edit-tab-'+offerTab.id">
                             <div class="row align-items-baseline">
                                 <div class="col-10">
-                                    <input class="form-control" type="text" :name="'offer_group[offers]['+offerTab.id+'][name]'" v-model="offerTab.name"/><br>
+                                    <input class="form-control offerTabContentName" type="text" :name="'offer_group[offers]['+offerTab.id+'][name]'" v-model="offerTab.name"/><br>
                                 </div>
                                 <div class="col-2">
-                                    <span @click="deleteOffer(offerTab.id)">X</span>
+                                    <i @click="deleteOffer(offerTab.id)" class="fas fa-times"></i>
                                 </div>
                             </div>
                         </a>
@@ -51,8 +59,8 @@
                     </li>
                 </ul>
 
-                <div class="tab-content mb-5">
-                    <div v-for="(offerTab, index) in offersTabs" :id="'kp-edit-tab-'+offerTab.id" class="tab-pane fade" v-bind:class="{ 'active show': index === 0 }">
+                <div class="type-tab tab-content mb-5">
+                    <div v-for="(offerTab, index) in offersTabs" :id="'kp-edit-tab-'+offerTab.id" class="p-3 bg-light border tab-pane fade" v-bind:class="{ 'active show': index === 0 }">
                         <ul class="nav nav-tabs">
                             <li v-for="(offerContentTab,index) in offersContentTabs[offerTab.id]" class="nav-item">
                                 <a class="nav-link" v-bind:class="{ 'active show': index === 0 }" data-toggle="tab" :href="'#kp-'+offerTab.id+'-content-edit-tab-'+offerContentTab.id">
@@ -60,7 +68,7 @@
                                         <option disabled value="new">Выберите</option>
                                         <option v-for="type in types" v-if="type[0]!='new'" :value="type[0].id">{{ type[0].name }}</option>
                                     </select>
-                                    <span v-if="types[selected[offerTab.id][offerContentTab.id]] && types[selected[offerTab.id][offerContentTab.id]][0].slug !== 'rashodnye-materialy'" @click="deleteTab(offerTab.id,offerContentTab.id)">X</span>
+                                    <i class="fas fa-times text-body" v-if="types[selected[offerTab.id][offerContentTab.id]] && types[selected[offerTab.id][offerContentTab.id]][0].slug !== 'rashodnye-materialy'" @click="deleteTab(offerTab.id,offerContentTab.id)"></i>
                                 </a>
                             </li>
 
@@ -70,7 +78,7 @@
                         </ul>
 
                         <div class="tab-content">
-                            <div v-for="(offerContentTab, index) in offersContentTabs[offerTab.id]" :id="'kp-'+offerTab.id+'-content-edit-tab-'+offerContentTab.id" class="tab-pane fade" v-bind:class="{ 'active show': index === 0 }">
+                            <div v-for="(offerContentTab, index) in offersContentTabs[offerTab.id]" :id="'kp-'+offerTab.id+'-content-edit-tab-'+offerContentTab.id" class="bg-white border-left p-3 border-bottom tab-pane fade" v-bind:class="{ 'active show': index === 0 }">
                                 <table class="table table-bordered">
                                     <thead>
                                     <tr>
@@ -128,8 +136,8 @@
                                         <td>
                                             <input  class="form-control" type="number" min="0" :name="'offer_group[offers]['+offerTab.id+'][equipments]['+types[selected[offerTab.id][offerContentTab.id]][0].slug+']['+row.id+'][price_special]'" v-model="row.price_special"/>
                                         </td>
-                                        <td >
-                                            <span @click="deleteRow(offerTab.id, offerContentTab.id, row.id)">X</span>
+                                        <td class="align-middle">
+                                            <i @click="deleteRow(offerTab.id, offerContentTab.id, row.id)" class="fas fa-times"></i>
                                         </td>
                                     </tr>
                                     <tr>
@@ -142,7 +150,7 @@
                     </div>
                 </div>
                 <h3>Работы</h3>
-                <div class="input-group-text row">
+                <div class="row">
                     <div class="col-auto">
                         <label for="adjusters-number">Без налогов</label><br>
                         <input class="form-control" type="number" min="0" id="adjusters-no-tax" v-model="adjusters['noTax']" :name="'offer_group[adjusters][adjusters_no_tax]'"/>
@@ -167,14 +175,14 @@
                         <label for="adjusters-percent">Процент монтажникам</label><br>
                         <input @change="recalcAdjustments" class="form-control" type="number" min="1" max="100" id="adjusters-percent" v-model="adjusters['percentage']" :name="'offer_group[adjusters][pay_percentage]'"/>
                     </div>
-                    <div class="col-auto align-self-center">
+                    <div class="align-self-end col-auto">
                         <button type="button" class="btn text-white btn-info" @click.prevent="calculatePrePrice()">Просчитать</button>
                     </div>
-                    <div class="col-auto">
-                        <span v-if="adjustmentPrePrice" v-for="(value, key) in adjustmentPrePrice" :key="key" v-model="adjustmentPrePrice[key]">{{adjustmentPrePriceKeys[key] + value}}<br></span>
+                    <div v-if="adjustmentPrePrice['VAT']" class="col-auto input-group-text m-3">
+                        <span v-for="(value, key) in adjustmentPrePrice" :key="key" v-model="adjustmentPrePrice[key]"><strong>{{adjustmentPrePriceKeys[key]}}</strong>{{" " + value + "; &nbsp"}}</span>
                     </div>
                 </div>
-                <table class="table table-striped table-hover table-bordered my-3">
+                <table class="table table-striped table-hover mt-2">
                     <thead>
                     <tr>
                         <th scope="col">Артикул</th>
@@ -208,8 +216,8 @@
                         <td>
                             <input class="form-control" type="number" min="0" :name="'offer_group[works]['+key+'][quantity]'" v-model="work.pivot.quantity"/>
                         </td>
-                        <td>
-                            <span @click="deleteWork(key)">X</span>
+                        <td class="align-middle">
+                            <i @click="deleteWork(key)" class="fas fa-times"></i>
                         </td>
                     </tr>
                     <tr>
