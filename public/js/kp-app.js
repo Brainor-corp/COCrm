@@ -49282,7 +49282,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                                     if (stop) {
                                         __WEBPACK_IMPORTED_MODULE_4_jquery___default.a.each(equipments, function (index, equipment) {
                                             // this.offerGroup['offer_group']['offers'][offer]['equipments'][type][index]['price'] = (((equipment['price_small_trade'] - equipment['price_special'])/2) + equipment['price_special']) * equipment['quantity'];
-                                            _this.offerGroup['offer_group']['offers'][offer]['equipments'][type][index]['counted_price'] = Math.floor(parseFloat(equipment['price_small_trade']) + parseFloat(equipment['price_special'])) / 2;
+                                            _this.offerGroup['offer_group']['offers'][offer]['equipments'][type][index]['counted_price'] = parseFloat(parseFloat(parseFloat(equipment['price_small_trade']) - parseFloat(equipment['price_special']) / 2) + parseFloat(equipment['price_special'])).toFixed(2);
                                         });
                                     }
                                 });
@@ -49599,6 +49599,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
 
 
 
@@ -49678,6 +49679,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                                 'quantity': res.data[i]['equipment'][j].pivot.quantity,
                                 'code': res.data[i]['equipment'][j].code,
                                 'type': _this.types[res.data[i]['equipment'][j].type_id][0].slug,
+                                'type_id': _this.types[res.data[i]['equipment'][j].type_id][0].id,
                                 'price': res.data[i]['equipment'][j].price,
                                 'price_trade': res.data[i]['equipment'][j].price_trade,
                                 'price_small_trade': res.data[i]['equipment'][j].price_small_trade,
@@ -49693,7 +49695,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                 __WEBPACK_IMPORTED_MODULE_0_jquery___default.a.each(_this.offersContentTabs, function (offerTabId, offerTab) {
                     __WEBPACK_IMPORTED_MODULE_0_jquery___default.a.each(offerTab, function (offerContentTabId, offerContentTab) {
                         __WEBPACK_IMPORTED_MODULE_0_jquery___default.a.each(offerContentTab['rows'], function (rowId, row) {
-                            _this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['price'] = (row['price_small_trade'] - row['price_special']) / 2 + row['price_special'];
+                            _this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['price'] = parseFloat((row['price_small_trade'] - row['price_special']) / 2 + row['price_special']).toFixed(2);
                         });
                     });
                 });
@@ -49750,6 +49752,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                                 'quantity': res.data[i]['equipment'][j].pivot.quantity,
                                 'code': res.data[i]['equipment'][j].code,
                                 'type': _this3.types[res.data[i]['equipment'][j].type_id][0].slug,
+                                'type_id': _this3.types[res.data[i]['equipment'][j].type_id][0].id,
                                 'price': res.data[i]['equipment'][j].price,
                                 'price_trade': res.data[i]['equipment'][j].price_trade,
                                 'price_small_trade': res.data[i]['equipment'][j].price_small_trade,
@@ -49765,7 +49768,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                 __WEBPACK_IMPORTED_MODULE_0_jquery___default.a.each(_this3.offersContentTabs, function (offerTabId, offerTab) {
                     __WEBPACK_IMPORTED_MODULE_0_jquery___default.a.each(offerTab, function (offerContentTabId, offerContentTab) {
                         __WEBPACK_IMPORTED_MODULE_0_jquery___default.a.each(offerContentTab['rows'], function (rowId, row) {
-                            _this3.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['price'] = Math.round((row['price_small_trade'] - row['price_special']) / 2) + row['price_special'];
+                            _this3.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['price'] = parseFloat((parseFloat(row['price_small_trade']) - parseFloat(row['price_special'])) / 2 + parseFloat(row['price_special'])).toFixed(2);
                         });
                     });
                 });
@@ -49897,7 +49900,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             __WEBPACK_IMPORTED_MODULE_0_jquery___default.a.each(this.offersContentTabs, function (offerTabId, offerTab) {
                 __WEBPACK_IMPORTED_MODULE_0_jquery___default.a.each(offerTab, function (offerContentTabId, offerContentTab) {
                     __WEBPACK_IMPORTED_MODULE_0_jquery___default.a.each(offerContentTab['rows'], function (rowId, row) {
-                        _this6.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['price'] = Math.round((row['price_small_trade'] - row['price_special']) / 2) + row['price_special'];
+                        _this6.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['price'] = parseFloat((parseFloat(row['price_small_trade']) - parseFloat(row['price_special'])) / 2 + parseFloat(row['price_special'])).toFixed(2);
                     });
                 });
             });
@@ -50019,7 +50022,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                 __WEBPACK_IMPORTED_MODULE_0_jquery___default.a.each(_this7.offersContentTabs, function (offerTabId, offerTab) {
                     __WEBPACK_IMPORTED_MODULE_0_jquery___default.a.each(offerTab, function (offerContentTabId, offerContentTab) {
                         __WEBPACK_IMPORTED_MODULE_0_jquery___default.a.each(offerContentTab['rows'], function (rowId, row) {
-                            _this7.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['price'] = Math.round((row['price_small_trade'] - row['price_special']) / 2) + row['price_special'];
+                            _this7.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['price'] = parseFloat((parseFloat(row['price_small_trade']) - parseFloat(row['price_special'])) / 2 + parseFloat(row['price_special'])).toFixed(2);
                         });
                     });
                 });
@@ -50087,7 +50090,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         },
         recalcPrice: function recalcPrice(offerTabId, offerContentTabId, rowId) {
             var row = this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId];
-            row['price'] = Math.round((parseInt(row['price_small_trade']) - parseInt(row['price_special'])) / 2) + parseInt(row['price_special']);
+            row['price'] = parseFloat((parseFloat(row['price_small_trade']) - parseFloat(row['price_special'])) / 2 + parseFloat(row['price_special'])).toFixed(2);
             this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId] = row;
         }
     }
@@ -50821,6 +50824,46 @@ var render = function() {
                                             _vm.$set(
                                               row,
                                               "type",
+                                              $event.target.value
+                                            )
+                                          }
+                                        }
+                                      }),
+                                      _vm._v(" "),
+                                      _c("input", {
+                                        directives: [
+                                          {
+                                            name: "model",
+                                            rawName: "v-model",
+                                            value: row.type_id,
+                                            expression: "row.type_id"
+                                          }
+                                        ],
+                                        attrs: {
+                                          type: "hidden",
+                                          hidden: "hidden",
+                                          name:
+                                            "offer_group[offers][" +
+                                            offerTab.id +
+                                            "][equipments][" +
+                                            _vm.types[
+                                              _vm.selected[offerTab.id][
+                                                offerContentTab.id
+                                              ]
+                                            ][0].slug +
+                                            "][" +
+                                            row.id +
+                                            "][type_id]"
+                                        },
+                                        domProps: { value: row.type_id },
+                                        on: {
+                                          input: function($event) {
+                                            if ($event.target.composing) {
+                                              return
+                                            }
+                                            _vm.$set(
+                                              row,
+                                              "type_id",
                                               $event.target.value
                                             )
                                           }
