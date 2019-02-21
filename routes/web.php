@@ -45,4 +45,5 @@ Route::group(['middleware' => ['web', 'auth']], function () {
 
     Route::post('/excel-upload', 'UploadsController@excelUploadEquipment')->name('excel-upload');
 
+    Route::post('/changeUserPassword', 'UsersController@changeUserPassword');
 });

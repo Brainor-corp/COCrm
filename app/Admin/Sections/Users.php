@@ -10,9 +10,11 @@ use Bradmin\SectionBuilder\Display\Table\Columns\BaseColumn\Column;
 use Bradmin\SectionBuilder\Form\BaseForm\Form;
 use Bradmin\SectionBuilder\Form\Panel\Columns\BaseColumn\FormColumn;
 use Bradmin\SectionBuilder\Form\Panel\Fields\BaseField\FormField;
+use Bradmin\SectionBuilder\Meta\Meta;
 use Illuminate\Support\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\View;
 
 class Users extends Section
 {
@@ -57,8 +59,15 @@ class Users extends Section
         return $form;
     }
 
-    public static function onEdit()
+    public static function onEdit(Request $request)
     {
+        $meta = new Meta();
+        $meta->setScripts([
+            'body' => [
+                asset('js/adminUser.js')
+            ]
+        ]);
+        $user_id = $request->id;
         $form = Form::panel([
             FormColumn::column([
                 FormField::input('name', 'Имя')->setRequired(true),
@@ -70,15 +79,16 @@ class Users extends Section
                 FormField::input('contact_email', 'Контактная почта')->setRequired(true)
                     ->setType('email'),
                 FormField::input('tel', 'Телефон')->setRequired(true),
+                FormField::custom(View::make('admin.userPasswordChange')->with(compact('user_id')))
             ]),
-        ]);
+        ])
+        ->setMeta($meta);
 
         return $form;
     }
 
     public function beforeSave(Request $request, $model = null)
     {
-//        throw new \Exception($request);
         if($request->password !== $request->repeat_password){
             throw  new \Exception("Пароли не совпадают, попытайтесь снова");
         }
