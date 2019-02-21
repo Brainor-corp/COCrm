@@ -22,6 +22,7 @@
     },
     "dependencies": {
         "deparam": "^1.0.5",
+        "nprogress": "^0.2.0",
         "vue-cookie": "^1.1.4",
         "vue2-autocomplete-js": "^0.2.2",
         "vuex": "^3.0.1"

@@ -114,6 +114,8 @@
 <script>
     import axios from 'axios';
     import $ from 'jquery'
+    // import NProgress from 'nprogress'
+
     export default {
         props: ['offerGroup', 'calcPrices', 'offerGroupID'],
         data(){

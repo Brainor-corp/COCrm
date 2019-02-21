@@ -120,13 +120,13 @@
                                             <input class="form-control" type="number" min="0" :name="'offer_group[offers]['+offerTab.id+'][equipments]['+types[selected[offerTab.id][offerContentTab.id]][0].slug+']['+row.id+'][price]'" v-model="row.price"/>
                                         </td>
                                         <td>
-                                            <input @change="recalcPrice(offerTab.id, offerContentTab.id, row.id)" class="form-control" type="number" min="0" :name="'offer_group[offers]['+offerTab.id+'][equipments]['+types[selected[offerTab.id][offerContentTab.id]][0].slug+']['+row.id+'][price_trade]'" v-model="row.price_trade"/>
+                                            <input  class="form-control" type="number" min="0" :name="'offer_group[offers]['+offerTab.id+'][equipments]['+types[selected[offerTab.id][offerContentTab.id]][0].slug+']['+row.id+'][price_trade]'" v-model="row.price_trade"/>
                                         </td>
                                         <td>
-                                            <input @change="recalcPrice(offerTab.id, offerContentTab.id, row.id)" class="form-control" type="number" min="0" :name="'offer_group[offers]['+offerTab.id+'][equipments]['+types[selected[offerTab.id][offerContentTab.id]][0].slug+']['+row.id+'][price_small_trade]'" v-model="row.price_small_trade"/>
+                                            <input class="form-control" type="number" min="0" :name="'offer_group[offers]['+offerTab.id+'][equipments]['+types[selected[offerTab.id][offerContentTab.id]][0].slug+']['+row.id+'][price_small_trade]'" v-model="row.price_small_trade"/>
                                         </td>
                                         <td>
-                                            <input @change="recalcPrice(offerTab.id, offerContentTab.id, row.id)" class="form-control" type="number" min="0" :name="'offer_group[offers]['+offerTab.id+'][equipments]['+types[selected[offerTab.id][offerContentTab.id]][0].slug+']['+row.id+'][price_special]'" v-model="row.price_special"/>
+                                            <input  class="form-control" type="number" min="0" :name="'offer_group[offers]['+offerTab.id+'][equipments]['+types[selected[offerTab.id][offerContentTab.id]][0].slug+']['+row.id+'][price_special]'" v-model="row.price_special"/>
                                         </td>
                                         <td >
                                             <span @click="deleteRow(offerTab.id, offerContentTab.id, row.id)">X</span>
@@ -149,23 +149,23 @@
                     </div>
                     <div class="col-auto">
                         <label for="adjusters-number">Кол-во монтажников</label><br>
-                        <input class="form-control" type="number" min="0" id="adjusters-number" v-model="adjusters['number']" :name="'offer_group[adjusters][adjusters_number]'"/>
+                        <input @change="recalcAdjustments" class="form-control" type="number" min="0" id="adjusters-number" v-model="adjusters['number']" :name="'offer_group[adjusters][adjusters_number]'"/>
                     </div>
                     <div class="col-auto">
                         <label for="adjusters-days">Дней работы</label><br>
-                        <input class="form-control" type="number" min="0" id="adjusters-days" v-model="adjusters['days']" :name="'offer_group[adjusters][adjustment_days]'"/>
+                        <input @change="recalcAdjustments" class="form-control" type="number" min="0" id="adjusters-days" v-model="adjusters['days']" :name="'offer_group[adjusters][adjustment_days]'"/>
                     </div>
                     <div class="col-auto">
                         <label for="adjusters-fuel">Топливо</label><br>
-                        <input class="form-control" type="number" min="0" id="adjusters-fuel" v-model="adjusters['fuel']" :name="'offer_group[adjusters][fuel]'"/>
+                        <input @change="recalcAdjustments" class="form-control" type="number" min="0" id="adjusters-fuel" v-model="adjusters['fuel']" :name="'offer_group[adjusters][fuel]'"/>
                     </div>
                     <div class="col-auto">
                         <label for="adjusters-wage">Ставка</label><br>
-                        <input class="form-control" type="number" min="1" id="adjusters-wage" v-model="adjusters['wage']" :name="'offer_group[adjusters][adjusters_wage]'"/>
+                        <input @change="recalcAdjustments" class="form-control" type="number" min="1" id="adjusters-wage" v-model="adjusters['wage']" :name="'offer_group[adjusters][adjusters_wage]'"/>
                     </div>
                     <div class="col-auto">
                         <label for="adjusters-percent">Процент монтажникам</label><br>
-                        <input class="form-control" type="number" min="1" max="100" id="adjusters-percent" v-model="adjusters['percentage']" :name="'offer_group[adjusters][pay_percentage]'"/>
+                        <input @change="recalcAdjustments" class="form-control" type="number" min="1" max="100" id="adjusters-percent" v-model="adjusters['percentage']" :name="'offer_group[adjusters][pay_percentage]'"/>
                     </div>
                     <div class="col-auto align-self-center">
                         <button type="button" class="btn text-white btn-info" @click.prevent="calculatePrePrice()">Просчитать</button>
@@ -226,6 +226,7 @@
     import $ from 'jquery';
     import deparam from 'deparam';
     import axios from 'axios';
+    import NProgress from 'nprogress'
 
     export default {
         props: ['offerGroupID'],
@@ -272,6 +273,15 @@
         computed: {
         },
         beforeCreate: function(){
+            axios.interceptors.request.use(config => {
+                NProgress.start();
+                return config;
+            });
+
+            axios.interceptors.response.use(response => {
+                NProgress.done();
+                return response;
+            });
             axios.post('/getAllEquipmentTypes')
                 .then((res) => {
                     this.types = res.data;
@@ -404,6 +414,16 @@
             updateOfferGroup() {
                 this.$emit('updateOfferGroup');
                 this.redactMode = true;
+                NProgress.start();
+                $.each(this.offersContentTabs, (offerTabId, offerTab) => {
+                    $.each(offerTab, (offerContentTabId, offerContentTab) => {
+                        $.each(offerContentTab['rows'], (rowId, row) => {
+                            this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['price'] = parseFloat(((parseFloat(row['price_small_trade']) - parseFloat(row['price_special']))/2) + parseFloat(row['price_special'])).toFixed(2);
+                        });
+                    });
+                });
+                NProgress.done();
+
             },
             addOfferTab(){
                 let lastOfferTab,lastOfferTabId;
@@ -562,6 +582,15 @@
                 }
             },
             getOfferGroup() {
+                axios.interceptors.request.use(config => {
+                    NProgress.start();
+                    return config;
+                });
+
+                axios.interceptors.response.use(response => {
+                    NProgress.done();
+                    return response;
+                });
                 let lastOfferTabId = 0;
                 let buffKP = [];
                 let buffEq = [];
@@ -729,10 +758,17 @@
                         this.adjustmentPrePrice = res.data;
                     });
             },
-            recalcPrice(offerTabId, offerContentTabId, rowId){
-                let row = this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId];
-                row['price'] = parseFloat(((parseFloat(row['price_small_trade']) - parseFloat(row['price_special']))/2) + parseFloat(row['price_special'])).toFixed(2);
-                this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId] = row;
+            recalcAdjustments(){
+                let adjustersNumber = parseFloat($('#adjusters-number').val());
+                let adjustersDays = parseFloat($('#adjusters-days').val());
+                let adjustersFuel = parseFloat($('#adjusters-fuel').val());
+                let adjustersWage = parseFloat($('#adjusters-wage').val());
+                let adjustersPercent = parseFloat($('#adjusters-percent').val());
+
+                if(adjustersNumber + adjustersDays + adjustersFuel + adjustersWage + adjustersPercent){
+                    let price = (adjustersNumber * adjustersDays * adjustersWage) + (adjustersDays * adjustersFuel);
+                    this.adjusters['noTax'] = parseFloat(parseFloat((price * (100 - adjustersPercent)) / adjustersPercent) + parseFloat(price)).toFixed(2);
+                }
             }
         }
     }
