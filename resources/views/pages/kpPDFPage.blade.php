@@ -73,16 +73,16 @@
                     @foreach($offer->equipments as $equipment)
                         @if($equipment->class == 'equipment')
                             @if($equipment->pivot->type != 'rashodnye-materialy')
-                                @php($totalEquipmentSum += $equipment->pivot->counted_price * $equipment->pivot->quantity)
+                                @php($totalEquipmentSum += $equipment->pivot->price * $equipment->pivot->quantity)
                                 <tr>
                                     <td class="border-top-0 border-bottom"><img src="https://via.placeholder.com/100" alt=""></td>
                                     <td class="align-middle border-top-0 border-bottom" colspan="2"><b>{{ $equipment->name }}</b> {{ $equipment->description }}</td>
                                     <td class="align-middle border-top-0 border-bottom text-center">{{ $equipment->pivot->quantity }}</td>
-                                    <td class="align-middle border-top-0 border-bottom text-center">{{ $equipment->pivot->counted_price }}</td>
-                                    <td class="align-middle border-top-0 border-bottom text-center">{{ $equipment->pivot->counted_price * $equipment->pivot->quantity }}</td>
+                                    <td class="align-middle border-top-0 border-bottom text-center">{{ $equipment->pivot->price }}</td>
+                                    <td class="align-middle border-top-0 border-bottom text-center">{{ $equipment->pivot->price * $equipment->pivot->quantity }}</td>
                                 </tr>
                             @else
-                                @php($consumableSum += $equipment->pivot->counted_price * $equipment->pivot->quantity)
+                                @php($consumableSum += $equipment->pivot->price * $equipment->pivot->quantity)
                             @endif
                         @endif
                     @endforeach

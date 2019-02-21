@@ -22,6 +22,9 @@ Route::group(['middleware' => ['web', 'auth']], function () {
         return view('kpGenerator.index');
     })->name('/');
 
+
+    Route::get('/logout', 'Auth\LoginController@logout')->name('logout');
+
     Route::post('/getTypesByClass', 'TypeController@getTypesByClass')->name('getTypes');
     Route::post('/getAllEquipmentTypes', 'TypeController@getAllEquipmentTypes')->name('getAllEquipmentTypes');
     Route::post('/getDefaultTypesWithEquipment', 'TypeController@getDefaultTypesWithEquipment')->name('getDefaultTypesWithEquipment');

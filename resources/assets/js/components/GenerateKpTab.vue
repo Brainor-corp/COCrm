@@ -95,6 +95,7 @@
                                             <input type="hidden" hidden="hidden" :name="'offer_group[offers]['+offerTab.id+'][equipments]['+types[selected[offerTab.id][offerContentTab.id]][0].slug+']['+row.id+'][price_special]'" v-model="row.price_special"/>
                                             <input type="hidden" hidden="hidden" :name="'offer_group[offers]['+offerTab.id+'][equipments]['+types[selected[offerTab.id][offerContentTab.id]][0].slug+']['+row.id+'][comment]'" v-model="row.comment"/>
                                             <input type="hidden" hidden="hidden" :name="'offer_group[offers]['+offerTab.id+'][equipments]['+types[selected[offerTab.id][offerContentTab.id]][0].slug+']['+row.id+'][type]'" v-model="row.type"/>
+                                            <input type="hidden" hidden="hidden" :name="'offer_group[offers]['+offerTab.id+'][equipments]['+types[selected[offerTab.id][offerContentTab.id]][0].slug+']['+row.id+'][type_id]'" v-model="row.type_id"/>
                                             <input class="form-control" type="text" @keyup="searchEquipmentByCode(row.code, offerTab.id, offerContentTab.id, row.id)" :name="'offer_group[offers]['+offerTab.id+'][equipments]['+types[selected[offerTab.id][offerContentTab.id]][0].slug+']['+row.id+'][code]'" v-model="row.code" />
 
                                             <ul :id="'autocomplete-results-e-'+offerTab.id+'-'+offerContentTab.id+'-'+row.id" v-show="autocompletesDisplays['equipments'][offerTab.id][offerContentTab.id][row.id]" class="autocomplete-results">
@@ -305,6 +306,7 @@
                                         'quantity': res.data[i]['equipment'][j].pivot.quantity,
                                         'code': res.data[i]['equipment'][j].code,
                                         'type': this.types[res.data[i]['equipment'][j].type_id][0].slug,
+                                        'type_id': this.types[res.data[i]['equipment'][j].type_id][0].id,
                                         'price': res.data[i]['equipment'][j].price,
                                         'price_trade': res.data[i]['equipment'][j].price_trade,
                                         'price_small_trade': res.data[i]['equipment'][j].price_small_trade,
@@ -320,7 +322,7 @@
                         $.each(this.offersContentTabs, (offerTabId, offerTab) => {
                             $.each(offerTab, (offerContentTabId, offerContentTab) => {
                                 $.each(offerContentTab['rows'], (rowId, row) => {
-                                    this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['price'] = ((row['price_small_trade'] - row['price_special'])/2) + row['price_special'];
+                                    this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['price'] = parseFloat(((row['price_small_trade'] - row['price_special'])/2) + row['price_special']).toFixed(2);
                                 });
                             });
                         });
@@ -377,6 +379,7 @@
                                         'quantity': res.data[i]['equipment'][j].pivot.quantity,
                                         'code': res.data[i]['equipment'][j].code,
                                         'type': this.types[res.data[i]['equipment'][j].type_id][0].slug,
+                                        'type_id': this.types[res.data[i]['equipment'][j].type_id][0].id,
                                         'price': res.data[i]['equipment'][j].price,
                                         'price_trade': res.data[i]['equipment'][j].price_trade,
                                         'price_small_trade': res.data[i]['equipment'][j].price_small_trade,
@@ -392,7 +395,7 @@
                         $.each(this.offersContentTabs, (offerTabId, offerTab) => {
                             $.each(offerTab, (offerContentTabId, offerContentTab) => {
                                 $.each(offerContentTab['rows'], (rowId, row) => {
-                                    this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['price'] = Math.round((row['price_small_trade'] - row['price_special'])/2) + row['price_special'];
+                                    this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['price'] = parseFloat(((parseFloat(row['price_small_trade']) - parseFloat(row['price_special']))/2) + parseFloat(row['price_special'])).toFixed(2);
                                 });
                             });
                         });
@@ -529,7 +532,7 @@
                 $.each(this.offersContentTabs, (offerTabId, offerTab) => {
                     $.each(offerTab, (offerContentTabId, offerContentTab) => {
                         $.each(offerContentTab['rows'], (rowId, row) => {
-                            this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['price'] = Math.round((row['price_small_trade'] - row['price_special'])/2) + row['price_special'];
+                            this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['price'] = parseFloat(((parseFloat(row['price_small_trade']) - parseFloat(row['price_special']))/2) + parseFloat(row['price_special'])).toFixed(2);
                         });
                     });
                 });
@@ -657,7 +660,7 @@
                         $.each(this.offersContentTabs, (offerTabId, offerTab) => {
                             $.each(offerTab, (offerContentTabId, offerContentTab) => {
                                 $.each(offerContentTab['rows'], (rowId, row) => {
-                                    this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['price'] = Math.round((row['price_small_trade'] - row['price_special'])/2) + row['price_special'];
+                                    this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['price'] = parseFloat(((parseFloat(row['price_small_trade']) - parseFloat(row['price_special']))/2) + parseFloat(row['price_special'])).toFixed(2);
                                 });
                             });
                         });
@@ -728,7 +731,7 @@
             },
             recalcPrice(offerTabId, offerContentTabId, rowId){
                 let row = this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId];
-                row['price'] = Math.round((parseInt(row['price_small_trade']) - parseInt(row['price_special']))/2) + parseInt(row['price_special']);
+                row['price'] = parseFloat(((parseFloat(row['price_small_trade']) - parseFloat(row['price_special']))/2) + parseFloat(row['price_special'])).toFixed(2);
                 this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId] = row;
             }
         }
