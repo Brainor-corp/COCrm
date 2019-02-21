@@ -62,6 +62,7 @@ class OfferController extends Controller
                                 'counted_price' => $equipment['counted_price'],
                                 'comment' => $equipment['comment'],
                                 'type' => $type,
+                                'type_id' => $equipment['type_id'],
                             ));
                         }
                         else{
@@ -74,6 +75,7 @@ class OfferController extends Controller
                                 'counted_price' => $equipment['counted_price'],
                                 'comment' => $equipment['comment'],
                                 'type' => $type,
+                                'type_id' => $equipment['type_id'],
                             ));
                         }
                     }
@@ -107,6 +109,7 @@ class OfferController extends Controller
         }
         catch (\Exception $e){
             throw new \Exception($e);
+//            return $e;
         }
         return url('kp/' . $createGroup->uuid);
     }
@@ -158,6 +161,7 @@ class OfferController extends Controller
                                 'counted_price' => $equipment['counted_price'],
                                 'comment' => $equipment['comment'],
                                 'type' => $type,
+                                'type_id' => $createEquipment->type_id,
                             ));
                         } else {
                             $createOffer->equipments()->attach($equipment['base_id'], array(
@@ -169,6 +173,7 @@ class OfferController extends Controller
                                 'counted_price' => $equipment['counted_price'],
                                 'comment' => $equipment['comment'],
                                 'type' => $type,
+                                'type_id' => $equipment['type_id'],
                             ));
                         }
                     }

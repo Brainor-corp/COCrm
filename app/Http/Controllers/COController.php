@@ -57,7 +57,7 @@ class COController extends Controller
         ];
         $pdf->loadView('pages.kpPDFPage', $vars);
 
-        return $pdf->download('Kommercheskoe Predlojenie '.Carbon::now()->format('d.m.Y h-i').'.pdf');
+        return $pdf->download('Kommercheskoe Predlojenie '.Carbon::now()->addHours(3)->format('d.m.Y h-i').'.pdf');
     }
 
     public function calculateAllPrices(Request $request){
@@ -153,7 +153,7 @@ class COController extends Controller
             return intval($item->value);
         };
         $taxMaxPercentage = $taxes->max($value);
-        return ($noTaxProfit + ($noTaxProfit * $taxMaxPercentage / 100));
+        return round($noTaxProfit + ($noTaxProfit * $taxMaxPercentage / 100), 2);
     }
 
     private function calculateTotalWorkPriceNoVAT($noTaxProfit){

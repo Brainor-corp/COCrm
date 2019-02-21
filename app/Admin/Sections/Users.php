@@ -78,6 +78,7 @@ class Users extends Section
 
     public function beforeSave(Request $request, $model = null)
     {
+//        throw new \Exception($request);
         if($request->password !== $request->repeat_password){
             throw  new \Exception("Пароли не совпадают, попытайтесь снова");
         }

@@ -42,7 +42,7 @@ class OfferGroup extends Model
             return intval($item->value);
         };
         $taxMaxPercentage = $taxes->max($value);
-        return $noTaxProfit + ($noTaxProfit * $taxMaxPercentage / 100);
+        return round($noTaxProfit + ($noTaxProfit * $taxMaxPercentage / 100), 2);
     }
 
     public function getTotalWorkPriceNoVAT(){
