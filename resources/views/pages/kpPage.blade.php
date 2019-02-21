@@ -26,19 +26,19 @@
             </div>
             <div class="row">
                 <div class="col-12 my-4">
-                    <h1 class="font-weight-bold">
+                    <h2 class="font-weight-bold">
                         Коммерческое предложение <span class="text-primary">{{ $offersGroup->name }}</span>
-                    </h1>
+                    </h2>
                 </div>
             </div>
         </div>
         @foreach($offersGroup->offers as $offer)
             <div class="offer">
-                <div class="offer-name mt-2 mb-4 col-12">
-                    <h3>
+                <div class="offer-name col-12">
+                    <h4>
                         {{ $offer->name }}
                         <span class="text-right">{{ \Carbon\Carbon::parse($offersGroup->created_at)->format('d.m.Y') }}</span>
-                    </h3>
+                    </h4>
                 </div>
                 <div class="check-border p-3 my-4">
                     <table class="table table-sm">
@@ -60,25 +60,25 @@
                             @if($equipment->pivot->type != 'rashodnye-materialy')
                                 @php($totalEquipmentSum += $equipment->pivot->price * $equipment->pivot->quantity)
                                 <tr>
-                                    <td><img src="https://via.placeholder.com/100" alt=""></td>
-                                    <td class="align-middle" colspan="2"><b>{{ $equipment->name }}</b> {{ $equipment->description }}</td>
-                                    <td class="align-middle text-center">{{ $equipment->pivot->quantity }}</td>
-                                    <td class="align-middle text-center">{{ $equipment->pivot->price }}</td>
-                                    <td class="align-middle text-center">{{ $equipment->pivot->price * $equipment->pivot->quantity }}</td>
+                                    {{--<td><img src="https://via.placeholder.com/100" alt=""></td>--}}
+                                    <td class="align-middle py-3" colspan="3"><b>{{ $equipment->name }}</b> {{ $equipment->description }}</td>
+                                    <td class="align-middle py-3 text-center">{{ $equipment->pivot->quantity }}</td>
+                                    <td class="align-middle py-3 text-center">{{ $equipment->pivot->price }}</td>
+                                    <td class="align-middle py-3 text-center">{{ $equipment->pivot->price * $equipment->pivot->quantity }}</td>
                                 </tr>
                             @else
                                 @php($consumableSum += $equipment->pivot->price * $equipment->pivot->quantity)
                             @endif
                         @endforeach
                         <tr>
-                            <td><img src="https://via.placeholder.com/100" alt=""></td>
-                            <td class="align-middle" colspan="2"><b>Расходные материалы.</b> Коробы, провода и т.д.</td>
-                            <td class="align-middle text-center">1</td>
-                            <td class="align-middle text-center">{{ $consumableSum }}</td>
-                            <td class="align-middle text-center">{{ $consumableSum }}</td>
+                            {{--<td><img src="https://via.placeholder.com/100" alt=""></td>--}}
+                            <td class="align-middle py-3" colspan="3"><b>Расходные материалы.</b> Коробы, провода и т.д.</td>
+                            <td class="align-middle py-3 text-center">1</td>
+                            <td class="align-middle py-3 text-center">{{ $consumableSum }}</td>
+                            <td class="align-middle py-3 text-center">{{ $consumableSum }}</td>
                         </tr>
                         <tr>
-                            <td colspan="2" class="check-in-card-border my-4 p-total"><h3>Всего за оборудование</h3></td>
+                            <td colspan="2" class="check-in-card-border my-4 p-total"><h4>Всего за оборудование:</h4></td>
                             <td colspan="5" class="check-in-card-border my-4 text-right p-total"><h3>{{ $totalEquipmentSum + $consumableSum }}р.</h3></td>
                         </tr>
                         </tbody>
@@ -99,10 +99,10 @@
                         <tbody>
                         @foreach($offersGroup->equipment as $work)
                             <tr>
-                                <td class="align-middle">{{ $work->name }}</td>
-                                <td class="align-middle text-center"></td>
-                                <td class="align-middle text-center">{{ $work->points }}</td>
-                                <td class="align-middle text-center">{{ $work->pivot->quantity }}</td>
+                                <td class="align-middle py-3">{{ $work->name }}</td>
+                                <td class="align-middle py-3 text-center"></td>
+                                <td class="align-middle py-3 text-center">{{ $work->points }}</td>
+                                <td class="align-middle py-3 text-center">{{ $work->pivot->quantity }}</td>
                             </tr>
                         @endforeach
                             <tr>
@@ -121,7 +121,7 @@
         @endforeach
         <table class="table table-borderless">
             <tr>
-                <td class="text-right my-4 font-weight-bold p-total"><h4>Общая стоимость ( 1 договор с НДС ):{{ $totalEquipmentSum + $consumableSum + $offersGroup->getTotalWorkPrice() }}р.</h4></td>
+                <td class="text-right my-4 font-weight-bold p-total"><h4>Общая стоимость ( 1 договор с НДС ): {{ $totalEquipmentSum + $consumableSum + $offersGroup->getTotalWorkPrice() }}р.</h4></td>
             </tr>
             <tr>
                 <td class="text-right my-4 font-weight-bold p-total"><h4>Общая стоимость ( 2 договора - оборудование с НДС, работы без НДС ): {{ $totalEquipmentSum + $consumableSum + $offersGroup->getTotalWorkPriceNoVAT() }}р.</h4></td>
