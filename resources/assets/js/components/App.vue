@@ -1,8 +1,8 @@
 <template>
-    <div class="container main-container">
+    <div class="container main-container my-2">
         <div class="row">
             <div class="col-12 first-line-tabs">
-                <ul class="nav nav-tabs">
+                <ul class="upper-tabs nav nav-tabs">
                     <li class="nav-item">
                         <a class="nav-link active" data-toggle="tab" href="#generateKpTab">Редактирование КП</a>
                     </li>
@@ -12,12 +12,12 @@
                 </ul>
 
                 <div class="tab-content">
-                    <div id="generateKpTab" class="tab-pane fade active show">
+                    <div id="generateKpTab" class="active bg-white border fade p-3 show tab-pane">
                         <generate-kp-tab :offerGroupID="offerGroupID"
                             @updateOfferGroup="updateOfferGroup"
                         ></generate-kp-tab>
                     </div>
-                    <div id="kpTotalTab" class="tab-pane fade">
+                    <div id="kpTotalTab" class="bg-white border fade p-3 tab-pane">
                         <kp-total-tab :offerGroup="offerGroup" :offerGroupID="offerGroupID" :calcPrices="calcPrices"></kp-total-tab>
                     </div>
                 </div>

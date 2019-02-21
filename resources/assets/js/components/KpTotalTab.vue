@@ -97,9 +97,16 @@
                 </div>
             </div>
         </div>
-        <div v-if="url" class="col-12 mx-auto mb-5">
-            <label for="url-input">Ссылка на КП</label>
-            <input id="url-input" class="form-control" readonly :value="url" type="text"><button class="btn btn-warning" @click.prevent="copyUrl">Скопировать ссылку <i class="far fa-copy"></i></button>
+        <div class="col-12 mx-auto mb-5">
+            <div class="form-row">
+                <label for="url-input">Ссылка на КП</label>
+                <div class="input-group mb-2">
+                    <div @click.prevent="copyUrl" class="input-group-prepend">
+                        <div class="input-group-text copyBtn"><i class="far fa-copy"></i></div>
+                    </div>
+                    <input id="url-input" class="form-control" readonly :value="url" type="text">
+                </div>
+            </div>
         </div>
         <div v-if="err" class="col-12 mx-auto mb-5">
             <span class="text-danger text-center"><h2>Произошла ошибка. Пожалуйста, обновите страницу и попробуйте снова.</h2></span>
