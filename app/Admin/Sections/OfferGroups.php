@@ -31,8 +31,9 @@ class OfferGroups extends Section
     public static function onDisplay(Request $request){
 
         $display = Display::table([
+            Column::text('id', '#')->setSortable(true),
             Column::text('name', 'Наименование')->setSortable(true),
-            Column::text('uuid', 'Уникальный ID'),
+//            Column::text('uuid', 'Уникальный ID'),
             Column::text('template', 'Является шаблоном'),
         ])
             ->setPagination(10)
