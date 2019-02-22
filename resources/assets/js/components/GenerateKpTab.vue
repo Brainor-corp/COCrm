@@ -501,6 +501,7 @@
                             comment: '',
                             class: this.types[this.selected[offerTabId][offerContentTabId]][0].class,
                             type: this.types[this.selected[offerTabId][offerContentTabId]][0].slug,
+                            type_id: this.types[this.selected[offerTabId][offerContentTabId]][0].id,
                         }
                     );
                 }
@@ -554,8 +555,8 @@
                 this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['price_small_trade'] = equipment.price_small_trade;
                 this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['price_special'] = equipment.price_special;
                 this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['comment'] = equipment.comment;
-                this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['type_id'] = equipment.type.id;
-                this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['type'] = equipment.type.slug;
+                this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['type_id'] = this.types[this.selected[offerTabId][offerContentTabId]][0].id;
+                this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['type'] = this.types[this.selected[offerTabId][offerContentTabId]][0].slug;
                 this.autocompletesDisplays['equipments'][offerTabId][offerContentTabId][rowId] = false;
                 $.each(this.offersContentTabs, (offerTabId, offerTab) => {
                     $.each(offerTab, (offerContentTabId, offerContentTab) => {
