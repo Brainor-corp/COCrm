@@ -19,6 +19,7 @@ class InsertDefaultValues extends Migration
                 'name' => 'Работа',
                 'slug' => 'rabota',
                 'class' => 'work',
+                'optional' => null
             ],
             [
                 'name' => 'Расходные материалы',
