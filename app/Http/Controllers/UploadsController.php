@@ -76,7 +76,7 @@ class UploadsController extends Controller
                             'price_trade' => $row[6],
                             'price_small_trade' => $row[7],
                             'price_special' => $row[8],
-                            'price' => 0,
+                            'price' => (floatval($row[7]) - floatval($row[8]))/2 + floatval($row[8]),
                             'class' => $type->class,
                         ];
                         DB::table('equipment')->where('code', $row[2])->update($toUpdate);
@@ -90,7 +90,7 @@ class UploadsController extends Controller
                             'price_trade' => $row[6],
                             'price_small_trade' => $row[7],
                             'price_special' => $row[8],
-                            'price' => 0,
+                            'price' => (floatval($row[7]) - floatval($row[8]))/2 + floatval($row[8]),
                             'class' => $type->class,
                             'slug' => SlugService::createSlug(OfferGroup::class, 'slug', $row[3])
                         ];
