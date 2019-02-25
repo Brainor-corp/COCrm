@@ -91,7 +91,7 @@ class UploadsController extends Controller
                             'price_trade' => $row[6],
                             'price_small_trade' => $row[7],
                             'price_special' => $row[8],
-                            'price' => (floatval($row[7]) - floatval($row[8]))/2 + floatval($row[8]),
+                            'price' => round((floatval($row[7]) - floatval($row[8]))/2 + floatval($row[8]), 2),
                             'short_description' => $row[9] ?? null,
                             'class' => $type->class,
                         ];
@@ -106,7 +106,7 @@ class UploadsController extends Controller
                             'price_trade' => $row[6],
                             'price_small_trade' => $row[7],
                             'price_special' => $row[8],
-                            'price' => (floatval($row[7]) - floatval($row[8]))/2 + floatval($row[8]),
+                            'price' => round((floatval($row[7]) - floatval($row[8]))/2 + floatval($row[8]), 2),
                             'short_description' => $row[9] ?? null,
                             'class' => $type->class,
                             'slug' => SlugService::createSlug(OfferGroup::class, 'slug', $row[3])
