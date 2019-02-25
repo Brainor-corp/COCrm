@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Equipment;
+use App\Http\Helpers\CurrenciesHelper;
 use App\OfferGroup;
 use Illuminate\Support\Facades\DB;
 use App\Type;
@@ -15,6 +16,10 @@ class UploadsController extends Controller
 
     public function excelUploadEquipment()
     {
+        if(!$currencies = CurrenciesHelper::getCurrenciesValues()) {
+            return 'Не удалось получить данные о курсах валют.';
+        }
+
         $inputFileName = Input::file('file')->getPathname();
 
         $objReader = PHPExcel_IOFactory::createReader('Excel2007');
@@ -67,6 +72,16 @@ class UploadsController extends Controller
                     && !empty($row[7])
                     && !empty($row[8])
                 ) {
+                    $currency = CurrenciesHelper::getCurrencyFromString($row[5]);
+                    if($currency !== "РУБ") {
+                        $pointsParts = explode('/', $row[5]);
+                        $row[5] = 'руб./' . $pointsParts[1];
+
+                        $row[6] = round($row[6] * $currencies['Valute'][$currency]['Value'], 2);
+                        $row[7] = round($row[7] * $currencies['Valute'][$currency]['Value'], 2);
+                        $row[8] = round($row[8] * $currencies['Valute'][$currency]['Value'], 2);
+                    }
+
                     if(DB::table('equipment')->where('code', $row[2])->exists()) {
                         $toUpdate = [
                             'type_id' => $type->id,
@@ -77,6 +92,7 @@ class UploadsController extends Controller
                             'price_small_trade' => $row[7],
                             'price_special' => $row[8],
                             'price' => (floatval($row[7]) - floatval($row[8]))/2 + floatval($row[8]),
+                            'short_description' => $row[9] ?? null,
                             'class' => $type->class,
                         ];
                         DB::table('equipment')->where('code', $row[2])->update($toUpdate);
@@ -91,6 +107,7 @@ class UploadsController extends Controller
                             'price_small_trade' => $row[7],
                             'price_special' => $row[8],
                             'price' => (floatval($row[7]) - floatval($row[8]))/2 + floatval($row[8]),
+                            'short_description' => $row[9] ?? null,
                             'class' => $type->class,
                             'slug' => SlugService::createSlug(OfferGroup::class, 'slug', $row[3])
                         ];
