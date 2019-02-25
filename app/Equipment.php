@@ -11,7 +11,7 @@ class Equipment extends Model
     use Sluggable;
 
     protected $fillable = [
-        'name', 'code', 'description', 'type_id', 'price', 'price_special', 'price_trade', 'price_small_trade', 'points', 'price', 'class'
+        'name', 'code', 'description', 'short_description', 'type_id', 'price', 'price_special', 'price_trade', 'price_small_trade', 'points', 'price', 'class'
     ];
 
     public function sluggable()

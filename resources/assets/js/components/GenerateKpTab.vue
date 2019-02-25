@@ -97,7 +97,7 @@
                                     <tr v-for="row in offerContentTab.rows">
                                         <td>
                                             <input type="hidden" hidden="hidden" :name="'offer_group[offers]['+offerTab.id+'][equipments]['+types[selected[offerTab.id][offerContentTab.id]][0].slug+']['+row.id+'][base_id]'" v-model="row.base_id"/>
-                                            <input type="hidden" hidden="hidden" :name="'offer_group[offers]['+offerTab.id+'][equipments]['+types[selected[offerTab.id][offerContentTab.id]][0].slug+']['+row.id+'][description]'" v-model="row.description"/>
+                                            <input type="hidden" hidden="hidden" :name="'offer_group[offers]['+offerTab.id+'][equipments]['+types[selected[offerTab.id][offerContentTab.id]][0].slug+']['+row.id+'][short_description]'" v-model="row.short_description"/>
                                             <input type="hidden" hidden="hidden" :name="'offer_group[offers]['+offerTab.id+'][equipments]['+types[selected[offerTab.id][offerContentTab.id]][0].slug+']['+row.id+'][price_trade]'" v-model="row.price_trade"/>
                                             <input type="hidden" hidden="hidden" :name="'offer_group[offers]['+offerTab.id+'][equipments]['+types[selected[offerTab.id][offerContentTab.id]][0].slug+']['+row.id+'][price_small_trade]'" v-model="row.price_small_trade"/>
                                             <input type="hidden" hidden="hidden" :name="'offer_group[offers]['+offerTab.id+'][equipments]['+types[selected[offerTab.id][offerContentTab.id]][0].slug+']['+row.id+'][price_special]'" v-model="row.price_special"/>
@@ -330,7 +330,7 @@
                                         'price_small_trade': res.data[i]['equipment'][j].price_small_trade,
                                         'price_special': res.data[i]['equipment'][j].price_special,
                                         'comment': res.data[i]['equipment'][j].pivot.comment,
-                                        'description': res.data[i]['equipment'][j].description,
+                                        'short_description': res.data[i]['equipment'][j].short_description,
                                         'points': res.data[i]['equipment'][j].points,
                                         'class': res.data[i]['equipment'][j].class,
                                     });
@@ -403,7 +403,7 @@
                                         'price_small_trade': res.data[i]['equipment'][j].price_small_trade,
                                         'price_special': res.data[i]['equipment'][j].price_special,
                                         'comment': res.data[i]['equipment'][j].pivot.comment,
-                                        'description': res.data[i]['equipment'][j].description,
+                                        'short_description': res.data[i]['equipment'][j].short_description,
                                         'points': res.data[i]['equipment'][j].points,
                                         'class': res.data[i]['equipment'][j].class,
                                     });
@@ -491,7 +491,7 @@
                             base_id: -1,
                             code: '',
                             name: '',
-                            description: '',
+                            short_description: '',
                             quantity: '',
                             points: '',
                             price: '',
@@ -547,7 +547,7 @@
                 this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['base_id'] = equipment.id;
                 this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['code'] = equipment.code;
                 this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['name'] = equipment.name;
-                this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['description'] = equipment.description;
+                this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['short_description'] = equipment.short_description;
                 this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['quantity'] = 1;
                 this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['points'] = equipment.points;
                 this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['price'] = 0;
@@ -642,7 +642,7 @@
                                             base_id: equipment.id,
                                             code: equipment.code,
                                             name: equipment.name,
-                                            description: equipment.description,
+                                            short_description: equipment.short_description,
                                             quantity: equipment.pivot.quantity,
                                             points: equipment.points,
                                             price: equipment.price,
