@@ -128,13 +128,13 @@
                                             <input class="form-control" type="number" min="0" :name="'offer_group[offers]['+offerTab.id+'][equipments]['+types[selected[offerTab.id][offerContentTab.id]][0].slug+']['+row.id+'][price]'" v-model="row.price"/>
                                         </td>
                                         <td>
-                                            <input  class="form-control" type="number" min="0" :name="'offer_group[offers]['+offerTab.id+'][equipments]['+types[selected[offerTab.id][offerContentTab.id]][0].slug+']['+row.id+'][price_trade]'" v-model="row.price_trade"/>
+                                            <input @change="recalcPrice(offerTab.id, offerContentTab.id, row.id)" :id="'price-trade-'+offerTab.id+'-'+offerContentTab.id+'-'+row.id" class="form-control" type="number" min="0" :name="'offer_group[offers]['+offerTab.id+'][equipments]['+types[selected[offerTab.id][offerContentTab.id]][0].slug+']['+row.id+'][price_trade]'" v-model="row.price_trade"/>
                                         </td>
                                         <td>
-                                            <input class="form-control" type="number" min="0" :name="'offer_group[offers]['+offerTab.id+'][equipments]['+types[selected[offerTab.id][offerContentTab.id]][0].slug+']['+row.id+'][price_small_trade]'" v-model="row.price_small_trade"/>
+                                            <input @change="recalcPrice(offerTab.id, offerContentTab.id, row.id)" :id="'price-small-trade-'+offerTab.id+'-'+offerContentTab.id+'-'+row.id" class="form-control" type="number" min="0" :name="'offer_group[offers]['+offerTab.id+'][equipments]['+types[selected[offerTab.id][offerContentTab.id]][0].slug+']['+row.id+'][price_small_trade]'" v-model="row.price_small_trade"/>
                                         </td>
                                         <td>
-                                            <input  class="form-control" type="number" min="0" :name="'offer_group[offers]['+offerTab.id+'][equipments]['+types[selected[offerTab.id][offerContentTab.id]][0].slug+']['+row.id+'][price_special]'" v-model="row.price_special"/>
+                                            <input @change="recalcPrice(offerTab.id, offerContentTab.id, row.id)" :id="'price-special-'+offerTab.id+'-'+offerContentTab.id+'-'+row.id" class="form-control" type="number" min="0" :name="'offer_group[offers]['+offerTab.id+'][equipments]['+types[selected[offerTab.id][offerContentTab.id]][0].slug+']['+row.id+'][price_special]'" v-model="row.price_special"/>
                                         </td>
                                         <td class="align-middle">
                                             <i @click="deleteRow(offerTab.id, offerContentTab.id, row.id)" class="fas fa-times"></i>
@@ -337,13 +337,6 @@
                                 }
                             }
                         }
-                        $.each(this.offersContentTabs, (offerTabId, offerTab) => {
-                            $.each(offerTab, (offerContentTabId, offerContentTab) => {
-                                $.each(offerContentTab['rows'], (rowId, row) => {
-                                    this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['price'] = parseFloat(((row['price_small_trade'] - row['price_special'])/2) + row['price_special']).toFixed(2);
-                                });
-                            });
-                        });
                         return axios.post('/getDefaultWorks')
                     }
                 })
@@ -410,26 +403,19 @@
                                 }
                             }
                         }
-                        $.each(this.offersContentTabs, (offerTabId, offerTab) => {
-                            $.each(offerTab, (offerContentTabId, offerContentTab) => {
-                                $.each(offerContentTab['rows'], (rowId, row) => {
-                                    this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['price'] = parseFloat(((parseFloat(row['price_small_trade']) - parseFloat(row['price_special']))/2) + parseFloat(row['price_special'])).toFixed(2);
-                                });
-                            });
-                        });
                     });
             },
             updateOfferGroup() {
                 this.$emit('updateOfferGroup');
                 this.redactMode = true;
                 NProgress.start();
-                $.each(this.offersContentTabs, (offerTabId, offerTab) => {
-                    $.each(offerTab, (offerContentTabId, offerContentTab) => {
-                        $.each(offerContentTab['rows'], (rowId, row) => {
-                            this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['price'] = parseFloat(((parseFloat(row['price_small_trade']) - parseFloat(row['price_special']))/2) + parseFloat(row['price_special'])).toFixed(2);
-                        });
-                    });
-                });
+                // $.each(this.offersContentTabs, (offerTabId, offerTab) => {
+                //     $.each(offerTab, (offerContentTabId, offerContentTab) => {
+                //         $.each(offerContentTab['rows'], (rowId, row) => {
+                //             this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['price'] = parseFloat(((parseFloat(row['price_small_trade']) - parseFloat(row['price_special']))/2) + parseFloat(row['price_special'])).toFixed(2);
+                //         });
+                //     });
+                // });
                 NProgress.done();
 
             },
@@ -558,13 +544,6 @@
                 this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['type_id'] = this.types[this.selected[offerTabId][offerContentTabId]][0].id;
                 this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['type'] = this.types[this.selected[offerTabId][offerContentTabId]][0].slug;
                 this.autocompletesDisplays['equipments'][offerTabId][offerContentTabId][rowId] = false;
-                $.each(this.offersContentTabs, (offerTabId, offerTab) => {
-                    $.each(offerTab, (offerContentTabId, offerContentTab) => {
-                        $.each(offerContentTab['rows'], (rowId, row) => {
-                            this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['price'] = parseFloat(((parseFloat(row['price_small_trade']) - parseFloat(row['price_special']))/2) + parseFloat(row['price_special'])).toFixed(2);
-                        });
-                    });
-                });
             },
             setWorkResult(work, index) {
                 this.works[index] = {
@@ -695,13 +674,6 @@
                         this.adjusters['fuel'] = resp.data.fuel_number;
                         this.adjusters['wage'] = resp.data.adjusters_wage;
                         this.adjusters['percentage'] = resp.data.pay_percentage;
-                        $.each(this.offersContentTabs, (offerTabId, offerTab) => {
-                            $.each(offerTab, (offerContentTabId, offerContentTab) => {
-                                $.each(offerContentTab['rows'], (rowId, row) => {
-                                    this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['price'] = parseFloat(((parseFloat(row['price_small_trade']) - parseFloat(row['price_special']))/2) + parseFloat(row['price_special'])).toFixed(2);
-                                });
-                            });
-                        });
                     });
             },
             deleteRow(offerTabId, offerContentTabId, rowId){
@@ -778,7 +750,13 @@
                     let price = (adjustersNumber * adjustersDays * adjustersWage) + (adjustersDays * adjustersFuel);
                     this.adjusters['noTax'] = parseFloat(parseFloat((price * (100 - adjustersPercent)) / adjustersPercent) + parseFloat(price)).toFixed(2);
                 }
-            }
+            },
+            recalcPrice(offerTabId, offerContentTabId, rowId){
+                // let priceTrade = parseFloat($('#price-trade-'+offerTabId+'-'+offerContentTabId+'-'+rowId).val());
+                let priceSmallTrade = parseFloat($('#price-small-trade-'+offerTabId+'-'+offerContentTabId+'-'+rowId).val());
+                let priceSpecial = parseFloat($('#price-special-'+offerTabId+'-'+offerContentTabId+'-'+rowId).val());
+                this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['price'] = parseFloat((priceSmallTrade - priceSpecial) / 2 + priceSpecial).toFixed(2);
+            },
         }
     }
 </script>
