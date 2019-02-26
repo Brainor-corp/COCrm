@@ -24,7 +24,7 @@
                         <tr v-for="row in tab">
                             <td>{{ row.code }}</td>
                             <td>{{ row.name }}</td>
-                            <td>{{ row.description }}</td>
+                            <td>{{ row.short_description ? row.short_description : row.description }}</td>
                             <td>{{ row.quantity }}</td>
                             <td>{{ row.counted_price }}</td>
                             <td>{{ row.price * row.quantity }}</td>

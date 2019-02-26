@@ -31,7 +31,7 @@ class Equipments extends Section
             Column::text('code', 'Артикул'),
             Column::text('real_class', 'Категория'),
             Column::text('name', 'Название'),
-            Column::text('description', 'Описание'),
+            Column::text('short_description', 'Короткое описание'),
             Column::text('points', 'Ед. измерения'),
             Column::text('price', 'Цена'),
             Column::text('created_at', 'Дата добавления'),
@@ -62,6 +62,7 @@ class Equipments extends Section
             FormColumn::column([
                 FormField::input('code', 'Артикул')->setRequired(true),
                 FormField::input('name', 'Название')->setRequired(true),
+                FormField::textarea('short_description', 'Короткое описание'),
                 FormField::textarea('description', 'Описание'),
                 FormField::input('points', 'Ед. измерения')->setRequired(true),
                 FormField::input('price', 'Цена')->setRequired(true),

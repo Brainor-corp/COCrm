@@ -43,7 +43,7 @@ class OfferController extends Controller
                             $createEquipment = new Equipment();
                             $createEquipment->code = $equipment['code'];
                             $createEquipment->name = $equipment['name'];
-                            $createEquipment->description = $equipment['description'];
+                            $createEquipment->short_description = $equipment['short_description'];
                             $createEquipment->points = $equipment['points'];
                             $createEquipment->price = $equipment['price'];
                             $createEquipment->price_trade = $equipment['price_trade'];
@@ -142,7 +142,7 @@ class OfferController extends Controller
                             $createEquipment = new Equipment();
                             $createEquipment->code = $equipment['code'];
                             $createEquipment->name = $equipment['name'];
-                            $createEquipment->description = $equipment['description'];
+                            $createEquipment->short_description = $equipment['short_description'];
                             $createEquipment->points = $equipment['points'];
                             $createEquipment->price = $equipment['price'];
                             $createEquipment->price_trade = $equipment['price_trade'];
