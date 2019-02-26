@@ -50195,7 +50195,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                                 'price_small_trade': res.data[i]['equipment'][j].price_small_trade,
                                 'price_special': res.data[i]['equipment'][j].price_special,
                                 'comment': res.data[i]['equipment'][j].pivot.comment,
-                                'short_description': res.data[i]['equipment'][j].short_description,
+                                'short_description': res.data[i]['equipment'][j].short_description ? res.data[i]['equipment'][j].short_description : res.data[i]['equipment'][j].description,
                                 'points': res.data[i]['equipment'][j].points,
                                 'class': res.data[i]['equipment'][j].class
                             });
@@ -50268,7 +50268,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                                 'price_small_trade': res.data[i]['equipment'][j].price_small_trade,
                                 'price_special': res.data[i]['equipment'][j].price_special,
                                 'comment': res.data[i]['equipment'][j].pivot.comment,
-                                'short_description': res.data[i]['equipment'][j].short_description,
+                                'short_description': res.data[i]['equipment'][j].short_description ? res.data[i]['equipment'][j].short_description : res.data[i]['equipment'][j].description,
                                 'points': res.data[i]['equipment'][j].points,
                                 'class': res.data[i]['equipment'][j].class
                             });
@@ -50408,7 +50408,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['base_id'] = equipment.id;
             this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['code'] = equipment.code;
             this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['name'] = equipment.name;
-            this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['short_description'] = equipment.short_description;
+            this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['short_description'] = equipment.short_description ? equipment.short_description : equipment.description;
             this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['quantity'] = 1;
             this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['points'] = equipment.points;
             this.offersContentTabs[offerTabId][offerContentTabId]['rows'][rowId]['price'] = 0;
@@ -50500,7 +50500,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                                 base_id: equipment.id,
                                 code: equipment.code,
                                 name: equipment.name,
-                                short_description: equipment.short_description,
+                                short_description: equipment.short_description ? equipment.short_description : equipment.description,
                                 quantity: equipment.pivot.quantity,
                                 points: equipment.points,
                                 price: equipment.price,
