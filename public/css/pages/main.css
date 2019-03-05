@@ -94,3 +94,13 @@
 i.fa-times:hover{
     cursor: pointer;
 }
+
+.table th, .table td{
+    padding: 0.5rem;
+    vertical-align: middle;
+    /*text-align: center;*/
+}
+
+.table thead th{
+    vertical-align: middle;
+}
