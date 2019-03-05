@@ -30,8 +30,8 @@ class EquipmentController extends Controller
     }
 
     public function searchEquipment(Request $request) {
-        $equipment = Equipment::where('name', 'like', '%' . $request->term . '%')
-            ->select(['id', 'name'])->limit(10)->get();
+        $equipment = Equipment::where('code', 'like', '%' . $request->term . '%')
+            ->select(['id', 'code', 'name'])->limit(10)->get();
 
         return ['results' => $equipment];
     }

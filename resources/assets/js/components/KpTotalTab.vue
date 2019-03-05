@@ -39,7 +39,7 @@
                         <td>Коробы, провода и т.д.</td>
                         <td>{{ (calcPrices[i]['consumablePrice'] != 0) ? 1 : 0 }}</td>
                         <td>{{ calcPrices[i]['consumablePrice'] }}</td>
-                        <td> --- </td>
+                        <td>{{ calcPrices[i]['consumablePrice'] }}</td>
                     </tr>
                     <tr v-if="calcPrices[i]">
                         <!--<td colspan="8" class="bg-light-blue text-right"><h4>Всего за оборудование {{ calcPrices[i]['equipmentPrice'] + calcPrices[i]['consumablePrice'] }}р.</h4></td>-->
@@ -109,7 +109,11 @@
             </div>
         </div>
         <div v-if="err" class="col-12 mx-auto mb-5">
-            <span class="text-danger text-center"><h2>Произошла ошибка. Пожалуйста, обновите страницу и попробуйте снова.</h2></span>
+            <span class="text-danger text-center">
+                <h2>
+                    {{ err }}
+                </h2>
+            </span>
         </div>
         <div class="mx-auto mb-5">
             <a href="" class="btn btn-lg btn-primary create-btn d-flex align-items-center justify-content-center" v-if="offerGroup.offer_group" @click.prevent="saveOfferGroup">Сохранить группу КП</a>
@@ -121,7 +125,7 @@
 <script>
     import axios from 'axios';
     import $ from 'jquery'
-    // import NProgress from 'nprogress'
+    import NProgress from 'nprogress'
 
     export default {
         props: ['offerGroup', 'calcPrices', 'offerGroupID'],
@@ -141,10 +145,11 @@
                         .post('/saveOfferGroup', this.offerGroup)
                         .then((res) => {
                             this.url = res.data;
+                            this.err = '';
                         })
                         .catch(error => {
-                            this.err = true;
-                            console.log(error);
+                            NProgress.done();
+                            this.err = error.response.data.message;
                         });
                 }
                 else{
@@ -152,10 +157,11 @@
                         .post('/updateOfferGroup', [this.offerGroup, this.offerGroupID])
                         .then((res) => {
                             this.url = res.data;
+                            this.err = '';
                         })
                         .catch(error => {
-                            this.err = true;
-                            console.log(error);
+                            NProgress.done();
+                            this.err = error.response.data.message;
                         });
                 }
             },

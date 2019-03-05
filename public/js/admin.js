@@ -50,7 +50,6 @@ $(document).ready(function () {
         multiple: true,
         tokenSeparators: [',', ' '],
         minimumInputLength: 2,
-        debug: true,
         ajax: {
             url: '/searchEquipment',
             dataType: "json",
@@ -66,7 +65,7 @@ $(document).ready(function () {
                 return {
                     results: $.map(data.results, function (item) {
                         return {
-                            text: item.name,
+                            text: item.code + " — " + item.name,
                             value: item.id,
                             id: item.id,
                         }
