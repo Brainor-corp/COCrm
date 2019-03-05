@@ -9,7 +9,7 @@
             @if($required) required @endif
             @if($readonly) readonly @endif>
         @if(isset($options))
-            <option value="">Не указан</option>
+            <option @if($required) disabled @endif value="">Не указан</option>
             @foreach($options as $key => $option)
                 <option value="{{ $key }}"
                         @if(isset($value))

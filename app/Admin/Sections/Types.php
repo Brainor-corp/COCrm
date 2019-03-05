@@ -56,7 +56,10 @@ class Types extends Section
         $form = Form::panel([
             FormColumn::column([
                 FormField::input('name', 'Название')->setRequired(true),
-                FormField::input('class', 'Класс')->setRequired(true),
+//                FormField::input('class', 'Класс')->setRequired(true),
+                FormField::select('class', 'Класс')
+                    ->setOptions(['equipment'=>'Оборудование', 'work'=>'Работа'])
+                    ->setRequired(true),
                 FormField::textarea('description', 'Описание'),
                 FormField::select('optional', 'Выводить при загрузке КП')
                     ->setOptions(['optional'=>'Нет', 'default'=>'Да'])

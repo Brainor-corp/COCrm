@@ -17,11 +17,61 @@ use Illuminate\Support\Facades\Auth;
 
 class OfferController extends Controller
 {
+    private function validateOfferGroup($group){
+        $errorMsg = null;
+        if(!$group['name']){
+            $errorMsg = 'Введите название КП.';
+        }
+        foreach ($group['offers'] as $offer) {
+            if(!$offer['name']){
+                $errorMsg = 'Введите название для всех Вариантов КП.';
+            }
+
+            foreach ($offer['equipments'] as $type => $equipment_tab) {
+                foreach ($equipment_tab as $equipment) {
+                    if(empty($equipment['code'])){
+                        $errorMsg = 'Поле "Артикул" у оборудования обязателен.';
+                    }
+                    if(empty($equipment['name'])){
+                        $errorMsg = 'Поле "Название" у оборудования обязателен.';
+                    }
+                    if(empty($equipment['points'])){
+                        $errorMsg = 'Поле "Ед. измерения" у оборудования обязателен.';
+                    }
+                    if(empty($equipment['price'])){
+                        $errorMsg = 'Поле "Цена" у оборудования обязателен.';
+                    }
+                    if(empty($equipment['price_trade'])){
+                        $errorMsg = 'Поле "Розн. цена" у оборудования обязателен.';
+                    }
+                    if(empty($equipment['price_small_trade'])){
+                        $errorMsg = 'Поле "3 колонка" у оборудования обязателен.';
+                    }
+                    if(empty($equipment['price_special'])){
+                        $errorMsg = 'Поле "Спец. цена" у оборудования обязателен.';
+                    }
+                }
+            }
+        }
+        foreach ($group['works'] as $work) {
+            if(empty($work['name'])){
+                $errorMsg = 'Поле "Название" у работы обязателен.';
+            }
+            if(empty($work['points'])){
+                $errorMsg = 'Поле "Ед. измерения" у работы обязателен.';
+            }
+        }
+        return $errorMsg;
+    }
+
     public function saveOfferGroup(Request $request){
         $userId = Auth::user()->id;
-
+        $group = $request->offer_group;
+        $error = self::validateOfferGroup($group);
+        if($error){
+            throw new \Exception($error);
+        }
         try{
-            $group = $request->offer_group;
             $createGroup = new OfferGroup();
             $createGroup->name = $group['name'];
             $createGroup->adjusters_no_tax = $group['adjusters']['adjusters_no_tax'] ?? null;
@@ -108,13 +158,17 @@ class OfferController extends Controller
             }
         }
         catch (\Exception $e){
-            throw new \Exception($e);
+            throw new \Exception('Произошла ошибка. Пожалуйста, обновите страницу и попробуйте снова.');
 //            return $e;
         }
         return url('kp/' . $createGroup->uuid);
     }
 
     public function updateOfferGroup(Request $request){
+        $error = self::validateOfferGroup($request[0]['offer_group']);
+        if($error){
+            throw new \Exception($error);
+        }
         try {
             $buffWork = [];
             $newOfferGroup = $request[0]['offer_group'];
@@ -203,7 +257,7 @@ class OfferController extends Controller
             $offerGroup->save();
         }
         catch (\Exception $e){
-            throw new \Exception($e);
+            throw new \Exception('Произошла ошибка. Пожалуйста, обновите страницу и попробуйте снова.');
         }
         return url('kp/' . $offerGroup->uuid);
     }
