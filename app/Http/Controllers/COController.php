@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\DefaultTab;
 use App\Offer;
 use App\OfferGroup;
 use App\Setting;
@@ -25,16 +26,29 @@ class COController extends Controller
         return view('pages.kpPage')->with(compact( 'offersGroup'));
     }
 
+    public function getDefaultTabs(){
+        $tabs = DefaultTab::with('equipments')->get();
+        $groupedTab = [];
+        foreach ($tabs as $tab){
+            $groupedTab[$tab->slug]['equipment'] = [];
+            $groupedTab[$tab->slug]['name'] = $tab->name;
+            foreach ($tab['equipments'] as $equipment) {
+                array_push($groupedTab[$tab->slug]['equipment'], $equipment);
+            }
+        }
+        return $groupedTab;
+    }
+
     public function getOfferGroup(Request $request){
         if(!isset($request->id)){
             abort(404);
         }
 
-        $offersGroup = OfferGroup::where('id', $request->id)->with('offers.equipments.type', 'equipment', 'user')->first();
+        $offersGroup = OfferGroup::where('id', $request->id)->with('offers.equipments', 'equipment', 'user')->first();
         $groupedArr = $offersGroup->toArray();
 
         foreach ($offersGroup->offers as $key => $offer) {
-            $groupedArr['offers'][$key]['equipments'] = $offer->equipments->groupBy('pivot.type');
+            $groupedArr['offers'][$key]['equipments'] = $offer->equipments->groupBy('pivot.tab_slug');
         }
 
         return $groupedArr;

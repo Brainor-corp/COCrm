@@ -28,9 +28,10 @@ Route::group(['middleware' => ['web', 'auth']], function () {
     Route::post('/getTypesByClass', 'TypeController@getTypesByClass')->name('getTypes');
     Route::post('/getAllEquipmentTypes', 'TypeController@getAllEquipmentTypes')->name('getAllEquipmentTypes');
     Route::post('/getDefaultTypesWithEquipment', 'TypeController@getDefaultTypesWithEquipment')->name('getDefaultTypesWithEquipment');
+    Route::any('/getDefaultTabs', 'COController@getDefaultTabs')->name('getDefaultTabs');
     Route::post('/getDefaultWorks', 'TypeController@getDefaultWorks')->name('getDefaultWorks');
     Route::post('/getTaxBySlug', 'SettingsController@getTaxBySlug')->name('getTax');
-    Route::post('/getOfferGroup', 'COController@getOfferGroup')->name('getOfferGroup');
+    Route::any('/getOfferGroup', 'COController@getOfferGroup')->name('getOfferGroup');
     Route::post('/getOfferGroupTemplates', 'COController@getOfferGroupTemplates')->name('getOfferGroupTemplates');
     Route::post('/findEquipmentByCode', 'EquipmentController@findEquipmentByCode')->name('findEquipment');
     Route::post('/findWorkByCode', 'EquipmentController@findWorkByCode')->name('findWork');
