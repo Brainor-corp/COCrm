@@ -1,5 +1,6 @@
 <template>
     <div class="row">
+        {{offerGroup}}
         <div v-if="offerGroup.offer_group" class="col-12 kp-total-tab">
             <h2>{{ offerGroup.offer_group.name}}</h2>
             <div class="kp-total-offer" v-for="(offerData, i) in offerGroup.offer_group.offers" :key="i">

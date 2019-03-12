@@ -17,7 +17,8 @@ class CreateDefaultTabsTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->string('slug');
-            $table->integer('order')->nullable();
+            $table->integer('order')->default(0);
+            $table->string('class');
             $table->timestamps();
         });
     }

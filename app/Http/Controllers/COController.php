@@ -26,17 +26,12 @@ class COController extends Controller
         return view('pages.kpPage')->with(compact( 'offersGroup'));
     }
 
-    public function getDefaultTabs(){
-        $tabs = DefaultTab::with('equipments')->get();
-        $groupedTab = [];
-        foreach ($tabs as $tab){
-            $groupedTab[$tab->slug]['equipment'] = [];
-            $groupedTab[$tab->slug]['name'] = $tab->name;
-            foreach ($tab['equipments'] as $equipment) {
-                array_push($groupedTab[$tab->slug]['equipment'], $equipment);
-            }
-        }
-        return $groupedTab;
+    public function getDefaultWorkTabs(){
+        return DefaultTab::where('class', 'work')->with('equipments')->orderBy('order')->get();
+    }
+
+    public function getDefaultEquipmentTabs(){
+        return DefaultTab::where('class', 'equipment')->with('equipments')->orderBy('order')->get();
     }
 
     public function getOfferGroup(Request $request){
@@ -47,8 +42,22 @@ class COController extends Controller
         $offersGroup = OfferGroup::where('id', $request->id)->with('offers.equipments', 'equipment', 'user')->first();
         $groupedArr = $offersGroup->toArray();
 
-        foreach ($offersGroup->offers as $key => $offer) {
-            $groupedArr['offers'][$key]['equipments'] = $offer->equipments->groupBy('pivot.tab_slug');
+        foreach ($offersGroup->equipment->groupBy('pivot.tab_slug')->values() as $key => $work){
+            $workBuff[$key]['equipments'] = $work;
+            $workBuff[$key]['name'] = $work->first()->pivot->tab_name;
+            $workBuff[$key]['slug'] = $work->first()->pivot->tab_slug;
+        }
+        $groupedArr['works'] = $workBuff;
+
+        foreach ($offersGroup->offers as $offerIndex => $offer) {
+            $buff1 = $offer->equipments->groupBy('pivot.tab_slug')->values();
+            foreach ($buff1 as $key => $value){
+                $buff2['equipments'] = $value;
+                $buff2['name'] = $value->first()->pivot->tab_name;
+                $buff2['slug'] = $value->first()->pivot->tab_slug;
+                $buff1[$key] = $buff2;
+            }
+            $groupedArr['offers'][$offerIndex]['equipments'] = $buff1;
         }
 
         return $groupedArr;
