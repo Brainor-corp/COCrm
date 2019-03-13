@@ -65,31 +65,29 @@
                         var stop = true;
                         for (let offer = 0; offer < this.offerGroup['offer_group']['offers'].length; offer++) {
                             if(this.offerGroup['offer_group']['offers'][offer]['equipments']){
-                                if(this.offerGroup['offer_group']['offers'][offer]['equipments']){
-                                    $.each(this.offerGroup['offer_group']['offers'][offer]['equipments'], (type, equipments) => {
-                                        if(!this.offerGroup['offer_group']['offers'][offer]['equipments'][type]){
-                                            this.offerGroup['offer_group']['offers'][offer]['equipments'].splice(type, 1);
+                                $.each(this.offerGroup['offer_group']['offers'][offer]['equipments'], (type, equipments) => {
+                                    if(!this.offerGroup['offer_group']['offers'][offer]['equipments'][type]){
+                                        this.offerGroup['offer_group']['offers'][offer]['equipments'].splice(type, 1);
+                                        stop = false;
+                                    }
+                                    $.each(equipments['equipment'], (index, equipment) => {
+                                        if(!equipment || equipment.quantity === "" || parseInt(equipment.quantity) < 1) { //проверка на ненулевое кол-во
+                                            equipments['equipment'].splice(index, 1);
                                             stop = false;
                                         }
-                                        $.each(equipments, (index, equipment) => {
-                                            if(!equipment || equipment.quantity === "" || parseInt(equipment.quantity) < 1) { //проверка на ненулевое кол-во
-                                                this.offerGroup['offer_group']['offers'][offer]['equipments'][type].splice(index, 1);
-                                                stop = false;
-                                            }
-                                        });
-                                        if(stop){
-                                            $.each(equipments, (index, equipment) => {
-                                                // this.offerGroup['offer_group']['offers'][offer]['equipments'][type][index]['price'] = (((equipment['price_small_trade'] - equipment['price_special'])/2) + equipment['price_special']) * equipment['quantity'];
-                                                this.offerGroup['offer_group']['offers'][offer]['equipments'][type][index]['counted_price'] = parseFloat((parseFloat(parseFloat(equipment['price_small_trade']) - parseFloat(equipment['price_special'])/2) + parseFloat(equipment['price_special']))).toFixed(2);
-                                            });
-                                        }
                                     });
-                                }
+                                    if(stop){
+                                        $.each(equipments['equipment'], (index, equipment) => {
+                                            // this.offerGroup['offer_group']['offers'][offer]['equipments'][type][index]['price'] = (((equipment['price_small_trade'] - equipment['price_special'])/2) + equipment['price_special']) * equipment['quantity'];
+                                            equipment['counted_price'] = parseFloat((parseFloat(parseFloat(equipment['price_small_trade']) - parseFloat(equipment['price_special'])/2) + parseFloat(equipment['price_special']))).toFixed(2);
+                                        });
+                                    }
+                                });
                             }
                         }
                         if(this.offerGroup['offer_group']['works']){
                             for (let work = 0; work < this.offerGroup['offer_group']['works'].length; work++){
-                                if(this.offerGroup['offer_group']['works'][work].quantity === "" || this.offerGroup['offer_group']['works'][work].quantity < 1){
+                                if(this.offerGroup['offer_group']['works'][work].quantity === "" || this.offerGroup['offer_group']['works'][work].quantity == null || this.offerGroup['offer_group']['works'][work].quantity < 1){
                                     this.offerGroup['offer_group']['works'].splice(work, 1);
                                     stop = false;
                                 }
