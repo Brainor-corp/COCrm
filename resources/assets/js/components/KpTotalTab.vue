@@ -6,7 +6,7 @@
             <div class="kp-total-offer" v-for="(offerData, i) in offerGroup.offer_group.offers" :key="i">
                 <h3>{{ offerData.name }}</h3>
                 <div class="my-4 h4 font-weight-bold">Оборудование и расходные материалы</div>
-                <table v-if="offerData.equipments && offerData.equipments" class="table table-bordered">
+                <table v-if="offerData.equipments" class="table table-bordered">
                     <thead>
                     <tr>
                         <th scope="col">Артикул</th>
@@ -22,7 +22,7 @@
                     </thead>
                     <tbody>
                     <template v-for="(tab, type) in offerData.equipments" v-if="type !== 'rashodnye-materialy'">
-                        <tr v-for="row in tab">
+                        <tr v-for="row in tab.equipment">
                             <td>{{ row.code }}</td>
                             <td>{{ row.name }}</td>
                             <td>{{ row.short_description ? row.short_description : row.description }}</td>
@@ -38,7 +38,7 @@
                         <td>----</td>
                         <td>Расходные материалы</td>
                         <td>Коробы, провода и т.д.</td>
-                        <td>{{ (calcPrices[i]['consumablePrice'] != 0) ? 1 : 0 }}</td>
+                        <td>{{ (calcPrices[i]['consumablePrice'] !== 0) ? 1 : 0 }}</td>
                         <td>{{ calcPrices[i]['consumablePrice'] }}</td>
                         <td>{{ calcPrices[i]['consumablePrice'] }}</td>
                     </tr>
@@ -48,7 +48,7 @@
                     </tbody>
                 </table>
                 <div v-if="calcPrices[i]" class="bg-light-blue text-right my-5">
-                    <h4 class="p-3  font-weight-bold">Всего за оборудование {{ parseFloat(calcPrices[i]['equipmentPrice'] + calcPrices[i]['consumablePrice']).toFixed(2) }}р.</h4>
+                    <h4 class="p-3 font-weight-bold">Всего за оборудование {{ parseFloat(calcPrices[i]['equipmentPrice'] + calcPrices[i]['consumablePrice']).toFixed(2) }}р.</h4>
                 </div>
                 <div v-if="offerGroup.offer_group.works" class="my-4 h4 font-weight-bold">Монтажные и пуско-наладочные работы</div>
                 <table v-if="offerGroup.offer_group.works" class="table table-bordered">
@@ -62,18 +62,22 @@
                     </tr>
                     </thead>
                     <tbody>
-                        <tr v-if="offerGroup.offer_group.works.length > 0" v-for="row in offerGroup.offer_group.works">
+                    <template v-if="calcPrices['workNumber'] > 0" v-for="workTab in offerGroup.offer_group.works">
+                        <tr v-for="row in workTab['work']">
                             <td>{{ row.code }}</td>
                             <td>{{ row.name }}</td>
                             <td>{{ row.points }}</td>
                             <td>{{ row.quantity }}</td>
                         </tr>
-                        <tr v-else>
+                    </template>
+                    <template v-if="calcPrices['workNumber'] === 0">
+                        <tr>
                             <td> ---- </td>
                             <td> ---- </td>
                             <td> ---- </td>
                             <td> ---- </td>
                         </tr>
+                    </template>
                         <!--<tr v-if="calcPrices[i]">-->
                             <!--<td colspan="4" class="bg-beige text-right"><h4>Всего за работы ( с НДС ): {{ calcPrices[i]['totalWorkPrice'] }}р.</h4></td>-->
                         <!--</tr>-->

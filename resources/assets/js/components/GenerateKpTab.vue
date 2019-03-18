@@ -45,18 +45,16 @@
                                 <div class="col-10">
                                     <input class="form-control offerTabContentName" type="text" :name="'offer_group[offers]['+offerTabIndex+'][name]'" v-model="offerTab.name"/><br>
                                 </div>
-                                <div class="col-2">
+                                <div class="col-2 align-self-baseline">
                                     <i @click="deleteOffer(offerTabIndex)" class="fas fa-times"></i>
                                 </div>
                             </div>
                         </a>
                     </li>
-
                     <li class="nav-item addOfferTab">
                         <a class="nav-link" @click.prevent="addOfferTab">+</a>
                     </li>
                 </ul>
-
                 <div class="type-tab tab-content mb-5">
                     <div v-for="(offerTab, offerTabIndex) in offerGroup['offers']" :key="offerTabIndex" :id="'kp-edit-tab-'+offerTabIndex" class="p-3 bg-light border tab-pane fade" v-bind:class="{ 'active show': offerTabIndex === 0 }">
                         <ul class="nav nav-tabs">
@@ -68,9 +66,9 @@
                                         <!--<option v-for="(equipment, tabIndex) in offerTab['equipments']" v-bind:selected="equipment['slug'] === offerContentTab['slug']" :key="tabIndex" v-if="equipment['slug']" :value="equipment['slug']">{{ equipment.name }}</option>-->
                                     <!--</select>-->
                                         <div class="col-auto">
-                                            <input type="text" class="form-control"  v-bind:disabled="offerContentTab.slug === 'rashodnye-materialy'" v-model="offerContentTab.name">
+                                            <input @change="changeTabName(offerTabIndex, offerContentTabIndex)" type="text" class="form-control" v-bind:disabled="offerContentTab.slug === 'rashodnye-materialy'" v-model="offerContentTab.name">
                                         </div>
-                                        <div class="col-auto">
+                                        <div class="col-auto align-self-center">
                                             <i class="fas fa-times text-body" v-if="offerContentTab.slug !== 'rashodnye-materialy'" @click="deleteTab(offerTabIndex, offerContentTabIndex)"></i>
                                         </div>
                                     </div>
@@ -103,7 +101,8 @@
                                     <tr v-for="(row, rowKey) in offerContentTab['equipments']" :key="rowKey">
                                         <td>
                                             <input type="hidden" hidden="hidden" :name="'offer_group[offers]['+offerTabIndex+'][equipments]['+offerContentTab.slug+'][name]'" v-model="offerContentTab.name"/>
-                                            <input type="hidden" hidden="hidden" :name="'offer_group[offers]['+offerTabIndex+'][equipments]['+offerContentTab.slug+'][equipment]['+rowKey+'][base_id]'" v-model="rowKey"/>
+                                            <input type="hidden" hidden="hidden" :name="'offer_group[offers]['+offerTabIndex+'][equipments]['+offerContentTab.slug+'][equipment]['+rowKey+'][base_id]'" v-model="row.id"/>
+                                            <input type="hidden" hidden="hidden" :name="'offer_group[offers]['+offerTabIndex+'][equipments]['+offerContentTab.slug+'][equipment]['+rowKey+'][id]'" v-model="rowKey"/>
                                             <input type="hidden" hidden="hidden" :name="'offer_group[offers]['+offerTabIndex+'][equipments]['+offerContentTab.slug+'][equipment]['+rowKey+'][short_description]'" v-model="row.short_description"/>
                                             <input type="hidden" hidden="hidden" :name="'offer_group[offers]['+offerTabIndex+'][equipments]['+offerContentTab.slug+'][equipment]['+rowKey+'][price_trade]'" v-model="row.price_trade"/>
                                             <input type="hidden" hidden="hidden" :name="'offer_group[offers]['+offerTabIndex+'][equipments]['+offerContentTab.slug+'][equipment]['+rowKey+'][price_small_trade]'" v-model="row.price_small_trade"/>
@@ -132,7 +131,7 @@
                                             <input class="form-control" type="text" :name="'offer_group[offers]['+offerTabIndex+'][equipments]['+offerContentTab.slug+'][equipment]['+rowKey+'][points]'" v-model="row.points"/>
                                         </td>
                                         <td>
-                                            <input class="form-control" type="number" min="0" :name="'offer_group[offers]['+offerTabIndex+'][equipments]['+offerContentTab.slug+'][equipment]['+rowKey+'][quantity]'" value="0"/>
+                                            <input class="form-control" type="number" min="0" :name="'offer_group[offers]['+offerTabIndex+'][equipments]['+offerContentTab.slug+'][equipment]['+rowKey+'][quantity]'" v-model="row.quantity"/>
                                         </td>
                                         <td>
                                             <input class="form-control" type="number" min="0" :name="'offer_group[offers]['+offerTabIndex+'][equipments]['+offerContentTab.slug+'][equipment]['+rowKey+'][price]'" v-model="row.price"/>
@@ -159,6 +158,7 @@
                         </div>
                     </div>
                 </div>
+
                 <h3>Работы</h3>
                 <div class="row">
                     <div class="col-auto">
@@ -192,49 +192,71 @@
                         <span v-for="(value, key) in adjustmentPrePrice" :key="key" v-model="adjustmentPrePrice[key]"><strong>{{adjustmentPrePriceKeys[key]}}</strong>{{" " + value + "; &nbsp"}}</span>
                     </div>
                 </div>
-                <table class="table table-striped table-hover mt-2">
-                    <thead>
-                    <tr>
-                        <th scope="col">Артикул</th>
-                        <th scope="col">Название<span class="text-danger">*</span></th>
-                        <th scope="col">Ед.измерения<span class="text-danger">*</span></th>
-                        <th scope="col">Количество<span class="text-danger">*</span></th>
-                        <th scope="col"></th>
-                    </tr>
-                    </thead>
-                    <tbody v-if="offerGroup['works']">
-                    <tr v-for="(work, key) in offerGroup['works']['0']['equipments']" :key="key">
-                        <td>
-                            <input class="form-control" type="hidden" hidden="hidden" :name="'offer_group[works]['+key+'][id]'" v-model="work.id"/>
+                <ul class="nav nav-tabs mt-5" role="tablist">
+                    <li v-for="(workTab, workTabIndex) in offerGroup['works']" :key="workTabIndex" class="nav-item">
+                        <a class="nav-link" v-bind:class="{ 'active show': workTabIndex === 0 }" :id="'#kp-head-work-tab-'+workTabIndex" data-toggle="tab" role="tab" :href="'#kp-work-tab-'+workTabIndex">
+                            <div class="row">
+                                <div class="col-auto">
+                                    <input @change="changeWorkTabName(workTabIndex)" type="text" class="form-control" v-model="workTab.name">
+                                </div>
+                                <div class="col-auto align-self-center">
+                                    <i class="fas fa-times text-body" @click="deleteWorkTab(workTabIndex)"></i>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="h-100 nav-link" @click.prevent="addWorkTab()">+</a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane" v-bind:class="{ 'active show': workTabIndex === 0 }" :aria-labelledby="'#kp-head-work-tab-'+workTabIndex" v-for="(workTab, workTabIndex) in offerGroup['works']" :key="workTabIndex" :id="'kp-work-tab-'+workTabIndex">
+                        <table class="table table-striped table-hover mt-2">
+                            <thead>
+                            <tr>
+                                <th scope="col">Артикул</th>
+                                <th scope="col">Название<span class="text-danger">*</span></th>
+                                <th scope="col">Ед.измерения<span class="text-danger">*</span></th>
+                                <th scope="col">Количество<span class="text-danger">*</span></th>
+                                <th scope="col"></th>
+                            </tr>
+                            </thead>
+                            <tbody v-if="offerGroup['works']">
+                            <input type="hidden" hidden="hidden" :name="'offer_group[works]['+workTab.slug+'][name]'" v-model="workTab.name"/>
+                            <tr v-for="(work, key) in workTab['equipments']" :key="key">
+                                <td>
+                                    <input type="hidden" hidden="hidden" :name="'offer_group[works]['+workTab.slug+'][work]['+key+'][id]'" v-model="work.id"/>
 
-                            <input class="form-control" type="text" @keyup="searchWorkByCode(work.code, key)" :name="'offer_group[works]['+key+'][code]'" v-model="work.code"/>
-                            <ul :id="'autocomplete-results-w'+key" v-show="work.autoCompleteDisplay === true" class="autocomplete-results">
-                                <li class="loading" v-if="isLoading">
-                                    Поиск...
-                                </li>
-                                <li v-else v-for="(result, i) in results" :key="i" @click="setWorkResult(result, key)" class="autocomplete-result">
-                                    {{ result['code'] + " - " + result['name'] }}
-                                </li>
-                            </ul>
-                        </td>
-                        <td>
-                            <input class="form-control" type="text" :name="'offer_group[works]['+key+'][name]'" v-model="work.name"/>
-                        </td>
-                        <td>
-                            <input class="form-control" type="text" :name="'offer_group[works]['+key+'][points]'" v-model="work.points"/>
-                        </td>
-                        <td>
-                            <input class="form-control" type="number" min="0" :name="'offer_group[works]['+key+'][quantity]'" v-model="work.quantity"/>
-                        </td>
-                        <td class="align-middle">
-                            <i @click="deleteWork(key)" class="fas fa-times"></i>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="9" @click.prevent="addWork()">+</td>
-                    </tr>
-                    </tbody>
-                </table>
+                                    <input class="form-control" type="text" @keyup="searchWorkByCode(work.code, workTabIndex, key)" :name="'offer_group[works]['+workTab.slug+'][work]['+key+'][code]'" v-model="work.code"/>
+                                    <ul :id="'autocomplete-results-w-'+key" v-show="work.autoCompleteDisplay === true" class="autocomplete-results">
+                                        <li class="loading" v-if="isLoading">
+                                            Поиск...
+                                        </li>
+                                        <li v-else v-for="(result, i) in results" :key="i" @click="setWorkResult(result, workTabIndex, key)" class="autocomplete-result">
+                                            {{ result['code'] + " - " + result['name'] }}
+                                        </li>
+                                    </ul>
+                                </td>
+                                <td>
+                                    <input class="form-control" type="text" :name="'offer_group[works]['+workTab.slug+'][work]['+key+'][name]'" v-model="work.name"/>
+                                </td>
+                                <td>
+                                    <input class="form-control" type="text" :name="'offer_group[works]['+workTab.slug+'][work]['+key+'][points]'" v-model="work.points"/>
+                                </td>
+                                <td>
+                                    <input class="form-control" type="number" min="0" :name="'offer_group[works]['+workTab.slug+'][work]['+key+'][quantity]'" v-model="work.quantity"/>
+                                </td>
+                                <td class="align-middle">
+                                    <i @click="deleteWork(workTabIndex, key)" class="fas fa-times"></i>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="9" @click.prevent="addWorkRow(workTabIndex)">+</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </form>
         </div>
     </div>
@@ -312,19 +334,18 @@
                 })
                 .then((res) => {
                     if(res){
-                        let offer = res.data;
                         let offers = [];
-
-                        $.each(offer, function (tabName, tab) {
-                            $.each(tab['equipment'], function (equipmentKey, equipmentValue) {
+                        $.each(res.data, function (tabName, tab) {
+                            $.each(tab['equipments'], function (equipmentKey, equipmentValue) {
                                 equipmentValue['autoCompleteDisplay'] = false;
+                                equipmentValue['quantity'] = 0;
                             });
 
                         });
 
                         offers.push({
                             'name': 'Вариант 1',
-                            'equipments': offer
+                            'equipments': res.data
                         });
 
                         this.offerGroup = {
@@ -333,7 +354,7 @@
                         };
 
                     }
-                        return axios.post('/getDefaultWorks')
+                    return axios.post('/getDefaultWorks')
                 })
                 .then((res) => {
                     if(res) {
@@ -386,6 +407,7 @@
                             $.each(offer, function (tabName, tab) {
                                 $.each(tab['equipment'], function (equipmentKey, equipmentValue) {
                                     equipmentValue['autoCompleteDisplay'] = false;
+                                    equipmentValue['quantity'] = 0;
                                 });
                             });
 
@@ -399,6 +421,44 @@
                         return axios.post('/getDefaultWorks');
                         //todo функции далее
                     })
+            },
+            getOfferGroup() {
+                axios.interceptors.request.use(config => {
+                    NProgress.start();
+                    return config;
+                });
+
+                axios.interceptors.response.use(response => {
+                    NProgress.done();
+                    return response;
+                });
+                axios
+                    .post('/getOfferGroup', {
+                        id: this.groupId
+                    })
+                    .then(resp => {
+                        $.each(resp.data['offers'], function (offerKey, offer) {
+                            $.each(offer['equipments'], function (tabKey, tabValue){
+                                $.each(tabValue['equipments'], function (equipmentKey, equipmentValue) {
+                                    equipmentValue['autoCompleteDisplay'] = false;
+                                    equipmentValue['price'] = equipmentValue['pivot']['price'];
+                                    equipmentValue['price_trade'] = equipmentValue['pivot']['price_trade'];
+                                    equipmentValue['price_small_trade'] = equipmentValue['pivot']['price_small_trade'];
+                                    equipmentValue['price_special'] = equipmentValue['pivot']['price_special'];
+                                    equipmentValue['quantity'] = equipmentValue['pivot']['quantity'] ? equipmentValue['pivot']['quantity'] : 0;
+                                });
+                            });
+                        });
+                        $.each(resp.data.works, function (workTabKey, workTab) {
+                            $.each(workTab.equipments, function (workKey, work) {
+                                work['autoCompleteDisplay'] = false;
+                                work['quantity'] = work['pivot']['quantity'] ? work['pivot']['quantity'] : 0;
+                            });
+                        });
+                        this.offerGroup = resp.data;
+                        console.log(this.offerGroup);
+                        this.$forceUpdate();
+                    });
             },
             updateOfferGroup() {
                 this.$emit('updateOfferGroup');
@@ -414,7 +474,7 @@
                 this.offerGroup['offers'][offerTabId]['equipments'].push({
                     'equipments': [],
                     'name': "Новая вкладка",
-                    'slug': "new-tab-" + this.offerGroup['offers'][offerTabId]['equipments'].length,
+                    'slug': "equipment-tab-" + this.offerGroup['offers'][offerTabId]['equipments'].length,
                 });
             },
             addTableRow(offerTabId, offerContentTabId){
@@ -437,6 +497,44 @@
                     }
                 );
             },
+            changeTabName(offerTabId, offerContentTabId){
+                this.offerGroup['offers'][offerTabId]['equipments'][offerContentTabId].slug = "equipment-tab-" + offerContentTabId;
+            },
+            deleteRow(offerTabId, offerContentTabId, rowId){
+                this.offerGroup['offers'][offerTabId]['equipments'][offerContentTabId]['equipments'].splice(rowId, 1);
+            },
+            deleteTab(offerTabId, offerContentTabId){
+                this.offerGroup['offers'][offerTabId]['equipments'].splice(offerContentTabId, 1);
+            },
+            deleteOffer(offerTabId){
+                this.offerGroup['offers'].splice(offerTabId, 1);
+            },
+            addWorkTab(){
+                this.offerGroup.works.push({
+                    'name': 'Вкладка для работ',
+                    'slug': "work-tab-" + this.offerGroup['works'].length,
+                    'equipments': [],
+                });
+            },
+            addWorkRow(workTabIndex){
+                this.offerGroup.works[workTabIndex]['equipments'].push({
+                    id: -1,
+                    name: '',
+                    code: '',
+                    points: '',
+                    quantity: 0,
+                    autoCompleteDisplay: false,
+                });
+            },
+            deleteWorkTab(workTabIndex){
+                this.offerGroup.works.splice(workTabIndex, 1);
+            },
+            deleteWork(workTabIndex, key){
+                this.offerGroup.works[workTabIndex]['equipments'].splice(key,1);
+            },
+            changeWorkTabName(workTabIndex){
+                this.offerGroup['works'][workTabIndex].slug = "work-tab-" + workTabIndex;
+            },
             searchEquipmentByCode(codePart, offerTabId, offerContentTabId, rowId){
                 let context = this;
                 axios.interceptors.request.use(function (config) {
@@ -454,7 +552,7 @@
                     });
                 this.offerGroup['offers'][offerTabId]['equipments'][offerContentTabId]['equipments'][rowId]['autoCompleteDisplay'] = true;
             },
-            searchWorkByCode(codePart, rowId){
+            searchWorkByCode(codePart, workTabId, rowId){
                 let context = this;
                 axios.interceptors.request.use(function (config) {
                     context.isLoading = true;
@@ -469,7 +567,7 @@
                         this.results = resp.data;
                         this.isLoading = false;
                     });
-                this.offerGroup.works[0]['equipments'][rowId]['autoCompleteDisplay'] = true;
+                this.offerGroup.works[workTabId]['equipments'][rowId]['autoCompleteDisplay'] = true;
 
             },
             setResult(equipment, offerTabId, offerContentTabId, rowId) {
@@ -477,9 +575,10 @@
                 this.offerGroup['offers'][offerTabId]['equipments'][offerContentTabId]['equipments'][rowId]['autoCompleteDisplay'] = false;
                 this.$forceUpdate();
             },
-            setWorkResult(work, index) {
-                this.offerGroup.works[0]['equipments'][index] = work;
-                this.offerGroup.works[0]['equipments'][index]['autoCompleteDisplay'] = false;
+            setWorkResult(work, workTabIndex, index) {
+                this.offerGroup.works[workTabIndex]['equipments'][index] = work;
+                this.offerGroup.works[workTabIndex]['equipments'][index]['autoCompleteDisplay'] = false;
+                this.offerGroup.works[workTabIndex]['equipments'][index]['quantity'] = 0;
                 this.$forceUpdate();
             },
             handleClickOutside(event) {
@@ -492,48 +591,6 @@
                         });
                     });
                 }
-            },
-            getOfferGroup() {
-                axios.interceptors.request.use(config => {
-                    NProgress.start();
-                    return config;
-                });
-
-                axios.interceptors.response.use(response => {
-                    NProgress.done();
-                    return response;
-                });
-                axios
-                    .post('/getOfferGroup', {
-                        id: this.groupId
-                    })
-                    .then(resp => {
-                        this.offerGroup = resp.data;
-                        console.log(this.offerGroup);
-                        this.$forceUpdate();
-                    });
-            },
-            deleteRow(offerTabId, offerContentTabId, rowId){
-                this.offerGroup['offers'][offerTabId]['equipments'][offerContentTabId]['equipments'].splice(rowId, 1);
-            },
-            deleteTab(offerTabId, offerContentTabId){
-                this.offerGroup['offers'][offerTabId]['equipments'].splice(offerContentTabId, 1);
-            },
-            deleteOffer(offerTabId){
-                this.offerGroup['offers'].splice(offerTabId, 1);
-            },
-            addWork(){
-                this.offerGroup.works[0]['equipments'].push({
-                    id: -1,
-                    name: '',
-                    code: '',
-                    points: '',
-                    quantity: 1,
-                    autoCompleteDisplay: false,
-                });
-            },
-            deleteWork(key){
-                this.offerGroup.works[0]['equipments'].splice(key,1);
             },
             calculatePrePrice(){
                 axios

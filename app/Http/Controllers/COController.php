@@ -48,6 +48,7 @@ class COController extends Controller
             $workBuff[$key]['slug'] = $work->first()->pivot->tab_slug;
         }
         $groupedArr['works'] = $workBuff;
+//        $groupedArr['works'] = $offersGroup->equipment;
 
         foreach ($offersGroup->offers as $offerIndex => $offer) {
             $buff1 = $offer->equipments->groupBy('pivot.tab_slug')->values();
@@ -86,6 +87,7 @@ class COController extends Controller
     public function calculateAllPrices(Request $request){
         $response = [];
         $response['adjustmentPrice'] = self::calculateAdjustmentPrice($request['offer_group']['adjusters']) ?? null;
+        $response['workNumber'] = self::calculateWorkNumber($request['offer_group']['works']) ?? null;
         foreach ($request['offer_group']['offers'] as $key => $offer) {
             try {
                 $response[$key]['equipmentPrice'] = round(self::calculateEquipmentPrice($offer), 2);
@@ -122,9 +124,10 @@ class COController extends Controller
     private function calculateEquipmentPrice($offer){
         $totalPrice=0;
         foreach ($offer['equipments'] as $type => $equipments){
-            foreach ($equipments as $equipment){
+            foreach ($equipments['equipment'] as $equipment){
                 if($type !== 'rashodnye-materialy'){
-                    $totalPrice += ((($equipment['price_small_trade'] - $equipment['price_special'])/2) + $equipment['price_special']) * $equipment['quantity'];
+                    $totalPrice += $equipment['price'] * $equipment['quantity'];
+//                    $totalPrice += ((($equipment['price_small_trade'] - $equipment['price_special'])/2) + $equipment['price_special']) * $equipment['quantity'];
                 }
             }
         }
@@ -134,7 +137,7 @@ class COController extends Controller
     private function calculateConsumablePrice($offer){
         $totalPrice=0;
         foreach ($offer['equipments'] as $type => $equipments){
-            foreach ($equipments as $equipment){
+            foreach ($equipments['equipment'] as $equipment){
                 if($type === 'rashodnye-materialy'){
                     $totalPrice += $equipment['price'] * $equipment['quantity'];
                 }
@@ -181,5 +184,15 @@ class COController extends Controller
 
     private function calculateTotalWorkPriceNoVAT($noTaxProfit){
         return round($noTaxProfit * 1.0638297873);
+    }
+
+    private function calculateWorkNumber($works){
+        $counter = 0;
+        foreach ($works as $workTab){
+            foreach($workTab['work'] as $work){
+                $counter++;
+            }
+        }
+        return $counter;
     }
 }

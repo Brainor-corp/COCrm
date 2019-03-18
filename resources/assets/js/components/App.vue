@@ -86,12 +86,14 @@
                             }
                         }
                         if(this.offerGroup['offer_group']['works']){
-                            for (let work = 0; work < this.offerGroup['offer_group']['works'].length; work++){
-                                if(this.offerGroup['offer_group']['works'][work].quantity === "" || this.offerGroup['offer_group']['works'][work].quantity == null || this.offerGroup['offer_group']['works'][work].quantity < 1){
-                                    this.offerGroup['offer_group']['works'].splice(work, 1);
-                                    stop = false;
-                                }
-                            }
+                            $.each(this.offerGroup['offer_group']['works'], (workTabIndex, workTab) => {
+                                $.each(workTab['work'], (workIndex, work) => {
+                                    if (work.quantity === "" || work.quantity == null || work.quantity < 1) {
+                                        this.offerGroup['offer_group']['works'][workTabIndex]['work'].splice(workIndex, 1);
+                                        stop = false;
+                                    }
+                                });
+                            });
                         }
                         if(stop){
                             break;
