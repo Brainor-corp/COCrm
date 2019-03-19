@@ -386,7 +386,7 @@
                             let offers = this.offerGroup['offers'];
 
                             $.each(offer, function (tabName, tab) {
-                                $.each(tab['equipment'], function (equipmentKey, equipmentValue) {
+                                $.each(tab['equipments'], function (equipmentKey, equipmentValue) {
                                     equipmentValue['autoCompleteDisplay'] = false;
                                     equipmentValue['quantity'] = '0';
                                 });
