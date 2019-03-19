@@ -48,6 +48,9 @@
                                 <div class="col-2 align-self-baseline">
                                     <i @click="deleteOffer(offerTabIndex)" class="fas fa-times"></i>
                                 </div>
+                                <div class="col-12">
+                                    <input class="form-control" type="text" :name="'offer_group[offers]['+offerTabIndex+'][description]'" v-model="offerTab.description"/><br>
+                                </div>
                             </div>
                         </a>
                     </li>

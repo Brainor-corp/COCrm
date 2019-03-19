@@ -89,6 +89,7 @@ class OfferController extends Controller
                 $createOffer = new Offer();
                 $createOffer->group_id = $createGroup->id;
                 $createOffer->name = $offer['name'];
+                $createOffer->description = $offer['description'];
                 $createOffer->save();
                 foreach ($offer['equipments'] as $type => $equipment_tab){
                     foreach($equipment_tab['equipment'] as $equipment){
@@ -198,6 +199,7 @@ class OfferController extends Controller
                 $createOffer = new Offer();
                 $createOffer->group_id = $offerGroup->id;
                 $createOffer->name = $offer['name'];
+                $createOffer->description = $offer['description'];
                 $createOffer->save();
                 foreach ($offer['equipments'] as $type => $equipment_tab) {
                     foreach ($equipment_tab['equipment'] as $equipment) {
