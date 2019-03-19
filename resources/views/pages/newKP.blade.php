@@ -17,6 +17,7 @@
         <main>
             <section class="price-list">
                 <h1 class="price-list__main-title">Коммерческое предложение <span>{{ $offersGroup->name }}</span></h1>
+                @if(!isset($pdf)) <a href="{{route('downloadAsPdf', ['uuid' => $offersGroup->uuid])}}" class="btn btn-link btn-primary">Скачать PDF</a> @endif
 
                 @foreach($offersGroup->offers as $index => $offer)
                     <div class="price-list__wraper clearfix">
@@ -215,14 +216,14 @@
                         С уважением, {{ $offersGroup->user->getFullNameAttribute() }}<br>
                         {{ $offersGroup->user->position }}<br>
                         Компания {{ $offersGroup->user->company }}<br>
-                        Тел. {{ $offersGroup->user->tel }}<br>
-                        Моб. +7 (926) 676-54-44<br>
+                        @if($offersGroup->user->phone_number) Тел. {{ $offersGroup->user->phone_number }}<br> @endif
+                        @if($offersGroup->user->mobile_number) Тел. {{ $offersGroup->user->mobile_number }}<br> @endif
                         <a href="mailto:{{ $offersGroup->user->contact_email }}">{{ $offersGroup->user->contact_email }}</a>
                     </p>
-                    <p class="next__phone">
+                    @if($offersGroup->user->phone_number) <p class="next__phone">
                         Звоните<br>
-                        {{ $offersGroup->user->tel }}
-                    </p>
+                        {{ $offersGroup->user->phone_number }}
+                    </p> @endif
                 </div>
             </section>
 

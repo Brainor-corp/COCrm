@@ -11,11 +11,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\App;
 use \Convertio\Convertio;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 
 class COController extends Controller
 {
-    public function display($uuid){
+    public function display($uuid, $pdf = null){
         if(!isset($uuid)){
             abort(404);
         }
@@ -26,7 +26,7 @@ class COController extends Controller
             abort(404);
         }
 
-        return view('pages.newKP')->with(compact( 'offersGroup'));
+        return view('pages.newKP')->with(compact( 'offersGroup', 'pdf'));
     }
 
     public function getDefaultWorkTabs(){
@@ -67,43 +67,43 @@ class COController extends Controller
     }
 
     public function downloadAsPdf($uuid){
+        File::delete(File::allfiles(public_path('savedKPs/')));
+
         if(!isset($uuid)){
             abort(404);
         }
 
-        $offersGroup = OfferGroup::where('uuid', $uuid)->with('offers.equipments', 'equipment', 'user')->first();
+//        $offersGroup = OfferGroup::where('uuid', $uuid)->with('offers.equipments', 'equipment', 'user')->first();
 
-        if(!isset($offersGroup)){
-            abort(404);
-        }
+//        if(!isset($offersGroup)){
+//            abort(404);
+//        }
+//
+//        $pdf = App::make('dompdf.wrapper');
+//        $vars = [
+//            'offersGroup' => $offersGroup
+//        ];
+//        $pdf->loadView('pages.newKP', $vars);
 
-        $pdf = App::make('dompdf.wrapper');
-        $vars = [
-            'offersGroup' => $offersGroup
-        ];
-        $pdf->loadView('pages.newKP', $vars);
+            try {
+                $API = new Convertio(env('PDF_TOKEN'));
+            } catch (APIException $e) {
+                return $e->getMessage();
+            }
+            try {
+                $API->startFromURL(route('showCO', ['uuid' => $uuid]) . '?pdf=1', 'pdf')
+                    ->wait()
+                    ->download('savedKPs/' . $uuid . '.pdf')
+                    ->delete();
+            } catch (APIException $e) {
+                return $e->getMessage();
+            } catch (CURLException $e) {
+                return $e->getMessage();
+            } catch (\Exception $e) {
+                return $e->getMessage();
+            }
 
-        try {
-            $API = new Convertio(env('PDF_TOKEN'));
-        } catch (APIException $e) {
-            return $e->getMessage();
-        }
-        try {
-            $API->startFromURL(route('showCO', ['uuid' => $uuid]), 'pdf')
-                ->wait()
-                ->download('./' . $uuid . '.pdf')
-                ->delete();
-        } catch (APIException $e) {
-            return $e->getMessage();
-        } catch (CURLException $e) {
-            return $e->getMessage();
-        } catch (\Exception $e) {
-            return $e->getMessage();
-        }
-
-
-          return response()->download(public_path($uuid.'.pdf'));
-//        return $pdf->download('Kommercheskoe Predlojenie '.Carbon::now()->addHours(3)->format('d.m.Y h-i').'.pdf');
+            return response()->download(public_path('savedKPs/' . $uuid . '.pdf'));
     }
 
     public function calculateAllPrices(Request $request){
