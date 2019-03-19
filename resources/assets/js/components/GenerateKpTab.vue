@@ -323,7 +323,7 @@
                         $.each(res.data, function (tabName, tab) {
                             $.each(tab['equipments'], function (equipmentKey, equipmentValue) {
                                 equipmentValue['autoCompleteDisplay'] = false;
-                                equipmentValue['quantity'] = 0;
+                                equipmentValue['quantity'] = '0';
                             });
 
                         });
@@ -388,7 +388,7 @@
                             $.each(offer, function (tabName, tab) {
                                 $.each(tab['equipment'], function (equipmentKey, equipmentValue) {
                                     equipmentValue['autoCompleteDisplay'] = false;
-                                    equipmentValue['quantity'] = 0;
+                                    equipmentValue['quantity'] = '0';
                                 });
                             });
 
@@ -400,7 +400,6 @@
                             this.offerGroup['offers'] = offers;
                         }
                         return axios.post('/getDefaultWorks');
-                        //todo функции далее
                     })
             },
             getOfferGroup() {
