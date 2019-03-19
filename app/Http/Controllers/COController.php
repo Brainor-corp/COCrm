@@ -88,7 +88,7 @@ class COController extends Controller
         } catch (APIException $e) {
         }
         try {
-            $API->startFromURL(url('/kp/'. $uuid), 'pdf')
+            $API->startFromURL(route('showCO', ['uuid' => $uuid]), 'pdf')
                 ->wait()
                 ->download('./' . $uuid . '.pdf')
                 ->delete();
