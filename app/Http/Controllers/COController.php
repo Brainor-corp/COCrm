@@ -86,6 +86,7 @@ class COController extends Controller
         try {
             $API = new Convertio(env('PDF_TOKEN'));
         } catch (APIException $e) {
+            return $e->getMessage();
         }
         try {
             $API->startFromURL(route('showCO', ['uuid' => $uuid]), 'pdf')
@@ -93,8 +94,11 @@ class COController extends Controller
                 ->download('./' . $uuid . '.pdf')
                 ->delete();
         } catch (APIException $e) {
+            return $e->getMessage();
         } catch (CURLException $e) {
+            return $e->getMessage();
         } catch (\Exception $e) {
+            return $e->getMessage();
         }
 
 
