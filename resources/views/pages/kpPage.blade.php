@@ -57,7 +57,7 @@
                         @php($totalEquipmentSum = 0)
                         @php($consumableSum = 0)
                         @foreach($offer->equipments as $equipment)
-                            @if($equipment->pivot->type != 'rashodnye-materialy')
+                            @if($equipment->pivot->tab_slug != 'rashodnye-materialy' || $equipment->class != 'work')
                                 @php($totalEquipmentSum += $equipment->pivot->price * $equipment->pivot->quantity)
                                 <tr>
                                     {{--<td><img src="https://via.placeholder.com/100" alt=""></td>--}}

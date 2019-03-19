@@ -14,7 +14,7 @@
 Auth::routes();
 
 Route::get('/kp/{uuid}', 'COController@display')->where('uuid', '[a-zA-Z0-9/_-]+')->name('showCO');
-Route::get('/download/{uuid}', 'COController@downloadAsPdf')->where('uuid', '[a-zA-Z0-9/_-]+')->name('downloadAsPdf');
+Route::any('/download/{uuid}', 'COController@downloadAsPdf')->where('uuid', '[a-zA-Z0-9/_-]+')->name('downloadAsPdf');
 
 Route::group(['middleware' => ['web', 'auth']], function () {
 
@@ -28,7 +28,8 @@ Route::group(['middleware' => ['web', 'auth']], function () {
     Route::post('/getTypesByClass', 'TypeController@getTypesByClass')->name('getTypes');
     Route::post('/getAllEquipmentTypes', 'TypeController@getAllEquipmentTypes')->name('getAllEquipmentTypes');
     Route::post('/getDefaultTypesWithEquipment', 'TypeController@getDefaultTypesWithEquipment')->name('getDefaultTypesWithEquipment');
-    Route::post('/getDefaultWorks', 'TypeController@getDefaultWorks')->name('getDefaultWorks');
+    Route::post('/getDefaultTabs', 'COController@getDefaultEquipmentTabs')->name('getDefaultEquipmentTabs');
+    Route::post('/getDefaultWorks', 'COController@getDefaultWorkTabs')->name('getDefaultWorkTabs');
     Route::post('/getTaxBySlug', 'SettingsController@getTaxBySlug')->name('getTax');
     Route::post('/getOfferGroup', 'COController@getOfferGroup')->name('getOfferGroup');
     Route::post('/getOfferGroupTemplates', 'COController@getOfferGroupTemplates')->name('getOfferGroupTemplates');
