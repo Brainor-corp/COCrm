@@ -7,6 +7,7 @@
     "require": {
         "php": "7.2.*",
         "barryvdh/laravel-dompdf": "^0.8.3",
+        "convertio/convertio-php": "^0.4.0",
         "doctrine/dbal": "^2.9",
         "emadadly/laravel-uuid": "^1.2",
         "fideloper/proxy": "^4.0",

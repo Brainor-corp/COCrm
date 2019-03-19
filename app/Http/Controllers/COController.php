@@ -3,12 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\DefaultTab;
-use App\Offer;
 use App\OfferGroup;
 use App\Setting;
+use Convertio\Exceptions\APIException;
+use Convertio\Exceptions\CURLException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\App;
+use \Convertio\Convertio;
+use Illuminate\Support\Facades\Storage;
 
 class COController extends Controller
 {
@@ -23,7 +26,7 @@ class COController extends Controller
             abort(404);
         }
 
-        return view('pages.kpPage')->with(compact( 'offersGroup'));
+        return view('pages.newKP')->with(compact( 'offersGroup'));
     }
 
     public function getDefaultWorkTabs(){
@@ -48,7 +51,6 @@ class COController extends Controller
             $workBuff[$key]['slug'] = $work->first()->pivot->tab_slug;
         }
         $groupedArr['works'] = $workBuff;
-//        $groupedArr['works'] = $offersGroup->equipment;
 
         foreach ($offersGroup->offers as $offerIndex => $offer) {
             $buff1 = $offer->equipments->groupBy('pivot.tab_slug')->values();
@@ -69,7 +71,7 @@ class COController extends Controller
             abort(404);
         }
 
-        $offersGroup = OfferGroup::where('uuid', $uuid)->with('offers.equipments', 'user')->first();
+        $offersGroup = OfferGroup::where('uuid', $uuid)->with('offers.equipments', 'equipment', 'user')->first();
 
         if(!isset($offersGroup)){
             abort(404);
@@ -79,9 +81,25 @@ class COController extends Controller
         $vars = [
             'offersGroup' => $offersGroup
         ];
-        $pdf->loadView('pages.kpPDFPage', $vars);
+        $pdf->loadView('pages.newKP', $vars);
 
-        return $pdf->download('Kommercheskoe Predlojenie '.Carbon::now()->addHours(3)->format('d.m.Y h-i').'.pdf');
+        try {
+            $API = new Convertio(env('PDF_TOKEN'));
+        } catch (APIException $e) {
+        }
+        try {
+            $API->startFromURL(url('/kp/'. $uuid), 'pdf')
+                ->wait()
+                ->download('./' . $uuid . '.pdf')
+                ->delete();
+        } catch (APIException $e) {
+        } catch (CURLException $e) {
+        } catch (\Exception $e) {
+        }
+
+
+          return response()->download(public_path($uuid.'.pdf'));
+//        return $pdf->download('Kommercheskoe Predlojenie '.Carbon::now()->addHours(3)->format('d.m.Y h-i').'.pdf');
     }
 
     public function calculateAllPrices(Request $request){

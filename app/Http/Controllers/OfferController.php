@@ -172,7 +172,6 @@ class OfferController extends Controller
         return url('kp/' . $createGroup->uuid);
     }
 
-    //todo сохранение/обновление вроде работает, заняться админкой
 
     public function updateOfferGroup(Request $request){
         $error = self::validateOfferGroup($request[0]['offer_group']);
@@ -224,7 +223,7 @@ class OfferController extends Controller
                                 'price_special' => $equipment['price_special'],
                                 'counted_price' => $equipment['counted_price'],
                                 'comment' => $equipment['comment'],
-                                'tab_slug' => SlugService::createSlug(Equipment::class, 'name', $equipment_tab['name']),
+                                'tab_slug' => SlugService::createSlug(Equipment::class, 'slug', $equipment_tab['name']),
                                 'tab_name' => $equipment_tab['name'],
                             ));
                         } else {
@@ -236,7 +235,7 @@ class OfferController extends Controller
                                 'price_special' => $equipment['price_special'],
                                 'counted_price' => $equipment['counted_price'],
                                 'comment' => $equipment['comment'],
-                                'tab_slug' => SlugService::createSlug(Equipment::class, 'name', $equipment_tab['name']),
+                                'tab_slug' => SlugService::createSlug(Equipment::class, 'slug', $equipment_tab['name']),
                                 'tab_name' => $equipment_tab['name'],
                             ));
                         }
@@ -262,13 +261,13 @@ class OfferController extends Controller
                         $buffWork[$createWork->id] = [
                             'quantity' => $work['quantity'],
                             'tab_name' => $workTab['name'],
-                            'tab_slug' => SlugService::createSlug(Equipment::class, 'name', $workTab['name']),
+                            'tab_slug' => SlugService::createSlug(Equipment::class, 'slug', $workTab['name']),
                         ];
                     } else {
                         $buffWork[$work['id']] = [
                             'quantity' => $work['quantity'],
                             'tab_name' => $workTab['name'],
-                            'tab_slug' => SlugService::createSlug(Equipment::class, 'name', $workTab['name']),
+                            'tab_slug' => SlugService::createSlug(Equipment::class, 'slug', $workTab['name']),
                         ];
                     }
                 }
@@ -278,6 +277,7 @@ class OfferController extends Controller
         }
         catch (\Exception $e){
             throw new \Exception('Произошла ошибка. Пожалуйста, обновите страницу и попробуйте снова.');
+//            throw $e;
         }
         return url('kp/' . $offerGroup->uuid);
     }

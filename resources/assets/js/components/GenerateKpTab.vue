@@ -272,38 +272,23 @@
         props: ['offerGroupID'],
         data(){
             return {
-                offersVariantsCount : 1,
-                offersTabs:[
-                    { id: 0, name:'Вариант 1' },
-                ],
-                offersContentTabs:[[]],
                 offerGroup:{name:'Шаблон КП', adjusters_no_tax: 1},
-                works:[],
                 adjusters:{
                     noTax: 1
                 },
                 adjustmentPrePrice:[],
                 offerGroupTemplates:[],
                 adjustmentPrePriceKeys:{
-                    VAT: "НДС: ",
-                    additionalDiscount: "Доп. Скидка: ",
-                    adjustmentPrice: "Оплата монтажникам: ",
-                    noTaxProfit: "Без налогов: ",
-                    totalWorkPrice: "За работы с НДС: ",
-                    totalWorkPriceNoVAT: "За работы без НДС: ",
+                    VAT: 'НДС: ',
+                    additionalDiscount: 'Доп. Скидка: ',
+                    adjustmentPrice: 'Оплата монтажникам: ',
+                    noTaxProfit: 'Без налогов: ',
+                    totalWorkPrice: 'За работы с НДС: ',
+                    totalWorkPriceNoVAT: 'За работы без НДС: ',
                 },
                 results: [],
                 groupId: '',
-                autocompletesDisplays: {
-                    equipments: [[[]]],
-                    works: []
-                },
-                types: [],
-                defaultTypes:[],
-                selected: [
-                    []
-                ],
-                search: "",
+                search: '',
                 isLoading: false,
                 redactMode: false,
                 searchResult: [],
@@ -374,10 +359,6 @@
                             'adjusters_no_tax': 1
                         };
                         this.$forceUpdate();
-
-                        console.log('--------offerGroup-------');
-                        console.log(this.offerGroup);
-                        console.log('!-------offerGroup------!');
                     }
                 });
         },
@@ -456,7 +437,6 @@
                             });
                         });
                         this.offerGroup = resp.data;
-                        console.log(this.offerGroup);
                         this.$forceUpdate();
                     });
             },
@@ -481,7 +461,7 @@
                 this.offerGroup['offers'][offerTabId]['equipments'][offerContentTabId]['equipments'].push(
                     {
                         id: -1,
-                        autoCompleteDisplays: false,
+                        autoCompleteDisplay: false,
                         saveType: 'new',
                         base_id: -1,
                         code: '',
@@ -522,7 +502,7 @@
                     name: '',
                     code: '',
                     points: '',
-                    quantity: 0,
+                    quantity: 1,
                     autoCompleteDisplay: false,
                 });
             },
@@ -585,12 +565,18 @@
                 if ($(event.target).attr('class') != 'autocomplete-results') {
                     $.each(this.offerGroup['offers'], (offerKey, offer) => {
                         $.each(offer['equipments'],  (tabKey, tab) => {
-                            $.each(tab['equipment'], (rowKey, row) =>{
-                                this.offerGroup['offers'][offerKey]['equipments'][tabKey]['equipment'][rowKey]['autoCompleteDisplay'] = false;
+                            $.each(tab['equipments'], (rowKey, row) =>{
+                                this.offerGroup['offers'][offerKey]['equipments'][tabKey]['equipments'][rowKey]['autoCompleteDisplay'] = false;
                             });
                         });
                     });
+                    $.each(this.offerGroup['works'], (workTabKey, workTab) => {
+                        $.each(workTab['equipments'], (workKey, work) => {
+                            this.offerGroup['works'][workTabKey]['equipments'][workKey]['autoCompleteDisplay'] = false;
+                        });
+                    });
                 }
+                this.$forceUpdate();
             },
             calculatePrePrice(){
                 axios

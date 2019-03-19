@@ -121,7 +121,7 @@
             </span>
         </div>
         <div class="mx-auto mb-5">
-            <a href="" class="btn btn-lg btn-primary create-btn d-flex align-items-center justify-content-center" v-if="offerGroup.offer_group" @click.prevent="saveOfferGroup">Сохранить группу КП</a>
+            <a href="" class="btn btn-lg btn-primary create-btn d-flex align-items-center justify-content-center" v-if="offerGroup.offer_group" @click.prevent="saveOfferGroup"><span v-if=" offerGroupID == null ">Сохранить&nbsp</span> <span v-else>Обновить&nbsp</span> группу КП</a>
         </div>
 
     </div>

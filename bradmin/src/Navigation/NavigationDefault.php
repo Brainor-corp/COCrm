@@ -19,9 +19,9 @@ class NavigationDefault
                 'text' => 'Группы КП'
             ],
             [
-                'url' => '/bradmin/Types',
+                'url' => '/bradmin/Tabs',
                 'icon' => 'fas fa-address-book',
-                'text' => 'Типы'
+                'text' => 'Вкладки'
             ],
             [
                 'url' => '/bradmin/Settings',

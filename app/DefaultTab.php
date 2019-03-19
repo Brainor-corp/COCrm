@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Http\Helpers\EquipmentHelper;
 use Illuminate\Database\Eloquent\Model;
 use Cviebrock\EloquentSluggable\Sluggable;
 
@@ -20,5 +21,9 @@ class DefaultTab extends Model
 
     public function equipments(){
         return $this->belongsToMany(Equipment::class);
+    }
+
+    public function getRealClassAttribute(){
+        return EquipmentHelper::getRealClassName($this->class);
     }
 }

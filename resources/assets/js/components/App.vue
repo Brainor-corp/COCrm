@@ -88,9 +88,12 @@
                         if(this.offerGroup['offer_group']['works']){
                             $.each(this.offerGroup['offer_group']['works'], (workTabIndex, workTab) => {
                                 $.each(workTab['work'], (workIndex, work) => {
-                                    if (work.quantity === "" || work.quantity == null || work.quantity < 1) {
-                                        this.offerGroup['offer_group']['works'][workTabIndex]['work'].splice(workIndex, 1);
-                                        stop = false;
+                                    if(work) {
+                                        if (work.quantity === "" || work.quantity == null || work.quantity < 1) {
+                                            console.log(this.offerGroup['offer_group']['works']);
+                                            this.offerGroup['offer_group']['works'][workTabIndex]['work'].splice(workIndex, 1);
+                                            stop = false;
+                                        }
                                     }
                                 });
                             });
