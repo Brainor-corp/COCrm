@@ -30,7 +30,7 @@ class OfferGroup extends Model
     }
 
     public function equipment(){
-        return $this->belongsToMany(Equipment::class)->withPivot('quantity');
+        return $this->belongsToMany(Equipment::class)->withPivot('quantity', 'tab_slug', 'tab_name');
     }
 
     public function getTotalWorkPrice(){

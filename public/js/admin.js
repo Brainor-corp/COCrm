@@ -57,8 +57,9 @@ $(document).ready(function () {
             data: function (params) {
 
                 var queryParameters = {
-                    term: params.term
-                }
+                    term: params.term,
+                    class: $(this).data('class'),
+                };
                 return queryParameters;
             },
             processResults: function (data) {

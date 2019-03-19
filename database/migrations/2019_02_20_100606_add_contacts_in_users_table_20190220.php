@@ -14,7 +14,8 @@ class AddContactsInUsersTable20190220 extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('tel')->nullable();
+            $table->string('phone_number')->nullable();
+            $table->string('mobile_number')->nullable();
             $table->string('contact_email')->nullable();
         });
     }
@@ -27,7 +28,8 @@ class AddContactsInUsersTable20190220 extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('tel');
+            $table->dropColumn('phone_number');
+            $table->dropColumn('mobile_number');
             $table->dropColumn('contact_email');
         });
     }

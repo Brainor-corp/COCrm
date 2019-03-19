@@ -12,6 +12,7 @@ use App\Equipment;
 use App\Offer;
 use App\OfferGroup;
 use App\Type;
+use Cviebrock\EloquentSluggable\Services\SlugService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -28,7 +29,7 @@ class OfferController extends Controller
             }
 
             foreach ($offer['equipments'] as $type => $equipment_tab) {
-                foreach ($equipment_tab as $equipment) {
+                foreach ($equipment_tab['equipment'] as $equipment) {
                     if(empty($equipment['code'])){
                         $errorMsg = 'Поле "Артикул" у оборудования обязателен.';
                     }
@@ -53,12 +54,14 @@ class OfferController extends Controller
                 }
             }
         }
-        foreach ($group['works'] as $work) {
-            if(empty($work['name'])){
-                $errorMsg = 'Поле "Название" у работы обязателен.';
-            }
-            if(empty($work['points'])){
-                $errorMsg = 'Поле "Ед. измерения" у работы обязателен.';
+        foreach ($group['works'] as $workTab) {
+            foreach($workTab['work'] as $work) {
+                if (empty($work['name'])) {
+                    $errorMsg = 'Поле "Название" у работы обязателен.';
+                }
+                if (empty($work['points'])) {
+                    $errorMsg = 'Поле "Ед. измерения" у работы обязателен.';
+                }
             }
         }
         return $errorMsg;
@@ -86,9 +89,10 @@ class OfferController extends Controller
                 $createOffer = new Offer();
                 $createOffer->group_id = $createGroup->id;
                 $createOffer->name = $offer['name'];
+                $createOffer->description = $offer['description'];
                 $createOffer->save();
                 foreach ($offer['equipments'] as $type => $equipment_tab){
-                    foreach($equipment_tab as $equipment){
+                    foreach($equipment_tab['equipment'] as $equipment){
                         if($equipment['base_id'] === '-1'){
                             $createEquipment = new Equipment();
                             $createEquipment->code = $equipment['code'];
@@ -99,8 +103,8 @@ class OfferController extends Controller
                             $createEquipment->price_trade = $equipment['price_trade'];
                             $createEquipment->price_small_trade = $equipment['price_small_trade'];
                             $createEquipment->price_special = $equipment['price_special'];
-                            $createEquipment->class = Type::where('slug', $equipment['type'])->first()->class;
-                            $createEquipment->type_id = Type::where('slug', $equipment['type'])->first()->id;
+                            $createEquipment->class = 'equipment';
+//                            $createEquipment->type_id = Type::where('slug', $equipment['type'])->first()->id;
                             $createEquipment->save();
 
                             $createOffer->equipments()->attach($createEquipment->id, array(
@@ -111,8 +115,8 @@ class OfferController extends Controller
                                 'price_special' => $equipment['price_special'],
                                 'counted_price' => $equipment['counted_price'],
                                 'comment' => $equipment['comment'],
-                                'type' => $type,
-                                'type_id' => $equipment['type_id'],
+                                'tab_slug' => $type,
+                                'tab_name' => $equipment_tab['name'],
                             ));
                         }
                         else{
@@ -124,36 +128,41 @@ class OfferController extends Controller
                                 'price_special' => $equipment['price_special'],
                                 'counted_price' => $equipment['counted_price'],
                                 'comment' => $equipment['comment'],
-                                'type' => $type,
-                                'type_id' => $equipment['type_id'],
+                                'tab_slug' => $type,
+                                'tab_name' => $equipment_tab['name'],
                             ));
                         }
                     }
                 }
             }
-            foreach ($group['works'] as $work) {
-                if($work['id'] === '-1') {
-                    $createWork = new Equipment();
-                    $createWork->code = $work['code'];
-                    $createWork->name = $work['name'];
-                    $createWork->points = $work['points'];
-                    $createWork->description = '';
-                    $createWork->price = 0;
-                    $createWork->price_trade = 0;
-                    $createWork->price_small_trade = 0;
-                    $createWork->price_special = 0;
-                    $createWork->class = 'work';
-                    $createWork->type_id = Type::where('slug', 'rabota')->first()->id;
-                    $createWork->save();
+            foreach ($group['works'] as $workTabKey => $workTab) {
+                foreach ($workTab['work'] as $work) {
+                    if ($work['id'] === '-1') {
+                        $createWork = new Equipment();
+                        $createWork->code = $work['code'];
+                        $createWork->name = $work['name'];
+                        $createWork->points = $work['points'];
+                        $createWork->description = '';
+                        $createWork->price = 0;
+                        $createWork->price_trade = 0;
+                        $createWork->price_small_trade = 0;
+                        $createWork->price_special = 0;
+                        $createWork->class = 'work';
+//                    $createWork->type_id = Type::where('slug', 'rabota')->first()->id;
+                        $createWork->save();
 
-                    $createGroup->equipment()->attach($createWork->id, array(
-                        'quantity' => $work['quantity'],
-                    ));
-                }
-                else{
-                    $createGroup->equipment()->attach($work['id'], array(
-                        'quantity' => $work['quantity'],
-                    ));
+                        $createGroup->equipment()->attach($createWork->id, array(
+                            'quantity' => $work['quantity'],
+                            'tab_name' => $workTab['name'],
+                            'tab_slug' => $workTabKey,
+                        ));
+                    } else {
+                        $createGroup->equipment()->attach($work['id'], array(
+                            'quantity' => $work['quantity'],
+                            'tab_name' => $workTab['name'],
+                            'tab_slug' => $workTabKey,
+                        ));
+                    }
                 }
             }
         }
@@ -163,6 +172,7 @@ class OfferController extends Controller
         }
         return url('kp/' . $createGroup->uuid);
     }
+
 
     public function updateOfferGroup(Request $request){
         $error = self::validateOfferGroup($request[0]['offer_group']);
@@ -189,9 +199,10 @@ class OfferController extends Controller
                 $createOffer = new Offer();
                 $createOffer->group_id = $offerGroup->id;
                 $createOffer->name = $offer['name'];
+                $createOffer->description = $offer['description'];
                 $createOffer->save();
                 foreach ($offer['equipments'] as $type => $equipment_tab) {
-                    foreach ($equipment_tab as $equipment) {
+                    foreach ($equipment_tab['equipment'] as $equipment) {
                         if ($equipment['base_id'] === '-1') {
                             $createEquipment = new Equipment();
                             $createEquipment->code = $equipment['code'];
@@ -202,8 +213,8 @@ class OfferController extends Controller
                             $createEquipment->price_trade = $equipment['price_trade'];
                             $createEquipment->price_small_trade = $equipment['price_small_trade'];
                             $createEquipment->price_special = $equipment['price_special'];
-                            $createEquipment->class = Type::where('slug', $equipment['type'])->first()->class;
-                            $createEquipment->type_id = Type::where('slug', $equipment['type'])->first()->id;
+                            $createEquipment->class = 'equipment';
+//                            $createEquipment->type_id = Type::where('slug', $equipment['type'])->first()->id;
                             $createEquipment->save();
 
                             $createOffer->equipments()->attach($createEquipment->id, array(
@@ -214,8 +225,8 @@ class OfferController extends Controller
                                 'price_special' => $equipment['price_special'],
                                 'counted_price' => $equipment['counted_price'],
                                 'comment' => $equipment['comment'],
-                                'type' => $type,
-                                'type_id' => $createEquipment->type_id,
+                                'tab_slug' => SlugService::createSlug(Equipment::class, 'slug', $equipment_tab['name']),
+                                'tab_name' => $equipment_tab['name'],
                             ));
                         } else {
                             $createOffer->equipments()->attach($equipment['base_id'], array(
@@ -226,31 +237,41 @@ class OfferController extends Controller
                                 'price_special' => $equipment['price_special'],
                                 'counted_price' => $equipment['counted_price'],
                                 'comment' => $equipment['comment'],
-                                'type' => $type,
-                                'type_id' => $equipment['type_id'],
+                                'tab_slug' => SlugService::createSlug(Equipment::class, 'slug', $equipment_tab['name']),
+                                'tab_name' => $equipment_tab['name'],
                             ));
                         }
                     }
                 }
             }
-            foreach ($newOfferGroup['works'] as $work) {
-                if ($work['id'] === '-1') {
-                    $createWork = new Equipment();
-                    $createWork->code = $work['code'];
-                    $createWork->name = $work['name'];
-                    $createWork->points = $work['points'];
-                    $createWork->description = '';
-                    $createWork->price = 0;
-                    $createWork->price_trade = 0;
-                    $createWork->price_small_trade = 0;
-                    $createWork->price_special = 0;
-                    $createWork->class = 'work';
-                    $createWork->type_id = Type::where('slug', 'rabota')->first()->id;
-                    $createWork->save();
+            foreach ($newOfferGroup['works'] as $workTabKey => $workTab) {
+                foreach ($workTab['work'] as $work) {
+                    if ($work['id'] === '-1') {
+                        $createWork = new Equipment();
+                        $createWork->code = $work['code'];
+                        $createWork->name = $work['name'];
+                        $createWork->points = $work['points'];
+                        $createWork->description = '';
+                        $createWork->price = 0;
+                        $createWork->price_trade = 0;
+                        $createWork->price_small_trade = 0;
+                        $createWork->price_special = 0;
+                        $createWork->class = 'work';
+//                    $createWork->type_id = Type::where('slug', 'rabota')->first()->id;
+                        $createWork->save();
 
-                    $buffWork[$createWork->id] = ['quantity' => $work['quantity']];
-                } else {
-                    $buffWork[$work['id']] = ['quantity' => $work['quantity']];
+                        $buffWork[$createWork->id] = [
+                            'quantity' => $work['quantity'],
+                            'tab_name' => $workTab['name'],
+                            'tab_slug' => SlugService::createSlug(Equipment::class, 'slug', $workTab['name']),
+                        ];
+                    } else {
+                        $buffWork[$work['id']] = [
+                            'quantity' => $work['quantity'],
+                            'tab_name' => $workTab['name'],
+                            'tab_slug' => SlugService::createSlug(Equipment::class, 'slug', $workTab['name']),
+                        ];
+                    }
                 }
             }
             $offerGroup->equipment()->sync($buffWork);
@@ -258,6 +279,7 @@ class OfferController extends Controller
         }
         catch (\Exception $e){
             throw new \Exception('Произошла ошибка. Пожалуйста, обновите страницу и попробуйте снова.');
+//            throw $e;
         }
         return url('kp/' . $offerGroup->uuid);
     }
