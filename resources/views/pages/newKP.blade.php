@@ -17,7 +17,7 @@
         <main>
             <section class="price-list">
                 <h1 class="price-list__main-title">Коммерческое предложение <span>{{ $offersGroup->name }}</span></h1>
-                @if(!isset($pdf)) <a href="{{route('downloadAsPdf', ['uuid' => $offersGroup->uuid])}}" class="btn btn-link btn-primary">Скачать PDF</a> @endif
+                @if($pdf!=null) <a href="{{route('downloadAsPdf', ['uuid' => $offersGroup->uuid])}}" class="btn btn-link btn-primary">Скачать PDF</a> @endif
 
                 @foreach($offersGroup->offers as $index => $offer)
                     <div class="price-list__wraper clearfix">
