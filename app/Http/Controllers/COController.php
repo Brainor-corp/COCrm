@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\File;
 
 class COController extends Controller
 {
-    public function display($uuid, $pdf = null){
+    public function display($uuid){
         if(!isset($uuid)){
             abort(404);
         }
@@ -72,6 +72,7 @@ class COController extends Controller
         if(!isset($uuid)){
             abort(404);
         }
+
 
 //        $offersGroup = OfferGroup::where('uuid', $uuid)->with('offers.equipments', 'equipment', 'user')->first();
 
