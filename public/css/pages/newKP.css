@@ -598,3 +598,12 @@ body {
     height: 35px;
     margin-right: 12px;
     margin-top: -10px; }
+.download__pdf__button{
+    position: absolute;
+    right: 20px;
+    bottom: 10px;
+    font-size: 1.2rem;
+}
+.main-header{
+    position: relative;
+}

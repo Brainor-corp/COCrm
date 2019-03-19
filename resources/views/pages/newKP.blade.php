@@ -12,12 +12,12 @@
     <div class="inner-wrapper">
         <header class="main-header">
             <img src="{{asset('images/kpImages/header.png')}}" alt="Компания Арона. Продажа  установка систем безопасности в Москве и Московской области. Телефон - +7 (495) 003-45-62ю Email - zapros@aronasb.ru" class="main-header__picture" width="1019" height="156">
+            @if(app('request')->input('pdf') != '1') <a href="{{route('downloadAsPdf', ['uuid' => $offersGroup->uuid])}}" class="download__pdf__button">Скачать PDF</a> @endif
         </header>
 
         <main>
             <section class="price-list">
                 <h1 class="price-list__main-title">Коммерческое предложение <span>{{ $offersGroup->name }}</span></h1>
-                @if(app('request')->input('pdf') != '1') <a href="{{route('downloadAsPdf', ['uuid' => $offersGroup->uuid])}}" class="btn btn-link btn-primary">Скачать PDF</a> @endif
 
                 @foreach($offersGroup->offers as $index => $offer)
                     <div class="price-list__wraper clearfix">

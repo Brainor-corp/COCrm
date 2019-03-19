@@ -73,38 +73,25 @@ class COController extends Controller
             abort(404);
         }
 
+        try {
+            $API = new Convertio(env('PDF_TOKEN'));
+        } catch (APIException $e) {
+            return $e->getMessage();
+        }
+        try {
+            $API->startFromURL(route('showCO', ['uuid' => $uuid]) . '?pdf=1', 'pdf')
+                ->wait()
+                ->download('savedKPs/' . $uuid . '.pdf')
+                ->delete();
+        } catch (APIException $e) {
+            return $e->getMessage();
+        } catch (CURLException $e) {
+            return $e->getMessage();
+        } catch (\Exception $e) {
+            return $e->getMessage();
+        }
 
-//        $offersGroup = OfferGroup::where('uuid', $uuid)->with('offers.equipments', 'equipment', 'user')->first();
-
-//        if(!isset($offersGroup)){
-//            abort(404);
-//        }
-//
-//        $pdf = App::make('dompdf.wrapper');
-//        $vars = [
-//            'offersGroup' => $offersGroup
-//        ];
-//        $pdf->loadView('pages.newKP', $vars);
-
-            try {
-                $API = new Convertio(env('PDF_TOKEN'));
-            } catch (APIException $e) {
-                return $e->getMessage();
-            }
-            try {
-                $API->startFromURL(route('showCO', ['uuid' => $uuid]) . '?pdf=1', 'pdf')
-                    ->wait()
-                    ->download('savedKPs/' . $uuid . '.pdf')
-                    ->delete();
-            } catch (APIException $e) {
-                return $e->getMessage();
-            } catch (CURLException $e) {
-                return $e->getMessage();
-            } catch (\Exception $e) {
-                return $e->getMessage();
-            }
-
-            return response()->download(public_path('savedKPs/' . $uuid . '.pdf'));
+        return response()->download(public_path('savedKPs/' . $uuid . '.pdf'));
     }
 
     public function calculateAllPrices(Request $request){
