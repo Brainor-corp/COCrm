@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\DefaultTab;
+use App\Equipment;
 use App\OfferGroup;
 use App\Setting;
 use Convertio\Exceptions\APIException;
@@ -30,11 +31,11 @@ class COController extends Controller
     }
 
     public function getDefaultWorkTabs(){
-        return DefaultTab::where('class', 'work')->with('equipments')->orderBy('order')->get();
+        return DefaultTab::where([['class', 'work'], ['display', true]])->with('equipments')->orderBy('order')->get();
     }
 
     public function getDefaultEquipmentTabs(){
-        return DefaultTab::where('class', 'equipment')->with('equipments')->orderBy('order')->get();
+        return DefaultTab::where([['class', 'equipment'], ['display', true]])->with('equipments')->orderBy('order')->get();
     }
 
     public function getOfferGroup(Request $request){
@@ -97,7 +98,9 @@ class COController extends Controller
     public function calculateAllPrices(Request $request){
         $response = [];
         $response['adjustmentPrice'] = self::calculateAdjustmentPrice($request['offer_group']['adjusters']) ?? null;
-        $response['workNumber'] = self::calculateWorkNumber($request['offer_group']['works']) ?? null;
+        if(isset($request['offer_group']['works'])){
+            $response['workNumber'] = self::calculateWorkNumber($request['offer_group']['works']) ?? null;
+        }
         foreach ($request['offer_group']['offers'] as $key => $offer) {
             try {
                 $response[$key]['equipmentPrice'] = round(self::calculateEquipmentPrice($offer), 2);
@@ -122,12 +125,17 @@ class COController extends Controller
     }
 
     public function calculatePrePrices(Request $request){
-        $response['adjustmentPrice'] = self::calculateAdjustmentPrice($request['offer_group']['adjusters']);
-        $response['noTaxProfit'] = $request['offer_group']['adjusters']['adjusters_no_tax'] ?? round(self::calculateNoTaxProfit($response['adjustmentPrice'], $request['offer_group']['adjusters']['pay_percentage']), 2);
-        $response['VAT'] = round(self::calculateVAT($response['noTaxProfit']), 2);
-        $response['totalWorkPrice'] = round(self::calculateTotalWorkPrice($response['noTaxProfit']), 2);
-        $response['totalWorkPriceNoVAT'] = round(self::calculateTotalWorkPriceNoVAT($response['noTaxProfit']), 2);
-        $response['additionalDiscount'] = round(($response['noTaxProfit'] + $response['noTaxProfit'] * 40 / 100) - $response['totalWorkPriceNoVAT'] - $response['VAT'], 2);
+        try {
+            $response['adjustmentPrice'] = self::calculateAdjustmentPrice($request['offer_group']['adjusters']);
+            $response['noTaxProfit'] = $request['offer_group']['adjusters']['adjusters_no_tax'] ?? round(self::calculateNoTaxProfit($response['adjustmentPrice'], $request['offer_group']['adjusters']['pay_percentage']), 2);
+            $response['VAT'] = round(self::calculateVAT($response['noTaxProfit']), 2);
+            $response['totalWorkPrice'] = round(self::calculateTotalWorkPrice($response['noTaxProfit']), 2);
+            $response['totalWorkPriceNoVAT'] = round(self::calculateTotalWorkPriceNoVAT($response['noTaxProfit']), 2);
+            $response['additionalDiscount'] = round(($response['noTaxProfit'] + $response['noTaxProfit'] * 40 / 100) - $response['totalWorkPriceNoVAT'] - $response['VAT'], 2);
+        }
+        catch( \Exception $e){
+            return $e;
+        }
         return $response;
     }
 

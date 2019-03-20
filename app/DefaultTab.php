@@ -20,7 +20,7 @@ class DefaultTab extends Model
     }
 
     protected $fillable = [
-        'name', 'class'
+        'name', 'class', 'display'
     ];
 
     public function equipments(){
@@ -29,5 +29,9 @@ class DefaultTab extends Model
 
     public function getRealClassAttribute(){
         return EquipmentHelper::getRealClassName($this->class);
+    }
+
+    public function getRealDisplayAttribute(){
+        return EquipmentHelper::getRealDisplayValues($this->display);
     }
 }

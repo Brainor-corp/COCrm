@@ -80,14 +80,14 @@ class Types extends Section
     public function beforeSave(Request $request, $model = null)
     {
         if(!$request->has('equipment')) {
-            $model->equipment()->sync(null);
+//            $model->equipment()->sync(null);
         }
     }
 
     public function beforeDelete(Request $request, $id = null)
     {
         $type = Type::where('id', $id)->first();
-        $type->equipment()->detach();
+//        $type->equipment()->detach();
         $type->work()->detach();
     }
 
