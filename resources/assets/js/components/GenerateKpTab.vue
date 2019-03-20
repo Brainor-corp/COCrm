@@ -555,6 +555,7 @@
             setResult(equipment, offerTabId, offerContentTabId, rowId) {
                 this.offerGroup['offers'][offerTabId]['equipments'][offerContentTabId]['equipments'][rowId] = equipment;
                 this.offerGroup['offers'][offerTabId]['equipments'][offerContentTabId]['equipments'][rowId]['autoCompleteDisplay'] = false;
+                this.offerGroup['offers'][offerTabId]['equipments'][offerContentTabId]['equipments'][rowId]['quantity'] = 0;
                 this.$forceUpdate();
             },
             setWorkResult(work, workTabIndex, index) {

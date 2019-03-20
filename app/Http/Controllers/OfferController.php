@@ -167,9 +167,9 @@ class OfferController extends Controller
             }
         }
         catch (\Exception $e){
-            throw new \Exception('Произошла ошибка. Пожалуйста, обновите страницу и попробуйте снова.');
-//            return $e;
-        }
+//            throw new \Exception('Произошла ошибка. Пожалуйста, обновите страницу и попробуйте снова.');
+            return $e;
+        }//todo unworkel
         return url('kp/' . $createGroup->uuid);
     }
 
