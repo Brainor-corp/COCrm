@@ -39,9 +39,9 @@ class Equipment extends Model
         return $this->belongsToMany(Equipment::class, 'equipment_offer_group', 'equipment_id', 'offer_group_id')->withPivot('quantity');
     }
 
-    public function types(){
-        return $this->belongsToMany(Type::class, 'equipment_type', 'equipment_id', 'type_id')->withPivot('quantity');
-    }
+//    public function types(){
+//        return $this->belongsToMany(Type::class, 'equipment_type', 'equipment_id', 'type_id')->withPivot('quantity');
+//    }
 
     public function getRealClassAttribute() {
         return EquipmentHelper::getRealClassName($this->class);

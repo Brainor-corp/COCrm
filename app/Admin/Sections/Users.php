@@ -25,7 +25,7 @@ class Users extends Section
             Column::text('id', '#'),
             Column::text('name', 'Имя'),
             Column::text('email', 'EMail'),
-            Column::text('tel', 'Телефон'),
+            Column::text('phone_number', 'Телефон'),
             Column::text('contact_email', 'Контактная почта'),
         ])->setPagination(10);
 
@@ -46,7 +46,8 @@ class Users extends Section
                     ->setType('email'),
                 FormField::input('contact_email', 'Контактная почта')->setRequired(true)
                     ->setType('email'),
-                FormField::input('tel', 'Телефон')->setRequired(true),
+                FormField::input('phone_number', 'Телефон'),
+                FormField::input('mobile_number', 'Моб. телефон'),
                 FormField::input('password', 'Пароль')
                     ->setRequired(true)
                     ->setType('password'),
@@ -78,7 +79,8 @@ class Users extends Section
                 FormField::input('email', 'EMail')->setRequired(true),
                 FormField::input('contact_email', 'Контактная почта')->setRequired(true)
                     ->setType('email'),
-                FormField::input('tel', 'Телефон')->setRequired(true),
+                FormField::input('phone_number', 'Телефон'),
+                FormField::input('mobile_number', 'Моб. телефон'),
                 FormField::custom(View::make('admin.userPasswordChange')->with(compact('user_id')))
             ]),
         ])

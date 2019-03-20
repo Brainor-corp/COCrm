@@ -24,17 +24,17 @@ class Type extends Model
         ];
     }
 
-    public function equipments(){
+    public function equipment(){
         return $this->belongsTo(Equipment::class);
     }
 
-    public function equipment(){
-        return $this->belongsToMany(Equipment::class)->withPivot('quantity', 'price', 'price_trade', 'price_small_trade', 'price_special');
-    }
+//    public function equipment(){
+//        return $this->belongsToMany(Equipment::class)->withPivot('quantity', 'price', 'price_trade', 'price_small_trade', 'price_special');
+//    }
 
-    public function work(){
-        return $this->belongsToMany(Equipment::class, 'equipment_type', 'type_id', 'equipment_id')->withPivot('quantity');
-    }
+//    public function work(){
+//        return $this->belongsToMany(Equipment::class, 'equipment_type', 'type_id', 'equipment_id')->withPivot('quantity');
+//    }
 
     public function contacts(){
         return $this->belongsTo(Contact::class);

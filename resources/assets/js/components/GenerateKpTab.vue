@@ -45,7 +45,7 @@
                                 <div class="col-10">
                                     <input class="form-control offerTabContentName" type="text" :name="'offer_group[offers]['+offerTabIndex+'][name]'" v-model="offerTab.name"/><br>
                                 </div>
-                                <div class="col-2 align-self-baseline">
+                                <div class="col-2 align-self-baseline text-center">
                                     <i @click="deleteOffer(offerTabIndex)" class="fas fa-times"></i>
                                 </div>
                                 <div class="col-12">
@@ -214,7 +214,7 @@
                 </ul>
                 <div class="tab-content">
                     <div role="tabpanel" class="tab-pane" v-bind:class="{ 'active show': workTabIndex === 0 }" :aria-labelledby="'#kp-head-work-tab-'+workTabIndex" v-for="(workTab, workTabIndex) in offerGroup['works']" :key="workTabIndex" :id="'kp-work-tab-'+workTabIndex">
-                        <table class="table table-striped table-hover mt-2">
+                        <table class="table table-striped table-hover bg-light border">
                             <thead>
                             <tr>
                                 <th scope="col">Артикул</th>
@@ -504,7 +504,7 @@
                     name: '',
                     code: '',
                     points: '',
-                    quantity: 1,
+                    quantity: 0,
                     autoCompleteDisplay: false,
                 });
             },

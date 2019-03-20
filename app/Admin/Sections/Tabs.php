@@ -32,6 +32,7 @@ class Tabs extends Section
         $display = Display::table([
             Column::text('name', 'Название'),
             Column::text('real_class', 'Тип вкладки'),
+            Column::text('real_display', 'Выводить'),
         ])->setPagination(10);
 
         return $display;
@@ -54,12 +55,14 @@ class Tabs extends Section
             'select2' => asset('packages/select2/css/select2.min.css')
         ]);
 
-
         $tab = DefaultTab::where('id', $id)->with('equipments')->first();
 
         $form = Form::panel([
             FormColumn::column([
                 FormField::input('name', 'Название')->setRequired(true),
+                FormField::select('display', 'Выводить по умолчанию')
+                    ->setOptions([false=>'Нет', true=>'Да'])
+                    ->setRequired(true),
                 FormField::select('class', 'Класс')
                     ->setOptions(['equipment'=>'Оборудование', 'work'=>'Работа'])
                     ->setRequired(true),

@@ -19,6 +19,9 @@ class EquipmentHelper
             default: return $class;
         }
     }
+    public static function getRealDisplayValues($display) {
+        return $display ? 'Да' : 'Нет';
+    }
 
     public static function getClassByTypeName($typeName) {
         $works = [
