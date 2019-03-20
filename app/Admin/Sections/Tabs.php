@@ -27,7 +27,6 @@ class Tabs extends Section
     protected $title = 'Вкладки по умолчанию';
     protected $model = '\App\DefaultTab';
 
-
     public static function onDisplay(Request $request)
     {
         $display = Display::table([
@@ -89,5 +88,4 @@ class Tabs extends Section
         $tab = DefaultTab::where('id', $id)->first();
         $tab->equipments()->detach();
     }
-
 }
