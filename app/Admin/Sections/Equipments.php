@@ -64,6 +64,9 @@ class Equipments extends Section
                 FormField::input('name', 'Название')->setRequired(true),
                 FormField::textarea('short_description', 'Короткое описание'),
                 FormField::textarea('description', 'Описание'),
+                FormField::select('parseable', 'Обновлять при загрузке оборудования?')
+                    ->setOptions([0=>'Нет', 1=>'Да'])
+                    ->setRequired(true),
                 FormField::input('points', 'Ед. измерения')->setRequired(true),
                 FormField::input('price', 'Цена')->setRequired(true),
                 FormField::input('price_trade', 'Розница')->setRequired(true),
@@ -73,7 +76,10 @@ class Equipments extends Section
 
                 FormField::select('type_id', 'Тип')
                     ->setModelForOptions(Type::class)
-                    ->setDisplay('name_class'),
+                    ->setQueryFunctionForModel(function ($type) {
+                        return $type->whereIn('slug', ['rabota', 'oborudovanie']);
+                    })
+                    ->setDisplay('name'),
             ])
         ]);
 
@@ -92,7 +98,7 @@ class Equipments extends Section
         $equipment = Equipment::where('id', $id)->first();
         $equipment->offers()->detach();
         $equipment->offer_group()->detach();
-        $equipment->types()->detach();
+//        $equipment->types()->detach();
     }
 
 }

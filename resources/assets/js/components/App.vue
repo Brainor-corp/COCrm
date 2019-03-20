@@ -39,7 +39,7 @@
         components: { GenerateKpTab, KpTotalTab },
         data(){
             return {
-                offerGroup:[],
+                offerGroup: [],
                 calcPrices: [],
                 offerGroupID: null,
             };
@@ -90,7 +90,6 @@
                                 $.each(workTab['work'], (workIndex, work) => {
                                     if(work) {
                                         if (work.quantity === "" || work.quantity == null || work.quantity < 1) {
-                                            console.log(this.offerGroup['offer_group']['works']);
                                             this.offerGroup['offer_group']['works'][workTabIndex]['work'].splice(workIndex, 1);
                                             stop = false;
                                         }
@@ -102,17 +101,30 @@
                             break;
                         }
                     }
-
                 }
             },
             calculatePrices(){
-                axios
-                    .post('/calculateAllPrices',
-                         this.offerGroup
-                    )
-                    .then(res=>{
-                        this.calcPrices = res.data;
+                let empty = true;
+                $.each(this.offerGroup['offer_group']['offers'], (offerIndex, offer) => {
+                    $.each(offer['equipments'], (equipmentTypeIndex, equipments) => {
+                        if(equipments['equipment'].length > 0){
+                            empty = false;
+                        }
                     });
+                });
+                if(!empty) {
+                    axios
+                        .post('/calculateAllPrices',
+                            this.offerGroup
+                        )
+                        .then(res => {
+                            this.calcPrices = res.data;
+                        })
+                        .catch(error => {
+                            NProgress.done();
+                            console.log(error.response.data.message);
+                        });
+                }
             }
         }
     }

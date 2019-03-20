@@ -21,8 +21,8 @@
 
                 @foreach($offersGroup->offers as $index => $offer)
                     <div class="price-list__wraper clearfix">
-                        <h2 class="price-list__variant">Вариант <span>№{{$index+1}}</span></h2>
-                        <p class="price-list__description">{{ $offer->name }}</p>
+                        <h2 class="price-list__variant">{{ $offer->name }}</h2>
+                        <p class="price-list__description">{{ $offer->description }}</p>
                         <p class="price-list__date">{{ \Carbon\Carbon::parse($offersGroup->created_at)->format('d.m.Y') }}</p>
                     </div>
 

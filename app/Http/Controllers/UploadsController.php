@@ -20,6 +20,8 @@ class UploadsController extends Controller
             return 'Не удалось получить данные о курсах валют.';
         }
 
+        $equipmentType = Type::where('slug', 'oborudovanie')->first();
+
         $inputFileName = Input::file('file')->getPathname();
 
         $objReader = PHPExcel_IOFactory::createReader('Excel2007');
@@ -40,28 +42,28 @@ class UploadsController extends Controller
         }
 
         foreach ($excelData as $sheet) {
-            $typeNameFromSheet = $sheet[3][1];
-
-            $consumables = [
-                'кабели и провода',
-                'расходники',
-                'монтажные и расходные материалы',
-            ];
-
-            if(in_array(mb_strtolower($typeNameFromSheet), $consumables)) {
-                $type = Type::where('slug', 'rashodnye-materialy')->first();
-            } else {
-                $type = Type::where('name', $typeNameFromSheet)->first();
-            }
-
-
-            if(!$type) {
-                $type = new Type([
-                    'name' => $typeNameFromSheet,
-                    'class' => 'equipment',
-                ]);
-                $type->save();
-            }
+//            $typeNameFromSheet = $sheet[3][1];
+//
+//            $consumables = [
+//                'кабели и провода',
+//                'расходники',
+//                'монтажные и расходные материалы',
+//            ];
+//
+//            if(in_array(mb_strtolower($typeNameFromSheet), $consumables)) {
+//                $type = Type::where('slug', 'rashodnye-materialy')->first();
+//            } else {
+//                $type = Type::where('name', $typeNameFromSheet)->first();
+//            }
+//
+//
+//            if(!$type) {
+//                $type = new Type([
+//                    'name' => $typeNameFromSheet,
+//                    'class' => 'equipment',
+//                ]);
+//                $type->save();
+//            }
 
             foreach (array_slice($sheet, 6) as $row) {
                 if(
@@ -81,24 +83,26 @@ class UploadsController extends Controller
                         $row[7] = round($row[7] * $currencies['Valute'][$currency]['Value'], 2);
                         $row[8] = round($row[8] * $currencies['Valute'][$currency]['Value'], 2);
                     }
-
-                    if(DB::table('equipment')->where('code', $row[2])->exists()) {
-                        $toUpdate = [
-                            'type_id' => $type->id,
-                            'name' => $row[3],
-                            'description' => $row[4],
-                            'points' => $row[5],
-                            'price_trade' => $row[6],
-                            'price_small_trade' => $row[7],
-                            'price_special' => $row[8],
-                            'price' => round((floatval($row[7]) - floatval($row[8]))/2 + floatval($row[8]), 2),
-                            'short_description' => $row[9] ?? null,
-                            'class' => $type->class,
-                        ];
-                        DB::table('equipment')->where('code', $row[2])->update($toUpdate);
+                    $equipment = Equipment::where('code', $row[2])->value('parseable');
+                    if(isset($equipment)) {
+                        if($equipment) {
+                            $toUpdate = [
+                                'type_id' => $equipmentType->id,
+                                'name' => $row[3],
+                                'description' => $row[4],
+                                'points' => $row[5],
+                                'price_trade' => $row[6],
+                                'price_small_trade' => $row[7],
+                                'price_special' => $row[8],
+                                'price' => round((floatval($row[7]) - floatval($row[8])) / 2 + floatval($row[8]), 2),
+                                'short_description' => $row[9] ?? null,
+                                'class' => $equipmentType->class,
+                            ];
+                            DB::table('equipment')->where('code', $row[2])->update($toUpdate);
+                        }
                     } else {
                         $toInsert = [
-                            'type_id' => $type->id,
+                            'type_id' => $equipmentType->id,
                             'code' => $row[2],
                             'name' => $row[3],
                             'description' => $row[4],
@@ -108,7 +112,7 @@ class UploadsController extends Controller
                             'price_special' => $row[8],
                             'price' => round((floatval($row[7]) - floatval($row[8]))/2 + floatval($row[8]), 2),
                             'short_description' => $row[9] ?? null,
-                            'class' => $type->class,
+                            'class' => $equipmentType->class,
                             'slug' => SlugService::createSlug(OfferGroup::class, 'slug', $row[3])
                         ];
                         DB::table('equipment')->insert($toInsert);
@@ -116,7 +120,6 @@ class UploadsController extends Controller
                 }
             }
         }
-
         return redirect()->back();
     }
 }
