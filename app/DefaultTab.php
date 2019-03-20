@@ -19,6 +19,10 @@ class DefaultTab extends Model
         ];
     }
 
+    protected $fillable = [
+        'name', 'class'
+    ];
+
     public function equipments(){
         return $this->belongsToMany(Equipment::class);
     }
