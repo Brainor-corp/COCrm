@@ -72,7 +72,14 @@ class InsertDefaultValues extends Migration
                 'order' => '0',
                 'class' => 'equipment',
                 'display' => true,
-            ]
+            ],
+            [
+                'name' => 'Работы',
+                'slug' => 'raboty',
+                'order' => '0',
+                'class' => 'work',
+                'display' => true,
+            ],
         ];
 
         DB::table('types')->insert($types);

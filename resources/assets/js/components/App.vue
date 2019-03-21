@@ -63,11 +63,12 @@
                     this.offerGroup = deparam($('#kp-generate-form').serialize());
                     while(true) {
                         var stop = true;
-                        for (let offer = 0; offer < this.offerGroup['offer_group']['offers'].length; offer++) {
-                            if(this.offerGroup['offer_group']['offers'][offer]['equipments']){
-                                $.each(this.offerGroup['offer_group']['offers'][offer]['equipments'], (type, equipments) => {
-                                    if(!this.offerGroup['offer_group']['offers'][offer]['equipments'][type]){
-                                        this.offerGroup['offer_group']['offers'][offer]['equipments'].splice(type, 1);
+                        $.each(this.offerGroup['offer_group']['offers'], (offerIndex, offer) => {
+                        // for (let offer = 0; offer < this.offerGroup['offer_group']['offers'].length; offer++) {
+                            if(this.offerGroup['offer_group']['offers'][offerIndex]['equipments']){
+                                $.each(offer['equipments'], (type, equipments) => {
+                                    if(!this.offerGroup['offer_group']['offers'][offerIndex]['equipments'][type]){
+                                        this.offerGroup['offer_group']['offers'][offerIndex]['equipments'].splice(type, 1);
                                         stop = false;
                                     }
                                     $.each(equipments['equipment'], (index, equipment) => {
@@ -84,7 +85,7 @@
                                     }
                                 });
                             }
-                        }
+                        });
                         if(this.offerGroup['offer_group']['works']){
                             $.each(this.offerGroup['offer_group']['works'], (workTabIndex, workTab) => {
                                 $.each(workTab['work'], (workIndex, work) => {
@@ -101,9 +102,11 @@
                             break;
                         }
                     }
+                    // console.log(this.offerGroup);
                 }
             },
             calculatePrices(){
+                this.calcPrices = [];
                 let empty = true;
                 $.each(this.offerGroup['offer_group']['offers'], (offerIndex, offer) => {
                     $.each(offer['equipments'], (equipmentTypeIndex, equipments) => {
@@ -118,6 +121,8 @@
                             this.offerGroup
                         )
                         .then(res => {
+                            console.log(this.offerGroup);
+                            console.log(res.data);
                             this.calcPrices = res.data;
                         })
                         .catch(error => {

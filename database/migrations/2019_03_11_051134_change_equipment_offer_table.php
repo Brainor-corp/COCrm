@@ -16,7 +16,7 @@ class ChangeEquipmentOfferTable extends Migration
         Schema::table('equipment_offer', function (Blueprint $table) {
             $table->renameColumn('type', 'tab_slug');
             $table->dropColumn('type_id');
-            $table->string('tab_name');
+            $table->string('tab_name')->nullable();
         });
     }
 
