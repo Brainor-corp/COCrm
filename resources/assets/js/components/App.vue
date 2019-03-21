@@ -101,6 +101,7 @@
                             break;
                         }
                     }
+                    console.log(this.offerGroup);
                 }
             },
             calculatePrices(){

@@ -49795,6 +49795,7 @@ __webpack_require__(6);
                         break;
                     }
                 }
+                console.log(this.offerGroup);
             }
         },
         calculatePrices: function calculatePrices() {
@@ -50702,7 +50703,11 @@ var render = function() {
               ) {
                 return _c(
                   "li",
-                  { key: offerTabIndex, staticClass: "nav-item" },
+                  {
+                    key: offerTabIndex,
+                    staticClass: "nav-item",
+                    attrs: { draggable: "false" }
+                  },
                   [
                     _c(
                       "a",
@@ -50711,7 +50716,8 @@ var render = function() {
                         class: { "active show": offerTabIndex === 0 },
                         attrs: {
                           "data-toggle": "tab",
-                          href: "#kp-edit-tab-" + offerTabIndex
+                          href: "#kp-edit-tab-" + offerTabIndex,
+                          draggable: "false"
                         }
                       },
                       [
@@ -51291,78 +51297,6 @@ var render = function() {
                                           {
                                             name: "model",
                                             rawName: "v-model",
-                                            value: row.type,
-                                            expression: "row.type"
-                                          }
-                                        ],
-                                        attrs: {
-                                          type: "hidden",
-                                          hidden: "hidden",
-                                          name:
-                                            "offer_group[offers][" +
-                                            offerTabIndex +
-                                            "][equipments][" +
-                                            offerContentTab.slug +
-                                            "][equipment][" +
-                                            rowKey +
-                                            "][type]"
-                                        },
-                                        domProps: { value: row.type },
-                                        on: {
-                                          input: function($event) {
-                                            if ($event.target.composing) {
-                                              return
-                                            }
-                                            _vm.$set(
-                                              row,
-                                              "type",
-                                              $event.target.value
-                                            )
-                                          }
-                                        }
-                                      }),
-                                      _vm._v(" "),
-                                      _c("input", {
-                                        directives: [
-                                          {
-                                            name: "model",
-                                            rawName: "v-model",
-                                            value: row.type_id,
-                                            expression: "row.type_id"
-                                          }
-                                        ],
-                                        attrs: {
-                                          type: "hidden",
-                                          hidden: "hidden",
-                                          name:
-                                            "offer_group[offers][" +
-                                            offerTabIndex +
-                                            "][equipments][" +
-                                            offerContentTab.slug +
-                                            "][equipment][" +
-                                            rowKey +
-                                            "][type_id]"
-                                        },
-                                        domProps: { value: row.type_id },
-                                        on: {
-                                          input: function($event) {
-                                            if ($event.target.composing) {
-                                              return
-                                            }
-                                            _vm.$set(
-                                              row,
-                                              "type_id",
-                                              $event.target.value
-                                            )
-                                          }
-                                        }
-                                      }),
-                                      _vm._v(" "),
-                                      _c("input", {
-                                        directives: [
-                                          {
-                                            name: "model",
-                                            rawName: "v-model",
                                             value: row.code,
                                             expression: "row.code"
                                           }
@@ -51925,8 +51859,6 @@ var render = function() {
                 },
                 domProps: { value: _vm.offerGroup["adjusters_no_tax"] },
                 on: {
-                  change: _vm.recalcAdjustments,
-                  keyup: _vm.recalcAdjustments,
                   input: function($event) {
                     if ($event.target.composing) {
                       return
@@ -52977,91 +52909,105 @@ var render = function() {
             _c("h2", [_vm._v(_vm._s(_vm.offerGroup.offer_group.name))]),
             _vm._v(" "),
             _vm._l(_vm.offerGroup.offer_group.offers, function(offerData, i) {
-              return _c("div", { key: i, staticClass: "kp-total-offer" }, [
-                _c("h3", [_vm._v(_vm._s(offerData.name))]),
-                _vm._v(" "),
-                _c("div", { staticClass: "my-4 h4 font-weight-bold" }, [
-                  _vm._v("Оборудование и расходные материалы")
-                ]),
-                _vm._v(" "),
-                offerData.equipments
-                  ? _c("table", { staticClass: "table table-bordered" }, [
-                      _vm._m(0, true),
-                      _vm._v(" "),
-                      _c(
-                        "tbody",
-                        [
-                          _vm._l(offerData.equipments, function(tab, type) {
-                            return type !== "rashodnye-materialy"
-                              ? _vm._l(tab.equipment, function(row) {
-                                  return _c("tr", [
-                                    _c("td", [_vm._v(_vm._s(row.code))]),
+              return _vm.calcPrices[i] &&
+                (_vm.calcPrices[i]["equipmentPrice"] > 0 ||
+                  _vm.calcPrices[i]["consumablePrice"] > 0)
+                ? _c("div", { key: i, staticClass: "kp-total-offer" }, [
+                    _c("h3", [_vm._v(_vm._s(offerData.name))]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "my-4 h4 font-weight-bold" }, [
+                      _vm._v("Оборудование и расходные материалы")
+                    ]),
+                    _vm._v(" "),
+                    offerData.equipments
+                      ? _c("table", { staticClass: "table table-bordered" }, [
+                          _vm._m(0, true),
+                          _vm._v(" "),
+                          _c(
+                            "tbody",
+                            [
+                              _vm._l(offerData.equipments, function(tab, type) {
+                                return type !== "rashodnye-materialy"
+                                  ? _vm._l(tab.equipment, function(row) {
+                                      return _c("tr", [
+                                        _c("td", [_vm._v(_vm._s(row.code))]),
+                                        _vm._v(" "),
+                                        _c("td", [_vm._v(_vm._s(row.name))]),
+                                        _vm._v(" "),
+                                        _c("td", [
+                                          _vm._v(
+                                            _vm._s(
+                                              row.short_description
+                                                ? row.short_description
+                                                : row.description
+                                            )
+                                          )
+                                        ]),
+                                        _vm._v(" "),
+                                        _c("td", [
+                                          _vm._v(_vm._s(row.quantity))
+                                        ]),
+                                        _vm._v(" "),
+                                        _c("td", [_vm._v(_vm._s(row.price))]),
+                                        _vm._v(" "),
+                                        _c("td", [
+                                          _vm._v(
+                                            _vm._s(row.price * row.quantity)
+                                          )
+                                        ])
+                                      ])
+                                    })
+                                  : _vm._e()
+                              }),
+                              _vm._v(" "),
+                              _vm.calcPrices[i]
+                                ? _c("tr", [
+                                    _c("td", [_vm._v("----")]),
                                     _vm._v(" "),
-                                    _c("td", [_vm._v(_vm._s(row.name))]),
+                                    _c("td", [_vm._v("Расходные материалы")]),
+                                    _vm._v(" "),
+                                    _c("td", [
+                                      _vm._v("Коробы, провода и т.д.")
+                                    ]),
                                     _vm._v(" "),
                                     _c("td", [
                                       _vm._v(
                                         _vm._s(
-                                          row.short_description
-                                            ? row.short_description
-                                            : row.description
+                                          _vm.calcPrices[i][
+                                            "consumablePrice"
+                                          ] !== 0
+                                            ? 1
+                                            : 0
                                         )
                                       )
                                     ]),
                                     _vm._v(" "),
-                                    _c("td", [_vm._v(_vm._s(row.quantity))]),
-                                    _vm._v(" "),
-                                    _c("td", [_vm._v(_vm._s(row.price))]),
+                                    _c("td", [
+                                      _vm._v(
+                                        _vm._s(
+                                          _vm.calcPrices[i]["consumablePrice"]
+                                        )
+                                      )
+                                    ]),
                                     _vm._v(" "),
                                     _c("td", [
-                                      _vm._v(_vm._s(row.price * row.quantity))
+                                      _vm._v(
+                                        _vm._s(
+                                          _vm.calcPrices[i]["consumablePrice"]
+                                        )
+                                      )
                                     ])
                                   ])
-                                })
-                              : _vm._e()
-                          }),
-                          _vm._v(" "),
-                          _vm.calcPrices[i]
-                            ? _c("tr", [
-                                _c("td", [_vm._v("----")]),
-                                _vm._v(" "),
-                                _c("td", [_vm._v("Расходные материалы")]),
-                                _vm._v(" "),
-                                _c("td", [_vm._v("Коробы, провода и т.д.")]),
-                                _vm._v(" "),
-                                _c("td", [
-                                  _vm._v(
-                                    _vm._s(
-                                      _vm.calcPrices[i]["consumablePrice"] !== 0
-                                        ? 1
-                                        : 0
-                                    )
-                                  )
-                                ]),
-                                _vm._v(" "),
-                                _c("td", [
-                                  _vm._v(
-                                    _vm._s(_vm.calcPrices[i]["consumablePrice"])
-                                  )
-                                ]),
-                                _vm._v(" "),
-                                _c("td", [
-                                  _vm._v(
-                                    _vm._s(_vm.calcPrices[i]["consumablePrice"])
-                                  )
-                                ])
-                              ])
-                            : _vm._e(),
-                          _vm._v(" "),
-                          _vm.calcPrices[i] ? _c("tr") : _vm._e()
-                        ],
-                        2
-                      )
-                    ])
-                  : _vm._e(),
-                _vm._v(" "),
-                _vm.calcPrices[i]
-                  ? _c(
+                                : _vm._e(),
+                              _vm._v(" "),
+                              _vm.calcPrices[i] ? _c("tr") : _vm._e()
+                            ],
+                            2
+                          )
+                        ])
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _c(
                       "div",
                       { staticClass: "bg-light-blue text-right my-5" },
                       [
@@ -53078,51 +53024,49 @@ var render = function() {
                           )
                         ])
                       ]
-                    )
-                  : _vm._e(),
-                _vm._v(" "),
-                _vm.offerGroup.offer_group.works
-                  ? _c("div", { staticClass: "my-4 h4 font-weight-bold" }, [
-                      _vm._v("Монтажные и пуско-наладочные работы")
-                    ])
-                  : _vm._e(),
-                _vm._v(" "),
-                _vm.offerGroup.offer_group.works
-                  ? _c("table", { staticClass: "table table-bordered" }, [
-                      _vm._m(1, true),
-                      _vm._v(" "),
-                      _c(
-                        "tbody",
-                        [
-                          _vm._l(_vm.offerGroup.offer_group.works, function(
-                            workTab
-                          ) {
-                            return _vm.calcPrices["workNumber"] > 0
-                              ? _vm._l(workTab["work"], function(row) {
-                                  return _c("tr", [
-                                    _c("td", [_vm._v(_vm._s(row.code))]),
-                                    _vm._v(" "),
-                                    _c("td", [_vm._v(_vm._s(row.name))]),
-                                    _vm._v(" "),
-                                    _c("td", [_vm._v(_vm._s(row.points))]),
-                                    _vm._v(" "),
-                                    _c("td", [_vm._v(_vm._s(row.quantity))])
-                                  ])
-                                })
-                              : _vm._e()
-                          }),
+                    ),
+                    _vm._v(" "),
+                    _vm.offerGroup.offer_group.works
+                      ? _c("div", { staticClass: "my-4 h4 font-weight-bold" }, [
+                          _vm._v("Монтажные и пуско-наладочные работы")
+                        ])
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _vm.offerGroup.offer_group.works
+                      ? _c("table", { staticClass: "table table-bordered" }, [
+                          _vm._m(1, true),
                           _vm._v(" "),
-                          _vm.calcPrices["workNumber"] === 0
-                            ? [_vm._m(2, true)]
-                            : _vm._e()
-                        ],
-                        2
-                      )
-                    ])
-                  : _vm._e(),
-                _vm._v(" "),
-                _vm.calcPrices[i]
-                  ? _c("div", { staticClass: "my-5" }, [
+                          _c(
+                            "tbody",
+                            [
+                              _vm._l(_vm.offerGroup.offer_group.works, function(
+                                workTab
+                              ) {
+                                return _vm.calcPrices["workNumber"] > 0
+                                  ? _vm._l(workTab["work"], function(row) {
+                                      return _c("tr", [
+                                        _c("td", [_vm._v(_vm._s(row.code))]),
+                                        _vm._v(" "),
+                                        _c("td", [_vm._v(_vm._s(row.name))]),
+                                        _vm._v(" "),
+                                        _c("td", [_vm._v(_vm._s(row.points))]),
+                                        _vm._v(" "),
+                                        _c("td", [_vm._v(_vm._s(row.quantity))])
+                                      ])
+                                    })
+                                  : _vm._e()
+                              }),
+                              _vm._v(" "),
+                              _vm.calcPrices["workNumber"] === 0
+                                ? [_vm._m(2, true)]
+                                : _vm._e()
+                            ],
+                            2
+                          )
+                        ])
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "my-5" }, [
                       _c("div", { staticClass: "bg-beige text-right" }, [
                         _c(
                           "h4",
@@ -53162,11 +53106,9 @@ var render = function() {
                           ]
                         )
                       ])
-                    ])
-                  : _vm._e(),
-                _vm._v(" "),
-                _vm.calcPrices[i]
-                  ? _c("div", { staticClass: "my-5" }, [
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "my-5" }, [
                       _c("div", { staticClass: "bg-beige text-right" }, [
                         _c(
                           "h4",
@@ -53207,8 +53149,8 @@ var render = function() {
                         )
                       ])
                     ])
-                  : _vm._e()
-              ])
+                  ])
+                : _vm._e()
             })
           ],
           2

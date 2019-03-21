@@ -2,9 +2,9 @@
     <div class="row">
         <div v-if="offerGroup.offer_group" class="col-12 kp-total-tab">
             <h2>{{ offerGroup.offer_group.name}}</h2>
-            <div class="kp-total-offer" v-for="(offerData, i) in offerGroup.offer_group.offers" :key="i">
+            <div v-if="calcPrices[i] && (calcPrices[i]['equipmentPrice'] > 0 || calcPrices[i]['consumablePrice'] > 0 )" class="kp-total-offer" v-for="(offerData, i) in offerGroup.offer_group.offers" :key="i">
                 <h3>{{ offerData.name }}</h3>
-                <div class="my-4 h4 font-weight-bold">Оборудование и расходные материалы</div>
+                <div  class="my-4 h4 font-weight-bold">Оборудование и расходные материалы</div>
                 <table v-if="offerData.equipments" class="table table-bordered">
                     <thead>
                     <tr>
@@ -46,7 +46,7 @@
                     </tr>
                     </tbody>
                 </table>
-                <div v-if="calcPrices[i]" class="bg-light-blue text-right my-5">
+                <div class="bg-light-blue text-right my-5">
                     <h4 class="p-3 font-weight-bold">Всего за оборудование {{ parseFloat(calcPrices[i]['equipmentPrice'] + calcPrices[i]['consumablePrice']).toFixed(2) }}р.</h4>
                 </div>
                 <div v-if="offerGroup.offer_group.works" class="my-4 h4 font-weight-bold">Монтажные и пуско-наладочные работы</div>
@@ -91,11 +91,11 @@
                         <!--</tr>-->
                     </tbody>
                 </table>
-                <div v-if="calcPrices[i]" class="my-5">
+                <div class="my-5">
                     <div class="bg-beige text-right"><h4 class="p-3  font-weight-bold mb-0">Всего за работы ( с НДС ): {{ calcPrices[i]['totalWorkPrice'] }}р.</h4></div>
                     <div class="bg-light-blue text-right"><h4 class="p-3  font-weight-bold mb-0">Всего за работы ( без НДС, <span class="text-danger">Доп. скидка - {{ calcPrices[i]['additionalDiscount'] }} </span>): {{calcPrices[i]['totalWorkPriceNoVAT']}}р.</h4></div>
                 </div>
-                <div v-if="calcPrices[i]" class="my-5">
+                <div class="my-5">
                     <div class="bg-beige text-right"><h4 class="p-3  font-weight-bold mb-0">Общая стоимость (1 договор - все с НДС): {{ parseFloat(calcPrices[i]['equipmentPrice'] + calcPrices[i]['consumablePrice'] + calcPrices[i]['totalWorkPrice']).toFixed(2) }}р.</h4></div>
                     <div class="bg-light-blue text-right"><h4 class="p-3  font-weight-bold mb-0">Общая стоимость (2 договора - оборудование с НДС, работы без НДС): {{ parseFloat(calcPrices[i]['equipmentPrice'] + calcPrices[i]['consumablePrice'] + calcPrices[i]['totalWorkPriceNoVAT']).toFixed(2) }}р.</h4></div>
                 </div>

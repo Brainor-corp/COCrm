@@ -97,23 +97,24 @@ class COController extends Controller
 
     public function calculateAllPrices(Request $request){
         $response = [];
-        $response['adjustmentPrice'] = self::calculateAdjustmentPrice($request['offer_group']['adjusters']) ?? null;
-        if(isset($request['offer_group']['works'])){
-            $response['workNumber'] = self::calculateWorkNumber($request['offer_group']['works']) ?? null;
-        }
-        foreach ($request['offer_group']['offers'] as $key => $offer) {
-            try {
-                $response[$key]['equipmentPrice'] = round(self::calculateEquipmentPrice($offer), 2);
-                $response[$key]['consumablePrice'] = round(self::calculateConsumablePrice($offer), 2);
-                $response[$key]['noTaxProfit'] = $request['offer_group']['adjusters']['adjusters_no_tax'] ?? round(self::calculateNoTaxProfit($response['adjustmentPrice'], $request['offer_group']['adjusters']['pay_percentage']), 2);
-                $response[$key]['VAT'] = round(self::calculateVAT($response[$key]['noTaxProfit']), 2);
-                $response[$key]['totalWorkPrice'] = round(self::calculateTotalWorkPrice($response[$key]['noTaxProfit']), 2);
-                $response[$key]['totalWorkPriceNoVAT'] = round(self::calculateTotalWorkPriceNoVAT($response[$key]['noTaxProfit']), 2);
-                $response[$key]['additionalDiscount'] = round(($response[$key]['noTaxProfit'] + $response[$key]['noTaxProfit'] * 40 / 100) - $response[$key]['totalWorkPriceNoVAT'] - $response[$key]['VAT'], 2);
-//            $response['additionalDiscount'] = self::calculateAdditionalDiscount($response['noTaxProfit'],$response['VAT']);
-            } catch (\Exception $e) {
-                return $e;
+        try {
+            $response['adjustmentPrice'] = self::calculateAdjustmentPrice($request['offer_group']['adjusters']) ?? null;
+            if(isset($request['offer_group']['works'])) {
+                $response['workNumber'] = self::calculateWorkNumber($request['offer_group']['works']) ?? null;
             }
+            foreach ($request['offer_group']['offers'] as $key => $offer) {
+                    $response[$key]['equipmentPrice'] = round(self::calculateEquipmentPrice($offer), 2);
+                    $response[$key]['consumablePrice'] = round(self::calculateConsumablePrice($offer), 2);
+                    $response[$key]['noTaxProfit'] = $request['offer_group']['adjusters']['adjusters_no_tax'] ?? round(self::calculateNoTaxProfit($response['adjustmentPrice'], $request['offer_group']['adjusters']['pay_percentage']), 2);
+                    $response[$key]['VAT'] = round(self::calculateVAT($response[$key]['noTaxProfit']), 2);
+                    $response[$key]['totalWorkPrice'] = round(self::calculateTotalWorkPrice($response[$key]['noTaxProfit']), 2);
+                    $response[$key]['totalWorkPriceNoVAT'] = round(self::calculateTotalWorkPriceNoVAT($response[$key]['noTaxProfit']), 2);
+                    $response[$key]['additionalDiscount'] = round(($response[$key]['noTaxProfit'] + $response[$key]['noTaxProfit'] * 40 / 100) - $response[$key]['totalWorkPriceNoVAT'] - $response[$key]['VAT'], 2);
+    //            $response['additionalDiscount'] = self::calculateAdditionalDiscount($response['noTaxProfit'],$response['VAT']);
+
+            }
+        } catch (\Exception $e) {
+            return $e;
         }
         return $response;
     }
@@ -141,11 +142,15 @@ class COController extends Controller
 
     private function calculateEquipmentPrice($offer){
         $totalPrice=0;
-        foreach ($offer['equipments'] as $type => $equipments){
-            foreach ($equipments['equipment'] as $equipment){
-                if($type !== 'rashodnye-materialy'){
-                    $totalPrice += $equipment['price'] * $equipment['quantity'];
+        if(isset($offer['equipments'])) {
+            foreach ($offer['equipments'] as $type => $equipments) {
+                if ($equipments['equipment']) {
+                    foreach ($equipments['equipment'] as $equipment) {
+                        if ($type !== 'rashodnye-materialy') {
+                            $totalPrice += $equipment['price'] * $equipment['quantity'];
 //                    $totalPrice += ((($equipment['price_small_trade'] - $equipment['price_special'])/2) + $equipment['price_special']) * $equipment['quantity'];
+                        }
+                    }
                 }
             }
         }
@@ -154,10 +159,14 @@ class COController extends Controller
 
     private function calculateConsumablePrice($offer){
         $totalPrice=0;
-        foreach ($offer['equipments'] as $type => $equipments){
-            foreach ($equipments['equipment'] as $equipment){
-                if($type === 'rashodnye-materialy'){
-                    $totalPrice += $equipment['price'] * $equipment['quantity'];
+        if(isset($offer['equipments'])) {
+            foreach ($offer['equipments'] as $type => $equipments) {
+                if ($equipments['equipment']) {
+                    foreach ($equipments['equipment'] as $equipment) {
+                        if ($type === 'rashodnye-materialy') {
+                            $totalPrice += $equipment['price'] * $equipment['quantity'];
+                        }
+                    }
                 }
             }
         }
@@ -207,8 +216,10 @@ class COController extends Controller
     private function calculateWorkNumber($works){
         $counter = 0;
         foreach ($works as $workTab){
-            foreach($workTab['work'] as $work){
-                $counter++;
+            if(isset($workTab['work'])){
+                foreach($workTab['work'] as $work){
+                    $counter++;
+                }
             }
         }
         return $counter;
