@@ -39,8 +39,8 @@
                 <input class="form-control my-3" type="text" :name="'offer_group[name]'" v-model="offerGroup.name"/>
                 <h3>Оборудование</h3>
                 <ul class="nav nav-tabs">
-                    <li v-for="(offerTab, offerTabIndex) in offerGroup['offers']" :key="offerTabIndex" class="nav-item">
-                        <a class="nav-link" v-bind:class="{ 'active show': offerTabIndex === 0 }" data-toggle="tab" :href="'#kp-edit-tab-'+offerTabIndex">
+                    <li v-for="(offerTab, offerTabIndex) in offerGroup['offers']" :key="offerTabIndex" class="nav-item" draggable="false">
+                        <a class="nav-link" v-bind:class="{ 'active show': offerTabIndex === 0 }" data-toggle="tab" :href="'#kp-edit-tab-'+offerTabIndex" draggable="false">
                             <div class="row align-items-baseline">
                                 <div class="col-10">
                                     <input class="form-control offerTabContentName" type="text" :name="'offer_group[offers]['+offerTabIndex+'][name]'" v-model="offerTab.name"/><br>
@@ -111,8 +111,8 @@
                                             <input type="hidden" hidden="hidden" :name="'offer_group[offers]['+offerTabIndex+'][equipments]['+offerContentTab.slug+'][equipment]['+rowKey+'][price_small_trade]'" v-model="row.price_small_trade"/>
                                             <input type="hidden" hidden="hidden" :name="'offer_group[offers]['+offerTabIndex+'][equipments]['+offerContentTab.slug+'][equipment]['+rowKey+'][price_special]'" v-model="row.price_special"/>
                                             <input type="hidden" hidden="hidden" :name="'offer_group[offers]['+offerTabIndex+'][equipments]['+offerContentTab.slug+'][equipment]['+rowKey+'][comment]'" v-model="row.comment"/>
-                                            <input type="hidden" hidden="hidden" :name="'offer_group[offers]['+offerTabIndex+'][equipments]['+offerContentTab.slug+'][equipment]['+rowKey+'][type]'" v-model="row.type"/>
-                                            <input type="hidden" hidden="hidden" :name="'offer_group[offers]['+offerTabIndex+'][equipments]['+offerContentTab.slug+'][equipment]['+rowKey+'][type_id]'" v-model="row.type_id"/>
+                                            <!--<input type="hidden" hidden="hidden" :name="'offer_group[offers]['+offerTabIndex+'][equipments]['+offerContentTab.slug+'][equipment]['+rowKey+'][type]'" v-model="row.type"/>-->
+                                            <!--<input type="hidden" hidden="hidden" :name="'offer_group[offers]['+offerTabIndex+'][equipments]['+offerContentTab.slug+'][equipment]['+rowKey+'][type_id]'" v-model="row.type_id"/>-->
                                             <input class="form-control" type="text" @keyup="searchEquipmentByCode(row.code, offerTabIndex, offerContentTabIndex, rowKey)" :name="'offer_group[offers]['+offerTabIndex+'][equipments]['+offerContentTab.slug+'][equipment]['+rowKey+'][code]'" v-model="row.code" />
 
                                             <ul :id="'autocomplete-results-e-'+offerTabIndex+'-'+offerContentTabIndex+'-'+rowKey" v-if="row['autoCompleteDisplay']" class="autocomplete-results">
@@ -166,7 +166,7 @@
                 <div class="row">
                     <div class="col-auto">
                         <label for="adjusters-no-tax">Цена (без налогов)</label><br>
-                        <input @change="recalcAdjustments" @keyup="recalcAdjustments" class="form-control" type="number" min="0" id="adjusters-no-tax" v-model="offerGroup['adjusters_no_tax']" :name="'offer_group[adjusters][adjusters_no_tax]'"/>
+                        <input class="form-control" type="number" min="0" id="adjusters-no-tax" v-model="offerGroup['adjusters_no_tax']" :name="'offer_group[adjusters][adjusters_no_tax]'"/>
                     </div>
                     <div class="col-auto">
                         <label for="adjusters-number">Кол-во монтажников</label><br>
@@ -363,6 +363,7 @@
                         };
                         this.$forceUpdate();
                     }
+                    console.log(this.offerGroup);
                 });
         },
         created: function (){
@@ -385,6 +386,9 @@
                     .post('/getDefaultTabs')
                     .then((res) => {
                         if(res){
+                            if(!this.offerGroup['offers']){
+                                this.offerGroup['offers'] = [];
+                            }
                             let offer = res.data;
                             let offers = this.offerGroup['offers'];
 
@@ -469,7 +473,7 @@
                         code: '',
                         name: '',
                         short_description: '',
-                        quantity: '',
+                        quantity: '0',
                         points: '',
                         price: '',
                         price_trade: '',
@@ -555,6 +559,7 @@
             setResult(equipment, offerTabId, offerContentTabId, rowId) {
                 this.offerGroup['offers'][offerTabId]['equipments'][offerContentTabId]['equipments'][rowId] = equipment;
                 this.offerGroup['offers'][offerTabId]['equipments'][offerContentTabId]['equipments'][rowId]['autoCompleteDisplay'] = false;
+                this.offerGroup['offers'][offerTabId]['equipments'][offerContentTabId]['equipments'][rowId]['quantity'] = '0';
                 this.$forceUpdate();
             },
             setWorkResult(work, workTabIndex, index) {

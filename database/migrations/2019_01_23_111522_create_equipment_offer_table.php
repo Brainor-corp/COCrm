@@ -16,7 +16,7 @@ class CreateEquipmentOfferTable extends Migration
         Schema::create('equipment_offer', function (Blueprint $table) {
             $table->bigInteger('equipment_id');
             $table->bigInteger('offer_id');
-            $table->integer('quantity', 32);
+            $table->integer('quantity');
             $table->double('price');
             $table->double('price_trade');
             $table->double('price_small_trade');
