@@ -363,6 +363,7 @@
                         };
                         this.$forceUpdate();
                     }
+                    console.log(this.offerGroup);
                 });
         },
         created: function (){
@@ -385,6 +386,9 @@
                     .post('/getDefaultTabs')
                     .then((res) => {
                         if(res){
+                            if(!this.offerGroup['offers']){
+                                this.offerGroup['offers'] = [];
+                            }
                             let offer = res.data;
                             let offers = this.offerGroup['offers'];
 
@@ -469,7 +473,7 @@
                         code: '',
                         name: '',
                         short_description: '',
-                        quantity: '',
+                        quantity: '0',
                         points: '',
                         price: '',
                         price_trade: '',
@@ -555,7 +559,7 @@
             setResult(equipment, offerTabId, offerContentTabId, rowId) {
                 this.offerGroup['offers'][offerTabId]['equipments'][offerContentTabId]['equipments'][rowId] = equipment;
                 this.offerGroup['offers'][offerTabId]['equipments'][offerContentTabId]['equipments'][rowId]['autoCompleteDisplay'] = false;
-                this.offerGroup['offers'][offerTabId]['equipments'][offerContentTabId]['equipments'][rowId]['quantity'] = 0;
+                this.offerGroup['offers'][offerTabId]['equipments'][offerContentTabId]['equipments'][rowId]['quantity'] = '0';
                 this.$forceUpdate();
             },
             setWorkResult(work, workTabIndex, index) {

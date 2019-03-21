@@ -46,22 +46,32 @@ class COController extends Controller
         $offersGroup = OfferGroup::where('id', $request->id)->with('offers.equipments', 'equipment', 'user')->first();
         $groupedArr = $offersGroup->toArray();
 
-        foreach ($offersGroup->equipment->groupBy('pivot.tab_slug')->values() as $key => $work){
-            $workBuff[$key]['equipments'] = $work;
-            $workBuff[$key]['name'] = $work->first()->pivot->tab_name;
-            $workBuff[$key]['slug'] = $work->first()->pivot->tab_slug;
+        $workBuff = [];
+        $works = $offersGroup->equipment->groupBy('pivot.tab_slug')->values();
+        if(isset($works)) {
+            foreach ($works as $key => $work) {
+                $workBuff[$key]['equipments'] = $work;
+                $workBuff[$key]['name'] = $work->first()->pivot->tab_name;
+                $workBuff[$key]['slug'] = $work->first()->pivot->tab_slug;
+            }
         }
         $groupedArr['works'] = $workBuff;
 
         foreach ($offersGroup->offers as $offerIndex => $offer) {
-            $buff1 = $offer->equipments->groupBy('pivot.tab_slug')->values();
-            foreach ($buff1 as $key => $value){
-                $buff2['equipments'] = $value;
-                $buff2['name'] = $value->first()->pivot->tab_name;
-                $buff2['slug'] = $value->first()->pivot->tab_slug;
-                $buff1[$key] = $buff2;
+            $equipments = $offer->equipments->groupBy('pivot.tab_slug')->values();
+            if(isset($equipments)) {
+                $buff1 = $equipments;
+                foreach ($buff1 as $key => $value) {
+                    $buff2['equipments'] = $value;
+                    $buff2['name'] = $value->first()->pivot->tab_name;
+                    $buff2['slug'] = $value->first()->pivot->tab_slug;
+                    $buff1[$key] = $buff2;
+                }
+                $groupedArr['offers'][$offerIndex]['equipments'] = $buff1;
             }
-            $groupedArr['offers'][$offerIndex]['equipments'] = $buff1;
+            else{
+                $groupedArr['offers'][$offerIndex]['equipments'] = [];
+            }
         }
 
         return $groupedArr;
@@ -144,7 +154,7 @@ class COController extends Controller
         $totalPrice=0;
         if(isset($offer['equipments'])) {
             foreach ($offer['equipments'] as $type => $equipments) {
-                if ($equipments['equipment']) {
+                if (isset($equipments['equipment'])) {
                     foreach ($equipments['equipment'] as $equipment) {
                         if ($type !== 'rashodnye-materialy') {
                             $totalPrice += $equipment['price'] * $equipment['quantity'];
@@ -161,7 +171,7 @@ class COController extends Controller
         $totalPrice=0;
         if(isset($offer['equipments'])) {
             foreach ($offer['equipments'] as $type => $equipments) {
-                if ($equipments['equipment']) {
+                if (isset($equipments['equipment'])) {
                     foreach ($equipments['equipment'] as $equipment) {
                         if ($type === 'rashodnye-materialy') {
                             $totalPrice += $equipment['price'] * $equipment['quantity'];
