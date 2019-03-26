@@ -69,9 +69,9 @@ class Equipments extends Section
                     ->setRequired(true),
                 FormField::input('points', 'Ед. измерения')->setRequired(true),
                 FormField::input('price', 'Цена')->setRequired(true),
-                FormField::input('price_trade', 'Розница')->setRequired(true),
-                FormField::input('price_small_trade', '3 колонка')->setRequired(true),
-                FormField::input('price_special', 'Спец. цена')->setRequired(true),
+                FormField::input('price_trade', 'Розница'),
+                FormField::input('price_small_trade', '3 колонка'),
+                FormField::input('price_special', 'Спец. цена'),
                 FormField::hidden('class')->setValue('e'),
 
                 FormField::select('type_id', 'Тип')

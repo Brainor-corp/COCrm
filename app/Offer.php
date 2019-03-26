@@ -24,7 +24,7 @@ class Offer extends Model
     ];
 
     public function equipments(){
-        return $this->belongsToMany(Equipment::class, 'equipment_offer', 'offer_id', 'equipment_id')->withPivot('quantity', 'price', 'price_trade', 'price_small_trade', 'price_special', 'counted_price', 'comment', 'tab_slug', 'tab_name');
+        return $this->belongsToMany(Equipment::class, 'equipment_offer', 'offer_id', 'equipment_id')->withPivot('quantity', 'price', 'price_trade', 'price_small_trade', 'price_special', 'comment', 'tab_slug', 'tab_name');
     }
 
     public function offer_groups(){

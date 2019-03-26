@@ -12,7 +12,7 @@
                         <th scope="col">Наименование</th>
                         <th scope="col">Описание</th>
                         <th scope="col">Количество</th>
-                        <th scope="col">Высчитанная цена</th>
+                        <th scope="col">Цена</th>
                         <th scope="col">Сумма</th>
                         <!--<th scope="col">Розн. цена</th>-->
                         <!--<th scope="col">Мин. розн. цена</th>-->

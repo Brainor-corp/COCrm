@@ -18,10 +18,10 @@ class CreateEquipmentOfferTable extends Migration
             $table->bigInteger('offer_id');
             $table->integer('quantity');
             $table->double('price');
-            $table->double('price_trade');
-            $table->double('price_small_trade');
-            $table->double('price_special');
-            $table->double('counted_price');
+            $table->double('price_trade')->nullable();
+            $table->double('price_small_trade')->nullable();
+            $table->double('price_special')->nullable();
+//            $table->double('counted_price');
             $table->text('comment')->nullable();
             $table->string('type');
             $table->bigInteger('type_id');

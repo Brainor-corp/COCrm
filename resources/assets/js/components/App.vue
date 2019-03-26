@@ -77,12 +77,12 @@
                                             stop = false;
                                         }
                                     });
-                                    if(stop){
-                                        $.each(equipments['equipment'], (index, equipment) => {
-                                            // this.offerGroup['offer_group']['offers'][offer]['equipments'][type][index]['price'] = (((equipment['price_small_trade'] - equipment['price_special'])/2) + equipment['price_special']) * equipment['quantity'];
-                                            equipment['counted_price'] = parseFloat((parseFloat(parseFloat(equipment['price_small_trade']) - parseFloat(equipment['price_special'])/2) + parseFloat(equipment['price_special']))).toFixed(2);
-                                        });
-                                    }
+                                    // if(stop){
+                                    //     $.each(equipments['equipment'], (index, equipment) => {
+                                    //         // this.offerGroup['offer_group']['offers'][offer]['equipments'][type][index]['price'] = (((equipment['price_small_trade'] - equipment['price_special'])/2) + equipment['price_special']) * equipment['quantity'];
+                                    //         equipment['counted_price'] = parseFloat((parseFloat(parseFloat(equipment['price_small_trade']) - parseFloat(equipment['price_special'])/2) + parseFloat(equipment['price_special']))).toFixed(2);
+                                    //     });
+                                    // }
                                 });
                             }
                         });

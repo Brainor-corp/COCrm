@@ -71,6 +71,10 @@ class OfferGroups extends Section
     public function beforeDelete(Request $request, $id = null)
     {
         $deleteOfferGroup = OfferGroup::where('id', $id)->first();
+        $deleteOfferGroup->equipment()->detach();
+        Offer::where('group_id', $deleteOfferGroup->id)->get()->each(function ($item, $key){
+            $item->equipments()->detach();
+        });
         Offer::where('group_id', $deleteOfferGroup->id)->delete();
     }
 

@@ -63,6 +63,12 @@ class InsertDefaultValues extends Migration
                 'class' => 'tax',
                 'value' => 40,
             ],
+            [
+                'name' => 'Токен PDF генератора',
+                'slug' => 'token-pdf-generatora',
+                'class' => 'token',
+                'value' => 0,
+            ],
         ];
 
         $defaultTabs = [

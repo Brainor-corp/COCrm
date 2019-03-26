@@ -23,9 +23,9 @@ class CreateEquipmentTable extends Migration
             $table->string('thumb', 1024)->nullable();
             $table->string('points', 32);
             $table->double('price');
-            $table->double('price_trade');
-            $table->double('price_small_trade');
-            $table->double('price_special');
+            $table->double('price_trade')->nullable();
+            $table->double('price_small_trade')->nullable();
+            $table->double('price_special')->nullable();
             $table->timestamps();
         });
     }

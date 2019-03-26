@@ -44,15 +44,15 @@ class OfferController extends Controller
                                 if (empty($equipment['price'])) {
                                     $errorMsg = 'Поле "Цена" у оборудования обязательно.';
                                 }
-                                if (empty($equipment['price_trade'])) {
-                                    $errorMsg = 'Поле "Розн. цена" у оборудования обязательно.';
-                                }
-                                if (empty($equipment['price_small_trade'])) {
-                                    $errorMsg = 'Поле "3 колонка" у оборудования обязательно.';
-                                }
-                                if (empty($equipment['price_special'])) {
-                                    $errorMsg = 'Поле "Спец. цена" у оборудования обязательно.';
-                                }
+//                                if (empty($equipment['price_trade'])) {
+//                                    $errorMsg = 'Поле "Розн. цена" у оборудования обязательно.';
+//                                }
+//                                if (empty($equipment['price_small_trade'])) {
+//                                    $errorMsg = 'Поле "3 колонка" у оборудования обязательно.';
+//                                }
+//                                if (empty($equipment['price_special'])) {
+//                                    $errorMsg = 'Поле "Спец. цена" у оборудования обязательно.';
+//                                }
                             }
                         }
                     }
@@ -124,7 +124,7 @@ class OfferController extends Controller
                                         'price_trade' => $equipment['price_trade'],
                                         'price_small_trade' => $equipment['price_small_trade'],
                                         'price_special' => $equipment['price_special'],
-                                        'counted_price' => $equipment['counted_price'],
+//                                        'counted_price' => $equipment['counted_price'],
                                         'comment' => $equipment['comment'],
                                         'tab_slug' => $type,
                                         'tab_name' => $equipment_tab['name'],
@@ -140,7 +140,7 @@ class OfferController extends Controller
                                         'price_trade' => $equipment['price_trade'],
                                         'price_small_trade' => $equipment['price_small_trade'],
                                         'price_special' => $equipment['price_special'],
-                                        'counted_price' => $equipment['counted_price'],
+//                                        'counted_price' => $equipment['counted_price'],
                                         'comment' => $equipment['comment'],
                                         'tab_slug' => $type,
                                         'tab_name' => $equipment_tab['name'],
@@ -187,8 +187,8 @@ class OfferController extends Controller
             }
         }
         catch (\Exception $e){
-//            throw new \Exception('Произошла ошибка. Пожалуйста, обновите страницу и попробуйте снова.');
-            throw $e;
+            throw new \Exception('Произошла ошибка. Пожалуйста, проверьте, что поля заполнены верно и попробуйте снова.');
+//            throw $e;
         }
         return url('kp/' . $createGroup->uuid);
     }
@@ -244,7 +244,7 @@ class OfferController extends Controller
                                         'price_trade' => $equipment['price_trade'],
                                         'price_small_trade' => $equipment['price_small_trade'],
                                         'price_special' => $equipment['price_special'],
-                                        'counted_price' => $equipment['counted_price'],
+//                                        'counted_price' => $equipment['counted_price'],
                                         'comment' => $equipment['comment'],
                                         'tab_slug' => SlugService::createSlug(Equipment::class, 'slug', $equipment_tab['name'] ?? 'unnamed-tab'),
                                         'tab_name' => $equipment_tab['name'],
@@ -256,7 +256,7 @@ class OfferController extends Controller
                                         'price_trade' => $equipment['price_trade'],
                                         'price_small_trade' => $equipment['price_small_trade'],
                                         'price_special' => $equipment['price_special'],
-                                        'counted_price' => $equipment['counted_price'],
+//                                        'counted_price' => $equipment['counted_price'],
                                         'comment' => $equipment['comment'],
                                         'tab_slug' => SlugService::createSlug(Equipment::class, 'slug', $equipment_tab['name'] ?? 'unnamed-tab'),
                                         'tab_name' => $equipment_tab['name'],
@@ -306,8 +306,8 @@ class OfferController extends Controller
             $offerGroup->save();
         }
         catch (\Exception $e){
-//            throw new \Exception('Произошла ошибка. Пожалуйста, обновите страницу и попробуйте снова.');
-            throw $e;
+            throw new \Exception('Произошла ошибка. Пожалуйста, проверьте, что поля заполнены верно и попробуйте снова.');
+//            throw $e;
         }
         return url('kp/' . $offerGroup->uuid);
     }

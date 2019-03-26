@@ -84,8 +84,12 @@ class COController extends Controller
             abort(404);
         }
 
+        $pdfToken = Setting::where([['class', 'token'], ['slug', 'token-pdf-generatora']])->first()->value;
+        if($pdfToken == 0){
+            return 'Сначала укажите реальный токен для генератора pdf';
+        }
         try {
-            $API = new Convertio(env('PDF_TOKEN'));
+            $API = new Convertio($pdfToken);
         } catch (APIException $e) {
             return $e->getMessage();
         }

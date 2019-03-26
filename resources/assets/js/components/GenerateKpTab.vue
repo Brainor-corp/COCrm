@@ -93,10 +93,10 @@
                                         <th scope="col">Описание</th>
                                         <th scope="col">Ед.измерения<span class="text-danger">*</span></th>
                                         <th scope="col">Количество<span class="text-danger">*</span></th>
-                                        <th scope="col">Высчитанная цена<span class="text-danger">*</span></th>
-                                        <th scope="col">Розн. цена<span class="text-danger">*</span></th>
-                                        <th scope="col">3я колонка<span class="text-danger">*</span></th>
-                                        <th scope="col">Спец. цена<span class="text-danger">*</span></th>
+                                        <th scope="col">Цена<span class="text-danger">*</span></th>
+                                        <!--<th scope="col">Розн. цена<span class="text-danger">*</span></th>-->
+                                        <!--<th scope="col">3я колонка<span class="text-danger">*</span></th>-->
+                                        <!--<th scope="col">Спец. цена<span class="text-danger">*</span></th>-->
                                         <th scope="col"></th>
                                     </tr>
                                     </thead>
@@ -139,21 +139,21 @@
                                         <td>
                                             <input class="form-control" type="number" min="0" :name="'offer_group[offers]['+offerTabIndex+'][equipments]['+offerContentTab.slug+'][equipment]['+rowKey+'][price]'" v-model="row.price"/>
                                         </td>
-                                        <td>
-                                            <input @keyup="recalcPrice(offerTabIndex, offerContentTabIndex, rowKey)" @change="recalcPrice(offerTabIndex, offerContentTabIndex, rowKey)" :id="'price-trade-'+offerTabIndex+'-'+offerContentTabIndex+'-'+rowKey" class="form-control" type="number" min="0" :name="'offer_group[offers]['+offerTabIndex+'][equipments]['+offerContentTab.slug+'][equipment]['+rowKey+'][price_trade]'" v-model="row.price_trade"/>
-                                        </td>
-                                        <td>
-                                            <input @keyup="recalcPrice(offerTabIndex, offerContentTabIndex, rowKey)" @change="recalcPrice(offerTabIndex, offerContentTabIndex, rowKey)" :id="'price-small-trade-'+offerTabIndex+'-'+offerContentTabIndex+'-'+rowKey" class="form-control" type="number" min="0" :name="'offer_group[offers]['+offerTabIndex+'][equipments]['+offerContentTab.slug+'][equipment]['+rowKey+'][price_small_trade]'" v-model="row.price_small_trade"/>
-                                        </td>
-                                        <td>
-                                            <input @keyup="recalcPrice(offerTabIndex, offerContentTabIndex, rowKey)" @change="recalcPrice(offerTabIndex, offerContentTabIndex, rowKey)" :id="'price-special-'+offerTabIndex+'-'+offerContentTabIndex+'-'+rowKey" class="form-control" type="number" min="0" :name="'offer_group[offers]['+offerTabIndex+'][equipments]['+offerContentTab.slug+'][equipment]['+rowKey+'][price_special]'" v-model="row.price_special"/>
-                                        </td>
+                                        <!--<td>-->
+                                            <!--<input @keyup="recalcPrice(offerTabIndex, offerContentTabIndex, rowKey)" @change="recalcPrice(offerTabIndex, offerContentTabIndex, rowKey)" :id="'price-trade-'+offerTabIndex+'-'+offerContentTabIndex+'-'+rowKey" class="form-control" type="number" min="0" :name="'offer_group[offers]['+offerTabIndex+'][equipments]['+offerContentTab.slug+'][equipment]['+rowKey+'][price_trade]'" v-model="row.price_trade"/>-->
+                                        <!--</td>-->
+                                        <!--<td>-->
+                                            <!--<input @keyup="recalcPrice(offerTabIndex, offerContentTabIndex, rowKey)" @change="recalcPrice(offerTabIndex, offerContentTabIndex, rowKey)" :id="'price-small-trade-'+offerTabIndex+'-'+offerContentTabIndex+'-'+rowKey" class="form-control" type="number" min="0" :name="'offer_group[offers]['+offerTabIndex+'][equipments]['+offerContentTab.slug+'][equipment]['+rowKey+'][price_small_trade]'" v-model="row.price_small_trade"/>-->
+                                        <!--</td>-->
+                                        <!--<td>-->
+                                            <!--<input @keyup="recalcPrice(offerTabIndex, offerContentTabIndex, rowKey)" @change="recalcPrice(offerTabIndex, offerContentTabIndex, rowKey)" :id="'price-special-'+offerTabIndex+'-'+offerContentTabIndex+'-'+rowKey" class="form-control" type="number" min="0" :name="'offer_group[offers]['+offerTabIndex+'][equipments]['+offerContentTab.slug+'][equipment]['+rowKey+'][price_special]'" v-model="row.price_special"/>-->
+                                        <!--</td>-->
                                         <td class="align-middle">
                                             <i @click="deleteRow(offerTabIndex, offerContentTabIndex, rowKey)" class="fas fa-times"></i>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td colspan="10" @click.prevent="addTableRow(offerTabIndex,offerContentTabIndex)">+</td>
+                                        <td colspan="7" @click.prevent="addTableRow(offerTabIndex,offerContentTabIndex)">+</td>
                                     </tr>
                                     </tbody>
                                 </table>
@@ -363,7 +363,7 @@
                         };
                         this.$forceUpdate();
                     }
-                    console.log(this.offerGroup);
+                    // console.log(this.offerGroup);
                 });
         },
         created: function (){
@@ -613,12 +613,12 @@
                         });
                 }
             },
-            recalcPrice(offerTabId, offerContentTabId, rowId){
-                // let priceTrade = parseFloat($('#price-trade-'+offerTabId+'-'+offerContentTabId+'-'+rowId).val());
-                let priceSmallTrade = parseFloat($('#price-small-trade-'+offerTabId+'-'+offerContentTabId+'-'+rowId).val());
-                let priceSpecial = parseFloat($('#price-special-'+offerTabId+'-'+offerContentTabId+'-'+rowId).val());
-                this.offerGroup['offers'][offerTabId]['equipments'][offerContentTabId]['equipments'][rowId]['price'] = parseFloat((priceSmallTrade - priceSpecial) / 2 + priceSpecial).toFixed(2);
-            },
+            // recalcPrice(offerTabId, offerContentTabId, rowId){
+            //     // let priceTrade = parseFloat($('#price-trade-'+offerTabId+'-'+offerContentTabId+'-'+rowId).val());
+            //     let priceSmallTrade = parseFloat($('#price-small-trade-'+offerTabId+'-'+offerContentTabId+'-'+rowId).val());
+            //     let priceSpecial = parseFloat($('#price-special-'+offerTabId+'-'+offerContentTabId+'-'+rowId).val());
+            //     this.offerGroup['offers'][offerTabId]['equipments'][offerContentTabId]['equipments'][rowId]['price'] = parseFloat((priceSmallTrade - priceSpecial) / 2 + priceSpecial).toFixed(2);
+            // },
         }
     }
 </script>
