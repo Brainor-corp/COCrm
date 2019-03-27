@@ -79,9 +79,9 @@ class UploadsController extends Controller
                         $pointsParts = explode('/', $row[5]);
                         $row[5] = 'руб./' . $pointsParts[1];
 
-                        $row[6] = round($row[6] * $currencies['Valute'][$currency]['Value'], 2);
-                        $row[7] = round($row[7] * $currencies['Valute'][$currency]['Value'], 2);
-                        $row[8] = round($row[8] * $currencies['Valute'][$currency]['Value'], 2);
+                        $row[6] = round($row[6] * $currencies['Valute'][$currency]['Value'], 0);
+                        $row[7] = round($row[7] * $currencies['Valute'][$currency]['Value'], 0);
+                        $row[8] = round($row[8] * $currencies['Valute'][$currency]['Value'], 0);
                     }
                     $equipment = Equipment::where('code', $row[2])->value('parseable');
                     if(isset($equipment)) {
@@ -94,7 +94,7 @@ class UploadsController extends Controller
                                 'price_trade' => $row[6],
                                 'price_small_trade' => $row[7],
                                 'price_special' => $row[8],
-                                'price' => round((floatval($row[7]) - floatval($row[8])) / 2 + floatval($row[8]), 2),
+                                'price' => round((floatval($row[7]) - floatval($row[8])) / 2 + floatval($row[8]), 0),
                                 'short_description' => $row[9] ?? null,
                                 'class' => $equipmentType->class,
                             ];
@@ -110,7 +110,7 @@ class UploadsController extends Controller
                             'price_trade' => $row[6],
                             'price_small_trade' => $row[7],
                             'price_special' => $row[8],
-                            'price' => round((floatval($row[7]) - floatval($row[8]))/2 + floatval($row[8]), 2),
+                            'price' => round((floatval($row[7]) - floatval($row[8]))/2 + floatval($row[8]), 0),
                             'short_description' => $row[9] ?? null,
                             'class' => $equipmentType->class,
                             'slug' => SlugService::createSlug(OfferGroup::class, 'slug', $row[3])

@@ -1,5 +1,6 @@
 <template>
     <div class="row">
+        {{offerGroup}}
         <div v-if="offerGroup.offer_group" class="col-12 kp-total-tab">
             <h2>{{ offerGroup.offer_group.name}}</h2>
             <div v-if="calcPrices[i] && (calcPrices[i]['equipmentPrice'] > 0 || calcPrices[i]['consumablePrice'] > 0 )" class="kp-total-offer" v-for="(offerData, i) in offerGroup.offer_group.offers" :key="i">
@@ -21,7 +22,7 @@
                     </thead>
                     <tbody>
                     <template v-for="(tab, type) in offerData.equipments" v-if="type !== 'rashodnye-materialy'">
-                        <tr v-for="row in tab.equipment">
+                        <tr v-if="row.quantity >= 1" v-for="row in tab.equipment">
                             <td>{{ row.code }}</td>
                             <td>{{ row.name }}</td>
                             <td>{{ row.short_description ? row.short_description : row.description }}</td>
@@ -62,7 +63,7 @@
                     </thead>
                     <tbody>
                     <template v-if="calcPrices['workNumber'] > 0" v-for="workTab in offerGroup.offer_group.works">
-                        <tr v-for="row in workTab['work']">
+                        <tr v-if="row.quantity > 0" v-for="row in workTab['work']">
                             <td>{{ row.code }}</td>
                             <td>{{ row.name }}</td>
                             <td>{{ row.points }}</td>

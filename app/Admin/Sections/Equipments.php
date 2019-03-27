@@ -62,7 +62,7 @@ class Equipments extends Section
             FormColumn::column([
                 FormField::input('code', 'Артикул')->setRequired(true),
                 FormField::input('name', 'Название')->setRequired(true),
-                FormField::textarea('short_description', 'Короткое описание'),
+                FormField::textarea('short_description', 'Короткое описание')->setMaxlenght(107),
                 FormField::textarea('description', 'Описание'),
                 FormField::select('parseable', 'Обновлять при загрузке оборудования?')
                     ->setOptions([0=>'Нет', 1=>'Да'])
