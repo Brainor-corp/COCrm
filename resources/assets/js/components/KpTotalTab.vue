@@ -1,6 +1,5 @@
 <template>
     <div class="row">
-        {{offerGroup}}
         <div v-if="offerGroup.offer_group" class="col-12 kp-total-tab">
             <h2>{{ offerGroup.offer_group.name}}</h2>
             <div v-if="calcPrices[i] && (calcPrices[i]['equipmentPrice'] > 0 || calcPrices[i]['consumablePrice'] > 0 )" class="kp-total-offer" v-for="(offerData, i) in offerGroup.offer_group.offers" :key="i">
