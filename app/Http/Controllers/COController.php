@@ -162,7 +162,6 @@ class COController extends Controller
                     foreach ($equipments['equipment'] as $equipment) {
                         if ($type !== 'rashodnye-materialy') {
                             $totalPrice += $equipment['price'] * $equipment['quantity'];
-//                    $totalPrice += ((($equipment['price_small_trade'] - $equipment['price_special'])/2) + $equipment['price_special']) * $equipment['quantity'];
                         }
                     }
                 }

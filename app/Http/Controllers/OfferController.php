@@ -38,10 +38,10 @@ class OfferController extends Controller
                                 if (empty($equipment['name'])) {
                                     $errorMsg = 'Поле "Название" у оборудования обязательно.';
                                 }
-                                if (empty($equipment['points'])) {
-                                    $errorMsg = 'Поле "Ед. измерения" у оборудования обязательно.';
-                                }
-                                if (empty($equipment['price'])) {
+//                                if (empty($equipment['points'])) {
+//                                    $errorMsg = 'Поле "Ед. измерения" у оборудования обязательно.';
+//                                }
+                                if (!isset($equipment['price'])) {
                                     $errorMsg = 'Поле "Цена" у оборудования обязательно.';
                                 }
 //                                if (empty($equipment['price_trade'])) {
@@ -66,9 +66,9 @@ class OfferController extends Controller
                         if (empty($work['name'])) {
                             $errorMsg = 'Поле "Название" у работы обязательно.';
                         }
-                        if (empty($work['points'])) {
-                            $errorMsg = 'Поле "Ед. измерения" у работы обязательно.';
-                        }
+//                        if (empty($work['points'])) {
+//                            $errorMsg = 'Поле "Ед. измерения" у работы обязательно.';
+//                        }
                     }
                 }
             }
@@ -109,7 +109,7 @@ class OfferController extends Controller
                                     $createEquipment->code = $equipment['code'];
                                     $createEquipment->name = $equipment['name'];
                                     $createEquipment->short_description = $equipment['short_description'];
-                                    $createEquipment->points = $equipment['points'];
+                                    $createEquipment->points = $equipment['points'] ?? 'руб./шт';
                                     $createEquipment->price = $equipment['price'];
                                     $createEquipment->price_trade = $equipment['price_trade'];
                                     $createEquipment->price_small_trade = $equipment['price_small_trade'];
@@ -159,7 +159,7 @@ class OfferController extends Controller
                                 $createWork = new Equipment();
                                 $createWork->code = $work['code'];
                                 $createWork->name = $work['name'];
-                                $createWork->points = $work['points'];
+                                $createWork->points = $work['points'] ?? 'руб./шт';
                                 $createWork->description = '';
                                 $createWork->price = 0;
                                 $createWork->price_trade = 0;
@@ -229,7 +229,7 @@ class OfferController extends Controller
                                     $createEquipment->code = $equipment['code'];
                                     $createEquipment->name = $equipment['name'];
                                     $createEquipment->short_description = $equipment['short_description'];
-                                    $createEquipment->points = $equipment['points'];
+                                    $createEquipment->points = $equipment['points'] ?? 'руб./шт';
                                     $createEquipment->price = $equipment['price'];
                                     $createEquipment->price_trade = $equipment['price_trade'];
                                     $createEquipment->price_small_trade = $equipment['price_small_trade'];
@@ -276,7 +276,7 @@ class OfferController extends Controller
                                 $createWork = new Equipment();
                                 $createWork->code = $work['code'];
                                 $createWork->name = $work['name'];
-                                $createWork->points = $work['points'];
+                                $createWork->points = $work['points'] ?? 'руб./шт';
                                 $createWork->description = '';
                                 $createWork->price = 0;
                                 $createWork->price_trade = 0;

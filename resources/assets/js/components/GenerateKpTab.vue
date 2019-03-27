@@ -91,7 +91,7 @@
                                         <th scope="col">Артикул<span class="text-danger">*</span></th>
                                         <th scope="col">Название<span class="text-danger">*</span></th>
                                         <th scope="col">Описание</th>
-                                        <th scope="col">Ед.измерения<span class="text-danger">*</span></th>
+                                        <!--<th scope="col">Ед.измерения<span class="text-danger">*</span></th>-->
                                         <th scope="col">Количество<span class="text-danger">*</span></th>
                                         <th scope="col">Цена<span class="text-danger">*</span></th>
                                         <!--<th scope="col">Розн. цена<span class="text-danger">*</span></th>-->
@@ -130,9 +130,9 @@
                                         <td>
                                             <input class="form-control" type="text" :name="'offer_group[offers]['+offerTabIndex+'][equipments]['+offerContentTab.slug+'][equipment]['+rowKey+'][short_description]'" v-model="row.short_description"/>
                                         </td>
-                                        <td>
-                                            <input class="form-control" type="text" :name="'offer_group[offers]['+offerTabIndex+'][equipments]['+offerContentTab.slug+'][equipment]['+rowKey+'][points]'" v-model="row.points"/>
-                                        </td>
+                                        <!--<td>-->
+                                            <!--<input class="form-control" type="text" :name="'offer_group[offers]['+offerTabIndex+'][equipments]['+offerContentTab.slug+'][equipment]['+rowKey+'][points]'" v-model="row.points"/>-->
+                                        <!--</td>-->
                                         <td>
                                             <input class="form-control" type="number" min="0" :name="'offer_group[offers]['+offerTabIndex+'][equipments]['+offerContentTab.slug+'][equipment]['+rowKey+'][quantity]'" v-model="row.quantity"/>
                                         </td>
@@ -153,7 +153,7 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td colspan="7" @click.prevent="addTableRow(offerTabIndex,offerContentTabIndex)">+</td>
+                                        <td colspan="6" @click.prevent="addTableRow(offerTabIndex,offerContentTabIndex)">+</td>
                                     </tr>
                                     </tbody>
                                 </table>
@@ -219,7 +219,7 @@
                             <tr>
                                 <th scope="col">Артикул</th>
                                 <th scope="col">Название<span class="text-danger">*</span></th>
-                                <th scope="col">Ед.измерения<span class="text-danger">*</span></th>
+                                <!--<th scope="col">Ед.измерения<span class="text-danger">*</span></th>-->
                                 <th scope="col">Количество<span class="text-danger">*</span></th>
                                 <th scope="col"></th>
                             </tr>
@@ -243,9 +243,9 @@
                                 <td>
                                     <input class="form-control" type="text" :name="'offer_group[works]['+workTab.slug+'][work]['+key+'][name]'" v-model="work.name"/>
                                 </td>
-                                <td>
-                                    <input class="form-control" type="text" :name="'offer_group[works]['+workTab.slug+'][work]['+key+'][points]'" v-model="work.points"/>
-                                </td>
+                                <!--<td>-->
+                                    <!--<input class="form-control" type="text" :name="'offer_group[works]['+workTab.slug+'][work]['+key+'][points]'" v-model="work.points"/>-->
+                                <!--</td>-->
                                 <td>
                                     <input class="form-control" type="number" min="0" :name="'offer_group[works]['+workTab.slug+'][work]['+key+'][quantity]'" v-model="work.quantity"/>
                                 </td>
@@ -254,7 +254,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td colspan="9" @click.prevent="addWorkRow(workTabIndex)">+</td>
+                                <td colspan="8" @click.prevent="addWorkRow(workTabIndex)">+</td>
                             </tr>
                             </tbody>
                         </table>
@@ -474,7 +474,7 @@
                         name: '',
                         short_description: '',
                         quantity: '0',
-                        points: '',
+                        points: 'руб./шт',
                         price: '',
                         price_trade: '',
                         price_small_trade: '',
@@ -507,7 +507,7 @@
                     id: -1,
                     name: '',
                     code: '',
-                    points: '',
+                    points: 'руб./шт',
                     quantity: 0,
                     autoCompleteDisplay: false,
                 });
