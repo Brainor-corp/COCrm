@@ -64,7 +64,6 @@
                     while(true) {
                         var stop = true;
                         $.each(this.offerGroup['offer_group']['offers'], (offerIndex, offer) => {
-                        // for (let offer = 0; offer < this.offerGroup['offer_group']['offers'].length; offer++) {
                             if(this.offerGroup['offer_group']['offers'][offerIndex]['equipments']){
                                 $.each(offer['equipments'], (type, equipments) => {
                                     if(!this.offerGroup['offer_group']['offers'][offerIndex]['equipments'][type]){
@@ -72,7 +71,11 @@
                                         stop = false;
                                     }
                                     $.each(equipments['equipment'], (index, equipment) => {
-                                        if(!equipment || equipment.quantity === "" || parseInt(equipment.quantity) < 1) { //проверка на ненулевое кол-во
+                                        if(
+                                            !equipment
+                                            || equipment.quantity === ""
+                                            // || parseInt(equipment.quantity) < 1
+                                        ) { //проверка на ненулевое кол-во
                                             equipments['equipment'].splice(index, 1);
                                             stop = false;
                                         }
@@ -90,7 +93,11 @@
                             $.each(this.offerGroup['offer_group']['works'], (workTabIndex, workTab) => {
                                 $.each(workTab['work'], (workIndex, work) => {
                                     if(work) {
-                                        if (work.quantity === "" || work.quantity == null || work.quantity < 1) {
+                                        if (
+                                            work.quantity === ""
+                                            || work.quantity == null
+                                            // || work.quantity < 1
+                                        ) {
                                             this.offerGroup['offer_group']['works'][workTabIndex]['work'].splice(workIndex, 1);
                                             stop = false;
                                         }

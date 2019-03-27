@@ -42,7 +42,8 @@
                             @php($totalEquipmentSum = 0)
                             @php($consumableSum = 0)
                             @foreach($offer->equipments as $equipment)
-                                @if($equipment->pivot->tab_slug != 'rashodnye-materialy')
+                                @if($equipment->class == 'work' || $equipment->pivot->quantity == 0)
+                                @elseif($equipment->pivot->tab_slug != 'rashodnye-materialy')
                                     @php($totalEquipmentSum += $equipment->pivot->price * $equipment->pivot->quantity)
                                     <tr>
                                         <td class="column1">{{ $equipment->name }}</td>
@@ -51,18 +52,19 @@
                                         <td class="column4">{{ $equipment->pivot->price }}</td>
                                         <td class="column5">{{ $equipment->pivot->price * $equipment->pivot->quantity }}</td>
                                     </tr>
-                                @elseif($equipment->class == 'work')
                                 @else
                                     @php($consumableSum += $equipment->pivot->price * $equipment->pivot->quantity)
                                 @endif
                             @endforeach
+                            @if($consumableSum > 0)
                             <tr class="expanded">
                                 <td class="column1">Монтажный комплект.</td>
                                 <td class="column2">Мелкий расходник для монтажа.</td>
-                                <td class="column3">1</td>
+                                <td class="column3">{{ $consumableSum > 0 ? 1 : 0 }}</td>
                                 <td class="column4">{{ $consumableSum }}</td>
                                 <td class="column5">{{ $consumableSum }}</td>
                             </tr>
+                            @endif
                             <tr class="total">
                                 <td colspan="3">Всего за оборудование:</td>
                                 <td colspan="2">{{ $totalEquipmentSum + $consumableSum }} руб.</td>
@@ -83,11 +85,13 @@
                             </thead>
                             <tbody>
                             @foreach($offersGroup->equipment as $work)
-                                <tr>
-                                    <td class="column1">{{ $work->name }}</td>
-                                    <td class="column2">{{ $work->points }}</td>
-                                    <td class="column3">{{ $work->pivot->quantity }}</td>
-                                </tr>
+                                @if($work->pivot->quantity)
+                                    <tr>
+                                        <td class="column1">{{ $work->name }}</td>
+                                        <td class="column2">{{ $work->points }}</td>
+                                        <td class="column3">{{ $work->pivot->quantity }}</td>
+                                    </tr>
+                                @endif
                             @endforeach
                             <tr class="total">
                                 <td>Всего за работы с НДС:</td>

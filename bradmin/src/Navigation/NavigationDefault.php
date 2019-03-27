@@ -11,7 +11,7 @@ class NavigationDefault
             [
                 'url' => '/bradmin/Equipments',
                 'icon' => 'fas fa-address-book',
-                'text' => 'Оборудование'
+                'text' => 'Оборудование | Работы'
             ],
             [
                 'url' => '/bradmin/OfferGroups',

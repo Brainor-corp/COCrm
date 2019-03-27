@@ -5,6 +5,7 @@
               name="{{ $name }}"
               cols="{{ $cols }}"
               rows="{{ $rows }}"
+              maxlength="{{ $maxlength }}"
               @if($required) required @endif
               @if($readonly) readonly @endif
               placeholder="{{ $placeholder ?? null }}">{!! $value ?? null !!}</textarea>
