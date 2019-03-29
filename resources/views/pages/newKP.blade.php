@@ -47,7 +47,7 @@
                                     @php($totalEquipmentSum += $equipment->pivot->price * $equipment->pivot->quantity)
                                     <tr>
                                         <td class="column1">{{ $equipment->name }}</td>
-                                        <td class="column2">{{ $equipment->short_description == '' ? $equipment->description : '' }}</td>
+                                        <td class="column2">{{ $equipment->short_description == '' ? $equipment->description : $equipment->short_description }}</td>
                                         <td class="column3">{{ $equipment->pivot->quantity }}</td>
                                         <td class="column4">{{ $equipment->pivot->price }}</td>
                                         <td class="column5">{{ $equipment->pivot->price * $equipment->pivot->quantity }}</td>
@@ -58,8 +58,8 @@
                             @endforeach
                             @if($consumableSum > 0)
                             <tr class="expanded">
-                                <td class="column1">Монтажный комплект.</td>
-                                <td class="column2">Мелкий расходник для монтажа.</td>
+                                <td class="column1">Монтажный комплект</td>
+                                <td class="column2">Крепеж, кабель и прочее</td>
                                 <td class="column3">{{ $consumableSum > 0 ? 1 : 0 }}</td>
                                 <td class="column4">{{ $consumableSum }}</td>
                                 <td class="column5">{{ $consumableSum }}</td>
@@ -142,7 +142,7 @@
             <section class="certificates">
                 <h2 class="certificates__title">Наши сертификаты</h2>
                 <ul class="certificates__list clearfix">
-                    <li class="certificates__item"><img src="{{asset('images/kpImages/sertification1.jpg')}}"  alt="Наши сертификаты"  width="123"  height="180"></li>
+                    <li class="certificates__item"><img src="{{asset('images/kpImages/sertification1.jpg')}}" alt="Наши сертификаты"  width="123"  height="180"></li>
                     <li class="certificates__item"><img src="{{asset('images/kpImages/sertification2.jpg')}}" alt="Наши сертификаты" width="123" height="180"></li>
                     <li class="certificates__item"><img src="{{asset('images/kpImages/sertification3.jpg')}}" alt="Наши сертификаты" width="123" height="180"></li>
                     <li class="certificates__item"><img src="{{asset('images/kpImages/sertification4.jpg')}}" alt="Наши сертификаты" width="123" height="180"></li>

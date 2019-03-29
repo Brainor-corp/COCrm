@@ -219,7 +219,7 @@
                             <tr>
                                 <th scope="col">Артикул</th>
                                 <th scope="col">Название<span class="text-danger">*</span></th>
-                                <!--<th scope="col">Ед.измерения<span class="text-danger">*</span></th>-->
+                                <th scope="col">Ед.измерения</th>
                                 <th scope="col">Количество<span class="text-danger">*</span></th>
                                 <th scope="col"></th>
                             </tr>
@@ -243,9 +243,9 @@
                                 <td>
                                     <input class="form-control" type="text" :name="'offer_group[works]['+workTab.slug+'][work]['+key+'][name]'" v-model="work.name"/>
                                 </td>
-                                <!--<td>-->
-                                    <!--<input class="form-control" type="text" :name="'offer_group[works]['+workTab.slug+'][work]['+key+'][points]'" v-model="work.points"/>-->
-                                <!--</td>-->
+                                <td>
+                                    <input class="form-control" type="text" :name="'offer_group[works]['+workTab.slug+'][work]['+key+'][points]'" v-model="work.points"/>
+                                </td>
                                 <td>
                                     <input class="form-control" type="number" min="0" :name="'offer_group[works]['+workTab.slug+'][work]['+key+'][quantity]'" v-model="work.quantity"/>
                                 </td>
@@ -254,7 +254,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td colspan="8" @click.prevent="addWorkRow(workTabIndex)">+</td>
+                                <td colspan="9" @click.prevent="addWorkRow(workTabIndex)">+</td>
                             </tr>
                             </tbody>
                         </table>
