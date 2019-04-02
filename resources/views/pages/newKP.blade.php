@@ -19,7 +19,7 @@
 
     @endphp
 
-    @if($characters > $maxChars )
+    @if($characters > intval($maxChars))
         <div class="main-wraper container">
             <div class="inner-wrapper">
                 <header class="main-header">
