@@ -13,8 +13,8 @@
     @php
 
         $characters = 0;
-        foreach($offer->equipments as $equipment){
-            $characters += strlen( ($equipment->short_description == '') ? $equipment->description : $equipment->short_description);
+        foreach($offer->equipments->where('class', '!=', 'work')->where('pivot.quantity', '!=', 0) as $equipment){
+            $characters += mb_strlen( ($equipment->short_description == '') ? $equipment->description : $equipment->short_description);
         }
 
     @endphp
