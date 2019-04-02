@@ -22,7 +22,7 @@ use Illuminate\Http\Request;
 
 class Settings extends Section
 {
-    protected $title = 'Типы';
+    protected $title = 'Настройки';
 
     public static function onDisplay(Request $request){
         $display = Display::table([
@@ -48,6 +48,14 @@ class Settings extends Section
         ]);
 
         return $form;
+    }
+
+    public function isDeletable() {
+        return false;
+    }
+
+    public function isCreatable() {
+        return false;
     }
 
 }
