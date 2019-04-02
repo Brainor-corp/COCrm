@@ -21,13 +21,15 @@ class COController extends Controller
             abort(404);
         }
 
+        $maxChars = Setting::where('slug', 'maksimalnoe-kolichestvo-simvolov-v-odnoy-tablice-pri-vyvode-kp')->first()->value;
+
         $offersGroup = OfferGroup::where('uuid', $uuid)->with('offers.equipments', 'equipment', 'user')->first();
 
         if(!isset($offersGroup)){
             abort(404);
         }
 
-        return view('pages.newKP')->with(compact( 'offersGroup', 'pdf'));
+        return view('pages.newKP')->with(compact( 'offersGroup', 'pdf', 'maxChars'));
     }
 
     public function getDefaultWorkTabs(){

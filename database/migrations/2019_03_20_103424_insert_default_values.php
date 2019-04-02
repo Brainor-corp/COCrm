@@ -44,7 +44,7 @@ class InsertDefaultValues extends Migration
             ]
         ];
 
-        $taxes = [
+        $settings = [
             [
                 'name' => 'Минимальный налог',
                 'slug' => 'minimalnyy-nalog',
@@ -69,6 +69,12 @@ class InsertDefaultValues extends Migration
                 'class' => 'token',
                 'value' => 0,
             ],
+            [
+                'name' => 'Максимальное количество символов в одной таблице при выводе КП',
+                'slug' => 'maksimalnoe-kolichestvo-simvolov-v-odnoy-tablice-pri-vyvode-kp',
+                'class' => 'number',
+                'value' => 300,
+            ],
         ];
 
         $defaultTabs = [
@@ -90,7 +96,7 @@ class InsertDefaultValues extends Migration
 
         DB::table('types')->insert($types);
         DB::table('users')->insert($user);
-        DB::table('settings')->insert($taxes);
+        DB::table('settings')->insert($settings);
         DB::table('default_tabs')->insert($defaultTabs);
     }
 
