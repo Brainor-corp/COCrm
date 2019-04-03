@@ -8,7 +8,7 @@
                         <h3>{{ offerData.name }}</h3>
                     </div>
                     <div class="col-12 mt-3">
-                        <span v-if=" calcPrices[i]['equipmentsNumber'] + 1 > calcPrices['maxEquipmentsNumber'] " class="alert alert-warning text-nowrap">Количество строк в таблице оборудования больше, чем <strong>{{ calcPrices['maxEquipmentsNumber'] }}</strong>: таблица с работами будет отображена на отдельной странице.</span>
+                        <span v-if=" calcPrices[i]['equipmentsNumber'] + 1 + calcPrices['workNumber'] > calcPrices['maxEquipmentsNumber'] " class="alert alert-warning text-nowrap">Количество строк больше, чем <strong>{{ calcPrices['maxEquipmentsNumber'] }}</strong>: таблица с работами будет отображена на отдельной странице.</span>
                     </div>
                 </div>
                 <div  class="my-4 h4 font-weight-bold">Оборудование и расходные материалы</div>
