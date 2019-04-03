@@ -11,7 +11,7 @@
 @foreach($offersGroup->offers as $index => $offer)
 
 
-    @if($offer->equipments->where('class', '!=', 'work')->where('pivot.quantity', '!=', 0)->where('pivot.tab_slug', '!=', 'rashodnye-materialy')->count() + 1 > intval($maxString))
+    @if($offer->equipments->where('pivot.quantity', '!=', 0)->where('pivot.tab_slug', '!=', 'rashodnye-materialy')->count() + 1 > intval($maxString))
         <div class="main-wraper container">
             <div class="inner-wrapper">
                 <header class="main-header">

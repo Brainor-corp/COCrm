@@ -235,7 +235,9 @@ class COController extends Controller
         foreach ($works as $workTab){
             if(isset($workTab['work'])){
                 foreach($workTab['work'] as $work){
-                    $counter++;
+                    if($work['quantity'] > 0){
+                        $counter++;
+                    }
                 }
             }
         }
