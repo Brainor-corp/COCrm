@@ -21,7 +21,7 @@ class COController extends Controller
             abort(404);
         }
 
-        $maxChars = Setting::where('slug', 'maksimalnoe-kolichestvo-simvolov-v-odnoy-tablice-pri-vyvode-kp')->first()->value;
+        $maxString = Setting::where('slug', 'maksimalnoe-kolichestvo-strok-v-odnom-variante-kp')->first()->value;
 
         $offersGroup = OfferGroup::where('uuid', $uuid)->with('offers.equipments', 'equipment', 'user')->first();
 
@@ -29,7 +29,7 @@ class COController extends Controller
             abort(404);
         }
 
-        return view('pages.newKP')->with(compact( 'offersGroup', 'pdf', 'maxChars'));
+        return view('pages.newKP')->with(compact( 'offersGroup', 'pdf', 'maxString'));
     }
 
     public function getDefaultWorkTabs(){
@@ -114,11 +114,13 @@ class COController extends Controller
     public function calculateAllPrices(Request $request){
         $response = [];
         try {
+            $response['maxEquipmentsNumber'] = Setting::where('slug', 'maksimalnoe-kolichestvo-strok-v-odnom-variante-kp')->first()->value;
             $response['adjustmentPrice'] = self::calculateAdjustmentPrice($request['offer_group']['adjusters']) ?? null;
             if(isset($request['offer_group']['works'])) {
                 $response['workNumber'] = self::calculateWorkNumber($request['offer_group']['works']) ?? null;
             }
             foreach ($request['offer_group']['offers'] as $key => $offer) {
+                    $response[$key]['equipmentsNumber'] = self::calculateEquipmentsNumber($offer);
                     $response[$key]['equipmentPrice'] = round(self::calculateEquipmentPrice($offer), 2);
                     $response[$key]['consumablePrice'] = round(self::calculateConsumablePrice($offer), 2);
                     $response[$key]['noTaxProfit'] = $request['offer_group']['adjusters']['adjusters_no_tax'] ?? round(self::calculateNoTaxProfit($response['adjustmentPrice'], $request['offer_group']['adjusters']['pay_percentage']), 2);
@@ -238,5 +240,21 @@ class COController extends Controller
             }
         }
         return $counter;
+    }
+
+    private function calculateEquipmentsNumber($offer){
+        $count = 0;
+        if($offer['equipments']){
+            foreach ($offer['equipments'] as $type => $equipment){
+                if($equipment['equipment'] && $type != 'rashodnye-materialy'){
+                    foreach ($equipment['equipment'] as $eq){
+                        if(isset($eq) && $eq['quantity'] > 0){
+                            $count++;
+                        }
+                    }
+                }
+            }
+        }
+        return $count;
     }
 }
