@@ -42,29 +42,6 @@ class UploadsController extends Controller
         }
 
         foreach ($excelData as $sheet) {
-//            $typeNameFromSheet = $sheet[3][1];
-//
-//            $consumables = [
-//                'кабели и провода',
-//                'расходники',
-//                'монтажные и расходные материалы',
-//            ];
-//
-//            if(in_array(mb_strtolower($typeNameFromSheet), $consumables)) {
-//                $type = Type::where('slug', 'rashodnye-materialy')->first();
-//            } else {
-//                $type = Type::where('name', $typeNameFromSheet)->first();
-//            }
-//
-//
-//            if(!$type) {
-//                $type = new Type([
-//                    'name' => $typeNameFromSheet,
-//                    'class' => 'equipment',
-//                ]);
-//                $type->save();
-//            }
-
             foreach (array_slice($sheet, 6) as $row) {
                 if(
                     !empty($row[2])
@@ -83,9 +60,13 @@ class UploadsController extends Controller
                         $row[7] = round($row[7] * $currencies['Valute'][$currency]['Value'], 0);
                         $row[8] = round($row[8] * $currencies['Valute'][$currency]['Value'], 0);
                     }
-                    $equipment = Equipment::where('code', $row[2])->value('parseable');
+
+
+                    $code = strval($row[2]);
+                    $equipment = Equipment::where('code', $code)->first();
+
                     if(isset($equipment)) {
-                        if($equipment) {
+                        if($equipment->parseable) {
                             $toUpdate = [
                                 'type_id' => $equipmentType->id,
                                 'name' => $row[3],
@@ -98,12 +79,12 @@ class UploadsController extends Controller
                                 'short_description' => $row[9] ?? null,
                                 'class' => $equipmentType->class,
                             ];
-                            DB::table('equipment')->where('code', $row[2])->update($toUpdate);
+                            DB::table('equipment')->where('code', $code)->update($toUpdate);
                         }
                     } else {
                         $toInsert = [
                             'type_id' => $equipmentType->id,
-                            'code' => $row[2],
+                            'code' => $code,
                             'name' => $row[3],
                             'description' => $row[4],
                             'points' => $row[5],
