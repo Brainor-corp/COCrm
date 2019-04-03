@@ -128,7 +128,7 @@ class COController extends Controller
                     $response[$key]['totalWorkPrice'] = round(self::calculateTotalWorkPrice($response[$key]['noTaxProfit']), 2);
                     $response[$key]['totalWorkPriceNoVAT'] = round(self::calculateTotalWorkPriceNoVAT($response[$key]['noTaxProfit']), 2);
                     $response[$key]['additionalDiscount'] = round(($response[$key]['noTaxProfit'] + $response[$key]['noTaxProfit'] * 40 / 100) - $response[$key]['totalWorkPriceNoVAT'] - $response[$key]['VAT'], 2);
-    //            $response['additionalDiscount'] = self::calculateAdditionalDiscount($response['noTaxProfit'],$response['VAT']);
+//                $response[$key]['additionalDiscount'] = self::calculateAdditionalDiscount($response[$key]['noTaxProfit'],$response[$key]['VAT']);
 
             }
         } catch (\Exception $e) {
@@ -235,7 +235,9 @@ class COController extends Controller
         foreach ($works as $workTab){
             if(isset($workTab['work'])){
                 foreach($workTab['work'] as $work){
-                    $counter++;
+                    if($work['quantity'] > 0){
+                        $counter++;
+                    }
                 }
             }
         }
