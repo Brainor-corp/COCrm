@@ -70,10 +70,10 @@ class InsertDefaultValues extends Migration
                 'value' => 0,
             ],
             [
-                'name' => 'Максимальное количество символов в одной таблице при выводе КП',
-                'slug' => 'maksimalnoe-kolichestvo-simvolov-v-odnoy-tablice-pri-vyvode-kp',
+                'name' => 'Максимальное количество строк в одном варианте КП',
+                'slug' => 'maksimalnoe-kolichestvo-strok-v-odnom-variante-kp',
                 'class' => 'number',
-                'value' => 300,
+                'value' => 5,
             ],
         ];
 

@@ -10,16 +10,8 @@
 
 @foreach($offersGroup->offers as $index => $offer)
 
-    @php
 
-        $characters = 0;
-        foreach($offer->equipments->where('class', '!=', 'work')->where('pivot.quantity', '!=', 0) as $equipment){
-            $characters += mb_strlen( ($equipment->short_description == '') ? $equipment->description : $equipment->short_description);
-        }
-
-    @endphp
-
-    @if($characters > intval($maxChars))
+    @if($offer->equipments->where('class', '!=', 'work')->where('pivot.quantity', '!=', 0)->where('pivot.tab_slug', '!=', 'rashodnye-materialy')->count() + 1 > intval($maxString))
         <div class="main-wraper container">
             <div class="inner-wrapper">
                 <header class="main-header">
@@ -280,7 +272,7 @@
 <div class="main-wraper container">
     <div class="inner-wrapper">
         <header class="main-header">
-            <img src="{{asset('images/kpImages/header.png')}}" alt="Компания Арона. Продажа  установка систем безопасности в Москве и Московской области. Телефон - +7 (495) 003-45-62ю Email - zapros@aronasb.ru" class="main-header__picture" width="1019" height="156">
+            <img src="{{asset('images/kpImages/header.png')}}" alt="Компания Арона. Продажа  установка систем безопасности в Москве и Московской области. Телефон - +7 (495) 003-45-62. Email - zapros@aronasb.ru" class="main-header__picture" width="1019" height="156">
         </header>
 
         <main>
@@ -293,7 +285,7 @@
             <section class="certificates">
                 <h2 class="certificates__title">Наши сертификаты</h2>
                 <ul class="certificates__list clearfix">
-                    <li class="certificates__item"><img src="{{asset('images/kpImages/sertification1.jpg')}}" alt="Наши сертификаты"  width="123"  height="180"></li>
+                    <li class="certificates__item"><img src="{{asset('images/kpImages/sertification1.jpg')}}" alt="Наши сертификаты" width="123" height="180"></li>
                     <li class="certificates__item"><img src="{{asset('images/kpImages/sertification2.jpg')}}" alt="Наши сертификаты" width="123" height="180"></li>
                     <li class="certificates__item"><img src="{{asset('images/kpImages/sertification3.jpg')}}" alt="Наши сертификаты" width="123" height="180"></li>
                     <li class="certificates__item"><img src="{{asset('images/kpImages/sertification4.jpg')}}" alt="Наши сертификаты" width="123" height="180"></li>

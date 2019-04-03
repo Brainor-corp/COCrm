@@ -3,7 +3,14 @@
         <div v-if="offerGroup.offer_group" class="col-12 kp-total-tab">
             <h2>{{ offerGroup.offer_group.name}}</h2>
             <div v-if="calcPrices[i] && (calcPrices[i]['equipmentPrice'] > 0 || calcPrices[i]['consumablePrice'] > 0 )" class="kp-total-offer" v-for="(offerData, i) in offerGroup.offer_group.offers" :key="i">
-                <h3>{{ offerData.name }}</h3>
+                <div class="row">
+                    <div class="col-auto">
+                        <h3>{{ offerData.name }}</h3>
+                    </div>
+                    <div class="col-12 mt-3">
+                        <span v-if=" calcPrices[i]['equipmentsNumber'] + 1 > calcPrices['maxEquipmentsNumber'] " class="alert alert-warning text-nowrap">Количество строк в таблице оборудования больше, чем <strong>{{ calcPrices['maxEquipmentsNumber'] }}</strong>: таблица с работами будет отображена на отдельной странице.</span>
+                    </div>
+                </div>
                 <div  class="my-4 h4 font-weight-bold">Оборудование и расходные материалы</div>
                 <table v-if="offerData.equipments" class="table table-bordered">
                     <thead>
