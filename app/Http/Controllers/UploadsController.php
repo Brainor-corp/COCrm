@@ -36,7 +36,7 @@ class UploadsController extends Controller
             //now do whatever you want with the active sheet
             foreach( $objWorksheet->getRowIterator() as $key => $row ){
                 foreach( $row->getCellIterator() as $cell ){
-                    $excelData[$i][$key][] = $cell->getCalculatedValue();
+                    $excelData[$i][$key][] = $cell->getValue();
                 }
             }
         }
