@@ -68,16 +68,16 @@ class UploadsController extends Controller
                     if(isset($equipment)) {
                         if($equipment->parseable) {
                             $toUpdate = [
-                                'type_id' => $equipmentType->id,
-                                'name' => $row[3],
-                                'description' => $row[4],
-                                'points' => $row[5],
+//                                'type_id' => $equipmentType->id,
+//                                'name' => $row[3],
+//                                'description' => $row[4],
+//                                'points' => $row[5],
                                 'price_trade' => $row[6],
                                 'price_small_trade' => $row[7],
                                 'price_special' => $row[8],
                                 'price' => round((floatval($row[7]) - floatval($row[8])) / 2 + floatval($row[8]), 0),
-                                'short_description' => $row[9] ?? null,
-                                'class' => $equipmentType->class,
+//                                'short_description' => $row[9] ?? null,
+//                                'class' => $equipmentType->class,
                             ];
                             DB::table('equipment')->where('code', $code)->update($toUpdate);
                         }
