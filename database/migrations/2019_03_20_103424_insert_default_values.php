@@ -73,7 +73,7 @@ class InsertDefaultValues extends Migration
                 'name' => 'Максимальное количество строк в одном варианте КП',
                 'slug' => 'maksimalnoe-kolichestvo-strok-v-odnom-variante-kp',
                 'class' => 'number',
-                'value' => 5,
+                'value' => 25,
             ],
         ];
 

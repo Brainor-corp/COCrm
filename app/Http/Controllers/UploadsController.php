@@ -66,7 +66,7 @@ class UploadsController extends Controller
                     $equipment = Equipment::where('code', $code)->first();
 
                     if(isset($equipment)) {
-                        if($equipment->parseable) {
+                        if($equipment->parseable && $equipment->class == 'equipment') {
                             $toUpdate = [
 //                                'type_id' => $equipmentType->id,
 //                                'name' => $row[3],
