@@ -21,7 +21,9 @@
 
                 <main>
                     <section class="price-list">
-                        <h1 class="price-list__main-title">Коммерческое предложение <span>{{ $offersGroup->name }}</span></h1>
+                        @if($index == 0)
+                            <h1 class="price-list__main-title">Коммерческое предложение <span>{{ $offersGroup->name }}</span></h1>
+                        @endif
                         <div class="price-list__wraper clearfix">
                             <h2 class="price-list__variant">{{ $offer->name }}</h2>
                             <p class="price-list__description">{{ $offer->description }}</p>
@@ -93,7 +95,7 @@
 
                 <main>
                     <section class="price-list">
-                        <h1 class="price-list__main-title">Коммерческое предложение <span>{{ $offersGroup->name }}</span></h1>
+{{--                        <h1 class="price-list__main-title">Коммерческое предложение <span>{{ $offersGroup->name }}</span></h1>--}}
                         <div class="price-list__wraper clearfix">
                             <h2 class="price-list__variant">{{ $offer->name }}</h2>
                             <p class="price-list__description">{{ $offer->description }}</p>
@@ -161,7 +163,9 @@
 
         <main>
             <section class="price-list">
-                <h1 class="price-list__main-title">Коммерческое предложение <span>{{ $offersGroup->name }}</span></h1>
+                @if($index == 0)
+                    <h1 class="price-list__main-title">Коммерческое предложение <span>{{ $offersGroup->name }}</span></h1>
+                @endif
                 <div class="price-list__wraper clearfix">
                     <h2 class="price-list__variant">{{ $offer->name }}</h2>
                     <p class="price-list__description">{{ $offer->description }}</p>
