@@ -42,14 +42,14 @@ class OfferGroup extends Model
             return intval($item->value);
         };
         $taxMaxPercentage = $taxes->max($value);
-        return round($noTaxProfit + ($noTaxProfit * $taxMaxPercentage / 100), 2);
+        return ceil($noTaxProfit + ($noTaxProfit * $taxMaxPercentage / 100));
     }
 
     public function getTotalWorkPriceNoVAT(){
         $adjustment = $this->adjusters_number * $this->adjustment_days * $this->adjusters_wage + $this->adjustment_days * $this->fuel_number;
         $noTaxProfit = $this->adjusters_no_tax ?? (($adjustment * (100 - $this->pay_percentage)) / $this->pay_percentage) + $adjustment;
 
-        return round($noTaxProfit * 1.0638297873);
+        return ceil($noTaxProfit * 1.0638297873);
     }
 
     public function getAdditionalDiscount(){
@@ -63,7 +63,7 @@ class OfferGroup extends Model
         $taxMaxPercentage = $taxes->max($value);
         $VAT =  ($noTaxProfit + ($noTaxProfit * $taxMaxPercentage / 100)) * 20 / 120;
 
-        return round(($noTaxProfit + $noTaxProfit * 40 / 100) - round($noTaxProfit * 1.0638297873) - $VAT, 2);
+        return ceil(($noTaxProfit + $noTaxProfit * 40 / 100) - ceil($noTaxProfit * 1.0638297873) - $VAT);
     }
 
 }
