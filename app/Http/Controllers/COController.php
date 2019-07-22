@@ -123,14 +123,14 @@ class COController extends Controller
                 $response['workNumber'] = self::calculateWorkNumber($request['offer_group']['works']) ?? null;
             }
             foreach ($request['offer_group']['offers'] as $key => $offer) {
-                    $response[$key]['equipmentsNumber'] = self::calculateEquipmentsNumber($offer);
-                    $response[$key]['equipmentPrice'] = round(self::calculateEquipmentPrice($offer), 2);
-                    $response[$key]['consumablePrice'] = round(self::calculateConsumablePrice($offer), 2);
-                    $response[$key]['noTaxProfit'] = $request['offer_group']['adjusters']['adjusters_no_tax'] ?? round(self::calculateNoTaxProfit($response['adjustmentPrice'], $request['offer_group']['adjusters']['pay_percentage']), 2);
-                    $response[$key]['VAT'] = round(self::calculateVAT($response[$key]['noTaxProfit']), 2);
-                    $response[$key]['totalWorkPrice'] = round(self::calculateTotalWorkPrice($response[$key]['noTaxProfit']), 2);
-                    $response[$key]['totalWorkPriceNoVAT'] = round(self::calculateTotalWorkPriceNoVAT($response[$key]['noTaxProfit']), 2);
-                    $response[$key]['additionalDiscount'] = round(($response[$key]['noTaxProfit'] + $response[$key]['noTaxProfit'] * 40 / 100) - $response[$key]['totalWorkPriceNoVAT'] - $response[$key]['VAT'], 2);
+                $response[$key]['equipmentsNumber'] = self::calculateEquipmentsNumber($offer);
+                $response[$key]['equipmentPrice'] = round(self::calculateEquipmentPrice($offer), 2);
+                $response[$key]['consumablePrice'] = round(self::calculateConsumablePrice($offer), 2);
+                $response[$key]['noTaxProfit'] = $request['offer_group']['adjusters']['adjusters_no_tax'] ?? round(self::calculateNoTaxProfit($response['adjustmentPrice'], $request['offer_group']['adjusters']['pay_percentage']), 2);
+                $response[$key]['VAT'] = round(self::calculateVAT($response[$key]['noTaxProfit']), 2);
+                $response[$key]['totalWorkPrice'] = round(self::calculateTotalWorkPrice($response[$key]['noTaxProfit']), 2);
+                $response[$key]['totalWorkPriceNoVAT'] = round(self::calculateTotalWorkPriceNoVAT($response[$key]['noTaxProfit']), 2);
+                $response[$key]['additionalDiscount'] = round(($response[$key]['noTaxProfit'] + $response[$key]['noTaxProfit'] * 40 / 100) - $response[$key]['totalWorkPriceNoVAT'] - $response[$key]['VAT'], 2);
 //                $response[$key]['additionalDiscount'] = self::calculateAdditionalDiscount($response[$key]['noTaxProfit'],$response[$key]['VAT']);
 
             }

@@ -105,14 +105,14 @@
                                 <td class="align-middle py-3 text-center">{{ $work->pivot->quantity }}</td>
                             </tr>
                         @endforeach
-                            <tr>
-                                <td colspan="2" class="check-in-card-border my-4 p-total"><h4>Всего за работы с НДС:</h4></td>
-                                <td colspan="5" class="check-in-card-border my-4 text-right p-total"><h4> {{ $offersGroup->getTotalWorkPrice() }}р.</h4></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2" class="check-in-card-border my-4 p-total"><h4>Всего за работы без НДС, Доп. скидка - <span class="text-danger">{{ $offersGroup->getAdditionalDiscount() }}</span></h4></td>
-                                <td colspan="5" class="check-in-card-border my-4 text-right p-total"><h4>{{ $offersGroup->getTotalWorkPriceNoVAT() }}р.</h4></td>
-                            </tr>
+                        <tr>
+                            <td colspan="2" class="check-in-card-border my-4 p-total"><h4>Всего за работы с НДС:</h4></td>
+                            <td colspan="5" class="check-in-card-border my-4 text-right p-total"><h4> {{ $offersGroup->getTotalWorkPrice() }}р.</h4></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" class="check-in-card-border my-4 p-total"><h4>Всего за работы без НДС, Доп. скидка - <span class="text-danger">{{ $offersGroup->getAdditionalDiscount() }}</span></h4></td>
+                            <td colspan="5" class="check-in-card-border my-4 text-right p-total"><h4>{{ $offersGroup->getTotalWorkPriceNoVAT() }}р.</h4></td>
+                        </tr>
                         </tbody>
                     </table>
                 </div>
