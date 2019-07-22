@@ -14,7 +14,7 @@
                 <div class="tab-content">
                     <div id="generateKpTab" class="active bg-white border fade p-3 show tab-pane">
                         <generate-kp-tab :offerGroupID="offerGroupID"
-                            @updateOfferGroup="updateOfferGroup"
+                                         @updateOfferGroup="updateOfferGroup"
                         ></generate-kp-tab>
                     </div>
                     <div id="kpTotalTab" class="bg-white border fade p-3 tab-pane">
@@ -74,7 +74,7 @@
                                         if(
                                             !equipment
                                             || equipment.quantity === ""
-                                            // || parseInt(equipment.quantity) < 1
+                                        // || parseInt(equipment.quantity) < 1
                                         ) { //проверка на ненулевое кол-во
                                             equipments['equipment'].splice(index, 1);
                                             stop = false;
@@ -96,7 +96,7 @@
                                         if (
                                             work.quantity === ""
                                             || work.quantity == null
-                                            // || work.quantity < 1
+                                        // || work.quantity < 1
                                         ) {
                                             this.offerGroup['offer_group']['works'][workTabIndex]['work'].splice(workIndex, 1);
                                             stop = false;

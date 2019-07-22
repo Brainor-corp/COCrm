@@ -37,7 +37,7 @@ class OfferGroups extends Section
             Column::text('template', 'Является шаблоном'),
         ])
             ->setPagination(10)
-        ->setFilter([FilterType::text('name', '-'), null, null]);
+            ->setFilter([FilterType::text('name', '-'), null, null]);
 
         return $display;
     }

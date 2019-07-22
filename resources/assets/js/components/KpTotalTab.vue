@@ -31,7 +31,7 @@
                         <tr v-if="row.quantity >= 1" v-for="row in tab.equipment">
                             <td>{{ row.code }}</td>
                             <td>{{ row.name }}</td>
-                            <td>{{ row.short_description ? row.short_description : row.description }}</td>
+                            <td>{{ row.short_description ? row.short_description : '' }}</td>
                             <td>{{ row.quantity }}</td>
                             <td>{{ row.price }}</td>
                             <td>{{ row.price * row.quantity }}</td>
@@ -84,18 +84,18 @@
                             <td> ---- </td>
                         </tr>
                     </template>
-                        <!--<tr v-if="calcPrices[i]">-->
-                            <!--<td colspan="4" class="bg-beige text-right"><h4>Всего за работы ( с НДС ): {{ calcPrices[i]['totalWorkPrice'] }}р.</h4></td>-->
-                        <!--</tr>-->
-                        <!--<tr v-if="calcPrices[i]">-->
-                            <!--<td colspan="4" class="bg-light-blue text-right"><h4>Всего за работы ( без НДС, Доп. скидка - {{ calcPrices[i]['additionalDiscount'] }} ): {{calcPrices[i]['totalWorkPriceNoVAT']}}р.</h4></td>-->
-                        <!--</tr>-->
-                        <!--<tr v-if="calcPrices[i]">-->
-                            <!--<td colspan="4" class="bg-beige text-right"><h4>Общая стоимость (1 договор - все с НДС): {{ calcPrices[i]['equipmentPrice'] + calcPrices[i]['consumablePrice'] + calcPrices[i]['totalWorkPrice'] }}р.</h4></td>-->
-                        <!--</tr>-->
-                        <!--<tr v-if="calcPrices[i]">-->
-                            <!--<td colspan="4" class="bg-light-blue text-right"><h4>Общая стоимость (2 договора - оборудование с НДС, работы без НДС): {{calcPrices[i]['equipmentPrice'] + calcPrices[i]['consumablePrice'] + calcPrices[i]['totalWorkPriceNoVAT']}}р.</h4></td>-->
-                        <!--</tr>-->
+                    <!--<tr v-if="calcPrices[i]">-->
+                    <!--<td colspan="4" class="bg-beige text-right"><h4>Всего за работы ( с НДС ): {{ calcPrices[i]['totalWorkPrice'] }}р.</h4></td>-->
+                    <!--</tr>-->
+                    <!--<tr v-if="calcPrices[i]">-->
+                    <!--<td colspan="4" class="bg-light-blue text-right"><h4>Всего за работы ( без НДС, Доп. скидка - {{ calcPrices[i]['additionalDiscount'] }} ): {{calcPrices[i]['totalWorkPriceNoVAT']}}р.</h4></td>-->
+                    <!--</tr>-->
+                    <!--<tr v-if="calcPrices[i]">-->
+                    <!--<td colspan="4" class="bg-beige text-right"><h4>Общая стоимость (1 договор - все с НДС): {{ calcPrices[i]['equipmentPrice'] + calcPrices[i]['consumablePrice'] + calcPrices[i]['totalWorkPrice'] }}р.</h4></td>-->
+                    <!--</tr>-->
+                    <!--<tr v-if="calcPrices[i]">-->
+                    <!--<td colspan="4" class="bg-light-blue text-right"><h4>Общая стоимость (2 договора - оборудование с НДС, работы без НДС): {{calcPrices[i]['equipmentPrice'] + calcPrices[i]['consumablePrice'] + calcPrices[i]['totalWorkPriceNoVAT']}}р.</h4></td>-->
+                    <!--</tr>-->
                     </tbody>
                 </table>
                 <div class="my-5">

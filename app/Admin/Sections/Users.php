@@ -84,7 +84,7 @@ class Users extends Section
                 FormField::custom(View::make('admin.userPasswordChange')->with(compact('user_id')))
             ]),
         ])
-        ->setMeta($meta);
+            ->setMeta($meta);
 
         return $form;
     }
