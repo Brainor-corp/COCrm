@@ -7,11 +7,16 @@
     <link rel="stylesheet" href="{{asset('css/pages/newKP.css')}}">
 </head>
 <body class="print">
+@php
+    $count2 = $offersGroup->equipment->count();
+@endphp
 
 @foreach($offersGroup->offers as $index => $offer)
+    @php
+        $count1 = $offer->equipments->where('pivot.quantity', '!=', 0)->where('pivot.tab_slug', '!=', 'rashodnye-materialy')->count() + 1;
+    @endphp
 
-
-    @if($offer->equipments->where('pivot.quantity', '!=', 0)->where('pivot.tab_slug', '!=', 'rashodnye-materialy')->count() + 1 > intval($maxString))
+    @if(($count1 + $count2) > intval($maxString))
         <div class="main-wraper container">
             <div class="inner-wrapper">
                 <header class="main-header">
@@ -95,11 +100,129 @@
 
                 <main>
                     <section class="price-list">
-{{--                        <h1 class="price-list__main-title">Коммерческое предложение <span>{{ $offersGroup->name }}</span></h1>--}}
+                        {{--                        <h1 class="price-list__main-title">Коммерческое предложение <span>{{ $offersGroup->name }}</span></h1>--}}
                         <div class="price-list__wraper clearfix">
                             <h2 class="price-list__variant">{{ $offer->name }}</h2>
                             <p class="price-list__description">{{ $offer->description }}</p>
                             <p class="price-list__date">{{ \Carbon\Carbon::parse($offersGroup->created_at)->format('d.m.Y') }}</p>
+                        </div>
+
+                        <div class="price-list__table-wraper">
+                            <h2 class="price-list__table-title">Монтажные и пуско-наладочные работы</h2>
+                            <table class="price-list__table2">
+                                <thead>
+                                <tr>
+                                    <td class="column1">Наименование работ</td>
+                                    <td class="column2">Ед. изм.</td>
+                                    <td class="column3">Кол-во</td>
+                                </tr>
+                                </thead>
+                                <tbody>
+
+                                @foreach($offersGroup->equipment as $work)
+                                    @if($work->pivot->quantity)
+                                        <tr>
+                                            <td class="column1">{{ $work->name }}</td>
+                                            <td class="column2">{{ $work->points }}</td>
+                                            <td class="column3">{{ $work->pivot->quantity }}</td>
+                                        </tr>
+                                    @endif
+                                @endforeach
+                                <tr class="total">
+                                    <td>Всего за работы с НДС:</td>
+                                    <td colspan="2">{{ $offersGroup->getTotalWorkPrice() }} руб.</td>
+                                </tr>
+                                <tr class="total">
+                                    <td>Всего за работы без НДС (доп. скидка <span>{{ $offersGroup->getAdditionalDiscount() }} руб.</span>):</td>
+                                    <td colspan="2">{{ $offersGroup->getTotalWorkPriceNoVAT() }} руб.</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <table class="price-list__table3">
+                            <tr>
+                                <td class="column1">Общая стоимость (1 договор - все с НДС)</td>
+                                <td class="column2">{{ $totalEquipmentSum + $consumableSum + $offersGroup->getTotalWorkPrice() }} руб.</td>
+                            </tr>
+                            <tr>
+                                <td class="column1">Общая стоимость (2 договора - оборудование с НДС, работы без НДС)</td>
+                                <td class="column2">{{ $totalEquipmentSum + $consumableSum + $offersGroup->getTotalWorkPriceNoVAT() }} руб.</td>
+                            </tr>
+                        </table>
+                    </section>
+                </main>
+
+                <!-- FOOTER -->
+                <footer class="main-footer">
+                    <img src="{{asset('images/kpImages/footer.jpg')}}" alt="Компания Арона. Продажа  установка систем безопасности в Москве и Московской области. Телефон - +7 (495) 003-45-62ю Email - zapros@aronasb.ru" class="main-footer__picture" width="1041" height="49">
+                </footer>
+            </div>
+        </div>
+    @else
+        <div class="main-wraper container">
+            <div class="inner-wrapper">
+                <header class="main-header">
+                    <img src="{{asset('images/kpImages/header.png')}}" alt="Компания Арона. Продажа  установка систем безопасности в Москве и Московской области. Телефон - +7 (495) 003-45-62ю Email - zapros@aronasb.ru" class="main-header__picture" width="1019" height="156">
+                    @if(app('request')->input('pdf') != '1') <a href="{{route('downloadAsPdf', ['uuid' => $offersGroup->uuid])}}" class="download__pdf__button">Скачать PDF</a> @endif
+                </header>
+
+                <main>
+                    <section class="price-list">
+                        @if($index == 0)
+                            <h1 class="price-list__main-title">Коммерческое предложение <span>{{ $offersGroup->name }}</span></h1>
+                        @endif
+                        <div class="price-list__wraper clearfix">
+                            <h2 class="price-list__variant">{{ $offer->name }}</h2>
+                            <p class="price-list__description">{{ $offer->description }}</p>
+                            <p class="price-list__date">{{ \Carbon\Carbon::parse($offersGroup->created_at)->format('d.m.Y') }}</p>
+                        </div>
+
+                        <div class="price-list__table-wraper">
+                            <h2 class="price-list__table-title">Оборудование и расходные материалы</h2>
+                            <table class="price-list__table1">
+                                <thead>
+                                <tr>
+                                    <td class="column1">Наименование</td>
+                                    <td class="column2"></td>
+                                    <td class="column3">Кол-во</td>
+                                    <td class="column4">Цена</td>
+                                    <td class="column5">Всего</td>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                @php($totalEquipmentSum = 0)
+                                @php($consumableSum = 0)
+                                @foreach($offer->equipments as $equipment)
+                                    @if($equipment->class == 'work' || $equipment->pivot->quantity == 0)
+                                    @elseif($equipment->pivot->tab_slug != 'rashodnye-materialy')
+                                        @php($totalEquipmentSum += $equipment->pivot->price * $equipment->pivot->quantity)
+                                        <tr>
+                                            <td class="column1">{{ $equipment->name }}</td>
+                                            <td class="column2">{{ $equipment->short_description == '' ? $equipment->description : $equipment->short_description }}</td>
+                                            <td class="column3">{{ $equipment->pivot->quantity }}</td>
+                                            <td class="column4">{{ $equipment->pivot->price }}</td>
+                                            <td class="column5">{{ $equipment->pivot->price * $equipment->pivot->quantity }}</td>
+                                        </tr>
+                                    @else
+                                        @php($consumableSum += $equipment->pivot->price * $equipment->pivot->quantity)
+                                    @endif
+                                @endforeach
+                                @if($consumableSum > 0)
+                                    <tr class="expanded">
+                                        <td class="column1">Монтажный комплект</td>
+                                        <td class="column2">Крепеж, кабель и прочее</td>
+                                        <td class="column3">{{ $consumableSum > 0 ? 1 : 0 }}</td>
+                                        <td class="column4">{{ $consumableSum }}</td>
+                                        <td class="column5">{{ $consumableSum }}</td>
+                                    </tr>
+                                @endif
+                                <tr class="total">
+                                    <td colspan="3">Всего за оборудование:</td>
+                                    <td colspan="2">{{ $totalEquipmentSum + $consumableSum }} руб.</td>
+                                </tr>
+                                </tbody>
+                            </table>
                         </div>
 
                         <div class="price-list__table-wraper">
@@ -153,123 +276,6 @@
                 </footer>
             </div>
         </div>
-    @else
-        <div class="main-wraper container">
-    <div class="inner-wrapper">
-        <header class="main-header">
-            <img src="{{asset('images/kpImages/header.png')}}" alt="Компания Арона. Продажа  установка систем безопасности в Москве и Московской области. Телефон - +7 (495) 003-45-62ю Email - zapros@aronasb.ru" class="main-header__picture" width="1019" height="156">
-            @if(app('request')->input('pdf') != '1') <a href="{{route('downloadAsPdf', ['uuid' => $offersGroup->uuid])}}" class="download__pdf__button">Скачать PDF</a> @endif
-        </header>
-
-        <main>
-            <section class="price-list">
-                @if($index == 0)
-                    <h1 class="price-list__main-title">Коммерческое предложение <span>{{ $offersGroup->name }}</span></h1>
-                @endif
-                <div class="price-list__wraper clearfix">
-                    <h2 class="price-list__variant">{{ $offer->name }}</h2>
-                    <p class="price-list__description">{{ $offer->description }}</p>
-                    <p class="price-list__date">{{ \Carbon\Carbon::parse($offersGroup->created_at)->format('d.m.Y') }}</p>
-                </div>
-
-                <div class="price-list__table-wraper">
-                    <h2 class="price-list__table-title">Оборудование и расходные материалы</h2>
-                    <table class="price-list__table1">
-                        <thead>
-                        <tr>
-                            <td class="column1">Наименование</td>
-                            <td class="column2"></td>
-                            <td class="column3">Кол-во</td>
-                            <td class="column4">Цена</td>
-                            <td class="column5">Всего</td>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        @php($totalEquipmentSum = 0)
-                        @php($consumableSum = 0)
-                        @foreach($offer->equipments as $equipment)
-                            @if($equipment->class == 'work' || $equipment->pivot->quantity == 0)
-                            @elseif($equipment->pivot->tab_slug != 'rashodnye-materialy')
-                                @php($totalEquipmentSum += $equipment->pivot->price * $equipment->pivot->quantity)
-                                <tr>
-                                    <td class="column1">{{ $equipment->name }}</td>
-                                    <td class="column2">{{ $equipment->short_description == '' ? $equipment->description : $equipment->short_description }}</td>
-                                    <td class="column3">{{ $equipment->pivot->quantity }}</td>
-                                    <td class="column4">{{ $equipment->pivot->price }}</td>
-                                    <td class="column5">{{ $equipment->pivot->price * $equipment->pivot->quantity }}</td>
-                                </tr>
-                            @else
-                                @php($consumableSum += $equipment->pivot->price * $equipment->pivot->quantity)
-                            @endif
-                        @endforeach
-                        @if($consumableSum > 0)
-                        <tr class="expanded">
-                            <td class="column1">Монтажный комплект</td>
-                            <td class="column2">Крепеж, кабель и прочее</td>
-                            <td class="column3">{{ $consumableSum > 0 ? 1 : 0 }}</td>
-                            <td class="column4">{{ $consumableSum }}</td>
-                            <td class="column5">{{ $consumableSum }}</td>
-                        </tr>
-                        @endif
-                        <tr class="total">
-                            <td colspan="3">Всего за оборудование:</td>
-                            <td colspan="2">{{ $totalEquipmentSum + $consumableSum }} руб.</td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class="price-list__table-wraper">
-                    <h2 class="price-list__table-title">Монтажные и пуско-наладочные работы</h2>
-                    <table class="price-list__table2">
-                        <thead>
-                        <tr>
-                            <td class="column1">Наименование работ</td>
-                            <td class="column2">Ед. изм.</td>
-                            <td class="column3">Кол-во</td>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        @foreach($offersGroup->equipment as $work)
-                            @if($work->pivot->quantity)
-                                <tr>
-                                    <td class="column1">{{ $work->name }}</td>
-                                    <td class="column2">{{ $work->points }}</td>
-                                    <td class="column3">{{ $work->pivot->quantity }}</td>
-                                </tr>
-                            @endif
-                        @endforeach
-                        <tr class="total">
-                            <td>Всего за работы с НДС:</td>
-                            <td colspan="2">{{ $offersGroup->getTotalWorkPrice() }} руб.</td>
-                        </tr>
-                        <tr class="total">
-                            <td>Всего за работы без НДС (доп. скидка <span>{{ $offersGroup->getAdditionalDiscount() }} руб.</span>):</td>
-                            <td colspan="2">{{ $offersGroup->getTotalWorkPriceNoVAT() }} руб.</td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <table class="price-list__table3">
-                    <tr>
-                        <td class="column1">Общая стоимость (1 договор - все с НДС)</td>
-                        <td class="column2">{{ $totalEquipmentSum + $consumableSum + $offersGroup->getTotalWorkPrice() }} руб.</td>
-                    </tr>
-                    <tr>
-                        <td class="column1">Общая стоимость (2 договора - оборудование с НДС, работы без НДС)</td>
-                        <td class="column2">{{ $totalEquipmentSum + $consumableSum + $offersGroup->getTotalWorkPriceNoVAT() }} руб.</td>
-                    </tr>
-                </table>
-            </section>
-        </main>
-
-        <!-- FOOTER -->
-        <footer class="main-footer">
-            <img src="{{asset('images/kpImages/footer.jpg')}}" alt="Компания Арона. Продажа  установка систем безопасности в Москве и Московской области. Телефон - +7 (495) 003-45-62ю Email - zapros@aronasb.ru" class="main-footer__picture" width="1041" height="49">
-        </footer>
-    </div>
-</div>
     @endif
 
 @endforeach

@@ -18,16 +18,16 @@
                 <div class="col-12">
                     <form id="getOfferGroupByTemplate" @submit.prevent="getOfferGroup" class="w-100">
                         <div class="row">
-                        <div class="col-4">
-                            <label for="getKPBySelect">Выбрать шаблон КП для вставки</label>
-                            <select id="getKPBySelect" class="form-control" v-bind:disabled="redactMode" v-model="groupId">
-                                <option disabled value="" selected>Выберите шаблон кп</option>
-                                <option v-for="offerGroupTemplate in offerGroupTemplates" :value="offerGroupTemplate.id">{{ offerGroupTemplate.name }}</option>
-                            </select>
-                        </div>
-                        <div class="col-3 align-self-end">
-                            <button class="btn btn-secondary" type="submit" v-bind:disabled="redactMode">Вставить КП</button>
-                        </div>
+                            <div class="col-4">
+                                <label for="getKPBySelect">Выбрать шаблон КП для вставки</label>
+                                <select id="getKPBySelect" class="form-control" v-bind:disabled="redactMode" v-model="groupId">
+                                    <option disabled value="" selected>Выберите шаблон кп</option>
+                                    <option v-for="offerGroupTemplate in offerGroupTemplates" :value="offerGroupTemplate.id">{{ offerGroupTemplate.name }}</option>
+                                </select>
+                            </div>
+                            <div class="col-3 align-self-end">
+                                <button class="btn btn-secondary" type="submit" v-bind:disabled="redactMode">Вставить КП</button>
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -64,10 +64,10 @@
                             <li v-for="(offerContentTab, offerContentTabIndex) in offerTab['equipments']" :key="offerContentTabIndex" class="nav-item">
                                 <a class="nav-link" v-bind:class="{ 'active show': offerContentTabIndex === 0 }" data-toggle="tab" :href="'#kp-'+offerTabIndex+'-content-edit-tab-'+offerContentTabIndex">
                                     <div class="row">
-                                    <!--<select v-bind:disabled="offerContentTab.slug === 'rashodnye-materialy'" class="type-select" :data-toggle="'tooltip-'+offerTabIndex+'-'+offerContentTabIndex" title="Сначала выберите тип" v-model="offerContentTab.slug">-->
+                                        <!--<select v-bind:disabled="offerContentTab.slug === 'rashodnye-materialy'" class="type-select" :data-toggle="'tooltip-'+offerTabIndex+'-'+offerContentTabIndex" title="Сначала выберите тип" v-model="offerContentTab.slug">-->
                                         <!--<option disabled value="">Выберите</option>-->
                                         <!--<option v-for="(equipment, tabIndex) in offerTab['equipments']" v-bind:selected="equipment['slug'] === offerContentTab['slug']" :key="tabIndex" v-if="equipment['slug']" :value="equipment['slug']">{{ equipment.name }}</option>-->
-                                    <!--</select>-->
+                                        <!--</select>-->
                                         <div class="col-auto">
                                             <input @change="changeTabName(offerTabIndex, offerContentTabIndex)" type="text" class="form-control" v-bind:disabled="offerContentTab.slug === 'rashodnye-materialy'" v-model="offerContentTab.name">
                                         </div>
@@ -131,7 +131,7 @@
                                             <input class="form-control" type="text" :name="'offer_group[offers]['+offerTabIndex+'][equipments]['+offerContentTab.slug+'][equipment]['+rowKey+'][short_description]'" v-model="row.short_description"/>
                                         </td>
                                         <!--<td>-->
-                                            <!--<input class="form-control" type="text" :name="'offer_group[offers]['+offerTabIndex+'][equipments]['+offerContentTab.slug+'][equipment]['+rowKey+'][points]'" v-model="row.points"/>-->
+                                        <!--<input class="form-control" type="text" :name="'offer_group[offers]['+offerTabIndex+'][equipments]['+offerContentTab.slug+'][equipment]['+rowKey+'][points]'" v-model="row.points"/>-->
                                         <!--</td>-->
                                         <td>
                                             <input class="form-control" type="number" min="0" :name="'offer_group[offers]['+offerTabIndex+'][equipments]['+offerContentTab.slug+'][equipment]['+rowKey+'][quantity]'" v-model="row.quantity"/>
@@ -140,13 +140,13 @@
                                             <input class="form-control" type="number" min="0" :name="'offer_group[offers]['+offerTabIndex+'][equipments]['+offerContentTab.slug+'][equipment]['+rowKey+'][price]'" v-model="row.price"/>
                                         </td>
                                         <!--<td>-->
-                                            <!--<input @keyup="recalcPrice(offerTabIndex, offerContentTabIndex, rowKey)" @change="recalcPrice(offerTabIndex, offerContentTabIndex, rowKey)" :id="'price-trade-'+offerTabIndex+'-'+offerContentTabIndex+'-'+rowKey" class="form-control" type="number" min="0" :name="'offer_group[offers]['+offerTabIndex+'][equipments]['+offerContentTab.slug+'][equipment]['+rowKey+'][price_trade]'" v-model="row.price_trade"/>-->
+                                        <!--<input @keyup="recalcPrice(offerTabIndex, offerContentTabIndex, rowKey)" @change="recalcPrice(offerTabIndex, offerContentTabIndex, rowKey)" :id="'price-trade-'+offerTabIndex+'-'+offerContentTabIndex+'-'+rowKey" class="form-control" type="number" min="0" :name="'offer_group[offers]['+offerTabIndex+'][equipments]['+offerContentTab.slug+'][equipment]['+rowKey+'][price_trade]'" v-model="row.price_trade"/>-->
                                         <!--</td>-->
                                         <!--<td>-->
-                                            <!--<input @keyup="recalcPrice(offerTabIndex, offerContentTabIndex, rowKey)" @change="recalcPrice(offerTabIndex, offerContentTabIndex, rowKey)" :id="'price-small-trade-'+offerTabIndex+'-'+offerContentTabIndex+'-'+rowKey" class="form-control" type="number" min="0" :name="'offer_group[offers]['+offerTabIndex+'][equipments]['+offerContentTab.slug+'][equipment]['+rowKey+'][price_small_trade]'" v-model="row.price_small_trade"/>-->
+                                        <!--<input @keyup="recalcPrice(offerTabIndex, offerContentTabIndex, rowKey)" @change="recalcPrice(offerTabIndex, offerContentTabIndex, rowKey)" :id="'price-small-trade-'+offerTabIndex+'-'+offerContentTabIndex+'-'+rowKey" class="form-control" type="number" min="0" :name="'offer_group[offers]['+offerTabIndex+'][equipments]['+offerContentTab.slug+'][equipment]['+rowKey+'][price_small_trade]'" v-model="row.price_small_trade"/>-->
                                         <!--</td>-->
                                         <!--<td>-->
-                                            <!--<input @keyup="recalcPrice(offerTabIndex, offerContentTabIndex, rowKey)" @change="recalcPrice(offerTabIndex, offerContentTabIndex, rowKey)" :id="'price-special-'+offerTabIndex+'-'+offerContentTabIndex+'-'+rowKey" class="form-control" type="number" min="0" :name="'offer_group[offers]['+offerTabIndex+'][equipments]['+offerContentTab.slug+'][equipment]['+rowKey+'][price_special]'" v-model="row.price_special"/>-->
+                                        <!--<input @keyup="recalcPrice(offerTabIndex, offerContentTabIndex, rowKey)" @change="recalcPrice(offerTabIndex, offerContentTabIndex, rowKey)" :id="'price-special-'+offerTabIndex+'-'+offerContentTabIndex+'-'+rowKey" class="form-control" type="number" min="0" :name="'offer_group[offers]['+offerTabIndex+'][equipments]['+offerContentTab.slug+'][equipment]['+rowKey+'][price_special]'" v-model="row.price_special"/>-->
                                         <!--</td>-->
                                         <td class="align-middle">
                                             <i @click="deleteRow(offerTabIndex, offerContentTabIndex, rowKey)" class="fas fa-times"></i>
@@ -314,7 +314,7 @@
                     this.types = res.data;
 
                     if(this.groupId !== null){
-                         this.getOfferGroup();
+                        this.getOfferGroup();
                     }
                     else{
                         return axios.post('/getDefaultTabs');
