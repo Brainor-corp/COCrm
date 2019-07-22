@@ -8,13 +8,14 @@
 </head>
 <body class="print">
 @php
-    $count2 = $offersGroup->equipment->count();
+    $count2 = $offersGroup->equipment->where('pivot.quantity', '!=', 0)->count();
 @endphp
 
 @foreach($offersGroup->offers as $index => $offer)
     @php
         $count1 = $offer->equipments->where('pivot.quantity', '!=', 0)->where('pivot.tab_slug', '!=', 'rashodnye-materialy')->count() + 1;
     @endphp
+
 
     @if(($count1 + $count2) > intval($maxString))
         <div class="main-wraper container">
@@ -56,7 +57,7 @@
                                         @php($totalEquipmentSum += $equipment->pivot->price * $equipment->pivot->quantity)
                                         <tr>
                                             <td class="column1">{{ $equipment->name }}</td>
-                                            <td class="column2">{{ $equipment->short_description == '' ? $equipment->description : $equipment->short_description }}</td>
+                                            <td class="column2">{{ $equipment->short_description}}</td>
                                             <td class="column3">{{ $equipment->pivot->quantity }}</td>
                                             <td class="column4">{{ $equipment->pivot->price }}</td>
                                             <td class="column5">{{ $equipment->pivot->price * $equipment->pivot->quantity }}</td>

@@ -187,8 +187,8 @@ class OfferController extends Controller
             }
         }
         catch (\Exception $e){
-            throw new \Exception('Произошла ошибка. Пожалуйста, проверьте, что поля заполнены верно и попробуйте снова.');
-//            throw $e;
+//            throw new \Exception('Произошла ошибка. Пожалуйста, проверьте, что поля заполнены верно и попробуйте снова.');
+            throw $e;
         }
         return url('kp/' . $createGroup->uuid);
     }

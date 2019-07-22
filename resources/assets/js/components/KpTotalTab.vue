@@ -31,7 +31,7 @@
                         <tr v-if="row.quantity >= 1" v-for="row in tab.equipment">
                             <td>{{ row.code }}</td>
                             <td>{{ row.name }}</td>
-                            <td>{{ row.short_description ? row.short_description : row.description }}</td>
+                            <td>{{ row.short_description ? row.short_description : '' }}</td>
                             <td>{{ row.quantity }}</td>
                             <td>{{ row.price }}</td>
                             <td>{{ row.price * row.quantity }}</td>

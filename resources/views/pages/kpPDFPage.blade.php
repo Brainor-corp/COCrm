@@ -77,7 +77,7 @@
                                         @php($totalEquipmentSum += $equipment->pivot->price * $equipment->pivot->quantity)
                                         <tr>
                                             {{--<td class="border-top-0 border-bottom"><img src="https://via.placeholder.com/100" alt=""></td>--}}
-                                            <td class="align-middle py-3 border-top-0 border-bottom" colspan="3"><b>{{ $equipment->name }}</b> {{ $equipment->short_description ?? $equipment->description }}</td>
+                                            <td class="align-middle py-3 border-top-0 border-bottom" colspan="3"><b>{{ $equipment->name }}</b> {{ $equipment->short_description }}</td>
                                             <td class="align-middle py-3 border-top-0 border-bottom text-center">{{ $equipment->pivot->quantity }}</td>
                                             <td class="align-middle py-3 border-top-0 border-bottom text-center">{{ $equipment->pivot->price }}</td>
                                             <td class="align-middle py-3 border-top-0 border-bottom text-center">{{ $equipment->pivot->price * $equipment->pivot->quantity }}</td>
