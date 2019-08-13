@@ -432,6 +432,7 @@
                                     equipmentValue['price_trade'] = equipmentValue['pivot']['price_trade'];
                                     equipmentValue['price_small_trade'] = equipmentValue['pivot']['price_small_trade'];
                                     equipmentValue['price_special'] = equipmentValue['pivot']['price_special'];
+                                    equipmentValue['short_description'] = equipmentValue['pivot']['description'] ? equipmentValue['pivot']['description'] : equipmentValue['short_description'];
                                     equipmentValue['quantity'] = equipmentValue['pivot']['quantity'] ? equipmentValue['pivot']['quantity'] : 0;
                                 });
                             });

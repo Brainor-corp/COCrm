@@ -57,7 +57,7 @@
                                         @php($totalEquipmentSum += $equipment->pivot->price * $equipment->pivot->quantity)
                                         <tr>
                                             <td class="column1">{{ $equipment->name }}</td>
-                                            <td class="column2">{{ $equipment->short_description}}</td>
+                                            <td class="column2">{{ $equipment->pivot->description ?? $equipment->short_description}}</td>
                                             <td class="column3">{{ $equipment->pivot->quantity }}</td>
                                             <td class="column4">{{ $equipment->pivot->price }}</td>
                                             <td class="column5">{{ $equipment->pivot->price * $equipment->pivot->quantity }}</td>
@@ -200,7 +200,7 @@
                                         @php($totalEquipmentSum += $equipment->pivot->price * $equipment->pivot->quantity)
                                         <tr>
                                             <td class="column1">{{ $equipment->name }}</td>
-                                            <td class="column2">{{ $equipment->short_description == '' ? $equipment->description : $equipment->short_description }}</td>
+                                            <td class="column2">{{ $equipment->pivot->description ?? $equipment->short_description}}</td>
                                             <td class="column3">{{ $equipment->pivot->quantity }}</td>
                                             <td class="column4">{{ $equipment->pivot->price }}</td>
                                             <td class="column5">{{ $equipment->pivot->price * $equipment->pivot->quantity }}</td>

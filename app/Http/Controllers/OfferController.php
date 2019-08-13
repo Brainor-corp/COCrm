@@ -105,18 +105,21 @@ class OfferController extends Controller
                         foreach ($offer['equipments'] as $type => $equipment_tab) {
                             foreach ($equipment_tab['equipment'] as $equipment) {
                                 if ($equipment['base_id'] === '-1') {
-                                    $createEquipment = new Equipment();
-                                    $createEquipment->code = $equipment['code'];
-                                    $createEquipment->name = $equipment['name'];
-                                    $createEquipment->short_description = $equipment['short_description'];
-                                    $createEquipment->points = $equipment['points'] ?? 'руб./шт';
-                                    $createEquipment->price = $equipment['price'];
-                                    $createEquipment->price_trade = $equipment['price_trade'];
-                                    $createEquipment->price_small_trade = $equipment['price_small_trade'];
-                                    $createEquipment->price_special = $equipment['price_special'];
-                                    $createEquipment->class = 'equipment';
+                                    $createEquipment = Equipment::whereCode($equipment['code'])->first();
+                                    if(!isset($createEquipment)) {
+                                        $createEquipment = new Equipment();
+                                        $createEquipment->code = $equipment['code'];
+                                        $createEquipment->name = $equipment['name'];
+                                        $createEquipment->short_description = $equipment['short_description'];
+                                        $createEquipment->points = $equipment['points'] ?? 'руб./шт';
+                                        $createEquipment->price = $equipment['price'];
+                                        $createEquipment->price_trade = $equipment['price_trade'];
+                                        $createEquipment->price_small_trade = $equipment['price_small_trade'];
+                                        $createEquipment->price_special = $equipment['price_special'];
+                                        $createEquipment->class = 'equipment';
 //                            $createEquipment->type_id = Type::where('slug', $equipment['type'])->first()->id;
-                                    $createEquipment->save();
+                                        $createEquipment->save();
+                                    }
 
                                     $createOffer->equipments()->attach($createEquipment->id, array(
                                         'quantity' => $equipment['quantity'],
@@ -126,14 +129,11 @@ class OfferController extends Controller
                                         'price_special' => $equipment['price_special'],
 //                                        'counted_price' => $equipment['counted_price'],
                                         'comment' => $equipment['comment'],
+                                        'description' => $equipment['short_description'],
                                         'tab_slug' => $type,
                                         'tab_name' => $equipment_tab['name'],
                                     ));
                                 } else {
-//                                $oldEquipment = Equipment::where('id', $equipment['base_id'])->first();
-//                                $oldEquipment->short_description = $equipment['short_description'];
-//                                $oldEquipment->save();
-
                                     $createOffer->equipments()->attach($equipment['base_id'], array(
                                         'quantity' => $equipment['quantity'],
                                         'price' => $equipment['price'],
@@ -142,6 +142,7 @@ class OfferController extends Controller
                                         'price_special' => $equipment['price_special'],
 //                                        'counted_price' => $equipment['counted_price'],
                                         'comment' => $equipment['comment'],
+                                        'description' => $equipment['short_description'],
                                         'tab_slug' => $type,
                                         'tab_name' => $equipment_tab['name'],
                                     ));
@@ -246,6 +247,7 @@ class OfferController extends Controller
                                         'price_special' => $equipment['price_special'],
 //                                        'counted_price' => $equipment['counted_price'],
                                         'comment' => $equipment['comment'],
+                                        'description' => $equipment['short_description'],
                                         'tab_slug' => SlugService::createSlug(Equipment::class, 'slug', $equipment_tab['name'] ?? 'unnamed-tab'),
                                         'tab_name' => $equipment_tab['name'],
                                     ));
@@ -258,6 +260,7 @@ class OfferController extends Controller
                                         'price_special' => $equipment['price_special'],
 //                                        'counted_price' => $equipment['counted_price'],
                                         'comment' => $equipment['comment'],
+                                        'description' => $equipment['short_description'],
                                         'tab_slug' => SlugService::createSlug(Equipment::class, 'slug', $equipment_tab['name'] ?? 'unnamed-tab'),
                                         'tab_name' => $equipment_tab['name'],
                                     ));

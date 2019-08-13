@@ -24,7 +24,7 @@ use Illuminate\Http\Request;
 class Equipments extends Section
 {
     protected $title = 'Оборудование';
-//    protected $model = '\App\Equipment';
+    protected $model = '\App\Equipment';
 
     public static function onDisplay(Request $request){
         $display = Display::table([

@@ -23,7 +23,7 @@ class COController extends Controller
 
         $maxString = Setting::where('slug', 'maksimalnoe-kolichestvo-strok-v-odnom-variante-kp')->first()->value;
 
-        $offersGroup = OfferGroup::where('uuid', $uuid)->with('offers.equipments', 'equipment', 'user')->first();
+        $offersGroup = OfferGroup::where('uuid', $uuid)->with('offers.equipments', 'equipment', 'user')->firstOrFail();
 
         if(!isset($offersGroup)){
             abort(404);
@@ -70,8 +70,7 @@ class COController extends Controller
                     $buff1[$key] = $buff2;
                 }
                 $groupedArr['offers'][$offerIndex]['equipments'] = $buff1;
-            }
-            else{
+            } else {
                 $groupedArr['offers'][$offerIndex]['equipments'] = [];
             }
         }
