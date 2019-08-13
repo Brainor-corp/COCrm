@@ -75,6 +75,7 @@ class Equipments extends Section
                 FormField::hidden('class')->setValue('e'),
 
                 FormField::select('type_id', 'Тип')
+                    ->setRequired(true)
                     ->setModelForOptions(Type::class)
                     ->setQueryFunctionForModel(function ($type) {
                         return $type->whereIn('slug', ['rabota', 'oborudovanie']);
