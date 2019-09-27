@@ -289,23 +289,31 @@ class OfferController extends Controller
 //                    $createWork->type_id = Type::where('slug', 'rabota')->first()->id;
                                 $createWork->save();
 
-                                $buffWork[$createWork->id] = [
+                                $tabSlug = SlugService::createSlug(Equipment::class, 'slug', $workTab['name'] ?? 'unnamed-tab');
+
+                                $buffWork[$tabSlug][] = [
+                                    'equipment_id' => $createWork->id,
                                     'quantity' => $work['quantity'],
                                     'tab_name' => $workTab['name'],
-                                    'tab_slug' => SlugService::createSlug(Equipment::class, 'slug', $workTab['name'] ?? 'unnamed-tab'),
+                                    'tab_slug' => $tabSlug,
                                 ];
                             } else {
-                                $buffWork[$work['id']] = [
+                                $tabSlug = SlugService::createSlug(Equipment::class, 'slug', $workTab['name'] ?? 'unnamed-tab');
+                                $buffWork[$tabSlug][] = [
+                                    'equipment_id' => $work['id'],
                                     'quantity' => $work['quantity'],
                                     'tab_name' => $workTab['name'],
-                                    'tab_slug' => SlugService::createSlug(Equipment::class, 'slug', $workTab['name'] ?? 'unnamed-tab'),
+                                    'tab_slug' => $tabSlug,
                                 ];
                             }
                         }
                     }
                 }
             }
-            $offerGroup->equipment()->sync($buffWork);
+            $offerGroup->equipment()->detach();
+            foreach($buffWork as $tab) {
+                $offerGroup->equipment()->attach($tab);
+            }
             $offerGroup->save();
         }
         catch (\Exception $e){
